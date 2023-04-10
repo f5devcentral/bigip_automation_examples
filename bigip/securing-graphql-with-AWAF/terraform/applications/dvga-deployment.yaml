@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dvga-deployment
+  labels:
+    app: dvga
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dvga
+  template:
+    metadata:
+      labels:
+        app: dvga
+    spec:
+      containers:
+      - name: dvga
+        image: dolevf/dvga
+        ports:
+        - containerPort: 5013
+        env:
+        - name: WEB_HOST
+          value: 0.0.0.0

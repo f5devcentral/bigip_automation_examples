@@ -1,0 +1,8 @@
+---
+bigip_username: admin
+bigip_password: "{{ lookup('env', 'TF_VAR_F5_PASSWORD') }}"
+bigip_port: 8443
+validate_certs: no
+
+# You likely do not need this. It is used for this repository's purposes only
+ansible_python_interpreter: /usr/local/bin/python

@@ -1,0 +1,74 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "persist": true,
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.2.0",
+        "id": "Prod_API_AS3",
+        "API-Prod": {
+            "class": "Tenant",
+            "defaultRouteDomain": 0,
+            "API": {
+                "class": "Application",
+                "template": "generic",
+                "VS_API": {
+                    "class": "Service_HTTPS",
+                    "remark": "Accepts HTTPS/TLS connections on port 443",
+                    "virtualAddresses": [
+                        "10.0.0.100"
+                    ],
+                    "redirect80": false,
+                    "pool": "pool_NGINX_API_AS3",
+                    "policyWAF": {
+                        "use": "Arcadia_WAF_API_policy"
+                    },
+                    "securityLogProfiles": [
+                        {
+                            "bigip": "/Common/Log all requests"
+                        }
+                    ],
+                    "profileTCP": {
+                        "egress": "wan",
+                        "ingress": {
+                            "use": "TCP_Profile"
+                        }
+                    },
+                    "profileHTTP": {
+                        "use": "custom_http_profile"
+                    },
+                    "serverTLS": {
+                        "bigip": "/Common/clientssl"
+                    }
+                },
+                "Arcadia_WAF_API_policy": {
+                    "class": "WAF_Policy",
+                    "url": "https://raw.githubusercontent.com/f5devcentral/f5-asm-policy-templates/master/application_ready_template/SharePoint_2016/Sharepoint_2016_Template_6.1.2_v13.xml",
+                    "ignoreChanges": true
+                },
+                "pool_NGINX_API_AS3": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [
+                        {
+                            "servicePort": 80,
+                            "serverAddresses": [
+                                "10.1.1.246"
+                            ]
+                        }
+                    ]
+                },
+                "custom_http_profile": {
+                    "class": "HTTP_Profile",
+                    "xForwardedFor": true
+                },
+                "TCP_Profile": {
+                    "class": "TCP_Profile",
+                    "idleTimeout": 60
+                }
+            }
+        }
+    }
+}

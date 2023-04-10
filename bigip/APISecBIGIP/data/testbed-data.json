@@ -1,0 +1,28 @@
+{
+    "AWS_ACCOUNT": "aws_acc_name"
+    "s3_bucket": "apisecurity-bucket",
+    "region": "ap-south-1",
+    "region_snap": "ap-south-1",
+    "main_vpc_cidr": "10.0.0.0/16",
+    "mgmt_subnet1": "10.0.0.0/24",
+    "public_subnet2": "10.0.10.0/24",
+    "private_subnet3": "10.0.20.0/24",
+    "bigip_ami_name": "F5 BIGIP-16.*.*-*.*.* PAYG-Adv WAF Plus 200Mbps-*",
+    "f5_username": "admin",
+    "BIGIP_INSTANCE_TYPE": "t3.large",
+    "INSTANCE_NAME": "apisecurity_automation_instance",
+    "INSTANCE_NAME2": "apisecurity_automation_instance2",
+    "INSTANCE_TYPE": "t3.small",
+    "ELK_INSTANCE_TYPE": "t3.large",
+    "MAX_INST": 1,
+    "SG_NAME": "apisecurity_automation_sg",
+    "NAP_image_name": "nginx-plus-app-protect-ubuntu-18.04-v2.7-x86_64-premium-*",
+    "eks_cluster_name": "apisecurity_automation_eks",
+    "UBUNTU_IMAGE_NAME": "ubuntu-20.04-pke-docker-1.21.0-*",
+    "python_ec2_key": "automation-python-key",
+    "bigip_build_public": "true",
+    "public_subnet_a_cidr": "10.0.8.0/24",
+    "public_subnet_b_cidr": "10.0.255.0/24",
+    "subnet_a_cidr": "10.0.1.0/24",
+    "subnet_b_cidr": "10.0.0.0/24"
+}

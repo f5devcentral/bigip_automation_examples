@@ -1,0 +1,4 @@
+[f5_test]
+%{ for ip in ansible_host ~}
+${ip}
+%{ endfor }

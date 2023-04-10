@@ -1,0 +1,56 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "persist": true,
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.2.0",
+        "id": "Prod_DVGA_AS3",
+        "DVGA_Prod": {
+            "class": "Tenant",
+            "defaultRouteDomain": 0,
+            "DVGA": {
+                "class": "Application",
+                "template": "generic",
+                "VS_DVGA": {
+                    "class": "Service_HTTPS",
+                    "remark": "Accepts HTTPS/TLS connections on port 443",
+                    "virtualAddresses": ["10.0.0.118"],
+                    "redirect80": false,
+                    "pool": "pool_k8s_nodes",
+                    "policyWAF": {
+                        "use": "DVGA_GraphQL_WAF_policy"
+                    },
+                    "securityLogProfiles": [{
+                		"bigip": "/Common/Log all requests"
+                	}],
+                    "profileTCP": {
+			            "egress": "wan",
+            			"ingress": { "use": "TCP_Profile" } },
+                    "profileHTTP": { "use": "custom_http_profile" },
+                    "serverTLS": { "bigip": "/Common/clientssl" }
+                },
+                "DVGA_GraphQL_WAF_policy": {
+                    "class": "WAF_Policy",
+                    "url": "https://raw.githubusercontent.com/shubhammishra9/graphql_policy/main/no_graphql/waf_policy_nographql.json",
+                    "ignoreChanges": true
+                },
+                "pool_k8s_nodes": {
+                    "class": "Pool",
+                    "monitors": ["http"],
+                    "members": [{
+                        "servicePort": 30011,
+                        "serverAddresses": ["65.1.226.226"]
+                    }]
+                },
+                "custom_http_profile": {
+                    "class": "HTTP_Profile",
+                    "xForwardedFor": true
+                },
+                "TCP_Profile": {
+        			"class": "TCP_Profile",
+        			"idleTimeout": 60 }
+            }
+        }
+    }
+}

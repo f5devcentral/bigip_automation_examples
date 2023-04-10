@@ -1,0 +1,55 @@
+---
+- name: Delete configs
+  hosts: f5_test
+  connection: local
+
+  tasks:
+    - name: Get an API token
+      uri:
+        url: "https://{{ansible_host}}:8443/mgmt/shared/authn/login"
+        method: POST
+        body: |
+          {
+            "username": "admin",
+            "password": "{{ lookup('env', 'TF_VAR_F5_PASSWORD') }}",
+            "loginProviderName": "tmos"
+          }
+        status_code: 200
+        body_format: json
+        validate_certs: no
+      register: auth
+
+    - name: Destroy DVGA AS3 App
+      uri:
+        url: "https://{{ansible_host}}:8443/mgmt/shared/appsvcs/declare"
+        method: POST
+        headers:
+          X-F5-Auth-Token: "{{ auth['json']['token']['name'] }}"
+        body: "{{ lookup('file','delete_as3_dvga_app.json') }}"
+        status_code: 200
+        body_format: json
+        validate_certs: no
+
+    - name: Save config to disk
+      uri:
+        url: "https://{{ansible_host}}:8443/mgmt/tm/sys/config"
+        method: POST
+        body: |
+          {
+            "command":"save"
+          }
+        headers:
+          X-F5-Auth-Token: "{{ auth['json']['token']['name'] }}"
+        status_code: 200
+        body_format: json
+        validate_certs: no
+
+    - name: Destroy an API token
+      uri:
+        url: "https://{{ansible_host}}:8443/mgmt/shared/authz/tokens/{{ auth['json']['token']['name'] }}"
+        method: DELETE
+        headers:
+          X-F5-Auth-Token: "{{ auth['json']['token']['name'] }}"
+        status_code: 200
+        validate_certs: no
+      register: auth

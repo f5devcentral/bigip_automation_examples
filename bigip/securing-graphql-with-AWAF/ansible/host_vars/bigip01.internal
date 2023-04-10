@@ -1,0 +1,3 @@
+---
+#ansible_host: %{ for ip in ansible_host ~}${ip}%{ endfor ~}
+ansible_host=%{ for ip in ansible_host ~}${ip}%{ endfor ~}

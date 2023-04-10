@@ -1,0 +1,27 @@
+{
+	"namespace": "automation-apisec",
+	"metadata": {
+		"name": "automation-rlpolicy",
+		"namespace": null,
+		"labels": {},
+		"annotations": {},
+		"description": null,
+		"disable": null
+	},
+	"spec": {
+		"rules": [{
+			"metadata": {
+				"name": "automation-rlrule",
+				"description": null,
+				"disable": null
+			},
+			"spec": {
+				"bypass_rate_limiter": {},
+				"http_method": null,
+				"domain_matcher": null,
+				"path": null,
+				"headers": null
+			}
+		}]
+	}
+}
