@@ -1,0 +1,199 @@
+name: Declarative WAF article
+on:
+  workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+          
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          
+      - name: Deploying infra using terraform
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}          
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/declarative-advanced-waf-policy/lib"
+          cd bigip/declarative-advanced-waf-policy/
+          cp data/testbed-data.json terraform/terraform.tfvars.json
+          cd terraform
+          cp terraform.tfvars.json applications/
+          chmod 400 $TF_VAR_EC2_KEY_NAME*
+          sudo apt install git -y
+          sudo apt install jq -y
+
+          # Executing terraform to deploy BIGIP and EKS
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
+          ami_name="$(terraform output AMI_name)"
+          ami_id="$(terraform output AMI_id)"
+          sleep 10
+          echo "======================== Deployed BIGIP with below configurations ========================="
+          echo $ami_name
+          echo $ami_id
+          echo "==========================================================================================="
+
+          # download eks cluster config file locally
+          region="$(cat terraform.tfvars.json | jq --raw-output ".region")"
+          eks_name="$(cat terraform.tfvars.json | jq --raw-output ".eks_cluster_name")"
+          aws eks update-kubeconfig --name $eks_name --region $region
+          
+          # Deploying arcadia application services on EKS
+          cd applications
+          kubectl get service
+          kubectl create -f app-backend.yaml
+          kubectl create -f app1.yaml
+          kubectl create -f app2.yaml
+          kubectl create -f app3.yaml
+          sleep 10
+          kubectl create -f svc-backend.yaml
+          kubectl create -f svc1.yaml
+          kubectl create -f svc2.yaml
+          kubectl create -f svc3.yaml
+          kubectl get deployment
+          kubectl get service
+          sleep 20
+          
+          # SG related to k8s workers is created by internal module and we don't have control over it during deployment.
+          # Arcadia application needs to be accessible on ports 30511-30362 so we have to add this rule to open above 
+          # ports and so we are using terraform module again to do this task.
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
+          pwd
+          terraform output -raw bigip_public_dns > bigip_public_dns
+          node_ip="$(terraform output node_public_ip)"
+          echo $node_ip
+          big_ip="$(terraform output bigip_private)"
+          echo $big_ip
+          
+          # executing ansible playbook to configure WAF
+          cd ../../ansible
+          python update_vip_as3.py $big_ip $node_ip 
+          ansible-playbook -i inventory/hosts playbook.yaml   
+          
+      - name: Upload dns file
+        uses: actions/upload-artifact@v3
+        with:
+          name: dns
+          path: bigip/declarative-advanced-waf-policy/terraform/applications/bigip_public_dns
+  
+      - name: Upload tfstate1 file
+        uses: actions/upload-artifact@v3
+        with:
+         name: tfstate1
+         path: bigip/declarative-advanced-waf-policy/terraform/applications/terraform.tfstate
+
+      - name: Upload tfstate1 file
+        uses: actions/upload-artifact@v3
+        with:
+         name: tfstate2
+         path: bigip/declarative-advanced-waf-policy/terraform/terraform.tfstate
+         
+         
+  Testing:
+    needs: Deploy
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+          python -m pip install pytest
+          python -m pip install pytest-html
+          python -m pip install requests
+          python -m pip install pythreading
+          sleep 180
+          
+      - name: Download the Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dns
+          
+      - name: Run testing
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/declarative-advanced-waf-policy/lib"      
+          cp bigip_public_dns bigip/declarative-advanced-waf-policy/
+          cd bigip/declarative-advanced-waf-policy
+          pytest test_declarative_waf.py --html=declarative_waf_report.html
+          
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+         name: test_report
+         path: bigip/declarative-advanced-waf-policy/declarative_waf_report.html           
+         
+  Destroy:
+      needs: [Deploy, Testing]
+      if: ${{ always() }}
+      runs-on: self-hosted
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+          
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+
+      - name: Download the Artifact1
+        uses: actions/download-artifact@v3
+        with:
+          name: tfstate1
+
+      - name: move artifact1 to application folder 
+        run: mv terraform.tfstate bigip/declarative-advanced-waf-policy/terraform/applications/terraform.tfstate
+          
+      - name: Download the Artifact2
+        uses: actions/download-artifact@v3
+        with:
+          name: tfstate2
+ 
+      - name: move artifact2 to terraform folder 
+        run: mv terraform.tfstate bigip/declarative-advanced-waf-policy/terraform/terraform.tfstate
+        
+      - name: Destroy the infra
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          cd bigip/declarative-advanced-waf-policy/          
+          cp data/testbed-data.json terraform/terraform.tfvars.json
+          cp data/testbed-data.json terraform/applications/terraform.tfvars.json
+          cd terraform/applications
+          sleep 180
+          
+          # this will destroy SG changes
+          terraform init
+          terraform plan -destroy
+          terraform destroy -auto-approve
+          cd ../
+          # this will remove remaining infra
+          terraform init
+          terraform plan -destroy
+          terraform destroy -auto-approve

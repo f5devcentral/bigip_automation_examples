@@ -1,0 +1,110 @@
+name: Deploy and test OWASP Injection on F5 XC
+on:
+  workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+          
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          
+      - name: Deploying infra
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}          
+        run: |
+          cd distributed_cloud/owasp_injection
+          chmod 400 $TF_VAR_EC2_KEY_NAME*
+          sudo apt install git -y
+          sudo apt install jq -y
+
+          # Executing terraform to deploy BIGIP and EKS
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
+  
+      - name: Upload tfstate file
+        uses: actions/upload-artifact@v3
+        with:
+         name: tfstate
+         path: distributed_cloud/owasp_injection/terraform.tfstate
+         
+         
+  Testing:
+    needs: Deploy
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+          python -m pip install pytest
+          python -m pip install pytest-html
+          python -m pip install requests
+          python -m pip install pythreading
+          sleep 60
+
+      - name: Run testing
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/owasp-top10-declarative-waf/lib"      
+          cd distributed_cloud/owasp_injection
+          pytest test_owasp_inection.py --html=owasp_injection_report.html
+          
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+         name: test_report
+         path: distributed_cloud/owasp_injection/owasp_injection_report.html         
+         
+  Destroy:
+      needs: [Deploy, Testing]
+      if: ${{ always() }}
+      runs-on: self-hosted
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+          
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          
+      - name: Download the Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: tfstate
+ 
+      - name: Move artifact to terraform folder 
+        run: mv terraform.tfstate distributed_cloud/owasp_injection/terraform.tfstate
+        
+      - name: Destroy the infra
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          cd distributed_cloud/owasp_injection
+          sleep 180
+          
+          # this will destroy infra
+          terraform init
+          terraform plan -destroy
+          terraform destroy -auto-approve

@@ -1,0 +1,148 @@
+name: Deploy and test OWASP Top 10 article
+on:
+  workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+          
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          
+      - name: Deploying infra
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}          
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/owasp-top10-declarative-waf/lib"
+          cd bigip/owasp-top10-declarative-waf/
+          cp data/testbed-data.json terraform/terraform.tfvars.json
+          cp data/default.conf terraform/default.conf
+          cd terraform
+          chmod 400 $TF_VAR_EC2_KEY_NAME*
+          sudo apt install git -y
+          sudo apt install jq -y
+          python -m pip install scp
+          python -m pip install requests
+
+          # Executing terraform to deploy BIGIP and EKS
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
+          
+          terraform output -raw node_public_ip > nodeip
+          sleep 10
+          python3 install_app.py >> python_script.output
+          terraform output -raw bigip_public_dns > bigip_public_dns
+          node_ip="$(terraform output node_public_ip)"
+          echo $node_ip
+          big_ip="$(terraform output bigip_private)"
+          echo $big_ip
+          sleep 10
+          cd ../ansible
+          python update_vip_as3.py $big_ip $node_ip 8080
+          ansible-playbook -i inventory/hosts playbook.yaml
+          
+      - name: Upload dns file
+        uses: actions/upload-artifact@v3
+        with:
+          name: dns
+          path: bigip/owasp-top10-declarative-waf/terraform/bigip_public_dns
+  
+      - name: Upload tfstate file
+        uses: actions/upload-artifact@v3
+        with:
+         name: tfstate
+         path: bigip/owasp-top10-declarative-waf/terraform/terraform.tfstate
+         
+         
+  Testing:
+    needs: Deploy
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+          python -m pip install pytest
+          python -m pip install pytest-html
+          python -m pip install requests
+          python -m pip install pythreading
+          sleep 60
+          
+      - name: Download the Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dns
+          
+      - name: Run testing
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/owasp-top10-declarative-waf/lib"      
+          cp bigip_public_dns bigip/owasp-top10-declarative-waf/
+          cd bigip/owasp-top10-declarative-waf
+          pytest test_owasp_top10_waf.py --html=owasp_top10_report.html
+          
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+         name: test_report
+         path: bigip/owasp-top10-declarative-waf/owasp_top10_report.html           
+         
+  Destroy:
+      needs: [Deploy, Testing]
+      if: ${{ always() }}
+      runs-on: self-hosted
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+          
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          
+      - name: Download the Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: tfstate
+ 
+      - name: Move artifact to terraform folder 
+        run: mv terraform.tfstate bigip/owasp-top10-declarative-waf/terraform/terraform.tfstate
+        
+      - name: Destroy the infra
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          cd bigip/owasp-top10-declarative-waf/          
+          cp data/testbed-data.json terraform/terraform.tfvars.json
+          cd terraform/
+          sleep 180
+          
+          # this will destroy infra
+          terraform init
+          terraform plan -destroy
+          terraform destroy -auto-approve

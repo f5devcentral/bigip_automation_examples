@@ -12,10 +12,6 @@ variable "backendip" {
   	type = string
 }
 
-variable "namespace" {
-  	type = string
-}
-
 variable "backendport" {
   	type = string
   	default = "80"

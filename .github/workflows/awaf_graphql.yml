@@ -1,0 +1,142 @@
+name: securing graphql with AWAF
+on:
+  workflow_dispatch:
+    inputs:
+      msg: 
+        description: 'run-workflow'
+        default: 'true'  
+jobs:
+  terraform:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2   
+        with:
+          terraform_wrapper: false
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}            
+      - name: Deploy aws resources
+        env:
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}  
+        run: |          
+          cp bigip/securing-graphql-with-AWAF/data/testbed-data.json terraform/terraform.tfvars.json
+          cd terraform/
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
+          aws eks update-kubeconfig --name automation-eks-cluster
+          cd applications/
+          kubectl get service
+          kubectl create -f dvga-deployment.yaml
+          sleep 10
+          kubectl create -f nodeport.yaml
+          kubectl get deployment
+          kubectl get service
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
+          terraform output bigip_public_ip > temp
+          sed 's/\"//g' temp > bigip_public_ip
+      - id: save_var
+        run: |
+          cd terraform/applications/
+          echo "node_ip=$(terraform output node_public_ip)" >> "$GITHUB_OUTPUT"
+          echo "big_ip=$(terraform output bigip_private)" >> "$GITHUB_OUTPUT"          
+      - name: Upload new files
+        uses: actions/upload-artifact@v3
+        with:
+          name: files
+          path: |
+            ./terraform/applications/bigip_public_ip
+            ./ansible/inventory/hosts                 
+      - name: Upload tfstate file
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfstate
+          path: terraform/terraform.tfstate  
+    outputs:
+      node_ip: ${{ steps.save_var.outputs.node_ip }}
+      big_ip: ${{ steps.save_var.outputs.big_ip }}
+      
+  test:
+    needs: terraform
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download new file
+        uses: actions/download-artifact@v3
+        with:
+          name: files
+      - uses: actions/setup-python@v3
+      - name: Install python dependencies
+        run: |
+          python -m pip install requests
+          python -m pip install ansible
+      - name: Push policy and test
+        env:
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}} 
+          node_ip: ${{needs.terraform.outputs.node_ip}}
+          big_ip: ${{needs.terraform.outputs.big_ip}}
+        run: |
+          node_ip=$(echo $node_ip | sed 's/"//g')
+          big_ip=$(echo $big_ip | sed 's/"//g')
+          cd ansible
+          python update_vip_as3.py $big_ip $node_ip 30011
+          ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
+          mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/securing-graphql-with-AWAF/lib"  
+          pytest ../test_graphql.py --html=without_graphql_pr_report.html
+          sleep 10
+          ansible-playbook -i inventory/hosts delete_playbook.yaml
+          ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=True introspection=True"
+          pytest ../test_graphql.py --html=graphql_pr_with_introspec_report.html
+          sleep 10
+          ansible-playbook -i inventory/hosts delete_playbook.yaml
+          ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=True introspection=False" 
+          pytest ../test_graphql.py --html=graphql_pr_without_introspec_report.html
+          sleep 10
+          ansible-playbook -i inventory/hosts delete_playbook.yaml
+          ansible-playbook -i inventory/hosts playbook_update.yml
+          pytest ../test_graphql.py --html=max_str_depth.html         
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+         name: test_report
+         path: | 
+          ./ansible/without_graphql_pr_report.html
+          ./ansible/graphql_pr_with_introspec_report.html
+          ./ansible/graphql_pr_without_introspec_report.html
+          ./ansible/max_str_depth.html
+
+  destroy:
+    if: ${{ always() }}
+    needs: [terraform, test]
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2   
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+      - name: Download tfstate file
+        uses: actions/download-artifact@v3
+        with:
+          name: tfstate
+      - name: Destroy infra
+        run: |
+          mv terraform.tfstate terraform/
+          cp bigip/securing-graphql-with-AWAF/data/testbed-data.json terraform/terraform.tfvars.json
+          cd terraform/
+          terraform init
+          terraform plan -destroy 
+          terraform destroy -auto-approve

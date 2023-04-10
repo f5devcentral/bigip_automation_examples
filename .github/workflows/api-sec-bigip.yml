@@ -1,0 +1,127 @@
+name: Deploy API Sec in BIGIP
+on:
+  #push: {branches: main}
+  workflow_dispatch:
+    inputs:
+      msg: 
+        description: 'Deploying NAP though AWS'
+        default: 'Regression PI12'  
+jobs:
+  Deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+      - name: Deploying the infrastructure..
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}      
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/APISecBIGIP/lib"       
+          cp bigip/APISecBIGIP/data/testbed-data.json bigip/APISecBIGIP/terraform/terraform.tfvars.json
+          cd bigip/APISecBIGIP/
+          python clean_env.py
+          cd terraform
+          terraform init
+          terraform plan -out "planfile"           
+          terraform apply -input=false "planfile" 
+          terraform  output -raw node_public_ip > nodeip
+          echo $nodeip
+          bigip_public_ip="$(terraform output -raw mgmtPublicIP)"
+          echo $bigip_public_ip
+          big_ip_private="$(terraform  output  -raw private_addresses)"
+          echo $big_ip_private
+          #python3 install_app.py > python_script.output
+          python3 install_app.py
+          terraform  output -raw mgmtPublicDNS > bigip_public_dns
+          node_ip="$(terraform output -raw node_public_ip)"
+          echo $node_ip
+          cd ../ansible
+          python update_vip_as3.py $big_ip_private $node_ip 8080
+          ansible-playbook -i inventory/hosts playbook.yaml 
+
+      - name: Upload dns file
+        uses: actions/upload-artifact@v3
+        with:
+          name: dns
+          path: bigip/APISecBIGIP/terraform/bigip_public_dns
+                    
+  Testing:
+    needs: Deploy
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+          python -m pip install pytest==6.2.4
+          python -m pip install pytest-html
+          python -m pip install requests
+          python -m pip install pythreading
+          sleep 180
+
+      - name: Download the Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dns
+      
+      - name: Run testing
+        env:
+          TF_VAR_EC2_KEY_NAME: ${{ secrets.TF_VAR_EC2_KEY_NAME}}
+          TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}              
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/APISecBIGIP/lib"
+          cat bigip/APISecBIGIP/terraform/bigip_public_dns
+          cp bigip_public_dns bigip/APISecBIGIP/
+          cd bigip/APISecBIGIP
+          cat bigip_public_dns
+          pytest test_bigip_with_nap.py --html=apisec_bigip_report.html
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+         name: test_report
+         path: bigip/APISecBIGIP/apisec_bigip_report.html
+ 
+  Destroy:
+    needs: [Deploy,Testing]
+    if: ${{ always() }}
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: |
+          python -m pip install boto3
+          python -m pip install paramiko
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+      - name: shell command execution 
+        run: |
+          export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/APISecBIGIP/lib"       
+          cp bigip/APISecBIGIP/data/testbed-data.json bigip/APISecBIGIP/terraform/terraform.tfvars.json
+          cd bigip/APISecBIGIP/terraform
+          terraform init
+          terraform plan -destroy 
+          terraform destroy -auto-approve 
+
