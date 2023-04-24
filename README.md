@@ -1,12 +1,24 @@
 ## Overview
 
-This is a consolidated automation repo for different verified designs customer use case examples across all `F5` products like `BigIP`, `Nginx` and `Distributed cloud`. Users can use this to test a specific use case end to end by using the automation code available in this repo. </br>
+This is a consolidated automation repo for different verified designs customer use case examples available across diversified `F5` products like `BigIP`, `Nginx` and `Distributed cloud`. Users can use this to test a specific use case end to end by using the automation code available in this repo. </br>
+</br>
+**NOTE: To learn about each use case check the devcentral article link provided in each scenario folder README** </br>
 </br>
 
-To learn about each use case check the devcentral article link provided in each scenario folder README. </br>
-</br>
+## Getting Started
 
 ## Prerequisites
+
+* [F5 Distributed Cloud Account (F5XC)](https://console.ves.volterra.io/signup/usage_plan)
+  * [F5XC API certificate](https://docs.cloud.f5.com/docs/how-to/user-mgmt/credentials)
+* [AWS Account](https://aws.amazon.com) - Due to the assets being created, free tier will not work.
+  * The F5 BIG-IP AMI being used from the [AWS Marketplace](https://aws.amazon.com/marketplace) should be subsribed to your account
+  * The F5 Nginx App Protect AMI being used from the [AWS Marketplace](https://aws.amazon.com/marketplace) should be subsribed to your account
+  * Please make sure resources like VPC and Elastic IP's are below the threshold limit in that aws region
+* [GitHub Account](https://github.com)
+* In case of F5 XC use cases, make sure a valid application is available and accessible using public IP (this app is used to test the F5 XC features) 
+
+## Steps to execute
 
 1. Clone the repo locally and update AWS credentials like `access keys`, `secret key` and `session token` be in  `settings` --> `Secrets` --> `Actions` section <br />
 ![image](https://user-images.githubusercontent.com/6093830/209962425-1c3452ec-9b32-4509-adb5-cc85d4a67a10.png)
@@ -21,7 +33,7 @@ To learn about each use case check the devcentral article link provided in each 
 
 5. Update your `ENV` variables in `/data/testbed-data.json` file in your use case folder <br />
 
-6. Make sure your self hosted runner is installed and added to this repo <br />
+6. Install self hosted runner and add it to this repo <br />
 
 7. Make sure `awscli`, `kubectl`, `ansible-playbook`, `pytest`, `git` and other required tools are installed in this private custom runner. Refer `requirements.txt` file for more details <br />
 
@@ -30,11 +42,11 @@ To learn about each use case check the devcentral article link provided in each 
 8. If you want to test F5 XC use case, make sure you have valid .p12 extracted cert and key available in use case folder location
 <br />
 
-## Steps to execute
-
-1. Go to `Actions` tab and select your article work-flow
-2. Click on `Run Workflow` option and execute it
-3. Check the CI/CD jobs execution and check the artifacts if needed <br />
+9. Go to `Actions` tab and select your article work-flow
+<br />
+10. Click on `Run Workflow` option and execute it
+<br />
+11. Check the CI/CD jobs execution and check the artifacts for more details <br />
 <br />
 
 ## Sample resources which are created by terraform
