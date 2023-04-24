@@ -5,8 +5,6 @@ This is a consolidated automation repo for different verified designs customer u
 **NOTE: To learn about each use case check the devcentral article link provided in each scenario folder README** </br>
 </br>
 
-## Getting Started
-
 ## Prerequisites
 
 * [F5 Distributed Cloud Account (F5XC)](https://console.ves.volterra.io/signup/usage_plan)
@@ -39,13 +37,12 @@ This is a consolidated automation repo for different verified designs customer u
 
 > Note: Please install and make sure python packages like `pytest-html`, `awscli==1.18.105` and `botocore==1.17.28` are available with their correct versions in runner to avoid failures <br />
 
-8. If you want to test F5 XC use case, make sure you have valid .p12 extracted cert and key available in use case folder location. Check `terraform.tfvars.json` and update details of your application plublic IP, port, LB dns, etc.
-<br />
+8. If you want to test F5 XC use case, make sure you have valid .p12 extracted cert and key available in use case folder location. Check `terraform.tfvars.json` and update details of your application plublic IP, port, LB dns, etc. <br />
 
-9. Go to `Actions` tab and select your article work-flow
-<br />
-10. Click on `Run Workflow` option and execute it
-<br />
+9. Go to `Actions` tab and select your article work-flow <br />
+
+10. Click on `Run Workflow` option and execute it <br />
+
 11. Check the CI/CD jobs execution and check the artifacts for more details <br />
 <br />
 
