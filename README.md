@@ -39,7 +39,7 @@ This is a consolidated automation repo for different verified designs customer u
 
 > Note: Please install and make sure python packages like `pytest-html`, `awscli==1.18.105` and `botocore==1.17.28` are available with their correct versions in runner to avoid failures <br />
 
-8. If you want to test F5 XC use case, make sure you have valid .p12 extracted cert and key available in use case folder location
+8. If you want to test F5 XC use case, make sure you have valid .p12 extracted cert and key available in use case folder location. Check `terraform.tfvars.json` and update details of your application plublic IP, port, LB dns, etc.
 <br />
 
 9. Go to `Actions` tab and select your article work-flow
@@ -60,7 +60,7 @@ This is a consolidated automation repo for different verified designs customer u
 7. IAM policies with names `apisecurity_automation_eks-elb-sl-role-creation*`and `apisecurity_automation_eks-deny-log-group*`
 8. IAM role with name `apisecurity_automation_eks*`
 9. Elastic IP with no name 
-10. In case of F5 XC, scripts will create `Origin Pool`, `Load balancer` and `Application Firewall` <br />
+10. In case of F5 XC, scripts will create `Origin Pool`, `Load balancer` and `Application Firewall` with names provided in their scripts <br />
 <br />
 
 
