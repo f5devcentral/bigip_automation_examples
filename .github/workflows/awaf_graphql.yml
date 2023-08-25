@@ -23,8 +23,9 @@ jobs:
       - name: Deploy aws resources
         env:
           TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}  
-        run: |          
-          cp bigip/securing-graphql-with-AWAF/data/testbed-data.json terraform/terraform.tfvars.json
+        run: |   
+          cd bigip/securing-graphql-with-AWAF/
+          cp data/testbed-data.json terraform/terraform.tfvars.json
           cd terraform/
           terraform init
           terraform plan -out "planfile" 
