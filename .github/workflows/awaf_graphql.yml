@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: tfstate
-          path: terraform/terraform.tfstate  
+          path: bigip/securing-graphql-with-AWAF/terraform/terraform.tfstate  
     outputs:
       node_ip: ${{ steps.save_var.outputs.node_ip }}
       big_ip: ${{ steps.save_var.outputs.big_ip }}
