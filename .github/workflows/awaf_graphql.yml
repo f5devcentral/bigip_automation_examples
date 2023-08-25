@@ -43,6 +43,7 @@ jobs:
           terraform apply -input=false "planfile"
           terraform output bigip_public_ip > temp
           sed 's/\"//g' temp > bigip_public_ip
+          ls
           cat bigip_public_ip
           cd ../../ansible/inventory
           ip=$(cat bigip_public_ip)
