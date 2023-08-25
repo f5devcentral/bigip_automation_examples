@@ -39,9 +39,9 @@ jobs:
           kubectl create -f nodeport.yaml
           kubectl get deployment
           kubectl get service
-          #terraform init
-          #terraform plan -out "planfile" 
-          #terraform apply -input=false "planfile"
+          terraform init
+          terraform plan -out "planfile" 
+          terraform apply -input=false "planfile"
           terraform output bigip_public_ip > temp
           sed 's/\"//g' temp > bigip_public_ip
       - id: save_var
