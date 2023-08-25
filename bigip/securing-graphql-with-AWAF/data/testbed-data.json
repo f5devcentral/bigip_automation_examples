@@ -1,7 +1,7 @@
 {
     "AWS_ACCOUNT": "AWs-Acc-name"
     "s3_bucket": "apisecurity-bucket",
-    "region": "ap-south-1",
+    "region": "ca-central-1",
     "region_snap": "ap-south-1",
     "main_vpc_cidr": "10.0.0.0/16",
     "mgmt_subnet1": "10.0.0.0/24",
