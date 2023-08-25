@@ -88,7 +88,10 @@ jobs:
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
           cd bigip/securing-graphql-with-AWAF/ansible
+          echo $node_ip
+          echo $big_ip
           python update_vip_as3.py $big_ip $node_ip 30011
+          cat as3.json
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
           mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
           export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/securing-graphql-with-AWAF/lib"  
