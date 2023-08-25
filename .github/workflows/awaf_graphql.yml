@@ -45,7 +45,8 @@ jobs:
           sed 's/\"//g' temp > bigip_public_ip
           ip=$(cat bigip_public_ip)
           cd ../../ansible/inventory
-          sed -i "s|65.1.226.226|$ip|g" hosts    
+          sed -i "s|65.1.226.226|$ip|g" hosts  
+          cat hosts
       - id: save_var
         run: |
           cd bigip/securing-graphql-with-AWAF/terraform/applications/
