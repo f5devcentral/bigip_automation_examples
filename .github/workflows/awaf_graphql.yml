@@ -83,10 +83,6 @@ jobs:
           TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}} 
           node_ip: ${{needs.terraform.outputs.node_ip}}
           big_ip: ${{needs.terraform.outputs.big_ip}}          
-      - name: Download new file
-        uses: actions/download-artifact@v3
-        with:
-          name: files
       - name: Push policy and test
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
