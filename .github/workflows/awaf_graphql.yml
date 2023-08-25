@@ -27,7 +27,6 @@ jobs:
           cd bigip/securing-graphql-with-AWAF/
           cp data/testbed-data.json terraform/terraform.tfvars.json
           cd terraform/
-          ls
           terraform init
           terraform plan -out "planfile" 
           terraform apply -input=false "planfile"
@@ -87,11 +86,10 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
+          ls
           cd bigip/securing-graphql-with-AWAF/ansible
-          echo $node_ip
-          echo $big_ip
-          python update_vip_as3.py $big_ip $node_ip 30011
-          cat as3.json
+          mv ../../../hosts .
+          python update_vip_as3.py $big_ip $node_ip 30011       
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
           mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
           export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/securing-graphql-with-AWAF/lib"  
