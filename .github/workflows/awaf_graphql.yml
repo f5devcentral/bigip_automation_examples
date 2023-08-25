@@ -27,6 +27,7 @@ jobs:
           cd bigip/securing-graphql-with-AWAF/
           cp data/testbed-data.json terraform/terraform.tfvars.json
           cd terraform/
+          ls
           terraform init
           terraform plan -out "planfile" 
           terraform apply -input=false "planfile"
