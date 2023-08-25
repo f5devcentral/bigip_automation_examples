@@ -45,7 +45,7 @@ jobs:
           sed 's/\"//g' temp > bigip_public_ip
       - id: save_var
         run: |
-          cd terraform/applications/
+          cd bigip/securing-graphql-with-AWAF/terraform/applications/
           echo "node_ip=$(terraform output node_public_ip)" >> "$GITHUB_OUTPUT"
           echo "big_ip=$(terraform output bigip_private)" >> "$GITHUB_OUTPUT"          
       - name: Upload new files
@@ -53,8 +53,8 @@ jobs:
         with:
           name: files
           path: |
-            ./terraform/applications/bigip_public_ip
-            ./ansible/inventory/hosts                 
+            bigip/securing-graphql-with-AWAF/terraform/applications/bigip_public_ip
+            bigip/securing-graphql-with-AWAF/ansible/inventory/hosts                 
       - name: Upload tfstate file
         uses: actions/upload-artifact@v3
         with:
@@ -86,7 +86,7 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
-          cd ansible
+          cd bigip/securing-graphql-with-AWAF/ansible
           python update_vip_as3.py $big_ip $node_ip 30011
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
           mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
@@ -110,10 +110,10 @@ jobs:
         with:
          name: test_report
          path: | 
-          ./ansible/without_graphql_pr_report.html
-          ./ansible/graphql_pr_with_introspec_report.html
-          ./ansible/graphql_pr_without_introspec_report.html
-          ./ansible/max_str_depth.html
+          bigip/securing-graphql-with-AWAF/ansible/without_graphql_pr_report.html
+          bigip/securing-graphql-with-AWAF/ansible/graphql_pr_with_introspec_report.html
+          bigip/securing-graphql-with-AWAF/ansible/graphql_pr_without_introspec_report.html
+          bigip/securing-graphql-with-AWAF/ansible/max_str_depth.html
 
   destroy:
     if: ${{ always() }}
@@ -135,8 +135,9 @@ jobs:
           name: tfstate
       - name: Destroy infra
         run: |
-          mv terraform.tfstate terraform/
-          cp bigip/securing-graphql-with-AWAF/data/testbed-data.json terraform/terraform.tfvars.json
+          mv terraform.tfstate bigip/securing-graphql-with-AWAF/terraform/
+          cd bigip/securing-graphql-with-AWAF/
+          cp data/testbed-data.json terraform/terraform.tfvars.json
           cd terraform/
           terraform init
           terraform plan -destroy 
