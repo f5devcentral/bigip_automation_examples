@@ -43,6 +43,10 @@ jobs:
           terraform apply -input=false "planfile"
           terraform output bigip_public_ip > temp
           sed 's/\"//g' temp > bigip_public_ip
+          cat bigip_public_ip
+          cd ../../ansible/inventory
+          ip=$(cat bigip_public_ip)
+          sed -i "s|65.1.226.226|$ip|g" hosts    
       - id: save_var
         run: |
           cd bigip/securing-graphql-with-AWAF/terraform/applications/
@@ -86,9 +90,8 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
+          mv hosts bigip/securing-graphql-with-AWAF/ansible/inventory/
           cd bigip/securing-graphql-with-AWAF/ansible
-          ip=$(cat bigip_public_ip)
-          sed -i "s|65.1.226.226|$ip|g" inventory/hosts
           python update_vip_as3.py $big_ip $node_ip 30011       
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
           mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
