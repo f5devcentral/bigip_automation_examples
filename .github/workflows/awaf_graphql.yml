@@ -87,7 +87,6 @@ jobs:
           TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}} 
           node_ip: ${{needs.terraform.outputs.node_ip}}
           big_ip: ${{needs.terraform.outputs.big_ip}}
-      - name: Push policy and test
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
