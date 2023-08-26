@@ -91,16 +91,12 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
-          cd ansible
           ls -lrt
-          cat inventory/host
-          cd ../terraform
-          ls -lrt
-          
+          mv hosts bigip/securing-graphql-with-AWAF/ansible/inventory
           cd bigip/securing-graphql-with-AWAF/ansible
           python update_vip_as3.py $big_ip $node_ip 30011       
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
-          mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
+          mv ../../../bigip_public_ip ./bigip_public_ip
           export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/securing-graphql-with-AWAF/lib"  
           pytest ../test_graphql.py --html=without_graphql_pr_report.html
           sleep 10
