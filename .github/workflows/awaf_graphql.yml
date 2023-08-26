@@ -58,8 +58,8 @@ jobs:
         with:
           name: files
           path: |
-            bigip/securing-graphql-with-AWAF/terraform/applications/bigip_public_ip
-            bigip/securing-graphql-with-AWAF/ansible/inventory/hosts                 
+            ./bigip_public_ip
+            ./hosts                 
       - name: Upload tfstate file
         uses: actions/upload-artifact@v3
         with:
