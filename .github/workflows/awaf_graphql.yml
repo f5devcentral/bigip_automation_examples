@@ -91,8 +91,7 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
-          ls
-          mv hosts bigip/securing-graphql-with-AWAF/ansible/inventory/
+          ls -lrt
           cd bigip/securing-graphql-with-AWAF/ansible
           python update_vip_as3.py $big_ip $node_ip 30011       
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
