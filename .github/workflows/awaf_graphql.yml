@@ -91,7 +91,6 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
-          ls -lrt
           mv hosts bigip/securing-graphql-with-AWAF/ansible/inventory
           cd bigip/securing-graphql-with-AWAF/ansible
           python update_vip_as3.py $big_ip $node_ip 30011       
