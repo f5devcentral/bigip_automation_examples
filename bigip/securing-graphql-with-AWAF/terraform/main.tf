@@ -74,7 +74,7 @@ resource "aws_subnet" "publicsubnet1" {    # Creating Public Subnets
    vpc_id =  aws_vpc.Main.id
    cidr_block = var.mgmt_subnet1      # CIDR block of public subnets
    map_public_ip_on_launch = true
-   availability_zone = "ap-south-1a"
+   availability_zone = "${var.region}a"
   tags = {
     Name = "graphql-automation-SN1"
   }
@@ -85,7 +85,7 @@ resource "aws_subnet" "publicsubnet2" {
    vpc_id =  aws_vpc.Main.id
    cidr_block = var.public_subnet2         # CIDR block of subnet2
    map_public_ip_on_launch = true
-      availability_zone = "ap-south-1a"
+      availability_zone = "${var.region}a"
    tags = {
     Name = "graphql-automation-SN2"
   }
@@ -96,7 +96,7 @@ resource "aws_subnet" "publicsubnet3" {
    vpc_id =  aws_vpc.Main.id
    cidr_block = var.private_subnet3         # CIDR block of subnet3
    map_public_ip_on_launch = true
-   availability_zone = "ap-south-1b"
+   availability_zone = "${var.region}b"
    tags = {
     Name = "graphql-automation-SN3"
   }

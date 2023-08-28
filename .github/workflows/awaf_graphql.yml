@@ -23,8 +23,9 @@ jobs:
       - name: Deploy aws resources
         env:
           TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}}  
-        run: |          
-          cp bigip/securing-graphql-with-AWAF/data/testbed-data.json terraform/terraform.tfvars.json
+        run: |   
+          cd bigip/securing-graphql-with-AWAF/
+          cp data/testbed-data.json terraform/terraform.tfvars.json
           cd terraform/
           terraform init
           terraform plan -out "planfile" 
@@ -42,9 +43,14 @@ jobs:
           terraform apply -input=false "planfile"
           terraform output bigip_public_ip > temp
           sed 's/\"//g' temp > bigip_public_ip
+          ip=$(cat bigip_public_ip)
+          mv bigip_public_ip ../../../../
+          cd ../../ansible/inventory
+          sed -i "s|65.1.226.226|$ip|g" hosts  
+          mv hosts ../../../../
       - id: save_var
         run: |
-          cd terraform/applications/
+          cd bigip/securing-graphql-with-AWAF/terraform/applications/
           echo "node_ip=$(terraform output node_public_ip)" >> "$GITHUB_OUTPUT"
           echo "big_ip=$(terraform output bigip_private)" >> "$GITHUB_OUTPUT"          
       - name: Upload new files
@@ -52,13 +58,13 @@ jobs:
         with:
           name: files
           path: |
-            ./terraform/applications/bigip_public_ip
-            ./ansible/inventory/hosts                 
+            ./bigip_public_ip
+            ./hosts                 
       - name: Upload tfstate file
         uses: actions/upload-artifact@v3
         with:
           name: tfstate
-          path: terraform/terraform.tfstate  
+          path: bigip/securing-graphql-with-AWAF/terraform/terraform.tfstate  
     outputs:
       node_ip: ${{ steps.save_var.outputs.node_ip }}
       big_ip: ${{ steps.save_var.outputs.big_ip }}
@@ -76,8 +82,8 @@ jobs:
       - name: Install python dependencies
         run: |
           python -m pip install requests
-          python -m pip install ansible
-      - name: Push policy and test
+          python -m pip install ansible  
+      - name: Set environment vars
         env:
           TF_VAR_F5_PASSWORD: ${{ secrets.TF_VAR_F5_PASSWORD}} 
           node_ip: ${{needs.terraform.outputs.node_ip}}
@@ -85,10 +91,11 @@ jobs:
         run: |
           node_ip=$(echo $node_ip | sed 's/"//g')
           big_ip=$(echo $big_ip | sed 's/"//g')
-          cd ansible
-          python update_vip_as3.py $big_ip $node_ip 30011
+          mv hosts bigip/securing-graphql-with-AWAF/ansible/inventory
+          cd bigip/securing-graphql-with-AWAF/ansible
+          python update_vip_as3.py $big_ip $node_ip 30011       
           ansible-playbook -i inventory/hosts playbook.yaml -e "withGraphqlPr=False introspection=False"  
-          mv ../terraform/applications/bigip_public_ip ./bigip_public_ip
+          mv ../../../bigip_public_ip ./bigip_public_ip
           export PYTHONPATH="$PYTHONPATH:${GITHUB_WORKSPACE}/bigip/securing-graphql-with-AWAF/lib"  
           pytest ../test_graphql.py --html=without_graphql_pr_report.html
           sleep 10
@@ -109,10 +116,10 @@ jobs:
         with:
          name: test_report
          path: | 
-          ./ansible/without_graphql_pr_report.html
-          ./ansible/graphql_pr_with_introspec_report.html
-          ./ansible/graphql_pr_without_introspec_report.html
-          ./ansible/max_str_depth.html
+          bigip/securing-graphql-with-AWAF/ansible/without_graphql_pr_report.html
+          bigip/securing-graphql-with-AWAF/ansible/graphql_pr_with_introspec_report.html
+          bigip/securing-graphql-with-AWAF/ansible/graphql_pr_without_introspec_report.html
+          bigip/securing-graphql-with-AWAF/ansible/max_str_depth.html
 
   destroy:
     if: ${{ always() }}
@@ -134,8 +141,9 @@ jobs:
           name: tfstate
       - name: Destroy infra
         run: |
-          mv terraform.tfstate terraform/
-          cp bigip/securing-graphql-with-AWAF/data/testbed-data.json terraform/terraform.tfvars.json
+          mv terraform.tfstate bigip/securing-graphql-with-AWAF/terraform/
+          cd bigip/securing-graphql-with-AWAF/
+          cp data/testbed-data.json terraform/terraform.tfvars.json
           cd terraform/
           terraform init
           terraform plan -destroy 

@@ -9,6 +9,7 @@ variable "main_vpc_cidr" {}
 variable "mgmt_subnet1" {}
 variable "public_subnet2" {}
 variable "private_subnet3" {}
+variable "region" {}
 
 variable f5_username {
   description = "The admin username of the F5 Bigip that will be deployed"
