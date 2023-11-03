@@ -66,4 +66,4 @@ Tools used - Terraform and Ansible
 
 **References:**
 https://devcentral.f5.com/s/articles/Protecting-an-API-with-BigIP-WAF
-https://gitswarm.f5net.com/api-security/apisecurity/-/tree/BIGIPSEC/tests/APISecBIGIP
+
