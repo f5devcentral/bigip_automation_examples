@@ -89,7 +89,7 @@ jobs:
           cp bigip_public_dns bigip/APISecBIGIP/
           cd bigip/APISecBIGIP
           cat bigip_public_dns
-          pytest test_bigip_with_nap.py --html=apisec_bigip_report.html
+          pytest test_apisec_with_bigip.py --html=apisec_bigip_report.html
 
       - name: Upload test report
         uses: actions/upload-artifact@v3
