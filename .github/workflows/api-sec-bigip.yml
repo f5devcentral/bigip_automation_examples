@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       msg: 
-        description: 'Deploying NAP though AWS'
-        default: 'Regression PI12'  
+        description: 'Test APISEC using BIGIP'
+        default: 'Regression'  
 jobs:
   Deploy:
     runs-on: self-hosted
