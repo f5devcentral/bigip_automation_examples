@@ -1,0 +1,2877 @@
+{
+	"info": {
+		"_postman_id": "ae1578e8-0ae1-4c7e-a965-45cdeed7d046",
+		"name": "BIG-IP Next Access - BIG-IP Next CM Demo - CM APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7051083",
+		"_collection_link": "https://universal-sunset-70927.postman.co/workspace/Next-Dev~c2317910-394f-482f-acb2-28e9e4a05db1/collection/7051083-ae1578e8-0ae1-4c7e-a965-45cdeed7d046?action=share&source=collection_link&creator=7051083"
+	},
+	"item": [
+		{
+			"name": "BIG-IP Next Workflows - with Central Manager",
+			"item": [
+				{
+					"name": "Allow Policy",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"var resp = pm.response.json();\r",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Allow Policy POST",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_policy_name\", \"access_allow_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{psp_policy_name}}\",\n    \"policy_type\": \"PerSession\",\n    \"properties\": [\n        {\n            \"configuration\": {\n                \"domainCookie\": \"\",\n                \"httpOnlyCookie\": false,\n                \"inactivityTimeout\": 900,\n                \"logoutUriInclude\": \"\",\n                \"logoutUriTimeout\": 5,\n                \"maxConcurrentSessions\": 0,\n                \"maxConcurrentUsers\": 0,\n                \"maxFailureDelay\": 5,\n                \"maxInProgressSessions\": 128,\n                \"maxSessionTimeout\": 604800,\n                \"minFailureDelay\": 2,\n                \"name\": \"{{psp_policy_name}}\",\n                \"persistentCookie\": false,\n                \"policy\": {\n                    \"objectContent\": {\n                        \"defaultLanguage\": \"en\",\n                        \"languages\": [\n                            \"en\"\n                        ],\n                        \"start\": {\n                            \"itemType\": \"allow\",\n                            \"name\": \"Allow\"\n                        }\n                    }\n                },\n                \"policyType\": \"PerSession\",\n                \"profileType\": \"all\",\n                \"restrictToSingleClientIP\": false,\n                \"samesiteCookie\": false,\n                \"samesiteCookieAttrValue\": \"strict\",\n                \"scope\": \"profile\",\n                \"secureCookie\": true,\n                \"timeout\": 300,\n                \"useHttp503OnError\": false\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Policies GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"mbiq_policy_id\", pm.response.json()._embedded.policies[0].id);\r",
+											"\r",
+											"var policy_name_1 = \"Allow-Demo\"\r",
+											"var resp = pm.response.json();\r",
+											"pm.collectionVariables.set(\"mbiq_policy_id\", resp[\"_embedded\"][\"policies\"][0][\"id\"])\r",
+											"pm.collectionVariables.set(\"mbiq_policy_name\", resp[\"_embedded\"][\"policies\"][0][\"name\"])\r",
+											"var resp_policy_name_1 = pm.collectionVariables.get(\"mbiq_policy_name\")\r",
+											"\r",
+											"if ( policy_name_1  === resp_policy_name_1 ) {\r",
+											"pm.test(\"Policy Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}else {\r",
+											"\r",
+											"pm.test(\"Policy Not Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.request.body);",
+											"console.log(pm.response.body);",
+											"",
+											"resp = pm.response.json();",
+											"id = resp.id;",
+											"pm.collectionVariables.set(\"fast_path\", resp.path);",
+											"pm.collectionVariables.set(\"appsvc-id\", id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"app_name\", \"Allow_All_App\");\r",
+											"pm.collectionVariables.set(\"psp_policy_name\", \"access_allow_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{app_name}}\",\n  \"set_name\": \"Examples\",\n  \"template_name\": \"http\",\n  \"parameters\": {\n    \"pools\": [\n      {\n        \"loadBalancingMode\": \"round-robin\",\n        \"loadBalancingRatio\": 10,\n        \"monitorType\": [\n          \"http\"\n        ],\n        \"servicePort\": {{example_web_port}},\n        \"application_name\": \"{{app_name}}\",\n        \"poolName\": \"pool_{{app_name}}\"\n      }\n    ],\n    \"virtuals\": [\n      {\n        \"FastL4_idleTimeout\": 600,\n        \"FastL4_looseClose\": true,\n        \"FastL4_looseInitialization\": true,\n        \"FastL4_resetOnTimeout\": true,\n        \"FastL4_tcpCloseTimeout\": 43200,\n        \"FastL4_tcpHandshakeTimeout\": 43200,\n        \"TCP_idle_timeout\": 60,\n        \"UDP_idle_timeout\": 60,\n        \"accessAdditionalConfigurations\": \" \",\n        \"enable_FastL4\": false,\n        \"enable_HTTP2_Profile\": true,\n        \"enable_TCP_Profile\": false,\n        \"enable_TLS_Client\": true,\n        \"enable_TLS_Server\": true,\n        \"enable_UDP_Profile\": false,\n        \"enable_snat\": true,\n        \"snat_addresses\": [],\n        \"snat_automap\": true,\n        \"enable_WAF\": false,\n        \"enable_Access\": true,\n        \"accessPolicyEnum\": \"{{psp_policy_name}}\",\n        \"enable_iRules\": false,\n        \"virtualPort\": {{vip_port2}},\n        \"pool\": \"pool_{{app_name}}\",\n        \"virtualName\": \"vs_{{app_name}}\",\n        \"certificatesEnum\": \"self_demo.f5.com\"\n      }\n    ],\n    \"application_name\": \"{{app_name}}\",\n    \"application_description\": \"{{app_name}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deploy Application to Instance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"deployments\": [\n    {\n      \"parameters\": {\n        \"pools\": [\n          {\n            \"poolName\": \"pool_{{app_name}}\",\n            \"poolMembers\": [\n              {\n                \"address\": \"{{example_web}}\",\n                \"name\": \"poolmember1\"\n              }\n            ]\n          }\n        ],\n        \"virtuals\": [\n          {\n            \"virtualAddress\": \"{{vip1}}\",\n            \"virtualName\": \"vs_{{app_name}}\"\n          }\n        ]\n      },\n      \"target\": {\n        \"address\": \"{{bigip_next_3_address}}\"\n      },\n      \"allow_overwrite\": true\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints/{{appsvc-id}}/deployments",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints",
+										"{{appsvc-id}}",
+										"deployments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login Allow Policy",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"var resp = pm.response.json();\r",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Allow Logins Policy POST",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_policy_name\", \"Allow-logins_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{psp_policy_name}}\",\n    \"policy_type\": \"PerSession\",\n    \"properties\": [\n        {\n            \"configuration\": {\n                \"domainCookie\": \"\",\n                \"httpOnlyCookie\": false,\n                \"inactivityTimeout\": 900,\n                \"logoutUriInclude\": \"\",\n                \"logoutUriTimeout\": 5,\n                \"maxConcurrentSessions\": 0,\n                \"maxConcurrentUsers\": 0,\n                \"maxFailureDelay\": 5,\n                \"maxInProgressSessions\": 128,\n                \"maxSessionTimeout\": 604800,\n                \"minFailureDelay\": 2,\n                \"name\": \"{{psp_policy_name}}\",\n                \"persistentCookie\": false,\n                \"policy\": {\n                    \"objectContent\": {\n                        \"defaultLanguage\": \"en\",\n                        \"languages\": [\n                            \"en\"\n                        ],\n                        \"start\": {\n                            \"itemType\": \"logon\",\n                                \"splitUserName\" : true,\n                                \"fields\": [\n                                    {\n                                        \"type\": \"text\",\n                                        \"postVarName\": \"username\",\n                                        \"sessVarName\": \"username\"\n\n                                    },\n                                    {\n                                        \"type\": \"password\",\n                                        \"postVarName\": \"password\",\n                                        \"sessVarName\": \"password\"\n                                    }\n                                ],\n                                \"customization\" : [\n                                    {\n                                        \"language\": \"en\",\n                                        \"strings\": {\n                                        \"formHeader\": \"Logon page for f5demo application\"\n                                    }\n                                }\n                                ],\n                                \"nextItems\" : [\n                                    { \"itemType\": \"allow\" }\n                        ]\n                        }\n                    }\n                },\n                \"policyType\": \"PerSession\",\n                \"profileType\": \"all\",\n                \"restrictToSingleClientIP\": false,\n                \"samesiteCookie\": false,\n                \"samesiteCookieAttrValue\": \"strict\",\n                \"scope\": \"profile\",\n                \"secureCookie\": true,\n                \"timeout\": 300,\n                \"useHttp503OnError\": false\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Policies GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"mbiq_policy_id\", pm.response.json()._embedded.policies[0].id);\r",
+											"\r",
+											"var policy_name_1 = \"Allow-Demo\"\r",
+											"var resp = pm.response.json();\r",
+											"pm.collectionVariables.set(\"mbiq_policy_id\", resp[\"_embedded\"][\"policies\"][0][\"id\"])\r",
+											"pm.collectionVariables.set(\"mbiq_policy_name\", resp[\"_embedded\"][\"policies\"][0][\"name\"])\r",
+											"var resp_policy_name_1 = pm.collectionVariables.get(\"mbiq_policy_name\")\r",
+											"\r",
+											"if ( policy_name_1  === resp_policy_name_1 ) {\r",
+											"pm.test(\"Policy Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}else {\r",
+											"\r",
+											"pm.test(\"Policy Not Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.request.body);",
+											"console.log(pm.response.body);",
+											"",
+											"resp = pm.response.json();",
+											"id = resp.id;",
+											"pm.collectionVariables.set(\"fast_path\", resp.path);",
+											"pm.collectionVariables.set(\"appsvc-id\", id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"app_name\", \"Allow-logins-Demo\");\r",
+											"pm.collectionVariables.set(\"psp_policy_name\", \"Allow-logins_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{app_name}}\",\n  \"set_name\": \"Examples\",\n  \"template_name\": \"http\",\n  \"parameters\": {\n    \"pools\": [\n      {\n        \"loadBalancingMode\": \"round-robin\",\n        \"loadBalancingRatio\": 10,\n        \"monitorType\": [\n          \"http\"\n        ],\n        \"servicePort\": {{example_web_port}},\n        \"application_name\": \"{{app_name}}\",\n        \"poolName\": \"pool_{{app_name}}\"\n      }\n    ],\n    \"virtuals\": [\n      {\n        \"FastL4_idleTimeout\": 600,\n        \"FastL4_looseClose\": true,\n        \"FastL4_looseInitialization\": true,\n        \"FastL4_resetOnTimeout\": true,\n        \"FastL4_tcpCloseTimeout\": 43200,\n        \"FastL4_tcpHandshakeTimeout\": 43200,\n        \"TCP_idle_timeout\": 60,\n        \"UDP_idle_timeout\": 60,\n        \"accessAdditionalConfigurations\": \" \",\n        \"enable_FastL4\": false,\n        \"enable_HTTP2_Profile\": true,\n        \"enable_TCP_Profile\": false,\n        \"enable_TLS_Client\": true,\n        \"enable_TLS_Server\": true,\n        \"enable_UDP_Profile\": false,\n        \"enable_snat\": true,\n        \"snat_addresses\": [],\n        \"snat_automap\": true,\n        \"enable_WAF\": false,\n        \"enable_Access\": true,\n        \"accessPolicyEnum\": \"{{psp_policy_name}}\",\n        \"enable_iRules\": false,\n        \"virtualPort\": {{vip_port2}},\n        \"pool\": \"pool_{{app_name}}\",\n        \"virtualName\": \"vs_{{app_name}}\",\n        \"certificatesEnum\": \"self_demo.f5.com\"\n      }\n    ],\n    \"application_name\": \"{{app_name}}\",\n    \"application_description\": \"{{app_name}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deploy Application to Instance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"deployments\": [\n    {\n      \"parameters\": {\n        \"pools\": [\n          {\n            \"poolName\": \"pool_{{app_name}}\",\n            \"poolMembers\": [\n              {\n                \"address\": \"{{example_web}}\",\n                \"name\": \"poolmember1\"\n              }\n            ]\n          }\n        ],\n        \"virtuals\": [\n          {\n            \"virtualAddress\": \"{{vip2}}\",\n            \"virtualName\": \"vs_{{app_name}}\"\n          }\n        ]\n      },\n      \"target\": {\n        \"address\": \"{{bigip_next_3_address}}\"\n      },\n      \"allow_overwrite\": true\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints/{{appsvc-id}}/deployments",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints",
+										"{{appsvc-id}}",
+										"deployments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deny Policy",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"var resp = pm.response.json();\r",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Deny Policy POST",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_policy_name\", \"Deny_Policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{psp_policy_name}}\",\n    \"policy_type\": \"PerSession\",\n    \"properties\": [\n        {\n            \"configuration\": {\n                \"domainCookie\": \"\",\n                \"httpOnlyCookie\": false,\n                \"inactivityTimeout\": 900,\n                \"logoutUriInclude\": \"\",\n                \"logoutUriTimeout\": 5,\n                \"maxConcurrentSessions\": 0,\n                \"maxConcurrentUsers\": 0,\n                \"maxFailureDelay\": 5,\n                \"maxInProgressSessions\": 128,\n                \"maxSessionTimeout\": 604800,\n                \"minFailureDelay\": 2,\n                \"name\": \"{{psp_policy_name}}\",\n                \"persistentCookie\": false,\n                \"policy\": {\n                    \"objectContent\": {\n                        \"defaultLanguage\": \"en\",\n                        \"languages\": [\n                            \"en\"\n                        ],\n                        \"start\": {\n                            \"itemType\": \"deny\",\n                            \"name\": \"Deny\"\n                        }\n                    }\n                },\n                \"policyType\": \"PerSession\",\n                \"profileType\": \"all\",\n                \"restrictToSingleClientIP\": false,\n                \"samesiteCookie\": false,\n                \"samesiteCookieAttrValue\": \"strict\",\n                \"scope\": \"profile\",\n                \"secureCookie\": true,\n                \"timeout\": 300,\n                \"useHttp503OnError\": false\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Policies GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"mbiq_policy_id\", pm.response.json()._embedded.policies[0].id);\r",
+											"\r",
+											"var policy_name_1 = \"Allow-Demo\"\r",
+											"var resp = pm.response.json();\r",
+											"pm.collectionVariables.set(\"mbiq_policy_id\", resp[\"_embedded\"][\"policies\"][0][\"id\"])\r",
+											"pm.collectionVariables.set(\"mbiq_policy_name\", resp[\"_embedded\"][\"policies\"][0][\"name\"])\r",
+											"var resp_policy_name_1 = pm.collectionVariables.get(\"mbiq_policy_name\")\r",
+											"\r",
+											"if ( policy_name_1  === resp_policy_name_1 ) {\r",
+											"pm.test(\"Policy Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}else {\r",
+											"\r",
+											"pm.test(\"Policy Not Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.request.body);",
+											"console.log(pm.response.body);",
+											"",
+											"resp = pm.response.json();",
+											"id = resp.id;",
+											"pm.collectionVariables.set(\"fast_path\", resp.path);",
+											"pm.collectionVariables.set(\"appsvc-id\", id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"app_name\", \"Deny-Demo\");\r",
+											"pm.collectionVariables.set(\"psp_policy_name\", \"Deny_Policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{app_name}}\",\n  \"set_name\": \"Examples\",\n  \"template_name\": \"http\",\n  \"parameters\": {\n    \"pools\": [\n      {\n        \"loadBalancingMode\": \"round-robin\",\n        \"loadBalancingRatio\": 10,\n        \"monitorType\": [\n          \"http\"\n        ],\n        \"servicePort\": {{example_web_port}},\n        \"application_name\": \"{{app_name}}\",\n        \"poolName\": \"pool_{{app_name}}\"\n      }\n    ],\n    \"virtuals\": [\n      {\n        \"FastL4_idleTimeout\": 600,\n        \"FastL4_looseClose\": true,\n        \"FastL4_looseInitialization\": true,\n        \"FastL4_resetOnTimeout\": true,\n        \"FastL4_tcpCloseTimeout\": 43200,\n        \"FastL4_tcpHandshakeTimeout\": 43200,\n        \"TCP_idle_timeout\": 60,\n        \"UDP_idle_timeout\": 60,\n        \"accessAdditionalConfigurations\": \" \",\n        \"enable_FastL4\": false,\n        \"enable_HTTP2_Profile\": true,\n        \"enable_TCP_Profile\": false,\n        \"enable_TLS_Client\": true,\n        \"enable_TLS_Server\": true,\n        \"enable_UDP_Profile\": false,\n        \"enable_snat\": true,\n        \"snat_addresses\": [],\n        \"snat_automap\": true,\n        \"enable_WAF\": false,\n        \"enable_Access\": true,\n        \"accessPolicyEnum\": \"{{psp_policy_name}}\",\n        \"enable_iRules\": false,\n        \"virtualPort\": {{vip_port2}},\n        \"pool\": \"pool_{{app_name}}\",\n        \"virtualName\": \"vs_{{app_name}}\",\n        \"certificatesEnum\": \"self_demo.f5.com\"\n      }\n    ],\n    \"application_name\": \"{{app_name}}\",\n    \"application_description\": \"{{app_name}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deploy Application to Instance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"deployments\": [\n    {\n      \"parameters\": {\n        \"pools\": [\n          {\n            \"poolName\": \"pool_{{app_name}}\",\n            \"poolMembers\": [\n              {\n                \"address\": \"{{example_web}}\",\n                \"name\": \"poolmember1\"\n              }\n            ]\n          }\n        ],\n        \"virtuals\": [\n          {\n            \"virtualAddress\": \"{{vip3}}\",\n            \"virtualName\": \"vs_{{app_name}}\"\n          }\n        ]\n      },\n      \"target\": {\n        \"address\": \"{{bigip_next_3_address}}\"\n      },\n      \"allow_overwrite\": true\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints/{{appsvc-id}}/deployments",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints",
+										"{{appsvc-id}}",
+										"deployments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SAML-Okta-Signed Policy",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"var resp = pm.response.json();\r",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Certificate",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "filename",
+											"value": "cert_okta_idp",
+											"type": "default"
+										},
+										{
+											"key": "file",
+											"value": "",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/certificate/v1/certificates",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"v1",
+										"certificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Certificate to CM",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"okta_signed_cert\",\r\n    \"cert_text\": \"-----BEGIN CERTIFICATE-----\\nMIIDpDCCAoygAwIBAgIGAYMipe6XMA0GCSqGSIb3DQEBCwUAMIGSMQswCQYDVQQGEwJVUzETMBEG\\nA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\\nMBIGA1UECwwLU1NPUHJvdmlkZXIxEzARBgNVBAMMCmRldi04MTg4OTkxHDAaBgkqhkiG9w0BCQEW\\nDWluZm9Ab2t0YS5jb20wHhcNMjIwOTA5MTQyNjIzWhcNMzIwOTA5MTQyNzIzWjCBkjELMAkGA1UE\\nBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNV\\nBAoMBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRMwEQYDVQQDDApkZXYtODE4ODk5MRwwGgYJ\\nKoZIhvcNAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA\\nmFlmAz5VmSklL6Z7EKriaV79Ff5xyFMDiAdZOFfX5/I65FV9aJaU9jqKLS+gfiAJjhbkdCxtEXW1\\nQKkDLV6LqXmlWJxhts/j6JhUjd9diUI6cGpyoZ0uDKs0MUxGB3KK/movVQ63bXZqLTtdCPKb9ew1\\nYQYMCn3B7b/Y7XLGQm+dOhjPst6RIrxGzcaIzFasU93O0ksJmRk3f76jn5KTp+VPPo6q7FcI+WB0\\nZze8jaO8hKAG3BwkHQiM1L8KirXXQwfUIsGmyZEEVouCvqa6pOB5wxp4oI4RlcqepzNq7UOWHdpd\\n4qvP9VEi8Oy1agMf28eIfth4/rs0PYiJif8BXQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQCOuwwa\\nNHDsQHGvdVTtxJUHQWtLDftp1v7WCLRIeKDy53Jr5wNVhVKYPk2lHlK1W8VBatNwfIwksF/0IloU\\nSLtHFbIkgUrLwBtLXG8zPHo8cAcYWgT3WK8UOli568D0p179OeosPJ24V5LRVulKIBzAvuYXt2u1\\nhTqr+s8EyVWB1jX/tJTHf+mJsxq8VsvfOoe2ddbncwkMTgI2RwkZA6nqyq3fpFAD3BWMJnbV8onW\\nKaNu1L01GGpC55CXckdp1uKtePZ6Gdcl0EnWJzkJ/cgm2NlCkageo9VxAxO4YuC7Iko7w28PfWY9\\nW5QddRVQVsBqBt2wOBmUPElhUUBHCZsE\\n-----END CERTIFICATE-----\",\r\n    \"item_type\": \"PEM\"\r\n\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/certificate/v1/certificates/import",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"v1",
+										"certificates",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Signed Okta Policy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_policy_name\", \"signed_okta_pol\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"name\": \"{{psp_policy_name}}\",\n \"policy_type\": \"PerSession\",\n \"properties\": [\n  {\n   \"configuration\": {\n    \"policyType\": \"PerSession\",\n    \"name\": \"{{psp_policy_name}}\",\n    \"profileType\": \"all\",\n    \"scope\": \"profile\",\n    \"timeout\": 300,\n    \"inactivityTimeout\": 900,\n    \"maxSessionTimeout\": 604800,\n    \"maxConcurrentUsers\": 0,\n    \"maxConcurrentSessions\": 0,\n    \"maxInProgressSessions\": 128,\n    \"minFailureDelay\": 2,\n    \"maxFailureDelay\": 5,\n    \"domainCookie\": \"\",\n    \"secureCookie\": true,\n    \"persistentCookie\": false,\n    \"httpOnlyCookie\": false,\n    \"samesiteCookie\": false,\n    \"samesiteCookieAttrValue\": \"strict\",\n    \"restrictToSingleClientIP\": false,\n    \"useHttp503OnError\": false,\n    \"logoutUriInclude\": \"\",\n    \"logoutUriTimeout\": 5,\n    \"externalServers\": [\n     {\n      \"entityId\": \"{{access_okta_signed_EntityID}}\",\n      \"name\": \"signed_connector_2_okta\",\n      \"serverType\": \"SamlIdPConnector\",\n      \"ssoUri\": \"{{access_okta_signed_SSOURI}}\",\n      \"certificate\": \"okta_signed_cert.crt\"\n     }\n    ],\n    \"policy\": {\n     \"objectContent\": {\n      \"type\": \"PerSession\",\n      \"name\": \"signed_okta_pol_2\",\n      \"defaultLanguage\": \"en\",\n      \"languages\": [\n       \"en\"\n      ],\n      \"start\": {\n       \"itemType\": \"saml\",\n       \"name\": \"signed_okta_pol_2_item\",\n       \"service\": {\n            \"name\": \"signed_okta_sp\",\n            \"entityId\": \"{{access_okta_signed_SPEntityID}}\",\n            \"wantAssertionSigned\": true,\n            \"spURI\": \"{{access_okta_signed_SPURI}}\",\n            \"idpConnectors\": [\n            {\n            \"name\": \"signed_connector_2_okta\"\n             }\n        ]\n       },\n       \"nextItems\": [\n        {\n         \"name\": \"Allow\",\n         \"expression\": \"expr {[mcget {session.saml.last.result}] == 1}\",\n         \"itemType\": \"allow\"\n        },\n        {\n         \"name\": \"Deny\",\n         \"itemType\": \"deny\"\n        }\n       ]\n      }\n     }\n    }\n   }\n  }\n ],\n \"use_case\": \"SAML-SP\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.request.body);",
+											"console.log(pm.response.body);",
+											"",
+											"resp = pm.response.json();",
+											"id = resp.id;",
+											"pm.collectionVariables.set(\"fast_path\", resp.path);",
+											"pm.collectionVariables.set(\"appsvc-id\", id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"app_name\", \"access_okta_app\");\r",
+											"pm.collectionVariables.set(\"psp_policy_name\", \"access_okta_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{app_name}}\",\n  \"set_name\": \"Examples\",\n  \"template_name\": \"http\",\n  \"parameters\": {\n    \"pools\": [\n      {\n        \"loadBalancingMode\": \"round-robin\",\n        \"loadBalancingRatio\": 10,\n        \"monitorType\": [\n          \"http\"\n        ],\n        \"servicePort\": {{example_web_port}},\n        \"application_name\": \"{{app_name}}\",\n        \"poolName\": \"pool_{{app_name}}\"\n      }\n    ],\n    \"virtuals\": [\n      {\n        \"FastL4_idleTimeout\": 600,\n        \"FastL4_looseClose\": true,\n        \"FastL4_looseInitialization\": true,\n        \"FastL4_resetOnTimeout\": true,\n        \"FastL4_tcpCloseTimeout\": 43200,\n        \"FastL4_tcpHandshakeTimeout\": 43200,\n        \"TCP_idle_timeout\": 60,\n        \"UDP_idle_timeout\": 60,\n        \"accessAdditionalConfigurations\": \" \",\n        \"enable_FastL4\": false,\n        \"enable_HTTP2_Profile\": true,\n        \"enable_TCP_Profile\": false,\n        \"enable_TLS_Client\": true,\n        \"enable_TLS_Server\": true,\n        \"enable_UDP_Profile\": false,\n        \"enable_snat\": true,\n        \"snat_addresses\": [],\n        \"snat_automap\": true,\n        \"enable_WAF\": false,\n        \"enable_Access\": true,\n        \"accessPolicyEnum\": \"{{psp_policy_name}}\",\n        \"enable_iRules\": false,\n        \"virtualPort\": {{vip_port2}},\n        \"pool\": \"pool_{{app_name}}\",\n        \"virtualName\": \"vs_{{app_name}}\",\n        \"certificatesEnum\": \"self_demo.f5.com\"\n      }\n    ],\n    \"application_name\": \"{{app_name}}\",\n    \"application_description\": \"{{app_name}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deploy Application to Instance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"deployments\": [\n    {\n      \"parameters\": {\n        \"pools\": [\n          {\n            \"poolName\": \"pool_{{app_name}}\",\n            \"poolMembers\": [\n              {\n                \"address\": \"{{example_web}}\",\n                \"name\": \"poolmember1\"\n              }\n            ]\n          }\n        ],\n        \"virtuals\": [\n          {\n            \"virtualAddress\": \"{{access_okta_signed_vip}}\",\n            \"virtualName\": \"vs_{{app_name}}\"\n          }\n        ]\n      },\n      \"target\": {\n        \"address\": \"{{bigip_next_3_address}}\"\n      },\n      \"allow_overwrite\": true\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints/{{appsvc-id}}/deployments",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints",
+										"{{appsvc-id}}",
+										"deployments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Policies GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"mbiq_policy_id\", pm.response.json()._embedded.policies[0].id);\r",
+											"\r",
+											"var policy_name_1 = \"Allow-Demo\"\r",
+											"var resp = pm.response.json();\r",
+											"pm.collectionVariables.set(\"mbiq_policy_id\", resp[\"_embedded\"][\"policies\"][0][\"id\"])\r",
+											"pm.collectionVariables.set(\"mbiq_policy_name\", resp[\"_embedded\"][\"policies\"][0][\"name\"])\r",
+											"var resp_policy_name_1 = pm.collectionVariables.get(\"mbiq_policy_name\")\r",
+											"\r",
+											"if ( policy_name_1  === resp_policy_name_1 ) {\r",
+											"pm.test(\"Policy Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}else {\r",
+											"\r",
+											"pm.test(\"Policy Not Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SAML-Okta-Unsigned Policy",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"var resp = pm.response.json();\r",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Unsigned Okta Policy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_policy_name\", \"access_okta_unsigned_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{psp_policy_name}}\",\n    \"policy_type\": \"PerSession\",\n    \"properties\": [\n        {\n            \"configuration\": {\n                \"domainCookie\": \"\",\n                \"httpOnlyCookie\": false,\n                \"inactivityTimeout\": 900,\n                \"logoutUriInclude\": \"\",\n                \"logoutUriTimeout\": 5,\n                \"maxConcurrentSessions\": 0,\n                \"maxConcurrentUsers\": 0,\n                \"maxFailureDelay\": 5,\n                \"maxInProgressSessions\": 128,\n                \"maxSessionTimeout\": 604800,\n                \"minFailureDelay\": 2,\n                \"name\": \"{{psp_policy_name}}\",\n                \"persistentCookie\": false,\n\t\t\t\t\"externalServers\": [\n\t\t\t\t{\n\t\t\t\t\"entityId\": \"{{access_okta_unsigned_entityID}}\",\n\t\t\t\t\"name\": \"connector_2_okta\",\n\t\t\t\t\"serverType\": \"SamlIdPConnector\",\n\t\t\t\t\"ssoUri\": \"{{access_okta_unsigned_SSOURI}}\",\n\t\t\t\t\"wantAuthnRequestSigned\": false,\n\t\t\t\t\"wantDetachedSignature\": false,\n\t\t\t\t\"identityLocation\": \"subject\",\n\t\t\t\t\"signatureType\": \"sha256\",\n\t\t\t\t\"singleLogoutBinding\": \"http-post\",\n\t\t\t\t\"ssoBinding\": \"http-post\"\n\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"policy\": {\n\t\t\t\t\"objectContent\": {\n\t\t\t\t\"type\": \"PerSession\",\n\t\t\t\t\"name\": \"okta_pol_2\",\n\t\t\t\t\"defaultLanguage\": \"en\",\n\t\t\t\t\"languages\": [\n\t\t\t\t\"en\"\n\t\t\t\t],\n\t\t\t\t\"start\": {\n\t\t\t\t\"itemType\": \"saml\",\n\t\t\t\t\"name\": \"okta_pol_2_item\",\n\t\t\t\t\"service\": {\n\t\t\t\t\t\"name\": \"signed_okta\",\n\t\t\t\t\t\"entityId\": \"{{access_okta_unsigned_Service_EntityID}}\",\n\t\t\t\t\t\"acsBinding\": \"http-post\",\n\t\t\t\t\t\"isAuthnRequestSigned\": false,\n\t\t\t\t\t\"wantAssertionEncrypted\": false,\n\t\t\t\t\t\"wantAssertionSigned\": false,\n\t\t\t\t\t\"authCtxComparisonType\": \"exact\",\n\t\t\t\t\t\"forceAuthn\": false,\n\t\t\t\t\t\"allowNameIdentifierCreation\": true,\n\t\t\t\t\t\"nameIdFormat\": \"unspecified\",\n\t\t\t\t\t\"relayState\": \"\",\n\t\t\t\t\t\"nameIdSpNameQualifier\": \"\",\n\t\t\t\t\t\"providerName\": \"\",\n\t\t\t\t\t\"spURI\": \"{{access_okta_unsigned_Service_URI}}\",\n\t\t\t\t\t\"idpConnectors\": [\n\t\t\t\t\t{\n\t\t\t\t\t\"name\": \"connector_2_okta\"\n\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t\"nextItems\": [\n\t\t\t\t\t{\n\t\t\t\t\t\"name\": \"Allow\",\n\t\t\t\t\t\"expression\": \"expr {[mcget {session.saml.last.result}] == 1}\",\n\t\t\t\t\t\"itemType\": \"allow\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\"name\": \"Deny\",\n\t\t\t\t\t\"itemType\": \"deny\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t},\n                \"policyType\": \"PerSession\",\n                \"profileType\": \"all\",\n                \"restrictToSingleClientIP\": false,\n                \"samesiteCookie\": false,\n                \"samesiteCookieAttrValue\": \"strict\",\n                \"scope\": \"profile\",\n                \"secureCookie\": true,\n                \"timeout\": 300,\n                \"useHttp503OnError\": false\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.request.body);",
+											"console.log(pm.response.body);",
+											"",
+											"resp = pm.response.json();",
+											"id = resp.id;",
+											"pm.collectionVariables.set(\"fast_path\", resp.path);",
+											"pm.collectionVariables.set(\"appsvc-id\", id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"app_name\", \"access_okta_unsigned_app\");\r",
+											"pm.collectionVariables.set(\"psp_policy_name\", \"access_okta_unsigned_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{app_name}}\",\n  \"set_name\": \"Examples\",\n  \"template_name\": \"http\",\n  \"parameters\": {\n    \"pools\": [\n      {\n        \"loadBalancingMode\": \"round-robin\",\n        \"loadBalancingRatio\": 10,\n        \"monitorType\": [\n          \"http\"\n        ],\n        \"servicePort\": {{example_web_port}},\n        \"application_name\": \"{{app_name}}\",\n        \"poolName\": \"pool_{{app_name}}\"\n      }\n    ],\n    \"virtuals\": [\n      {\n        \"FastL4_idleTimeout\": 600,\n        \"FastL4_looseClose\": true,\n        \"FastL4_looseInitialization\": true,\n        \"FastL4_resetOnTimeout\": true,\n        \"FastL4_tcpCloseTimeout\": 43200,\n        \"FastL4_tcpHandshakeTimeout\": 43200,\n        \"TCP_idle_timeout\": 60,\n        \"UDP_idle_timeout\": 60,\n        \"accessAdditionalConfigurations\": \" \",\n        \"enable_FastL4\": false,\n        \"enable_HTTP2_Profile\": true,\n        \"enable_TCP_Profile\": false,\n        \"enable_TLS_Client\": true,\n        \"enable_TLS_Server\": true,\n        \"enable_UDP_Profile\": false,\n        \"enable_snat\": true,\n        \"snat_addresses\": [],\n        \"snat_automap\": true,\n        \"enable_WAF\": false,\n        \"enable_Access\": true,\n        \"accessPolicyEnum\": \"{{psp_policy_name}}\",\n        \"enable_iRules\": false,\n        \"virtualPort\": {{vip_port2}},\n        \"pool\": \"pool_{{app_name}}\",\n        \"virtualName\": \"vs_{{app_name}}\",\n        \"certificatesEnum\": \"self_demo.f5.com\"\n      }\n    ],\n    \"application_name\": \"{{app_name}}\",\n    \"application_description\": \"{{app_name}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deploy Application to Instance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{mbiq_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"deployments\": [\n    {\n      \"parameters\": {\n        \"pools\": [\n          {\n            \"poolName\": \"pool_{{app_name}}\",\n            \"poolMembers\": [\n              {\n                \"address\": \"{{example_web}}\",\n                \"name\": \"poolmember1\"\n              }\n            ]\n          }\n        ],\n        \"virtuals\": [\n          {\n            \"virtualAddress\": \"{{access_okta_unsigned_vip}}\",\n            \"virtualName\": \"vs_{{app_name}}\"\n          }\n        ]\n      },\n      \"target\": {\n        \"address\": \"{{bigip_next_3_address}}\"\n      },\n      \"allow_overwrite\": true\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/v1/spaces/default/appsvcs/blueprints/{{appsvc-id}}/deployments",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaces",
+										"default",
+										"appsvcs",
+										"blueprints",
+										"{{appsvc-id}}",
+										"deployments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Policies GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"mbiq_policy_id\", pm.response.json()._embedded.policies[0].id);\r",
+											"\r",
+											"var policy_name_1 = \"Allow-Demo\"\r",
+											"var resp = pm.response.json();\r",
+											"pm.collectionVariables.set(\"mbiq_policy_id\", resp[\"_embedded\"][\"policies\"][0][\"id\"])\r",
+											"pm.collectionVariables.set(\"mbiq_policy_name\", resp[\"_embedded\"][\"policies\"][0][\"name\"])\r",
+											"var resp_policy_name_1 = pm.collectionVariables.get(\"mbiq_policy_name\")\r",
+											"\r",
+											"if ( policy_name_1  === resp_policy_name_1 ) {\r",
+											"pm.test(\"Policy Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}else {\r",
+											"\r",
+											"pm.test(\"Policy Not Found\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Start -> SAML SP(Azure) -> Allow Policy",
+					"item": [
+						{
+							"name": "Login-CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"var resp = pm.response.json();",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Certificate",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"azure_signed_cert\",\r\n    \"cert_text\": \"-----BEGIN CERTIFICATE-----\\nMIIC8DCCAdigAwIBAgIQH1/+DEGWlahFP3UgVPfwHzANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQD\\nEylNaWNyb3NvZnQgQXp1cmUgRmVkZXJhdGVkIFNTTyBDZXJ0aWZpY2F0ZTAeFw0yMTA5MjMwOTUy\\nNTZaFw0yNDA5MjMwOTUyNTVaMDQxMjAwBgNVBAMTKU1pY3Jvc29mdCBBenVyZSBGZWRlcmF0ZWQg\\nU1NPIENlcnRpZmljYXRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyUoVByQJPICH\\nLp/koHHSR1JxfTdqJ3/Q3lEkI/0YkxwkuR0JpyruF5h7Iu6u5ZOEm2rn4+suKgc/sbjAExnmuBtt\\nMC2bfIKNKccZn39wOFv/j/EwqkMsEKIajKRths2MjQjhm4vZdz0kF9jqExzRLfbtyrxa/js+LFrf\\nSUY2RuPTEWiCrsa82tl4e+d6VbKBnu+25PG4sECZZtcRFkKkEddLzmqAQ4WQ/VhJLRL29guanbgA\\nlEdLA9fX6GS0hlRyCarC6ibGDdzfy2OC/nNBqsV79y6B5F1YTJO7RVNigow4JhyfeAXycmXytV41\\n+1Xqb5PWnwpFZdZsatL51KaCHQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQAWtlOLbldbemGndllR\\nn7on00W7a5zCbodV3AI6Tvh07CCdIgj8tZcz+KjcTNdtQ0abLuiBf0Wo9gJyq1rlg41jBK2Sg1o2\\n/PaYTCCPVvWu8KXjcZyj5/bAh5ZKU+yFsQgbfnZOgN99XzldTyTmZbOp+K+bKRxLZle1uxU4es8b\\nD6N2nMdHgepWaEj/dENmUu0i+ZMZziv4if3fHDnVA9oqkX9L5JB+HHQBI+H+qvKS/4FVCR3s8jtI\\nfXJAxnwNZqqtC1u64XPtALoLZpKLlVS9lx3soOpeAOB5MR6K3V2hwrdxHIIq+OwqhrZdmjDwGWDD\\n0FIqpD0YeGq82NnvqdGY\\n-----END CERTIFICATE-----\",\r\n    \"item_type\": \"PEM\"\r\n\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/certificate/v1/certificates/import",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"v1",
+										"certificates",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Certs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/certificate/v1/certificates",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"v1",
+										"certificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Next",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"var resp = pm.response.json();",
+											"pm.environment.set(\"bigip_next_1_token\", resp.token);",
+											"pm.collectionVariables.set(\"bigip_next_1_token\", resp.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{bigip_next_admin_user_cm}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{bigip_next_admin_password}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{bigip_next_mgmt_target_ip}}:{{bigip_next_mgmt_port}}/api/v1/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_mgmt_target_ip}}"
+									],
+									"port": "{{bigip_next_mgmt_port}}",
+									"path": [
+										"api",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a DNS Resolver",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_1_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"global_f5_internal_net_resolver\",\n    \"l3Network\": \"Default L3-Network\",\n    \"config\": {\n        \"name\": \"global_f5_internal_net_resolver\",\n        \"l3ForwardType\": \"netResolver\",\n        \"forwardZones\": [\n            {\n                \"forwardZone\": \".\",\n                \"nameserver\": \"{{name_server}}\"\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_mgmt_target_ip}}:{{bigip_next_mgmt_port}}/api/v1/L3-forwards",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_mgmt_target_ip}}"
+									],
+									"port": "{{bigip_next_mgmt_port}}",
+									"path": [
+										"api",
+										"v1",
+										"L3-forwards"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a DNS Resolver",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var resp = pm.response.json();\r",
+											"pm.collectionVariables.set(\"dns_resolver_id\", resp._embedded.L3Forwards[0].id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_1_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_mgmt_target_ip}}:{{bigip_next_mgmt_port}}/api/v1/L3-forwards",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_mgmt_target_ip}}"
+									],
+									"port": "{{bigip_next_mgmt_port}}",
+									"path": [
+										"api",
+										"v1",
+										"L3-forwards"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a DNS Resolver",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_name_1\", \"access-policy-12\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_1_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_mgmt_target_ip}}:{{bigip_next_mgmt_port}}/api/v1/L3-forwards/{{dns_resolver_id}}",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_mgmt_target_ip}}"
+									],
+									"port": "{{bigip_next_mgmt_port}}",
+									"path": [
+										"api",
+										"v1",
+										"L3-forwards",
+										"{{dns_resolver_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a basic SAML SP Policy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"psp_policy_name\", \"signed_azure_policy\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"name\": \"{{psp_policy_name}}\",\n \"policy_type\": \"PerSession\",\n \"properties\": [\n  {\n   \"configuration\": {\n    \"policyType\": \"PerSession\",\n    \"name\": \"{{psp_policy_name}}\",\n    \"profileType\": \"all\",\n    \"scope\": \"profile\",\n    \"timeout\": 300,\n    \"inactivityTimeout\": 900,\n    \"maxSessionTimeout\": 604800,\n    \"maxConcurrentUsers\": 0,\n    \"maxConcurrentSessions\": 0,\n    \"maxInProgressSessions\": 128,\n    \"minFailureDelay\": 2,\n    \"maxFailureDelay\": 5,\n    \"domainCookie\": \"\",\n    \"secureCookie\": true,\n    \"persistentCookie\": false,\n    \"httpOnlyCookie\": false,\n    \"samesiteCookie\": false,\n    \"samesiteCookieAttrValue\": \"strict\",\n    \"restrictToSingleClientIP\": false,\n    \"useHttp503OnError\": false,\n    \"logoutUriInclude\": \"\",\n    \"logoutUriTimeout\": 5,\n    \"ssos\": [\n        {\n            \"ssoType\": \"Kerberos\",\n            \"name\": \"azure_kerberos\",\n            \"usernameSource\": \"session.saml.last.identity\",\n            \"realm\": \"{{access_kdc_realm}}\",\n            \"kdc\": \"10.1.20.6\",\n            \"upn\": true,\n            \"ticketLifetime\": 600,\n            \"sendAuthorization\": \"always\",\n            \"accountName\": \"{{access_delegation_account_name}}\",\n            \"accountPassword\": \"{{access_delegation_account_pwd}}\",\n            \"spnPattern\": \"{{access_SPN_Pattern}}\",\n            \"domainSource\": \"session.logon.last.domain\"\n     }\n    ],\n\t\"externalServers\":[\n\t\t{\n\t\t\t\"entityId\":\"{{access_azure_signed_EntityID}}\",\n\t\t\t\"name\":\"Azure_IdP_Connector\",\n\t\t\t\"serverType\":\"SamlIdPConnector\",\n\t\t\t\"ssoUri\":\"{{access_azure_signed_SSOURI}}\",\n            \"certificate\": \"azure_signed_cert.crt\"\n\t\t}\n\t],\n\t\"ssoReference\": \"azure_kerberos\",\n    \"policy\": {\n     \"objectContent\": {\n      \"type\": \"PerSession\",\n      \"name\": \"{{psp_policy_name}}\",\n      \"defaultLanguage\": \"en\",\n      \"languages\": [\n       \"en\"\n      ],\n      \"start\": {\n       \"itemType\": \"saml\",\n       \"name\": \"signed_azure_item\",\n\t\t\"service\": {\n\t\t\t\"name\":\"Sample_SAML_SP_Service_Azure\",\n\t\t\t\"spURI\":\"{{access_azure_Service_URI}}\",\n\t\t\t\"entityId\":\"{{access_azure_Service_EntityID}}\",\n\t\t\t\"wantAssertionSigned\": true,\n\t\t\t\"idpConnectors\": [\n\t\t\t\t{\n\t\t\t\t\t\"name\":\"Azure_IdP_Connector\"\n\t\t\t\t}\n\t\t\t]\n\t\t\t},\n       \"nextItems\": [\n        {\n         \"name\": \"Allow\",\n         \"expression\": \"expr {[mcget {session.saml.last.result}] == 1}\",\n         \"itemType\": \"allow\"\n        },\n        {\n         \"name\": \"Deny\",\n         \"itemType\": \"deny\"\n        }\n       ]\n      }\n     }\n    }\n   }\n  }\n ],\n \"use_case\": \"SAML-SP\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/apm/v1/policies",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"apm",
+										"v1",
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Application through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "          {\n            \"name\": \"lab/http\",\n            \"target\": {\n              \"address\": \"{{bigip_next_3_address}}\",\n              \"host\": \"{{bigip_next_3_hostname}}\"\n              },\n            \"parameters\": {\n              \"tenant_name\": \"Access\",\n              \"certificatesEnum\" : \"self_demo.f5.com\",\n              \"accessPolicyEnum\" : \"{{psp_policy_name}}\",\n              \"application_name\": \"azure_app_sso\",\n              \"serverAddresses\": [\n                \"{{example_web}}\"\n              ],\n              \"servicePort\": {{example_web_port}},\n              \"virtualAddresses\": \"{{access_azure_signed_vip}}\",\n              \"virtualPort\": {{vip_port2}}\n            }\n          }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/mgmt/shared/fast/applications",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"mgmt",
+										"shared",
+										"fast",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Apps through CM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AS3 declare status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"console.log(pm.request.body);",
+											"console.log(pm.response);",
+											"",
+											"resp = pm.response.json();",
+											"pm.collectionVariables.set(\"fast_path\", resp.path)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {},
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "          {\n            \"name\": \"lab/http\",\n            \"target\": {\n              \"address\": \"{{bigip_next_3_address}}\",\n              \"host\": \"{{bigip_next_3_hostname}}\"\n              },\n            \"parameters\": {\n              \"tenant_name\": \"Access\",\n              \"certificatesEnum\" : \"self_demo.f5.com\",\n              \"accessPolicyEnum\" : \"{{psp_policy_name}}\",\n              \"application_name\": \"azure_app_sso\",\n              \"serverAddresses\": [\n                \"{{example_web}}\"\n              ],\n              \"servicePort\": {{example_web_port}},\n              \"virtualAddresses\": \"{{access_azure_signed_vip}}\",\n              \"virtualPort\": {{vip_port2}}\n            }\n          }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/mgmt/shared/appsvcs",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"mgmt",
+										"shared",
+										"appsvcs"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Feature Flag",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"var resp = pm.response.json();\r",
+											"pm.environment.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											"pm.collectionVariables.set(\"bigip_next_cm_token\", resp.access_token);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"{{bigip_next_cm_admin_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/login",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Feature Flag",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/system/v1/feature-flags",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"system",
+										"v1",
+										"feature-flags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Feature Flag",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bigip_next_cm_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ENABLE_ACCESS\" : \"true\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{bigip_next_cm_mgmt_ip}}/api/system/v1/feature-flags",
+									"protocol": "https",
+									"host": [
+										"{{bigip_next_cm_mgmt_ip}}"
+									],
+									"path": [
+										"api",
+										"system",
+										"v1",
+										"feature-flags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "bigip_next_1_name",
+			"value": "big-ip-next-01"
+		},
+		{
+			"key": "bigip_next_2_name",
+			"value": "big-ip-next-02"
+		},
+		{
+			"key": "bigip_next_ha_name",
+			"value": "big-ip-next-ha"
+		},
+		{
+			"key": "domain_name",
+			"value": "f5demo.com"
+		},
+		{
+			"key": "bigip_next_1_mgmt_ip",
+			"value": "10.1.1.7"
+		},
+		{
+			"key": "bigip_next_2_mgmt_ip",
+			"value": "10.1.1.8"
+		},
+		{
+			"key": "bigip_next_mgmt_floating_ip",
+			"value": "10.1.1.9"
+		},
+		{
+			"key": "bigip_next_mgmt_target_ip",
+			"value": "10.1.1.10",
+			"type": "string"
+		},
+		{
+			"key": "bigip_next_mgmt_port",
+			"value": "443"
+		},
+		{
+			"key": "bigip_next_admin_user",
+			"value": "admin-cm"
+		},
+		{
+			"key": "bigip_next_admin_password",
+			"value": "Welcome123!"
+		},
+		{
+			"key": "bigip_next_cm_mgmt_ip",
+			"value": "10.1.1.5"
+		},
+		{
+			"key": "bigip_next_cm_admin_user",
+			"value": "cm-admin"
+		},
+		{
+			"key": "bigip_next_cm_admin_password",
+			"value": "Welcome123!"
+		},
+		{
+			"key": "bigip_next_admin_user_cm",
+			"value": "admin-cm"
+		},
+		{
+			"key": "dns_server_1",
+			"value": "10.1.1.6"
+		},
+		{
+			"key": "dns_server_2",
+			"value": "8.8.4.4"
+		},
+		{
+			"key": "vip1",
+			"value": "10.1.10.110"
+		},
+		{
+			"key": "vip_port1",
+			"value": "80"
+		},
+		{
+			"key": "vip2",
+			"value": "10.1.10.111"
+		},
+		{
+			"key": "vip_port2",
+			"value": "443"
+		},
+		{
+			"key": "vip3",
+			"value": "10.1.10.112"
+		},
+		{
+			"key": "vip_port3",
+			"value": "443"
+		},
+		{
+			"key": "app_server1_ip",
+			"value": "10.1.20.100"
+		},
+		{
+			"key": "app_server2_ip",
+			"value": "10.1.20.101"
+		},
+		{
+			"key": "app_server_port",
+			"value": "8080"
+		},
+		{
+			"key": "psp_name_1",
+			"value": ""
+		},
+		{
+			"key": "resp_policy_id_1",
+			"value": ""
+		},
+		{
+			"key": "resp_policy_name_1",
+			"value": ""
+		},
+		{
+			"key": "prp_name_1",
+			"value": ""
+		},
+		{
+			"key": "bigip_next_platform_type",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "dns_resolver_id",
+			"value": ""
+		},
+		{
+			"key": "name_server",
+			"value": "10.1.1.6:53",
+			"type": "string"
+		},
+		{
+			"key": "example_web",
+			"value": "10.1.20.6",
+			"type": "string"
+		},
+		{
+			"key": "example_web_port",
+			"value": "80",
+			"type": "string"
+		},
+		{
+			"key": "services_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_signed_EntityID",
+			"value": "http://www.okta.com/exk93cs4on3gGVej44x7",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_signed_SSOURI",
+			"value": "https://dev-818899.okta.com/app/dev-818899_signedexamplecom_1/exk93cs4on3gGVej44x7/sso/saml",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_signed_SPURI",
+			"value": "https://signed.example.com",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_signed_SPEntityID",
+			"value": "https://signed.example.com",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_unsigned_entityID",
+			"value": "http://www.okta.com/exk93h5w7egrYaEhS4x7",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_unsigned_SSOURI",
+			"value": "https://dev-818899.okta.com/app/dev-818899_unsignedexamplecom_1/exk93h5w7egrYaEhS4x7/sso/saml",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_unsigned_Service_URI",
+			"value": "https://unsigned.example.com",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_unsigned_Service_EntityID",
+			"value": "https://unsigned.example.com",
+			"type": "string"
+		},
+		{
+			"key": "access_azure_signed_EntityID",
+			"value": "https://sts.windows.net/8807dced-9637-4205-a520-423077750c60/",
+			"type": "string"
+		},
+		{
+			"key": "access_azure_signed_SSOURI",
+			"value": "https://login.microsoftonline.com/8807dced-9637-4205-a520-423077750c60/saml2",
+			"type": "string"
+		},
+		{
+			"key": "access_azure_Service_URI",
+			"value": "https://mbip-1.f5access.onmicrosoft.com/",
+			"type": "string"
+		},
+		{
+			"key": "access_azure_Service_EntityID",
+			"value": "https://mbip-1.f5access.onmicrosoft.com/",
+			"type": "string"
+		},
+		{
+			"key": "access_okta_signed.examepl.com-cert",
+			"value": "access_okta_signed.examepl.com-cert"
+		},
+		{
+			"key": "access_azure_cert",
+			"value": "access_azure_cert"
+		},
+		{
+			"key": "access_azure_signed_vip",
+			"value": "10.1.10.100",
+			"type": "default"
+		},
+		{
+			"key": "access_okta_unsigned_vip",
+			"value": "10.1.10.104",
+			"type": "default"
+		},
+		{
+			"key": "access_okta_signed_vip",
+			"value": "10.1.10.101",
+			"type": "default"
+		},
+		{
+			"key": "access_okta_unsigned_policy",
+			"value": ""
+		},
+		{
+			"key": "access_azure_signed_policy",
+			"value": ""
+		},
+		{
+			"key": "access_kdc_realm",
+			"value": "F5ACCESS.ONMICROSOFT.COM",
+			"type": "string"
+		},
+		{
+			"key": "access_delegation_account_name",
+			"value": "host/apm-deleg.f5access.onmicrosoft.com",
+			"type": "string"
+		},
+		{
+			"key": "access_delegation_account_pwd",
+			"value": "F5twister$",
+			"type": "string"
+		},
+		{
+			"key": "access_SPN_Pattern",
+			"value": "HTTP/%h@F5ACCESS.ONMICROSOFT.COM",
+			"type": "string"
+		},
+		{
+			"key": "allow_vip",
+			"value": "10.1.10.112",
+			"type": "string"
+		},
+		{
+			"key": "allow_login_vip",
+			"value": "10.1.10.113",
+			"type": "string"
+		},
+		{
+			"key": "deny_vip",
+			"value": "10.1.10.114",
+			"type": "string"
+		},
+		{
+			"key": "bigip_next_1_token",
+			"value": ""
+		},
+		{
+			"key": "access_allow_policy",
+			"value": ""
+		},
+		{
+			"key": "access_logon_allow_policy",
+			"value": ""
+		},
+		{
+			"key": "access_deny_policy",
+			"value": ""
+		},
+		{
+			"key": "access_okta_signed_policy",
+			"value": ""
+		},
+		{
+			"key": "mbiq_token",
+			"value": ""
+		},
+		{
+			"key": "psp_policy_name",
+			"value": ""
+		},
+		{
+			"key": "mbiq_policy_id",
+			"value": ""
+		},
+		{
+			"key": "mbiq_policy_name",
+			"value": ""
+		},
+		{
+			"key": "fast_path",
+			"value": ""
+		},
+		{
+			"key": "bigip_next_3_address",
+			"value": "10.1.1.10",
+			"type": "default"
+		},
+		{
+			"key": "bigip_next_3_hostname",
+			"value": "big-ip-next-03.f5demo.com",
+			"type": "default"
+		},
+		{
+			"key": "okta_client_id",
+			"value": "0oab7bafm1gpzKt9s4x7",
+			"type": "string"
+		},
+		{
+			"key": "okta_client_secret",
+			"value": "XH2c15N-3LioIovIzyAwjHqiz6gTD-UTNVOpjfWo",
+			"type": "string"
+		},
+		{
+			"key": "bigip_next_cm_token",
+			"value": ""
+		},
+		{
+			"key": "oauth_client_VIP",
+			"value": "10.1.10.210",
+			"type": "string"
+		},
+		{
+			"key": "oauth_client_policy",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "app_name",
+			"value": ""
+		},
+		{
+			"key": "appsvc-id",
+			"value": ""
+		}
+	]
+}
