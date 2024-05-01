@@ -11,6 +11,13 @@ This is a consolidated automation repo for different verified designs customer u
   | **DevCentral Overview Articles**     | **Use Case / Workflow Guides (SaaS Console, Automation)**                      |
   | ------------------------------------ | ------------------------------------------------------------------------------ |
   |[Introducing Next Access Alongside Our Trusted APM](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-introducing-next-access-alongside-our-trusted-apm/328828)                                      |            N/A                                                                    |
+  | ------------------------------------ | ------------------------------------------------------------------------------ |
+  | [SAML Federation made easier](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-saml-federation-made-easier/329007) | [Microsoft EntraID (SAML IdP) with Kerberos SSO] |
+  |   | [Integration with Okta (SAML IdP)] |
+  |   | [Integration with Okta (SAML IdP) with HTTP Connector providing risk rating] |
+  |   | [Multiple IdPs based on matching criteria] |
+  
+  
 
 
 ## Getting Started
