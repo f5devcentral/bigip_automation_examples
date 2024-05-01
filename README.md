@@ -10,7 +10,7 @@ This is a consolidated automation repo for different verified designs customer u
 * **Next Access**
   | **DevCentral Overview Articles**     | **Use Case / Workflow Guides (SaaS Console, Automation)**                      |
   | ------------------------------------ | ------------------------------------------------------------------------------ |
-  |[Introducing Next Access Alongside Our Trusted APM](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-introducing-next-access-alongside-our-trusted-apm/328828)                                      |                                                                                | N/A
+  |[Introducing Next Access Alongside Our Trusted APM](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-introducing-next-access-alongside-our-trusted-apm/328828)                                      |            N/A                                                                    |
 
 
 ## Getting Started
