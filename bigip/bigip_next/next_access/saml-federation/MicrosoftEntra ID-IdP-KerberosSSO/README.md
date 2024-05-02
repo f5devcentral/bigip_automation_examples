@@ -59,4 +59,4 @@ In order to configure net resolver at specific instance we need first to get the
 
 2. Select the calls to run and adjust settings as needed (Run manually, scheduled or automatically) then hit Run. 
 
-![figure](assets/runcol.jpg)
+![figure](assets/runcol.JPG)
