@@ -25,26 +25,26 @@ In the postman collection we have different calls,
 
 1. Login call to request access token which we will make use of in the subsequent calls. 
 
-.. figure:: assets/logincall.JPG
+![figure](assets/logincall.JPG)
 
 2. Policy requirement items for example uploading certificate as in IdP or Creating Net resolver. 
 
-.. figure:: assets/uploadmicrosoftcert.JPG
+![figure](assets/uploadmicrosoftcert.JPG)
 
 In order to configure net resolver at specific instance we need first to get the instance ID. 
 
-.. figure:: assets/instanceid.JPG
+![figure](assets/instanceid.JPG)
 
-.. figure:: assets/createnetresolver.JPG
+![figure](assets/createnetresolver.JPG)
 
 3. Create Security policy. 
 
-.. figure:: assets/createpolicy.JPG
+![figure](assets/createpolicy.JPG)
 
 4. Create application and attach the security policy. 
 
-.. figure:: assets/createapplication.JPG
+![figure](assets/createapplication.JPG)
 
 5. Deploy application to the instance with additional parameters if any. 
 
-.. figure:: assets/deployapp.JPG
+![figure](assets/deployapp.JPG)
