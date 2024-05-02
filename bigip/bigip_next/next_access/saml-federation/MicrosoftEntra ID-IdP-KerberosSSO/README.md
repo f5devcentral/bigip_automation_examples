@@ -16,7 +16,7 @@ Steps summary,
 1. Click Import and select the postman collection file downloaded from [Postman collection](https://github.com/f5devcentral/bigip_automation_examples/tree/access-May-1/bigip/bigip_next/next_access/postman_collections). 
 2. Once imported, head to variables to update the variable as per your environment. 
 
-.. figure:: assets/updatevariables.JPG
+![figure](assets/updatevariables.JPG)
 
 
 ## Check Postman body and calls
@@ -48,3 +48,15 @@ In order to configure net resolver at specific instance we need first to get the
 5. Deploy application to the instance with additional parameters if any. 
 
 ![figure](assets/deployapp.JPG)
+
+
+## Run postman calls 
+
+
+1. Select the collection in question `Azure Policy + Kerberos SSO`
+
+![figure](assets/runmicrosoftcol.JPG)
+
+2. Select the calls to run and adjust settings as needed (Run manually, scheduled or automatically) then hit Run. 
+
+![figure](assets/runcol.jpg)
