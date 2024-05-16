@@ -1,8 +1,8 @@
-# Integration with Okta (SAML IdP)
+# Integration with Okta (SAML IdP) with HTTP Connector (Per-Session)
 
 ## Overview
 
-In this guide we are checking the steps to use postman collection to configure `BIG-IP Next Access` as SAML Service Provider (SP), with Okta Identity Provider (IdP). 
+In this guide we are checking the steps to use postman collection to configure `BIG-IP Next Access` as SAML Service Provider (SP), with Okta Identity Provider (IdP) and using HTTP Connector to fetch risk rating from API server (simulating 3rd party). 
 
 Steps summary, 
 
@@ -21,8 +21,8 @@ Steps summary,
 
 ## Check Postman body and calls
 
-The collection in question `SAML-Okta-Signed Policy`
 
+The collection in question `SAML-Okta-Signed With HTTP Connector`, there's another collection with name `SAML-Okta-Signed With HTTP Connector (Authenticated)` which can be used when the API destination in question require Authentication/Authorization HTTP Connector call prior to the main risk fetch call.
 
 1. Login call to request access token which we will make use of in the subsequent calls. 
 
@@ -42,13 +42,13 @@ The collection in question `SAML-Okta-Signed Policy`
 
 5. Deploy application to the instance with additional parameters if any. 
 
-![figure](assets/deployapp.JPG)
+    ![figure](assets/deployapp.JPG)
 
 
 ## Run postman calls 
 
 
-1. Select the collection in question `SAML-Okta-Signed Policy`
+1. Select the collection in question `SAML-Okta-Signed With HTTP Connector`, there's another collection with name `SAML-Okta-Signed With HTTP Connector (Authenticated)` which can be used when the API destination in question require Authentication/Authorization HTTP Connector call prior to the main risk fetch call. 
 
 ![figure](assets/runoktacol.JPG)
 

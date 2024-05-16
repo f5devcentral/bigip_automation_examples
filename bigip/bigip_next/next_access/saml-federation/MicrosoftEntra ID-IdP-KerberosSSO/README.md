@@ -21,7 +21,8 @@ Steps summary,
 
 ## Check Postman body and calls
 
-In the postman collection we have different calls, 
+The collection in question `Azure Policy + Kerberos SSO`
+
 
 1. Login call to request access token which we will make use of in the subsequent calls. 
 
