@@ -17,7 +17,7 @@ This is a consolidated automation repo for different verified designs customer u
   |[Introducing Next Access Alongside Our Trusted APM](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-introducing-next-access-alongside-our-trusted-apm/328828)                                      |            N/A                                                                    |
   | [SAML Federation made easier](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-saml-federation-made-easier/329007) | [Microsoft EntraID (SAML IdP) with Kerberos SSO](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/MicrosoftEntra%20ID-IdP-KerberosSSO) |
   |   | [Integration with Okta (SAML IdP)](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP) |
-  |   | [Integration with Okta (SAML IdP) with HTTP Connector providing risk rating] |
+  |   | [Integration with Okta (SAML IdP) with HTTP Connector providing risk rating](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP-http-connector) |
   |   | [Multiple IdPs based on matching criteria] |
   | [VPN Use cases][Article WIP]  | [Edge client with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/edgeclient-certauth) |
   |   | [Edge Client with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/machinetunnel-certauth) |
