@@ -19,6 +19,9 @@ This is a consolidated automation repo for different verified designs customer u
   |   | [Integration with Okta (SAML IdP)](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP) |
   |   | [Integration with Okta (SAML IdP) with HTTP Connector providing risk rating] |
   |   | [Multiple IdPs based on matching criteria] |
+  | [VPN Use cases]  | [Edge client with Machine certificate]() |
+  |   | [Edge Client with Machine certificate]() |
+  |   | [Machine tunnel with Machine certificate]() |
   
   
 
