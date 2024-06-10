@@ -19,7 +19,7 @@ This is a consolidated automation repo for different verified designs customer u
   |   | [Integration with Okta (SAML IdP)](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP) |
   |   | [Integration with Okta (SAML IdP) with HTTP Connector providing risk rating](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP-http-connector) |
   |   | [Multiple IdPs based on matching criteria] |
-  | [VPN Use cases][Article WIP]  | [Edge client with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/edgeclient-certauth) |
+  | [VPN Use cases][Article](https://community.f5.com/kb/BIG-IP-Next-Academytkb-board/big-ip-next-access-five-minutes-vpn-setup/330291)  | [Edge client with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/edgeclient-certauth) |
   |   | [Machine Tunnel with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/machinetunnel-certauth) |
   
   
