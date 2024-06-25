@@ -1,0 +1,24 @@
+worker_processes auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    sendfile on;
+    keepalive_timeout 65;
+
+    server {
+        listen 80;
+
+        {% for i in range(1, 21) %}
+        location /server{{ i }} {
+            return 200 "OK. Server - {{ i }}\n";
+        }
+        {% endfor %}
+    }
+}
+

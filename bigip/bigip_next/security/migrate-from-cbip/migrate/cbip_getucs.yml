@@ -1,0 +1,24 @@
+---
+- name: Download UCS from CBIP
+  hosts: cbip
+  gather_facts: false
+  collections:
+    - f5networks.f5_modules
+
+  vars_files:
+    - cbip_vars.yml
+
+  tasks:
+    - name: Create UCS archive
+      bigip_command:
+        commands:
+          - save sys ucs "{{  cbip_ucs_name  }}"
+        provider: "{{  provider  }}"
+      delegate_to: localhost
+
+    - name: Fetch UCS archive
+      bigip_ucs_fetch:
+        src: "{{  cbip_ucs_name  }}.ucs"
+        dest: "/tmp/{{  cbip_ucs_name  }}_{{  inventory_hostname  }}.ucs"
+        provider: "{{  provider  }}"
+      delegate_to: localhost
