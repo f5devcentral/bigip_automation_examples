@@ -6,7 +6,7 @@
   - [1. Inventory Setup](#1-inventory-setup)
   - [2. Environment Configuration](#2-environment-configuration)
   - [3. Validate NGINX App](#3-validate-nginx-app)
-- [Manual Migration from BIG-IP to BIG-IP Next](#manual-migration-from-big-ip-to-big-ip-next)
+- [Manual Migration from Classic BIG-IP to BIG-IP Next](#manual-migration-from-classic-big-ip-to-big-ip-next)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
     - [2.1 Upload UCS Archive into Central Manager](#21-upload-ucs-archive-into-central-manager)
@@ -14,11 +14,11 @@
     - [2.3 Import Shared Objects](#23-import-shared-objects)
     - [2.4 Deploy](#24-deploy)
     - [2.5 Check App Availability](#25-check-app-availability)
-- [Automated Migration from BIG-IP to BIG-IP Next](#automated-migration-from-big-ip-to-big-ip-next)
+- [Automated Migration from Classic BIG-IP to BIG-IP Next](#automated-migration-from-classic-big-ip-to-big-ip-next)
 
 # Overview
 
-This guide showcases migration of an app with a configured WAF policy from BIG-IP to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager lets us reduce mean time needed for migration of application services. Migration with it runs fast and straightforward, it allows us to migrate our apps with their configured security profiles: WAF, Bot, DDoS.
+This guide showcases migration of an app with a configured WAF policy from Classic BIG-IP to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager lets us reduce mean time needed for migration of application services. Migration with it runs fast and straightforward, it allows us to migrate our apps with their configured security profiles: WAF, Bot, DDoS.
 
 The first part of the use-case will focus on manual migration of an application, whereas the second one - on automatic way to do that. In the course of the guide we will:
 
@@ -62,9 +62,9 @@ Now that we have initialized and configured the environment, we can check NGINX 
 curl http://{nginx_app}/server1
 ```
 
-# Manual Migration from BIG-IP to BIG-IP Next
+# Manual Migration from Classic BIG-IP to BIG-IP Next
 
-In this part of our guide we will showcase a brownfield use case for app manual migration from BIG-IP to BIG-IP Next. Since migration covers WAF policies, in the course of migration we will see how easy and fast it is to migrate an app with a configured WAF policy using BIG-IP Next Central Manager. In order to manually migrate an app with WAF policy we will:
+In this part of our guide we will showcase a brownfield use case for app manual migration from Classic BIG-IP to BIG-IP Next. Since migration covers WAF policies, in the course of migration we will see how easy and fast it is to migrate an app with a configured WAF policy using BIG-IP Next Central Manager. In order to manually migrate an app with WAF policy we will:
 
 - Get BIG-IP UCS Archive
 - Upload UCS Archive into BIG-IP Next Central Manager
@@ -74,7 +74,7 @@ In this part of our guide we will showcase a brownfield use case for app manual 
 
 ## 1. Get BIG-IP UCS Archive
 
-First, we will get a UCS archive that contains the source BIG-IP application services and then import it into BIG-IP Next Central Manager. This will let us view and deploy the app to BIG-IP Next in further steps.
+First, we will get a UCS archive that contains the source Classic BIG-IP application services and then import it into BIG-IP Next Central Manager. This will let us view and deploy the app to BIG-IP Next in further steps.
 
 Log in your BIG-IP Configuration Utility and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
 
@@ -120,7 +120,7 @@ After uploading the UCS archive we will add application for migration by clickin
 
 ![alt text](./assets/add-application.png)
 
-You will see a list of application services from your BIG-IP. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**.
+You will see a list of application services from your Classic BIG-IP. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**.
 
 ![alt text](./assets/add-apps-to-migration.png)
 
@@ -162,4 +162,4 @@ Next, we can check app availability by sending the following curl command:
 =======TODO=======
 ```
 
-# Automated Migration from BIG-IP to BIG-IP Next
+# Automated Migration from Classic BIG-IP to BIG-IP Next

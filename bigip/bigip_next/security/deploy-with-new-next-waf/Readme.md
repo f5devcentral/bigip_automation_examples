@@ -35,8 +35,6 @@ You can type in a description for the application service and move on.
 
 # 2. Add Pool and Server
 
-<!-- link - pool for big-ip next -->
-
 Next, we will add a pool and virtual server. Navigate to the **Pools** tab and click the **Create** tab.
 
 ![alt text](./assets/pool-create.png)
