@@ -13,26 +13,26 @@ provider "bigipnext" {
   host     = "https://10.1.1.5"
 }
 
-resource "bigipnext_cm_waf_policy_import" "sample" {
-  name        = "new_waf_policy"
-  description = "new_waf_policy desc"
+resource "bigipnext_cm_waf_policy_import" "waf_greenfield_demo_policy" {
+  name        = "waf_greenfield_demo_policy"
+  description = "Demo Policy for greenfield use-case"
   file_path   = "./policy.json"
   file_md5    = md5(file("./policy.json"))
 }
 
-resource "bigipnext_cm_as3_deploy" "test_01" {
-  depends_on = [bigipnext_cm_waf_policy_import.sample]
+resource "bigipnext_cm_as3_deploy" "waf_greenfield_demo_app" {
+  depends_on = [bigipnext_cm_waf_policy_import.waf_greenfield_demo_policy]
   target_address = "10.1.1.11"
   as3_json       = <<EOT
 {
     "class": "ADC",
     "schemaVersion": "3.45.0",
-    "id": "example-declaration-03",
-    "label": "Sample 1",
+    "id": "waf_greenfield_demo_app",
+    "label": "Demo application",
     "remark": "Simple HTTP application with round robin pool",
-    "next-cm-tenant02": {
+    "waf_greenfield_demo_tenant": {
         "class": "Tenant",
-        "next-cm-app02": {
+        "waf_greenfield_demo_app": {
             "class": "Application",
             "template": "http",
             "serviceMain": {
@@ -40,12 +40,12 @@ resource "bigipnext_cm_as3_deploy" "test_01" {
                 "virtualAddresses": [
                     "10.0.12.10"
                 ],
-                "pool": "next-cm-pool02",
+                "pool": "waf_greenfield_demo_pool",
                 "policyWAF": {
-                    "cm": "new_waf_policy"
+                    "cm": "waf_greenfield_demo_policy"
                 }
             },
-            "next-cm-pool02": {
+            "waf_greenfield_demo_pool": {
                 "class": "Pool",
                 "monitors": [
                     "http"
