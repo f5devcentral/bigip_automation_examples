@@ -1,12 +1,12 @@
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
+- [Setup Diagram](#setup-diagram)
 - [Environment Setup](#environment-setup)
   - [1. Inventory Setup](#1-inventory-setup)
   - [2. Environment Configuration](#2-environment-configuration)
   - [3. Validate NGINX App](#3-validate-nginx-app)
-- [Manual Migration from Classic BIG-IP to BIG-IP Next](#manual-migration-from-classic-big-ip-to-big-ip-next)
+- [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
     - [2.1 Upload UCS Archive into Central Manager](#21-upload-ucs-archive-into-central-manager)
@@ -14,7 +14,8 @@
     - [2.3 Import Shared Objects](#23-import-shared-objects)
     - [2.4 Deploy](#24-deploy)
     - [2.5 Check App Availability](#25-check-app-availability)
-- [Automated Migration from Classic BIG-IP to BIG-IP Next](#automated-migration-from-classic-big-ip-to-big-ip-next)
+- [Automated Workflow Guide](#automated-workflow-guide)
+- [Additional Related Resources](#additional-related-resources)
 
 # Overview
 
@@ -28,6 +29,10 @@ The first part of the use-case will focus on manual migration of an application,
 
 - Migrate and deploy the app automatically.
 
+# Setup Diagram
+
+=====TODO======
+
 # Environment Setup
 
 Before starting application migration we will need to set up environment. Environment configuration will include two steps:
@@ -38,10 +43,10 @@ Before starting application migration we will need to set up environment. Enviro
 
 ## 1. Inventory Setup
 
-Let's start with inventory configuration for migration source. Run the following command to enter the inventory file and specify application and CBIP IDs, as well as specifying variable files for the application and CBIP:
+Let's start with inventory configuration for migration source. Go to the inventory file and specify application and CBIP IDs:
 
 ```bash
- nvim inventory.ini
+ inventory.ini
 ```
 
 ## 2. Environment Configuration
@@ -62,7 +67,7 @@ Now that we have initialized and configured the environment, we can check NGINX 
 curl http://{nginx_app}/server1
 ```
 
-# Manual Migration from Classic BIG-IP to BIG-IP Next
+# Manual Workflow Guide 
 
 In this part of our guide we will showcase a brownfield use case for app manual migration from Classic BIG-IP to BIG-IP Next. Since migration covers WAF policies, in the course of migration we will see how easy and fast it is to migrate an app with a configured WAF policy using BIG-IP Next Central Manager. In order to manually migrate an app with WAF policy we will:
 
@@ -162,4 +167,10 @@ Next, we can check app availability by sending the following curl command:
 =======TODO=======
 ```
 
-# Automated Migration from Classic BIG-IP to BIG-IP Next
+# Automated Workflow Guide
+
+=====TODO=========
+
+# Additional Related Resources
+
+=====TODO=========
