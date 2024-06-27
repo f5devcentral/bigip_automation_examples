@@ -2,20 +2,30 @@
 
 # Table of Contents
 
-- [Deploy a New App to BIG-IP Next with Next WAF Policy](#deploy-a-new-app-to-big-ip-next-with-next-waf-policy)
-- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
-- [1. Start Creating an App](#1-start-creating-an-app)
-- [2. Add Pool and Server](#2-add-pool-and-server)
-- [3. Create WAF Security Policy](#3-create-waf-security-policy)
-- [4. Add Pool Member](#4-add-pool-member)
-- [5. Validate and Deploy](#5-validate-and-deploy)
+- [Setup Diagram](#setup-diagram)
+- [Manual Workflow Guide](#manual-workflow-guide)
+  - [1. Start Creating an App](#1-start-creating-an-app)
+  - [2. Add Pool and Server](#2-add-pool-and-server)
+  - [3. Create WAF Security Policy](#3-create-waf-security-policy)
+  - [4. Add Pool Member](#4-add-pool-member)
+  - [5. Validate and Deploy](#5-validate-and-deploy)
+- [Automated Workflow Guide](#automated-workflow-guide)
+- [Additional Related Resources](#additional-related-resources)
 
 # Overview
 
 In this part of the guide we will take a look at a greenfield use-case where we will deploy an app to BIG-IP Next, as well as create a WAF Policy for it. We will be using BIG-IP Next Central Manager that will let us experience the ease of all deployment process and the possibility to configure Next WAF policy in blocking mode right in the process of its creation.
 
-# 1. Start Creating an App
+# Setup Diagram
+
+======TODO======
+
+# Manual Workflow Guide
+
+You can follow the steps in the manual or automated guides below:
+
+## 1. Start Creating an App
 
 Log in BIG-IP Next Central Manager and proceed to **Application Workspace**.
 
@@ -33,7 +43,7 @@ You can type in a description for the application service and move on.
 
 ![alt text](./assets/app-description.png)
 
-# 2. Add Pool and Server
+## 2. Add Pool and Server
 
 Next, we will add a pool and virtual server. Navigate to the **Pools** tab and click the **Create** tab.
 
@@ -47,7 +57,7 @@ Give virtual server a name, select the pool we've just added in the drop-down me
 
 ![alt text](./assets/create-security-policy.png)
 
-# 3. Create WAF Security Policy
+## 3. Create WAF Security Policy
 
 First, we need to enable using WAF Policy using the toggle. Next, click the **Create** button which will open WAF Policy configuration form.
 
@@ -69,7 +79,7 @@ After that, we will specify deployment instance. CLick the **Start Adding** butt
 
 ![alt text](./assets/select-bigipnext-instance.png)
 
-# 4. Add Pool Member
+## 4. Add Pool Member
 
 Finally, in order to specify deployment instance, we will add a pool member. Open the drop-down menu under **Members** and select adding a pool member.
 
@@ -79,7 +89,7 @@ In the opened configuration window add a row and fill it in by giving pool membe
 
 ![alt text](./assets/member-config.png)
 
-# 5. Validate and Deploy
+## 5. Validate and Deploy
 
 Back on the deployment instance page, the configured pool member will appear in the table. Fill in instance virtual address and click the **Validate All** button. This will start the process of validating all the configuration before deployment.
 
@@ -98,3 +108,11 @@ As soon as the deployment process is over, you will see a notification in the lo
 ![alt text](./assets/deployment-complete.png)
 
 Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager let us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
+
+# Automated Workflow Guide
+
+=======TODO========
+
+# Additional Related Resources
+
+=======TODO========
