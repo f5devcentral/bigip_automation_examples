@@ -10,11 +10,7 @@
 
   tasks:
     - name: Create UCS archive
-      bigip_command:
-        commands:
-          - save sys ucs "{{  cbip_ucs_name  }}"
-        provider: "{{  provider  }}"
-      delegate_to: localhost
+      raw: tmsh save sys ucs "{{  cbip_ucs_name  }}"
 
     - name: Fetch UCS archive
       bigip_ucs_fetch:
