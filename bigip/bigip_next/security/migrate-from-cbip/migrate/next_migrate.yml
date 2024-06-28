@@ -165,8 +165,6 @@
         dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
       with_items: "{{ as3_app_preview_files.results }}"
 
-
-
     - name: Create AS3 applications
       delegate_to: localhost
       uri:

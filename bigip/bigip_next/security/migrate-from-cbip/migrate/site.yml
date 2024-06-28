@@ -6,5 +6,5 @@
 - name: Backup BIG-IP as UCS
   import_playbook: cbip_getucs.yml
 
-- name: Start Migration to BIG-IP Next
+- name: Migrate supported apps to BIG-IP Next
   import_playbook: next_migrate.yml
