@@ -178,6 +178,8 @@
         validate_certs: false
         status_code: 200
       with_items: "{{ as3_app_preview_files.results }}"
-        
-        
+      register: documents
 
+    - name: AS3 apps create results
+      debug:
+        msg: "{{ documents }}"
