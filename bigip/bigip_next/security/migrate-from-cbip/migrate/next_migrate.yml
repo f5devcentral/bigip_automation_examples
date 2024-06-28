@@ -182,4 +182,4 @@
 
     - name: AS3 apps create results
       debug:
-        msg: "{{ documents }}"
+        msg: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
