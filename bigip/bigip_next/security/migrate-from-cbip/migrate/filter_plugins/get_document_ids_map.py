@@ -1,7 +1,7 @@
 def extract_service_http_node_name(data):
     def find_service_http_node(node, parent_key=None):
         if isinstance(node, dict):
-            if node.get('class') == 'Service_HTTP':
+            if node.get('class', '').startswith('Service'):
                 return parent_key
             for key, value in node.items():
                 result = find_service_http_node(value, key)
@@ -16,6 +16,10 @@ def extract_service_http_node_name(data):
 
     return find_service_http_node(data)
 
+def remove_prefix(data, prefix):
+    new_data = {key.replace(prefix, ''): value for key, value in data.items()}
+    return new_data
+
 class FilterModule(object):
     def filters(self):
         return {
@@ -23,11 +27,13 @@ class FilterModule(object):
         }
 
     def get_document_ids_map(self, data, migrate_app_prefix):
-        print(data)
+        parsed = data["results"]
         rValue = {}
-        for request in data:
-            migrate_vs_name = extract_service_http_node_name(request.item.json)
-            document_id = request.json.id
+        for request in parsed:
+            migrate_vs_name = extract_service_http_node_name(request["item"]["json"])
+            if migrate_vs_name is None:
+                print(migrate_vs_name)
+            document_id = request["json"]["id"]
             rValue[migrate_vs_name] = document_id
 
-        return rValue
+        return remove_prefix(rValue, migrate_app_prefix)

@@ -180,6 +180,36 @@
       with_items: "{{ as3_app_preview_files.results }}"
       register: documents
 
-    - name: AS3 apps create results
+    - name: Map applications to document ids
+      set_fact: 
+        apps_to_id_map: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
+
+    - name: Create Deployment array by tree
+      set_fact:
+        deployment_array: "{{ apps_to_id_map | create_deployment_array(deploy_tree) }}"
+
+    - name: Deploy Arr
+      debug: 
+        msg: "{{ deployment_array }}"
+
+    - name: Deploy applicatiuons to destination BigIP Next
+      delegate_to: localhost
+      uri:
+        url: "https://{{ next.address }}/mgmt/shared/appsvcs/declare/{{item.id}}/deployments?async=false"
+        method: POST
+        body:
+          target: "{{item.target}}"
+        body_format: json
+        headers:
+           Authorization: "Bearer {{  access_token  }}"
+           Content-Type: "application/json"
+        validate_certs: false
+        status_code: 202
+      loop: "{{ deployment_array }}"
+      loop_control:
+        pause: 30
+      register: deployment_result
+
+    - name: Deployment Results
       debug:
-        msg: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
+        msg: "{{deployment_result}}"
