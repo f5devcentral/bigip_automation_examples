@@ -1,4 +1,3 @@
-# Use an official Ubuntu base image
 FROM ubuntu:20.04
 
 # Disable interactive prompts during package installation
@@ -39,9 +38,10 @@ RUN chmod 600 "$HOME/.ssh/cm-key"
 RUN touch "$HOME/.ssh/cbip-key"
 RUN chmod 600 "$HOME/.ssh/cbip-key"
 
+# Switch to the home directory and clone the sources
 WORKDIR /home/ubuntu
 RUN git clone https://github.com/f5devcentral/bigip_automation_examples.git
 
-# Default command to run Ansible and Terraform version checks
+# Run Ansible and Terraform version checks
 CMD ["sh", "-c", "ansible --version && terraform --version"]
 
