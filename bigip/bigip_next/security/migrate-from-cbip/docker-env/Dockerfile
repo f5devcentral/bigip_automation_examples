@@ -34,6 +34,10 @@ USER ubuntu
 
 # Create the SSH keys
 RUN ssh-keygen -t rsa -q -f "$HOME/.ssh/id_rsa" -N ""
+RUN touch "$HOME/.ssh/cm-key"
+RUN chmod 600 "$HOME/.ssh/cm-key"
+RUN touch "$HOME/.ssh/cbip-key"
+RUN chmod 600 "$HOME/.ssh/cbip-key"
 
 WORKDIR /home/ubuntu
 RUN git clone https://github.com/f5devcentral/bigip_automation_examples.git
