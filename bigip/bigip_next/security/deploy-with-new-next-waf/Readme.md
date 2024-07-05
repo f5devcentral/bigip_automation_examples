@@ -2,6 +2,8 @@
 
 # Table of Contents
 
+- [Deploy a New App to BIG-IP Next with Next WAF Policy](#deploy-a-new-app-to-big-ip-next-with-next-waf-policy)
+- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
 - [Setup Diagram](#setup-diagram)
 - [Manual Workflow Guide](#manual-workflow-guide)
@@ -11,6 +13,12 @@
   - [4. Add Pool Member](#4-add-pool-member)
   - [5. Validate and Deploy](#5-validate-and-deploy)
 - [Automated Workflow Guide](#automated-workflow-guide)
+  - [1. Prerequisites](#1-prerequisites)
+  - [2. Repository files](#2-repository-files)
+  - [3. Initialize terraform](#3-initialize-terraform)
+  - [4. Preview app and security policy config (optional)](#4-preview-app-and-security-policy-config-optional)
+  - [5. Deploy app and security policy](#5-deploy-app-and-security-policy)
+  - [6. Verify the deployed app with its policy](#6-verify-the-deployed-app-with-its-policy)
 - [Additional Related Resources](#additional-related-resources)
 
 # Overview
@@ -111,7 +119,61 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 
 # Automated Workflow Guide
 
-=======TODO========
+## 1. Prerequisites
+
+- Clone and install the repository ===TODO=== git@github.com:yoctoserge/bigip_automation_examples.git
+- Access to BIG-IP Central Manager
+- CLI tool
+
+## 2. Repository files
+
+`app-as3.json` is an AS3 definition of app to be deployed and contains all app info for the deployment. Update app info if needed.
+
+`policy.json` is a file of security policy to be deployed for the app. You can update security policy info in the file if needed. The policy specified in the file will be deployed in blocking mode.
+
+`input.tfvars` is a file that contains variables to be specified: Central Manager address (`cm`), username and password to access Central Manager, and BIG-IP Next address (`target`). You need to specify your info there.
+
+## 3. Initialize terraform
+
+In the CLI run the following comman to initialize terraform:
+
+```bash
+terraform init
+```
+
+## 4. Preview app and security policy config (optional)
+
+Run the following command to preview the changes that Terraform will execute: the app to be created and security policy with its configuration.
+
+```bash
+terraform plan -var-file=input.tfvars
+```
+
+## 5. Deploy app and security policy
+
+Run the following command to create and deploy the app and security policy:
+
+```bash
+terraform apply -var-file=input.tfvars
+```
+
+## 6. Verify the deployed app with its policy
+
+Log in your Central Manager and navigate to the **Application Workspace**.
+
+![alt text](./assets/cm-navigate.png)
+
+You will see a newly deployed app with its details: health status, locations/instances and security policies.
+
+![alt text](./assets/greenfield-deployed-app.png)
+
+Next, we will take a look at the created security policy. Navigate to the **Security** tab and proceed to **Policies** under the **WAF** section.
+
+![alt text](./assets/created-policy-greenfield.png)
+
+Finally, we can drill down into the created policy details. Click on the policy to proceed.
+
+![alt text](./assets/policy-details.png)
 
 # Additional Related Resources
 
