@@ -135,7 +135,7 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 
 ## 3. Initialize terraform
 
-In the CLI run the following comman to initialize terraform:
+In the CLI run the following command to initialize terraform:
 
 ```bash
 terraform init
