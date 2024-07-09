@@ -12,11 +12,16 @@
   - [3. Create WAF Security Policy](#3-create-waf-security-policy)
   - [4. Add Pool Member](#4-add-pool-member)
   - [5. Validate and Deploy](#5-validate-and-deploy)
+- [Docker Setup (_optional_)](#docker-setup-optional)
+  - [1. Clone repository](#1-clone-repository)
+  - [2. Build Docker](#2-build-docker)
+  - [3. Verify built images](#3-verify-built-images)
+  - [4. Enter the docker](#4-enter-the-docker)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
-  - [2. Repository files](#2-repository-files)
+  - [2. Add access creds for BIG-IP Next](#2-add-access-creds-for-big-ip-next)
   - [3. Initialize terraform](#3-initialize-terraform)
-  - [4. Preview app and security policy config (optional)](#4-preview-app-and-security-policy-config-optional)
+  - [4. Preview app and security policy config (_optional_)](#4-preview-app-and-security-policy-config-optional)
   - [5. Deploy app and security policy](#5-deploy-app-and-security-policy)
   - [6. Verify the deployed app with its policy](#6-verify-the-deployed-app-with-its-policy)
 - [Additional Related Resources](#additional-related-resources)
@@ -29,9 +34,9 @@ In this part of the guide we will take a look at a greenfield use-case where we 
 
 ======TODO======
 
-# Manual Workflow Guide
+There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: manual or automated flow. You can choose any to proceed.
 
-You can follow the steps in the manual or automated guides below:
+# Manual Workflow Guide
 
 ## 1. Start Creating an App
 
@@ -117,21 +122,62 @@ As soon as the deployment process is over, you will see a notification in the lo
 
 Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager let us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
 
+# Docker Setup (_optional_)
+
+If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+
+## 1. Clone repository
+
+Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
+
+## 2. Build Docker
+
+Enter the folder `bigip/bigip_next/security/migrate-from-cbip/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
+
+```bash
+sh ./build.sh
+```
+
+## 3. Verify built images
+
+After the build has been completed, let's verify the build has been completed successfully by running the following command:
+
+```bash
+docker image ls
+```
+
+`env-ansible-terraform` image should be shown up and running in the output.
+
+## 4. Enter the docker
+
+Enter the docker by running the command:
+
+```bash
+sh ./run.sh
+```
+
+Having entered the docker, you can proceed to the next step [Adding access creds for BIG-IP Next](#2-add-access-creds-for-big-ip-next) in terraform.
+
 # Automated Workflow Guide
 
 ## 1. Prerequisites
 
-- Clone and install the repository ===TODO=== git@github.com:yoctoserge/bigip_automation_examples.git
+- Clone and install the repository https://github.com/f5devcentral/bigip_automation_examples.git if you haven't done so yet
 - Access to BIG-IP Central Manager
-- CLI tool
+- CLI tool to run commands
+- Setup Docker (_optional but recommended_)
 
-## 2. Repository files
+## 2. Add access creds for BIG-IP Next
 
-`app-as3.json` is an AS3 definition of app to be deployed and contains all app info for the deployment. Update app info if needed.
+First, you need to enter the `input.tfvars` file and specify your own variables:
 
-`policy.json` is a file of security policy to be deployed for the app. You can update security policy info in the file if needed. The policy specified in the file will be deployed in blocking mode.
+- Central Manager address (`cm`),
+- username and password to access Central Manager,
+- BIG-IP Next address (`target`).
 
-`input.tfvars` is a file that contains variables to be specified: Central Manager address (`cm`), username and password to access Central Manager, and BIG-IP Next address (`target`). You need to specify your info there.
+Then you can go to the `app-as3.json` file which is an AS3 definition of app to be deployed and contains all app info for the deployment and update app info if needed.
+
+Lastly, you can update security policy info if needed in the `policy.json` file that contains security policy to be deployed for the app. Note that the policy specified in the file will be deployed in blocking mode.
 
 ## 3. Initialize terraform
 
@@ -141,7 +187,7 @@ In the CLI run the following command to initialize terraform:
 terraform init
 ```
 
-## 4. Preview app and security policy config (optional)
+## 4. Preview app and security policy config (_optional_)
 
 Run the following command to preview the changes that Terraform will execute: the app to be created and security policy with its configuration.
 
