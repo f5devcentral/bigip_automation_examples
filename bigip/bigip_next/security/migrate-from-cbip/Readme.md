@@ -67,7 +67,7 @@ Now that we have initialized and configured the environment, we can check NGINX 
 curl http://{nginx_app}/server1
 ```
 
-# Manual Workflow Guide 
+# Manual Workflow Guide
 
 In this part of our guide we will showcase a brownfield use case for app manual migration from Classic BIG-IP to BIG-IP Next. Since migration covers WAF policies, in the course of migration we will see how easy and fast it is to migrate an app with a configured WAF policy using BIG-IP Next Central Manager. In order to manually migrate an app with WAF policy we will:
 
@@ -166,6 +166,62 @@ Next, we can check app availability by sending the following curl command:
 ```bash
 =======TODO=======
 ```
+
+# Docker Setup (_optional_)
+
+If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#). If you prefer not to use Docker, you can skip this step.
+
+## 1. Clone repository
+
+Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
+
+## 2. Build Docker
+
+Enter the folder `bigip/bigip_next/security/migrate-from-cbip/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
+
+```bash
+sh ./build.sh
+```
+
+## 3. Verify built images
+
+After the build has been completed, let's verify the build has been completed successfully by running the following command:
+
+```bash
+docker image ls
+```
+
+`env-ansible-terraform` image should be shown up and running in the output.
+
+## 4. Enter the docker
+
+Enter the docker by running the command:
+
+```bash
+sh ./run.sh
+```
+
+You will see a list of files. Enter the `.ssh`.
+
+## 5. Add SSH private keys
+
+Next we will add SSH private keys for Classic BIG-IP and Central Manager. Note that you will need to add keys only for Ansible.
+
+Inside the `.ssh`, you will see `cbip-key` for private key to access Classic BIG-IP and `cm-key` for key to access Central Manager.
+
+Enter the `cbip-key` file by running th following command and fill in the key:
+
+```bash
+nano cbip-key
+```
+
+Enter the `cm-key` file by running the following command and fill in the key:
+
+```bash
+nano cm-key
+```
+
+Now that the keys are specified, you can follow the steps below starting with adding all other creds.
 
 # Automated Workflow Guide
 
