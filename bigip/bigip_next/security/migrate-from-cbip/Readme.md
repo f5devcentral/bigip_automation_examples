@@ -1,5 +1,6 @@
 # Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
 - [Setup Diagram](#setup-diagram)
 - [Environment Setup](#environment-setup)
@@ -14,6 +15,12 @@
     - [2.3 Import Shared Objects](#23-import-shared-objects)
     - [2.4 Deploy](#24-deploy)
     - [2.5 Check App Availability](#25-check-app-availability)
+- [Docker Setup (_optional_)](#docker-setup-optional)
+  - [1. Clone repository](#1-clone-repository)
+  - [2. Build Docker](#2-build-docker)
+  - [3. Verify built images](#3-verify-built-images)
+  - [4. Enter the docker](#4-enter-the-docker)
+  - [5. Add SSH private keys](#5-add-ssh-private-keys)
 - [Automated Workflow Guide](#automated-workflow-guide)
 - [Additional Related Resources](#additional-related-resources)
 
