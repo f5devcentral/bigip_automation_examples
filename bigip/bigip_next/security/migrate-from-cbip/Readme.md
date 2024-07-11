@@ -37,7 +37,7 @@ The first part of the use-case will focus on manual migration of an application,
 
 # Setup Diagram
 
-=====TODO======
+![alt text](./assets/brownfield-overview.gif)
 
 # Environment Setup
 
