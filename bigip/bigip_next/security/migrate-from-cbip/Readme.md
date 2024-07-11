@@ -41,7 +41,9 @@ The first part of the use-case will focus on manual migration of an application,
 
 # Environment Setup
 
-Before starting application migration we will need to set up environment. Environment configuration will include two steps:
+Before starting application migration we will need to set up environment. Environment configuration will include the following steps:
+
+- Docket setup (optional)
 
 - Configuration of inventory for migration source
 
@@ -49,7 +51,7 @@ Before starting application migration we will need to set up environment. Enviro
 
 ## 1. Docker Setup (_optional_)
 
-If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#). If you prefer not to use Docker, you can skip this step.
+If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
 
 ### 1.1 Clone repository
 
