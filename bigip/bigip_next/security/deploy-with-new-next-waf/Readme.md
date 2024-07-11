@@ -31,7 +31,7 @@ In this part of the guide we will take a look at a greenfield use-case where we 
 
 # Setup Diagram
 
-![alt text](./assets/greenfield-overview.gif){ style="display: block; margin: 0 auto" }
+![alt text](./assets/greenfield-overview.gif)
 
 There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). You can choose any to proceed.
 
