@@ -9,8 +9,7 @@
 - [Docker Setup (_optional_)](#docker-setup-optional)
   - [1. Clone repository](#1-clone-repository)
   - [2. Build Docker](#2-build-docker)
-  - [3. Verify built images](#3-verify-built-images)
-  - [4. Enter the docker](#4-enter-the-docker)
+  - [3. Enter Docker](#3-enter-docker)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Start Creating an App](#1-start-creating-an-app)
   - [2. Add Pool and Server](#2-add-pool-and-server)
@@ -34,7 +33,7 @@ In this part of the guide we will take a look at a greenfield use-case where we 
 
 ======TODO======
 
-There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: manual or automated flow. You can choose any to proceed.
+There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). You can choose any to proceed.
 
 # Docker Setup (_optional_)
 
