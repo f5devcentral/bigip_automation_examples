@@ -3,27 +3,35 @@ import json
 class FilterModule(object):
     def filters(self):
         return {
-            'append_waf_if_required': self.append_waf_if_required,
+            'append_object_if_required': self.append_object_if_required,
             'update_ip_if_required': self.update_ip_if_required
         }
 
-    def append_waf_if_required(self, as3_request_data, next_migration_apps, migration_waf_prefix):
+    def append_object_if_required(self, as3_request_data, next_migration_apps, migration_waf_prefix):
         as3_app_definition = json.loads(as3_request_data["content"])
-
-        # 1.as_request_data.item find in next_migration_app.json._embedded.applications.as3_preview
-        # 2. Enumerate all virtual servers in found application
-        # 3. By virtual server name add policyWAF.cm value if the first waf object if virtual server if any. Replace the /common/ with the migration prefix
 
         for migrate_app in next_migration_apps['json']['_embedded']['applications']:
             if as3_request_data['item'] == migrate_app['as3_preview']:
                 applications = self.find_node(as3_app_definition, 'Application')
                 application_node = applications[0]
                 for virtual_server in migrate_app['virtual_servers']:
-                    if len(virtual_server['waf_policies']) > 0:
+                    if len(virtual_server.get('waf_policies', [])) > 0:
                         migrate_waf_name = virtual_server['waf_policies'][0]['old_name'].replace('/Common/', migration_waf_prefix)
                         vs_name = virtual_server['name']
                         application_node[vs_name]['policyWAF'] = {
                             'cm': migrate_waf_name
+                        }
+                    if len(virtual_server.get('certificates', [])) > 0:
+                        migrate_cert_name = virtual_server['certificates'][0]['old_name'].replace('/Common/', migration_waf_prefix)
+                        node_cert_name = virtual_server['certificates'][0]['old_name'].replace('/Common/', '')
+                        application_node[node_cert_name] = {
+                           "certificate": {
+                              "cm": migrate_cert_name + ".crt"
+                            },
+                            "class": "Certificate",
+                            "privateKey": {
+                              "cm": migrate_cert_name + ".pem"
+                            }
                         }
                 break
 

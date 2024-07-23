@@ -72,11 +72,11 @@
       set_fact:
         migrate_apps: "{{ cm_apps.json | json_query(query) | reject('equalto', []) | flatten(1) }} "
       vars:
-        query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0` && length(certificates) == `0`]]"
+        query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0`]]"
 
-    - name: Extract not installed WAFs
+    - name: Extract not installed Shared Objects
       set_fact:
-        app_waf_names: "{{ migrate_apps |  waf_app_names(migrate_waf_policy_prefix) }}"
+        app_shared_objects_names: "{{ migrate_apps | shared_object_names(migrate_shared_object_prefix) }}"
 
     - name: Get Installed WAFs
       delegate_to: localhost
@@ -106,9 +106,37 @@
         query: "json._embedded.policies[].name"
       when: next_waf_total | int != 0
 
-    - name: Get Apps with missing WAFs
+    - name: Get Installed Certificates
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/api/certificate/v1/certificates?limit=10000&select=id,name,status"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+      register: next_certs_available
+
+    - name: Any Certs Available
       set_fact:
-        import_dependecies_apps: "{{ app_waf_names | get_apps_to_import_dependencies(installed_waf_names) }}"
+        next_certs_total: "{{ next_certs_available | json_query(query) | int }}"
+      vars:
+        query: "json.total"
+
+    - name: Set installed_certs_names to empty if next_certs_total is 0
+      set_fact:
+        installed_certs_names: []
+      when: next_certs_total | int == 0
+
+    - name: Filter installed Certificates names
+      set_fact:
+        installed_certs_names: "{{ next_certs_available | json_query(query) | list }}"
+      vars:
+        query: "json._embedded.certificates[].name"
+      when: next_certs_total | int != 0
+
+    - name: Get Apps with missing dependent objects
+      set_fact:
+        import_dependecies_apps: "{{ app_shared_objects_names | get_apps_to_import_dependencies(installed_waf_names, installed_certs_names) }}"
 
     - name: Prepare apps to install dependencies
       delegate_to: localhost
@@ -161,7 +189,7 @@
     - name: Save App AS3 preview files
       delegate_to: localhost
       copy:
-        content: "{{ item | append_waf_if_required(cm_apps, migrate_waf_policy_prefix) | update_ip_if_required(ip_map) }}"
+        content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
         dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
       with_items: "{{ as3_app_preview_files.results }}"
 
@@ -170,7 +198,7 @@
       uri:
         url: "https://{{  central_manager.address  }}/api/v1/spaces/default/appsvcs/documents"
         method: POST
-        body: "{{ item | append_waf_if_required(cm_apps, migrate_waf_policy_prefix) | update_ip_if_required(ip_map) }}"
+        body: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
         body_format: json
         headers:
           Authorization: "Bearer {{  access_token  }}"
