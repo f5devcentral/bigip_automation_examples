@@ -19,9 +19,9 @@
     - name: Login to the API
       delegate_to: localhost
       uri:
-        url: "https://{{  next.address  }}/api/login"
+        url: "https://{{  central_manager.address  }}/api/login"
         method: POST
-        body: '{"username": "{{  next.user  }}", "password": "{{  next.password  }}"}'
+        body: '{"username": "{{  central_manager.user  }}", "password": "{{  central_manager.password  }}"}'
         body_format: json
         headers:
           Content-Type: "application/json"
@@ -35,7 +35,7 @@
     - name: Create New Migration
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}/api/v1/migrations"
+        url: "https://{{ central_manager.address }}/api/v1/migrations"
         method: POST
         body: '{"name": "auto-migration-{{  inventory_hostname | replace(".", "-") }}-{{ 99999999 | random | to_uuid }}", "description": "Ansible Job Migration {{ "" | get_date_time }}"}'
         body_format: json
@@ -55,24 +55,24 @@
         -F "grouping_type=ip"
         --insecure
         -H "Authorization: Bearer {{ access_token }}"
-        "https://{{ next.address }}/api/v1/migrations/{{ next_migration.json.id }}/upload?async=false"
+        "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id }}/upload?async=false"
       register: result
 
     - name: Analyze application eligibility for migration
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}/api/v1/migrations/{{ next_migration.json.id }}/applications?limit={{ next.max_applications }}"
+        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id }}/applications?limit={{ central_manager.max_applications }}"
         method: GET
         headers:
           Authorization: "Bearer {{  access_token  }}"
         validate_certs: no
-      register: next_apps
+      register: cm_apps
 
     - name: Get migratable green apps
       set_fact:
-        migrate_apps: "{{ next_apps.json | json_query(query) | reject('equalto', []) | flatten(1) }} "
+        migrate_apps: "{{ cm_apps.json | json_query(query) | reject('equalto', []) | flatten(1) }} "
       vars:
-        query: "_embedded.applications[?virtual_servers[?status=='green' && length(irules) == `0` && length(certificates) == `0`]]"
+        query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0` && length(certificates) == `0`]]"
 
     - name: Extract not installed WAFs
       set_fact:
@@ -81,7 +81,7 @@
     - name: Get Installed WAFs
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}/api/waf/v1/policies"
+        url: "https://{{ central_manager.address }}/api/waf/v1/policies"
         method: GET
         headers:
           Authorization: "Bearer {{ access_token }}"
@@ -113,7 +113,7 @@
     - name: Prepare apps to install dependencies
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/bulk-stage"
+        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/bulk-stage"
         body:
           applications: "{{ import_dependecies_apps }}"
         body_format: json
@@ -127,7 +127,7 @@
     - name: Install dependencies if necessary
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/install-dependencies"
+        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/install-dependencies"
         body: '{"applications": [{{ item }}]}'
         body_format: json
         method: POST
@@ -146,7 +146,7 @@
     - name: Download each AS3 preview file
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}{{ item }}"
+        url: "https://{{ central_manager.address }}{{ item }}"
         method: GET
         return_content: yes
         headers:
@@ -161,16 +161,16 @@
     - name: Save App AS3 preview files
       delegate_to: localhost
       copy:
-        content: "{{ item | append_waf_if_required(next_apps, migrate_waf_policy_prefix) }}"
+        content: "{{ item | append_waf_if_required(cm_apps, migrate_waf_policy_prefix) | update_ip_if_required(ip_map) }}"
         dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
       with_items: "{{ as3_app_preview_files.results }}"
 
     - name: Create AS3 applications
       delegate_to: localhost
       uri:
-        url: "https://{{  next.address  }}/api/v1/spaces/default/appsvcs/documents"
+        url: "https://{{  central_manager.address  }}/api/v1/spaces/default/appsvcs/documents"
         method: POST
-        body: "{{ item | append_waf_if_required(next_apps, migrate_waf_policy_prefix) }}"
+        body: "{{ item | append_waf_if_required(cm_apps, migrate_waf_policy_prefix) | update_ip_if_required(ip_map) }}"
         body_format: json
         headers:
           Authorization: "Bearer {{  access_token  }}"
@@ -188,14 +188,10 @@
       set_fact:
         deployment_array: "{{ apps_to_id_map | create_deployment_array(deploy_tree) }}"
 
-    - name: Deploy Arr
-      debug: 
-        msg: "{{ deployment_array }}"
-
     - name: Deploy applicatiuons to destination BigIP Next
       delegate_to: localhost
       uri:
-        url: "https://{{ next.address }}/mgmt/shared/appsvcs/declare/{{item.id}}/deployments?async=false"
+        url: "https://{{ central_manager.address }}/mgmt/shared/appsvcs/declare/{{item.id}}/deployments?async=false"
         method: POST
         body:
           target: "{{item.target}}"

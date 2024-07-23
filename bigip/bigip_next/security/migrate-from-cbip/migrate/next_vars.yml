@@ -1,4 +1,4 @@
-next:
+central_manager:
   address: 10.1.1.5
   user: admin
   password: Welcome123!
@@ -9,8 +9,10 @@ migrate_app_prefix: "Common_"
 
 deploy_tree:
   ans_vs1:
-    - 10.1.1.10
+    - bigip_next: 10.1.1.10
   ans_vs2:
-    - 10.1.1.10
-    - 10.1.1.11
-    - 10.1.1.14
+    - bigip_next: 10.1.1.14
+
+ip_map:
+  10.1.20.100: 10.1.20.200
+  10.1.20.102: 10.1.20.202

@@ -7,11 +7,11 @@ class FilterModule(object):
     def create_deployment_array(self, data, tree):
         rValue = []
         for key, value in data.items():
-            ip_arr = tree.get(key, [])
-            for ip in ip_arr:
+            deploy_info = tree.get(key, [])
+            for info in deploy_info:
                 rValue.append({
                     "id": value,
-                    "target": ip
+                    "target": info["bigip_next"]
                 })
 
         return rValue
