@@ -10,7 +10,7 @@
 
   tasks:
     - name: Create UCS archive
-      raw: tmsh save sys ucs "{{  cbip_ucs_name  }}"
+      raw: tmsh save sys ucs "{{  tmos_ucs_name  }}"
 
     - name: Fetch UCS archive
       bigip_ucs_fetch:
