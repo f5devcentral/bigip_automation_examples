@@ -60,7 +60,9 @@ Before starting application migration we will need to set up environment. Enviro
 - Running Ansible playbook
 
 ====NIK=>TO BE DISCUSSED===
+
 **Note: if you are an F5 employee or contractor, you can use the blueprint with the specified parameters for the flow without necessity to replace them with your own.**
+
 ====NIK=>TO BE DISCUSSED===
 
 ## 1. Docker Setup (_optional_)
@@ -324,7 +326,7 @@ Navigate to **Applications** => **Certificates & Keys**. You will see the list o
 
 ![alt text](./assets/migrated-certs.png)
 
-Congrats! You just completed automated migration of application to BIG-IP Next.
+Congrats! You just completed automated migration of application to BIG-IP Next with its WAF Policy and certificates.
 
 # Additional Related Resources
 
