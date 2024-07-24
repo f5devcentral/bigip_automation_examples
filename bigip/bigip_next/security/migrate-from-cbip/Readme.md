@@ -137,10 +137,8 @@ ansible-playbook -i inventory.ini site.yaml
 
 Now that we have initialized and configured the environment, we can check NGINX App availability by running the command:
 
-======TODO======
-
 ```bash
-curl http://{nginx_app}/server1
+curl http://10.1.10.90/server1
 ```
 
 # Manual Workflow Guide
