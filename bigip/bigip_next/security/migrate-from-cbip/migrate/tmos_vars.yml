@@ -6,4 +6,4 @@ provider:
   validate_certs: false
   no_f5_teem: false
 
-cbip_ucs_name: ucs_backup
+tmos_ucs_name: ucs_backup

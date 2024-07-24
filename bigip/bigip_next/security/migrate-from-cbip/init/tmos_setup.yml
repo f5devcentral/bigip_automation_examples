@@ -5,10 +5,10 @@
   gather_facts: false
 
   vars_files:
-    - cbip_vars.yml
+    - tmos_vars.yml
 
   tasks:
-    - name: Add a node to the BIG-IP
+    - name: Add a node to the TMOS BIG-IP
       f5networks.f5_modules.bigip_node:
         provider: "{{  provider  }}"
         state: present
@@ -16,7 +16,7 @@
         host: "{{ node_ip }}"
       delegate_to: localhost
 
-    - name: Create a pool on the BIG-IP
+    - name: Create a pool on the TMOS BIG-IP
       f5networks.f5_modules.bigip_pool:
         provider: "{{  provider  }}"
         state: present
@@ -39,7 +39,7 @@
         state: "enabled"
       delegate_to: localhost
 
-    - name: Create a virtual server on the BIG-IP
+    - name: Create a virtual server on the TMOS BIG-IP
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{  provider  }}"
         state: present

@@ -1,12 +1,12 @@
 ---
 - name: Download UCS from CBIP
-  hosts: cbip
+  hosts: tmos
   gather_facts: false
   collections:
     - f5networks.f5_modules
 
   vars_files:
-    - cbip_vars.yml
+    - tmos_vars.yml
 
   tasks:
     - name: Create UCS archive
@@ -14,7 +14,7 @@
 
     - name: Fetch UCS archive
       bigip_ucs_fetch:
-        src: "{{  cbip_ucs_name  }}.ucs"
-        dest: "/tmp/{{  cbip_ucs_name  }}_{{  inventory_hostname  }}.ucs"
+        src: "{{  tmos_ucs_name  }}.ucs"
+        dest: "/tmp/{{  tmos_ucs_name  }}_{{  inventory_hostname  }}.ucs"
         provider: "{{  provider  }}"
       delegate_to: localhost

@@ -1,14 +1,14 @@
 ---
 - name: Request CBIP Masterkey
-  hosts: cbip
+  hosts: tmos
   gather_facts: false
 
   vars_files:
-    - cbip_vars.yml
+    - tmos_vars.yml
     - next_vars.yml
 
   tasks:
-    - name: Get CBIP Masterkey
+    - name: Get TMOS BIG-IP Masterkey
       raw: f5mku -K
       register: f5kmu_output
 
@@ -50,7 +50,7 @@
       delegate_to: localhost
       shell: >
         curl -X POST
-        -F "ucs_file=@/tmp/{{  cbip_ucs_name  }}_{{  inventory_hostname  }}.ucs"
+        -F "ucs_file=@/tmp/{{  tmos_ucs_name  }}_{{  inventory_hostname  }}.ucs"
         -F "master_key={{ master_key }}"
         -F "grouping_type=ip"
         --insecure

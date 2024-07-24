@@ -8,7 +8,7 @@
   gather_facts: false
 
   vars_files:
-    - cbip_vars.yml
+    - tmos_vars.yml
 
   tasks:
     - name: Create LTM policy to attach ASM policy

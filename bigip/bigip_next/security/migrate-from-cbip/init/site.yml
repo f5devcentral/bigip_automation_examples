@@ -6,11 +6,11 @@
 - name: Configure NGINX application
   import_playbook: app_install.yml
 
-- name: Setup CBIP virtual server routine
-  import_playbook: cbip_setup.yml
+- name: Setup TMOS virtual server routine
+  import_playbook: tmos_setup.yml
 
 - name: Attach policy
-  import_playbook: cbip_policy.yml
+  import_playbook: tmos_policy.yml
 
-- name: Check BIG-IP is setup correctly and app is available
-  import_playbook: cbip_app_ping.yml
+- name: Check TMOS BIG-IP is setup correctly and app is available
+  import_playbook: tmos_app_ping.yml

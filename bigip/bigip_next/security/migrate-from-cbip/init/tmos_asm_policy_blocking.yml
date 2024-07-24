@@ -1,11 +1,11 @@
 ---
 - name: AWAF Policy manage
   gather_facts: false
-  hosts: cbip
+  hosts: tmos
   connection: httpapi
 
   vars_files:
-    - cbip_vars.yml
+    - tmos_vars.yml
 
   vars:
     ansible_host: "{{ provider.server }}"
