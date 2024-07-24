@@ -45,7 +45,7 @@ Clone and install the repository: https://github.com/f5devcentral/bigip_automati
 
 ## 2. Build Docker
 
-Enter the folder `bigip/bigip_next/security/migrate-from-cbip/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
+Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
 
 ```bash
 sh ./build.sh
