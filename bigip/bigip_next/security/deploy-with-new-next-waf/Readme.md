@@ -35,9 +35,20 @@ This guide provides manual walk-through steps and automated Terraform scripts fo
 
 There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). The Terraform scripts automate the same steps as in the manual flow. 
 
-# Docker Setup (_optional_)
+# Environment & Pre-requisites
 
-If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+You may use your own environment with BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
+
+- BIG-IP NEXT Instance(s), where we will deploy the new app config
+
+- BIG-IP NEXT Central Manager, which we will use for configuring the app and WAF Policy
+
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP NEXT CM.
+On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Terraform, etc.) 
+
+**Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: "NEXT WAF/Access - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+
+# Docker Setup (_optional_)
 
 ## 1. Clone repository
 
