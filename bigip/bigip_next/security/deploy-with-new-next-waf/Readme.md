@@ -5,17 +5,63 @@
 - [Deploy a New App to BIG-IP Next with Next WAF Policy](#deploy-a-new-app-to-big-ip-next-with-next-waf-policy)
 - [Table of Contents](#table-of-contents)
 - [Overview](#overview)
-- [1. Start Creating an App](#1-start-creating-an-app)
-- [2. Add Pool and Server](#2-add-pool-and-server)
-- [3. Create WAF Security Policy](#3-create-waf-security-policy)
-- [4. Add Pool Member](#4-add-pool-member)
-- [5. Validate and Deploy](#5-validate-and-deploy)
+- [Setup Diagram](#setup-diagram)
+- [Docker Setup (_optional_)](#docker-setup-optional)
+  - [1. Clone repository](#1-clone-repository)
+  - [2. Build Docker](#2-build-docker)
+  - [3. Enter Docker](#3-enter-docker)
+- [Manual Workflow Guide](#manual-workflow-guide)
+  - [1. Start Creating an App](#1-start-creating-an-app)
+  - [2. Add Pool and Server](#2-add-pool-and-server)
+  - [3. Create WAF Security Policy](#3-create-waf-security-policy)
+  - [4. Add Pool Member](#4-add-pool-member)
+  - [5. Validate and Deploy](#5-validate-and-deploy)
+- [Automated Workflow Guide](#automated-workflow-guide)
+  - [1. Prerequisites](#1-prerequisites)
+  - [2. Add access creds for BIG-IP Next](#2-add-access-creds-for-big-ip-next)
+  - [3. Initialize terraform](#3-initialize-terraform)
+  - [4. Preview app and security policy config (_optional_)](#4-preview-app-and-security-policy-config-optional)
+  - [5. Deploy app and security policy](#5-deploy-app-and-security-policy)
+  - [6. Verify the deployed app with its policy](#6-verify-the-deployed-app-with-its-policy)
+- [Additional Related Resources](#additional-related-resources)
 
 # Overview
 
 In this part of the guide we will take a look at a greenfield use-case where we will deploy an app to BIG-IP Next, as well as create a WAF Policy for it. We will be using BIG-IP Next Central Manager that will let us experience the ease of all deployment process and the possibility to configure Next WAF policy in blocking mode right in the process of its creation.
 
-# 1. Start Creating an App
+# Setup Diagram
+
+![alt text](./assets/greenfield-overview.gif)
+
+There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). You can choose any to proceed.
+
+# Docker Setup (_optional_)
+
+If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+
+## 1. Clone repository
+
+Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
+
+## 2. Build Docker
+
+Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
+
+```bash
+sh ./build.sh
+```
+
+## 3. Enter Docker
+
+Enter the docker by running the command:
+
+```bash
+sh ./run.sh
+```
+
+# Manual Workflow Guide
+
+## 1. Start Creating an App
 
 Log in BIG-IP Next Central Manager and proceed to **Application Workspace**.
 
@@ -33,7 +79,7 @@ You can type in a description for the application service and move on.
 
 ![alt text](./assets/app-description.png)
 
-# 2. Add Pool and Server
+## 2. Add Pool and Server
 
 Next, we will add a pool and virtual server. Navigate to the **Pools** tab and click the **Create** tab.
 
@@ -47,7 +93,7 @@ Give virtual server a name, select the pool we've just added in the drop-down me
 
 ![alt text](./assets/create-security-policy.png)
 
-# 3. Create WAF Security Policy
+## 3. Create WAF Security Policy
 
 First, we need to enable using WAF Policy using the toggle. Next, click the **Create** button which will open WAF Policy configuration form.
 
@@ -69,7 +115,7 @@ After that, we will specify deployment instance. CLick the **Start Adding** butt
 
 ![alt text](./assets/select-bigipnext-instance.png)
 
-# 4. Add Pool Member
+## 4. Add Pool Member
 
 Finally, in order to specify deployment instance, we will add a pool member. Open the drop-down menu under **Members** and select adding a pool member.
 
@@ -79,7 +125,7 @@ In the opened configuration window add a row and fill it in by giving pool membe
 
 ![alt text](./assets/member-config.png)
 
-# 5. Validate and Deploy
+## 5. Validate and Deploy
 
 Back on the deployment instance page, the configured pool member will appear in the table. Fill in instance virtual address and click the **Validate All** button. This will start the process of validating all the configuration before deployment.
 
@@ -98,3 +144,70 @@ As soon as the deployment process is over, you will see a notification in the lo
 ![alt text](./assets/deployment-complete.png)
 
 Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager let us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
+
+# Automated Workflow Guide
+
+## 1. Prerequisites
+
+- Clone and install the repository https://github.com/f5devcentral/bigip_automation_examples.git if you haven't done so yet
+- Access to BIG-IP Central Manager
+- CLI tool to run commands
+- Setup Docker (_optional but recommended_)
+
+## 2. Add access creds for BIG-IP Next
+
+First, you need to enter the `input.tfvars` file and specify your own variables:
+
+- Central Manager address (`cm`),
+- username and password to access Central Manager,
+- BIG-IP Next address (`target`).
+
+Then you can go to the `app-as3.json` file which is an AS3 definition of app to be deployed and contains all app info for the deployment and update app info if needed.
+
+Lastly, you can update security policy info if needed in the `policy.json` file that contains security policy to be deployed for the app. Note that the policy specified in the file will be deployed in blocking mode.
+
+## 3. Initialize terraform
+
+In the CLI run the following command to initialize terraform:
+
+```bash
+terraform init
+```
+
+## 4. Preview app and security policy config (_optional_)
+
+Run the following command to preview the changes that Terraform will execute: the app to be created and security policy with its configuration.
+
+```bash
+terraform plan -var-file=input.tfvars
+```
+
+## 5. Deploy app and security policy
+
+Run the following command to create and deploy the app and security policy:
+
+```bash
+terraform apply -var-file=input.tfvars
+```
+
+## 6. Verify the deployed app with its policy
+
+Log in your Central Manager and navigate to the **Application Workspace**.
+
+![alt text](./assets/cm-navigate.png)
+
+You will see a newly deployed app with its details: health status, locations/instances and security policies.
+
+![alt text](./assets/greenfield-deployed-app.png)
+
+Next, we will take a look at the created security policy. Navigate to the **Security** tab and proceed to **Policies** under the **WAF** section.
+
+![alt text](./assets/created-policy-greenfield.png)
+
+Finally, we can drill down into the created policy details. Click on the policy to proceed.
+
+![alt text](./assets/policy-details.png)
+
+# Additional Related Resources
+
+=======TODO========

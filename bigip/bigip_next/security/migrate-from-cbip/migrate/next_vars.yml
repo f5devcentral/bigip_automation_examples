@@ -1,7 +1,0 @@
-next:
-  address: 10.1.1.5
-  user: admin
-  password: Welcome123!
-  max_applications: 10000
-
-migrate_waf_policy_prefix: "migrated_"
