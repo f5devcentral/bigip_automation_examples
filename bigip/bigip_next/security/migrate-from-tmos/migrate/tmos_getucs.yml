@@ -1,5 +1,5 @@
 ---
-- name: Download UCS from CBIP
+- name: Download UCS from TMOS
   hosts: tmos
   gather_facts: false
   collections:

@@ -1,5 +1,5 @@
 ---
-- name: Request CBIP Masterkey
+- name: Request TMOS Masterkey
   hosts: tmos
   gather_facts: false
 
@@ -209,7 +209,7 @@
       register: documents
 
     - name: Map applications to document ids
-      set_fact: 
+      set_fact:
         apps_to_id_map: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
 
     - name: Create Deployment array by tree
@@ -225,8 +225,8 @@
           target: "{{item.target}}"
         body_format: json
         headers:
-           Authorization: "Bearer {{  access_token  }}"
-           Content-Type: "application/json"
+          Authorization: "Bearer {{  access_token  }}"
+          Content-Type: "application/json"
         validate_certs: false
         status_code: 202
       loop: "{{ deployment_array }}"

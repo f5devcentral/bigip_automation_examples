@@ -35,8 +35,8 @@ USER ubuntu
 RUN ssh-keygen -t rsa -q -f "$HOME/.ssh/id_rsa" -N ""
 RUN touch "$HOME/.ssh/cm-key"
 RUN chmod 600 "$HOME/.ssh/cm-key"
-RUN touch "$HOME/.ssh/cbip-key"
-RUN chmod 600 "$HOME/.ssh/cbip-key"
+RUN touch "$HOME/.ssh/tmos-key"
+RUN chmod 600 "$HOME/.ssh/tmos-key"
 
 # Switch to the home directory and clone the sources
 WORKDIR /home/ubuntu

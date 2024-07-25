@@ -1,6 +1,6 @@
 ---
 - name: Create ASM policy
-  import_playbook: cbip_asm_policy_blocking.yml
+  import_playbook: tmos_asm_policy_blocking.yml
 
 - name: Attach Policy to Virtual Server
   hosts: localhost
