@@ -1,0 +1,44 @@
+---
+- name: Create ASM policy
+  import_playbook: tmos_asm_policy_blocking.yml
+
+- name: Attach Policy to Virtual Server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - tmos_vars.yml
+
+  tasks:
+    - name: Create LTM policy to attach ASM policy
+      f5networks.f5_modules.bigip_policy:
+        provider: "{{  provider  }}"
+        name: "{{ ltm_policy_name }}"
+        partition: "Common"
+        strategy: first
+        state: present
+
+    - name: Add rule to LTM policy to enable ASM policy
+      f5networks.f5_modules.bigip_policy_rule:
+        provider: "{{  provider  }}"
+        name: "enable_asm"
+        policy: "{{ ltm_policy_name }}"
+        partition: "Common"
+        conditions:
+          - type: all_traffic
+        actions:
+          - type: enable
+            asm_policy: "{{ asm_policy_name }}"
+        state: present
+
+    - name: Attach ASM policy to the virtual servers via LTM policy
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ item.name }}"
+        partition: "Common"
+        policies:
+          - "{{  ltm_policy_name  }}"
+        state: "present"
+      delegate_to: localhost
+      with_items: "{{ virtual_server }}"
