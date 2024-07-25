@@ -53,7 +53,7 @@ The first part of this guide will focus on *manual* migration of an application,
 
 # Environment & Pre-requisites
 
-You may use your own environment where, as a pre-requisite, you need to have at a minimum:
+You may use your own environment with BIG-IP TMOS and BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
 
 - BIG-IP TMOS v16 or v17, where we will deploy a sample app virtual server and WAF policy for migration
 
@@ -61,7 +61,10 @@ You may use your own environment where, as a pre-requisite, you need to have at 
 
 - BIG-IP NEXT Central Manager, which we will use for migrating the virtual servers to NEXT instances and WAF Policy config
 
-**Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: --TBC-- with the specified parameters for the flow without the need to replace them with your own.**
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP instances: BIG-IP TMOS, BIG-IP CM. 
+On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.) 
+
+**Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: "NEXT WAF/Access - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 Before starting application migration we will need to set up our environment. Environment configuration will include the following steps:
 
@@ -73,7 +76,7 @@ Before starting application migration we will need to set up our environment. En
 
 ## 1. Docker Setup (_optional_)
 
-If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
 
 ### 1.1 Clone repository
 
