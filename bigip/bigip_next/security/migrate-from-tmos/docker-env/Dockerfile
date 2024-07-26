@@ -33,13 +33,20 @@ USER ubuntu
 
 # Create the SSH keys
 RUN mkdir "$HOME/.ssh"
-RUN touch "$HOME/.ssh/cm-key"
-RUN chmod 600 "$HOME/.ssh/cm-key"
-RUN touch "$HOME/.ssh/tmos-key"
-RUN chmod 600 "$HOME/.ssh/tmos-key"
+
+# Switch back to root to copy the SSH keys and adjust permissions
+USER root
 
 # Copy current .ssh to docker
 COPY ./keys/* "/home/ubuntu/.ssh/"
+
+# Change ownership and permissions of the copied files
+RUN chown -R ubuntu:ubuntu /home/ubuntu/.ssh && \
+    chmod 700 /home/ubuntu/.ssh && \
+    chmod 600 /home/ubuntu/.ssh/*
+
+# Switch back to the 'ubuntu' user
+USER ubuntu
 
 # Switch to the home directory and clone the sources
 WORKDIR /home/ubuntu
