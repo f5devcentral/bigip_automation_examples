@@ -1,8 +1,5 @@
-pushd
-cd ~/.ssh
-ssh-keygen -y -f id_rsa > id_rsa.pub
-cat id_rsa.pub >> authorized_keys
-popd
+ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 mkdir keys
-cp ~/.ssh/* ./keys
+cp -r  ~/.ssh/* ./keys
