@@ -8,6 +8,13 @@
     - tmos_vars.yml
 
   tasks:
+    - name: Enable Application Security
+      f5networks.f5_modules.bigip_provision:
+        provider: "{{  provider  }}"
+        module: asm
+      delegate_to: localhost
+
+
     - name: Add a node to the TMOS BIG-IP
       f5networks.f5_modules.bigip_node:
         provider: "{{  provider  }}"
