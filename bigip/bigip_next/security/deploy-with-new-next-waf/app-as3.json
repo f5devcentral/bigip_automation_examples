@@ -12,7 +12,7 @@
             "serviceMain": {
                 "class": "Service_HTTP",
                 "virtualAddresses": [
-                    "10.0.12.10"
+                    "10.1.10.93"
                 ],
                 "pool": "waf_greenfield_demo_pool",
                 "policyWAF": {
@@ -28,8 +28,7 @@
                     {
                         "servicePort": 80,
                         "serverAddresses": [
-                            "192.0.2.100",
-                            "192.0.2.110"
+                            "10.1.20.102"
                         ]
                     }
                 ]

@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Disable interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,13 +10,13 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     lsb-release \
     nano \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Ansible
 RUN apt-add-repository --yes --update ppa:ansible/ansible \
     && apt-get update \
-    && apt-get install -y ansible \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y ansible
 
 # Install Terraform
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \

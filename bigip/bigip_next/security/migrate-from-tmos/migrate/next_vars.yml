@@ -1,7 +1,7 @@
 central_manager:
   address: 10.1.1.5
   user: admin
-  password: Welcome1234567!
+  password: Welcome123!
   max_applications: 10000
 
 migrate_shared_object_prefix: "migrated_"
@@ -14,5 +14,5 @@ deploy_tree:
     - bigip_next: 10.1.1.11
 
 ip_map:
-  10.1.10.90: 10.2.10.90
-  10.1.10.91: 10.2.10.91
+  10.1.10.90: 10.1.10.190
+  10.1.10.91: 10.1.10.191
