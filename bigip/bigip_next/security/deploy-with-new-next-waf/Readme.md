@@ -2,10 +2,11 @@
 
 # Table of Contents
 
-- [Deploy a New App to BIG-IP Next with Next WAF Policy](#deploy-a-new-app-to-big-ip-next-with-next-waf-policy)
+- [Deploy and Protect a New App on BIG-IP Next with Security Policy](#deploy-and-protect-a-new-app-on-big-ip-next-with-security-policy)
 - [Table of Contents](#table-of-contents)
 - [Overview](#overview)
 - [Setup Diagram](#setup-diagram)
+- [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Docker Setup (_optional_)](#docker-setup-optional)
   - [1. Clone repository](#1-clone-repository)
   - [2. Build Docker](#2-build-docker)
@@ -15,7 +16,8 @@
   - [2. Add Pool and Server](#2-add-pool-and-server)
   - [3. Create WAF Security Policy](#3-create-waf-security-policy)
   - [4. Add Pool Member](#4-add-pool-member)
-  - [5. Validate and Deploy](#5-validate-and-deploy)
+  - [5. Deploy App](#5-deploy-app)
+  - [6. Validate App](#6-validate-app)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
   - [2. Add access creds for BIG-IP Next](#2-add-access-creds-for-big-ip-next)
@@ -33,7 +35,7 @@ This guide provides manual walk-through steps and automated Terraform scripts fo
 
 ![alt text](./assets/greenfield-overview.gif)
 
-There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). The Terraform scripts automate the same steps as in the manual flow. 
+There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). The Terraform scripts automate the same steps as in the manual flow.
 
 # Environment & Pre-requisites
 
@@ -44,7 +46,7 @@ You may use your own environment with BIG-IP NEXT, in which, as a pre-requisite,
 - BIG-IP NEXT Central Manager, which we will use for configuring the app and WAF Policy
 
 For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP NEXT CM.
-On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Terraform, etc.) 
+On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Terraform, etc.)
 
 **Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: "NEXT WAF/Access - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
@@ -128,17 +130,17 @@ After that, we will specify the deployment instance. CLick the **Start Adding** 
 
 ## 4. Add Pool Member
 
-Finally, in order to specify the deployment instance, we will add a pool member. Open the drop-down menu under **Members** and select adding a pool member.
+First, specify **10.1.10.94** virtual address. Then, in order to specify the deployment instance, we will add a pool member. Open the drop-down menu under **Members** and select adding a pool member.
 
 ![alt text](./assets/pool-member.png)
 
-In the opened configuration window add a row and fill it in by giving the pool member a name and specifying the IP Address.
+In the opened configuration window add a row and fill it in by giving the pool member a name and specifying the **10.1.10.102** IP Address.
 
 ![alt text](./assets/member-config.png)
 
-## 5. Validate and Deploy
+## 5. Deploy App
 
-Back on the deployment instance page, the configured pool member will appear in the table. Fill in the instance virtual address and click the **Validate All** button. This will start the process of validating all the configurations before deployment.
+Back on the deployment instance page, the configured pool member will appear in the table. Click the **Validate All** button. This will start the process of validating all the configurations before deployment.
 
 ![alt text](./assets/validate-all.png)
 
@@ -154,7 +156,23 @@ As soon as the deployment process is over, you will see a notification in the lo
 
 ![alt text](./assets/deployment-complete.png)
 
-Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager let us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
+## 6. Validate App
+
+You can validate the app by running the following commands:
+
+```bash
+curl http://10.1.10.94/server1
+```
+
+```bash
+curl http://10.1.10.94/server2
+```
+
+```bash
+curl http://10.1.10.94/server10
+```
+
+Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager lets us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
 
 # Automated Workflow Guide
 
@@ -173,7 +191,7 @@ First, you need to enter the `input.tfvars` file and specify your own variables:
 - username and password to access Central Manager,
 - BIG-IP Next address (`target`).
 
-Then you can go to the `app-as3.json` file which is an AS3 definition of the app to be deployed and contains all app info for the deployment and update app info if needed.
+Then you go to the `app-as3.json` file which is an AS3 definition of the app to be deployed and contains all app info for the deployment. Update app info as needed. Note that `virtualAddresses` is where the app will be deployed, and `serverAddresses` is the routing address of the app.
 
 Lastly, you can update security policy info, if needed, in the `policy.json` file containing the security policy to be deployed for the app. Note that the policy specified in the file will be deployed in blocking mode.
 
@@ -203,7 +221,21 @@ terraform apply -var-file=input.tfvars
 
 ## 6. Verify the deployed app with its policy
 
-Log into your Central Manager and navigate to the **Application Workspace**.
+First, let's verify the app by running the following commands:
+
+```bash
+curl http://10.1.10.93/server1
+```
+
+```bash
+curl http://10.1.10.93/server2
+```
+
+```bash
+curl http://10.1.10.93/server3
+```
+
+Next, log into your Central Manager and navigate to the **Application Workspace**.
 
 ![alt text](./assets/cm-navigate.png)
 

@@ -2,19 +2,32 @@
 
 # Table of Contents
 
+- [Migrate Apps from BIG-IP TMOS to BIG-IP Next with Security Policy](#migrate-apps-from-big-ip-tmos-to-big-ip-next-with-security-policy)
 - [Table of Contents](#table-of-contents)
 - [Overview](#overview)
 - [Setup Diagram](#setup-diagram)
-- [Environment Setup](#environment-setup)
+- [Environment \& Pre-requisites](#environment--pre-requisites)
+  - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+    - [1. Deploy Blueprint](#1-deploy-blueprint)
+    - [2. Copy SSH External](#2-copy-ssh-external)
+    - [3. Enter Blueprint](#3-enter-blueprint)
+    - [4. Clone Repository](#4-clone-repository)
+    - [5. Create Local Key Folder](#5-create-local-key-folder)
+    - [6. Build Docker](#6-build-docker)
+    - [7. Install Dependencies](#7-install-dependencies)
+    - [8. Infrastructure Configuration](#8-infrastructure-configuration)
+    - [9. Validate NGINX App and TMOS](#9-validate-nginx-app-and-tmos)
   - [1. Docker Setup (_optional_)](#1-docker-setup-optional)
     - [1.1 Clone repository](#11-clone-repository)
     - [1.2 Build Docker](#12-build-docker)
     - [1.3 Enter Docker](#13-enter-docker)
     - [1.4 Add SSH private keys](#14-add-ssh-private-keys)
+    - [1.5 Create Key Folder](#15-create-key-folder)
   - [2. Inventory Setup](#2-inventory-setup)
-  - [3. Install Dependencies](#3-install-dependencies)
-  - [4. Environment Configuration](#4-environment-configuration)
-  - [5. Validate NGINX App](#5-validate-nginx-app)
+  - [3. Initialize BIG-IP](#3-initialize-big-ip)
+  - [4. Install Dependencies](#4-install-dependencies)
+  - [5. Infrastructure Configuration](#5-infrastructure-configuration)
+  - [6. Validate NGINX App](#6-validate-nginx-app)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
@@ -39,7 +52,7 @@
 
 This guide showcases migration of an app with a configured WAF policy from TMOS to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager accelerates app migration and provides management of your BIG-IP Next infrastructure and app services. We will perform the app migration of virtual server(s) together with the configured security profiles: WAF, Bot, DDoS.
 
-The first part of this guide will focus on *manual* migration of an application, while the second part focuses on the *automation* scripts of the migration and config steps:
+The first part of this guide will focus on _manual_ migration of an application, while the second part focuses on the _automation_ scripts of the migration and config steps:
 
 - Set up environment for migration including inventory configuration for migration source and running Ansible playbook.
 
@@ -61,10 +74,8 @@ You may use your own environment with BIG-IP TMOS and BIG-IP NEXT, in which, as 
 
 - BIG-IP NEXT Central Manager, which we will use for migrating the virtual servers to NEXT instances and WAF Policy config
 
-For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP instances: BIG-IP TMOS, BIG-IP CM. 
-On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.) 
-
-**Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: "NEXT WAF/Access - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP instances: BIG-IP TMOS, BIG-IP CM.
+On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.)
 
 Before starting application migration we will need to set up our environment. Environment configuration will include the following steps:
 
@@ -73,6 +84,92 @@ Before starting application migration we will need to set up our environment. En
 - Configuration of inventory for migration source
 
 - Running Ansible playbook
+
+## Blueprint Setup _(for F5 employees or customers with access to UDF)_
+
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint flow as the foundation for your environment: "NEXT WAF- Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+
+### 1. Deploy Blueprint
+
+Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy it.
+
+![alt text](./assets/deploy-blueprint.png)
+
+### 2. Copy SSH External
+
+After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
+
+![alt text](./assets/ubuntu-jump-host.png)
+
+Go to the **Access Methods** tab and copy the SSH external:
+
+![alt text](./assets/copy-ssh.png)
+
+### 3. Enter Blueprint
+
+Next, enter Blueprint using your SSH key via command line interface. You can use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh) on accessing the object via SSH.
+
+### 4. Clone Repository
+
+After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
+
+### 5. Create Local Key Folder
+
+Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
+
+```bash
+./init.sh
+```
+
+You can verify that the folder with the keys has been created.
+
+### 6. Build Docker
+
+Next, we will build Docker. Note that executing this command can take some time.
+
+```bash
+./build.sh
+```
+
+### 7. Install Dependencies
+
+Install dependencies to install the collections and libraries required in Ansible playbook by running the following command:
+
+```bash
+install-prerequisites.sh
+```
+
+### 8. Infrastructure Configuration
+
+Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
+
+```bash
+ansible-playbook -i inventory.ini site.yaml
+```
+
+### 9. Validate NGINX App and TMOS
+
+Let's verify the app is up and running:
+
+```bash
+curl http://10.1.20.102/server1
+```
+
+```bash
+curl http://10.1.20.102/server2
+```
+
+Verify TMOS routing by running the following commands:
+
+```bash
+curl http://10.1.10.90/server1
+```
+
+```bash
+curl http://10.1.10.91/server1
+```
+
+Congrats! We have just completed configuration of infrastructure that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide to migrate app from BIG-IP TMOS to BIG-IP Next.
 
 ## 1. Docker Setup (_optional_)
 
@@ -104,19 +201,29 @@ You will see a list of files. Enter the `.ssh`.
 
 Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
 
-Inside the `.ssh`, you will see `tmos-key` for private key to access TMOS and `cm-key` for key to access Central Manager.
+Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
 
-Enter the `tmos-key` file by running th following command and fill in the key:
-
-```bash
-nano tmos-key
-```
-
-Enter the `cm-key` file by running the following command and fill in the key:
+Enter the `tmos_key` file by running th following command and fill in the key:
 
 ```bash
-nano cm-key
+nano tmos_key
 ```
+
+Enter the `cm_key` file by running the following command and fill in the key:
+
+```bash
+nano cm_key
+```
+
+### 1.5 Create Key Folder
+
+Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
+
+```bash
+sh ./init.sh
+```
+
+You can verify that the folder with the keys has been created.
 
 ## 2. Inventory Setup
 
@@ -126,28 +233,48 @@ Let's start with inventory configuration for the migration source. Go to the inv
  inventory.ini
 ```
 
-## 3. Install Dependencies
+## 3. Initialize BIG-IP
 
-If you are not using the Docker flow, you will need to execute the following:
+Go to the `tmos_vars.yml` and update the values to resolve the app as needed.
+
+## 4. Install Dependencies
+
+If you are not using the Docker flow, you will need to execute the following to install the collections and libraries required in Ansible playbook:
 
 ```bash
 install-prerequisites.sh
 ```
 
-## 4. Environment Configuration
+## 5. Infrastructure Configuration
 
 Next, we will run the following command to configure the source TMOS virtual server, attach the WAF policy and validate if BIG-IP is setup correctly and the app is available.
 
-```bach
+```bash
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-## 5. Validate NGINX App
+## 6. Validate NGINX App
 
-Now that we have initialized and configured the environment, we can check NGINX App availability by running the command:
+Now that we have initialized and configured the infrastructure, we can check NGINX App availability and TMOS by running the commands:
+
+For the app:
+
+```bash
+curl http://10.1.20.102/server1
+```
+
+```bash
+curl http://10.1.20.102/server2
+```
+
+For TMOS:
 
 ```bash
 curl http://10.1.10.90/server1
+```
+
+```bash
+curl http://10.1.10.91/server1
 ```
 
 # Manual Workflow Guide
