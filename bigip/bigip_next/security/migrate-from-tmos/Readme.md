@@ -1,3 +1,5 @@
+# Migrate Apps from BIG-IP TMOS to BIG-IP Next with Security Policy
+
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -35,9 +37,9 @@
 
 # Overview
 
-This guide showcases migration of an app with a configured WAF policy from TMOS to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager lets us reduce mean time needed for migration of application services. Migration with it runs fast and straightforward, it allows us to migrate our apps with their configured security profiles: WAF, Bot, DDoS.
+This guide showcases migration of an app with a configured WAF policy from TMOS to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager accelerates app migration and provides management of your BIG-IP Next infrastructure and app services. We will perform the app migration of virtual server(s) together with the configured security profiles: WAF, Bot, DDoS.
 
-The first part of the use-case will focus on manual migration of an application, whereas the second one - on automatic way to do that. In the course of the guide we will:
+The first part of this guide will focus on *manual* migration of an application, while the second part focuses on the *automation* scripts of the migration and config steps:
 
 - Set up environment for migration including inventory configuration for migration source and running Ansible playbook.
 
@@ -49,25 +51,32 @@ The first part of the use-case will focus on manual migration of an application,
 
 ![alt text](./assets/brownfield-overview.gif)
 
-# Environment Setup
+# Environment & Pre-requisites
 
-Before starting application migration we will need to set up environment. Environment configuration will include the following steps:
+You may use your own environment with BIG-IP TMOS and BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
 
-- Docket setup (optional)
+- BIG-IP TMOS v16 or v17, where we will deploy a sample app virtual server and WAF policy for migration
+
+- BIG-IP NEXT Instance(s), where we will deploy the migrated app config
+
+- BIG-IP NEXT Central Manager, which we will use for migrating the virtual servers to NEXT instances and WAF Policy config
+
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP instances: BIG-IP TMOS, BIG-IP CM. 
+On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.) 
+
+**Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: "NEXT WAF/Access - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+
+Before starting application migration we will need to set up our environment. Environment configuration will include the following steps:
+
+- Docker setup (optional)
 
 - Configuration of inventory for migration source
 
 - Running Ansible playbook
 
-====NIK=>TO BE DISCUSSED===
-
-**Note: if you are an F5 employee or contractor, you can use the blueprint with the specified parameters for the flow without necessity to replace them with your own.**
-
-====NIK=>TO BE DISCUSSED===
-
 ## 1. Docker Setup (_optional_)
 
-If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
 
 ### 1.1 Clone repository
 
@@ -111,7 +120,7 @@ nano cm-key
 
 ## 2. Inventory Setup
 
-Let's start with inventory configuration for migration source. Go to the inventory file and specify application and TMOS IDs:
+Let's start with inventory configuration for the migration source. Go to the inventory file and specify application and TMOS IDs:
 
 ```bash
  inventory.ini
@@ -127,7 +136,7 @@ install-prerequisites.sh
 
 ## 4. Environment Configuration
 
-Next, we will run the following command to configure the source TMOS virtual server, attach WAF policy and validate if BIG-IP is setup correctly and the app is available.
+Next, we will run the following command to configure the source TMOS virtual server, attach the WAF policy and validate if BIG-IP is setup correctly and the app is available.
 
 ```bach
 ansible-playbook -i inventory.ini site.yaml
@@ -143,7 +152,7 @@ curl http://10.1.10.90/server1
 
 # Manual Workflow Guide
 
-In this part of our guide we will showcase a brownfield use case for app manual migration from TMOS to BIG-IP Next. Since migration covers WAF policies, in the course of migration we will see how easy and fast it is to migrate an app with a configured WAF policy using BIG-IP Next Central Manager. In order to manually migrate an app with WAF policy we will:
+In this part we will provide manual steps with the associated screens for a "brownfield" use-case, i.e. a migration of an existing application from TMOS to BIG-IP Next. Using BIG-IP Next Central Manager ensures migration of configuration options such as WAF policies. The following steps will demonstrate the manual migration process:
 
 - Get BIG-IP UCS Archive
 - Upload UCS Archive into BIG-IP Next Central Manager
@@ -155,7 +164,7 @@ In this part of our guide we will showcase a brownfield use case for app manual 
 
 First, we will get a UCS archive that contains the source TMOS application services and then import it into BIG-IP Next Central Manager. This will let us view and deploy the app to BIG-IP Next in further steps.
 
-Log in your BIG-IP Configuration Utility and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
+Log into your BIG-IP TMOS instance and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
 
 ![alt text](./assets/create-ucs.png)
 

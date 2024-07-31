@@ -1,4 +1,4 @@
-# Deploy a New App to BIG-IP Next with Next WAF Policy
+# Deploy and Protect a New App on BIG-IP Next with Security Policy
 
 # Table of Contents
 
@@ -27,17 +27,28 @@
 
 # Overview
 
-In this part of the guide we will take a look at a greenfield use-case where we will deploy an app to BIG-IP Next, as well as create a WAF Policy for it. We will be using BIG-IP Next Central Manager that will let us experience the ease of all deployment process and the possibility to configure Next WAF policy in blocking mode right in the process of its creation.
+This guide provides manual walk-through steps and automated Terraform scripts for a "greenfield deployment" of an app to BIG-IP Next. Using BIG-IP Next Central Manager (CM) we will also protect this application with a WAF Policy in blocking mode. You may leverage the provided sample application by using the included Docker.
 
 # Setup Diagram
 
 ![alt text](./assets/greenfield-overview.gif)
 
-There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). You can choose any to proceed.
+There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy covered by this guide: [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide). The Terraform scripts automate the same steps as in the manual flow. 
+
+# Environment & Pre-requisites
+
+You may use your own environment with BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
+
+- BIG-IP NEXT Instance(s), where we will deploy the new app config
+
+- BIG-IP NEXT Central Manager, which we will use for configuring the app and WAF Policy
+
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP NEXT CM.
+On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Terraform, etc.) 
+
+**Note: if you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint as the foundation for your environment: "NEXT WAF/Access - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 # Docker Setup (_optional_)
-
-If you prefer to not install everything locally but rather use Docker, follow the steps below. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
 
 ## 1. Clone repository
 
@@ -45,7 +56,7 @@ Clone and install the repository: https://github.com/f5devcentral/bigip_automati
 
 ## 2. Build Docker
 
-Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
+Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible, and nano. Note that executing this command can take some time.
 
 ```bash
 sh ./build.sh
@@ -71,7 +82,7 @@ Click the **Start Adding Apps** button. This will open the creation form.
 
 ![alt text](./assets/start-adding-app.png)
 
-Before moving on to app configuration, give it a name, select kind of application service and click the **Start Creating** button.
+Before moving on to app configuration, give it a name, select the type of application service, and click the **Start Creating** button.
 
 ![alt text](./assets/app-form.png)
 
@@ -85,21 +96,21 @@ Next, we will add a pool and virtual server. Navigate to the **Pools** tab and c
 
 ![alt text](./assets/pool-create.png)
 
-Give pool a name, make sure to use Service Port **80** and Load-Balancing Mode **round-robin** for this flow. Move on to the **Virtual Servers** tab to configure one for the app.
+Give the pool a name, make sure to use Service Port **80** and Load-Balancing Mode **round-robin** for this flow. Move on to the **Virtual Servers** tab to configure one for the app.
 
 ![alt text](./assets/pool-name.png)
 
-Give virtual server a name, select the pool we've just added in the drop-down menu and make sure to have Virtual Port **80** specified. As soon as the virtual server has been configured, proceed to adding a WAF Security Policy.
+Give the virtual server a name, select the pool we've just added in the drop-down menu and make sure to have Virtual Port **80** specified. As soon as the virtual server has been configured, proceed to adding a WAF Security Policy.
 
 ![alt text](./assets/create-security-policy.png)
 
 ## 3. Create WAF Security Policy
 
-First, we need to enable using WAF Policy using the toggle. Next, click the **Create** button which will open WAF Policy configuration form.
+First, we need to enable the WAF Policy using the toggle. Next, click the **Create** button which will open the WAF Policy configuration form.
 
 ![alt text](./assets/waf-policy.png)
 
-Give WAF policy a name and enable the L7 DoS Protection for the app. Take a look at other configuration, such as enabled Bot Defense and Threat Intelligence options. Also make sure to have **Blocking** selected for Enforcement Mode. As you can see, BIG-IP Next Central Manager provides an opportunity to set up the blocking enforcement mode right at the WAF Policy configuration stage which makes the whole process fast and easy and allows us to have blocking mode for our app from day one. When the policy properties have been configured, proceed by clicking **Save**.
+Give WAF policy a name and enable the L7 DoS Protection for the app. Take a look at other configuration, such as enabled Bot Defense and Threat Intelligence options. Also make sure to have **Blocking** selected for Enforcement Mode. As you can see, BIG-IP Next Central Manager provides an opportunity to set up the blocking enforcement mode right at the WAF Policy configuration stage, which ensures application security for our app from day one. When the policy properties have been configured, proceed by clicking **Save**.
 
 ![alt text](./assets/waf-config.png)
 
@@ -111,23 +122,23 @@ Back on the app configuration page, take a look at the configured properties and
 
 ![alt text](./assets/deploy-app.png)
 
-After that, we will specify deployment instance. CLick the **Start Adding** button, choose an instance and add it to the list.
+After that, we will specify the deployment instance. CLick the **Start Adding** button, choose an instance and add it to the list.
 
 ![alt text](./assets/select-bigipnext-instance.png)
 
 ## 4. Add Pool Member
 
-Finally, in order to specify deployment instance, we will add a pool member. Open the drop-down menu under **Members** and select adding a pool member.
+Finally, in order to specify the deployment instance, we will add a pool member. Open the drop-down menu under **Members** and select adding a pool member.
 
 ![alt text](./assets/pool-member.png)
 
-In the opened configuration window add a row and fill it in by giving pool member a name and specifying the IP Address.
+In the opened configuration window add a row and fill it in by giving the pool member a name and specifying the IP Address.
 
 ![alt text](./assets/member-config.png)
 
 ## 5. Validate and Deploy
 
-Back on the deployment instance page, the configured pool member will appear in the table. Fill in instance virtual address and click the **Validate All** button. This will start the process of validating all the configuration before deployment.
+Back on the deployment instance page, the configured pool member will appear in the table. Fill in the instance virtual address and click the **Validate All** button. This will start the process of validating all the configurations before deployment.
 
 ![alt text](./assets/validate-all.png)
 
@@ -135,7 +146,7 @@ As soon as validation is over, its result will be displayed on the page. If the 
 
 ![alt text](./assets/deploy-changes.png)
 
-The next window will ask you to confirm application service deployment. Take a look at app name and deployment instance and click **Yes, Deploy**.
+The next window will ask you to confirm application service deployment. Take a look at the app name and deployment instance and click **Yes, Deploy**.
 
 ![alt text](./assets/confirm-deploy.png)
 
@@ -162,9 +173,9 @@ First, you need to enter the `input.tfvars` file and specify your own variables:
 - username and password to access Central Manager,
 - BIG-IP Next address (`target`).
 
-Then you can go to the `app-as3.json` file which is an AS3 definition of app to be deployed and contains all app info for the deployment and update app info if needed.
+Then you can go to the `app-as3.json` file which is an AS3 definition of the app to be deployed and contains all app info for the deployment and update app info if needed.
 
-Lastly, you can update security policy info if needed in the `policy.json` file that contains security policy to be deployed for the app. Note that the policy specified in the file will be deployed in blocking mode.
+Lastly, you can update security policy info, if needed, in the `policy.json` file containing the security policy to be deployed for the app. Note that the policy specified in the file will be deployed in blocking mode.
 
 ## 3. Initialize terraform
 
@@ -176,7 +187,7 @@ terraform init
 
 ## 4. Preview app and security policy config (_optional_)
 
-Run the following command to preview the changes that Terraform will execute: the app to be created and security policy with its configuration.
+Run the following command to preview the changes that Terraform will execute: the app to be created and the security policy with its configuration.
 
 ```bash
 terraform plan -var-file=input.tfvars
@@ -192,7 +203,7 @@ terraform apply -var-file=input.tfvars
 
 ## 6. Verify the deployed app with its policy
 
-Log in your Central Manager and navigate to the **Application Workspace**.
+Log into your Central Manager and navigate to the **Application Workspace**.
 
 ![alt text](./assets/cm-navigate.png)
 
