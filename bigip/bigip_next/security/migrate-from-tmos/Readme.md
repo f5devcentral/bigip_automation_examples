@@ -16,19 +16,19 @@
     - [6. Build Docker](#6-build-docker)
     - [7. Install Dependencies](#7-install-dependencies)
     - [8. Infrastructure Configuration](#8-infrastructure-configuration)
-    - [9. Validate NGINX App and TMOS](#9-validate-nginx-app-and-tmos)
+    - [9. Verify NGINX App and TMOS](#9-verify-nginx-app-and-tmos)
   - [Docker Setup (_optional_)](#docker-setup-optional)
-    - [1. Clone repository](#1-clone-repository)
+    - [1. Clone Repository](#1-clone-repository)
     - [2. Build Docker](#2-build-docker)
     - [3. Enter Docker](#3-enter-docker)
-    - [4. Add SSH private keys](#4-add-ssh-private-keys)
+    - [4. Add SSH Private Keys](#4-add-ssh-private-keys)
     - [5. Data Initialization for Docker](#5-data-initialization-for-docker-1)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Inventory Setup](#1-inventory-setup)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
     - [3. Install Dependencies](#3-install-dependencies)
     - [4. Configure Infrastructure](#4-configure-infrastructure)
-    - [5. Validate NGINX App](#5-validate-nginx-app)
+    - [5. Verify NGINX App](#5-verify-nginx-app)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
@@ -39,9 +39,9 @@
     - [2.5 Check App Availability](#25-check-app-availability)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
-    - [1.1 Configure connectivity to TMOS](#11-configure-connectivity-to-tmos)
-    - [1.2 Configure connectivity to BIG-IP Next](#12-configure-connectivity-to-big-ip-next)
-    - [1.3 Configure connectivity to Central Manager and add SSH private keys](#13-configure-connectivity-to-central-manager-and-add-ssh-private-keys)
+    - [1.1 Configure Connectivity to TMOS](#11-configure-connectivity-to-tmos)
+    - [1.2 Configure Connectivity to BIG-IP Next](#12-configure-connectivity-to-big-ip-next)
+    - [1.3 Configure Connectivity to Central Manager and Add SSH Private Keys](#13-configure-connectivity-to-central-manager-and-add-ssh-private-keys)
   - [2. Deployment](#2-deployment)
   - [3. Verify Migrated Application](#3-verify-migrated-application)
     - [3.1 Verify via Central Manager UI](#31-verify-via-central-manager-ui)
@@ -153,7 +153,7 @@ Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-### 9. Validate NGINX App and TMOS
+### 9. Verify NGINX App and TMOS
 
 Let's verify the app is up and running:
 
@@ -181,7 +181,7 @@ Congrats! We have just completed configuration of infrastructure using Blueprint
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
 
-### 1. Clone repository
+### 1. Clone Repository
 
 Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
 
@@ -203,7 +203,7 @@ sh ./run.sh
 
 You will see a list of files. Enter the `.ssh`.
 
-### 4. Add SSH private keys
+### 4. Add SSH Private Keys
 
 Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
 
@@ -255,13 +255,13 @@ install-prerequisites.sh
 
 ### 4. Configure Infrastructure
 
-Next, we will run the following command to configure the source TMOS virtual server and attach the WAF policy and validate if BIG-IP is setup correctly and the app is available.
+Next, we will run the following command to configure the source TMOS virtual server and attach the WAF policy and verify if BIG-IP is setup correctly and the app is available.
 
 ```bash
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-### 5. Validate NGINX App
+### 5. Verify NGINX App
 
 Now that we have initialized and configured the infrastructure, we can check NGINX App availability and TMOS by running the commands:
 
@@ -383,13 +383,13 @@ Let's navigate to the **Security** workspace and take a look at the created WAF 
 
 # Automated Workflow Guide
 
-In this part of the guide we will automatically migrate application to BIG-IP Next with WAF policy and then validate it using Central Manager UI as well as CLI.
+In this part of the guide we will automatically migrate application to BIG-IP Next with WAF policy and then verify it using Central Manager UI as well as CLI.
 
 Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the `bigip/bigip_next/security/migrate-from-tmos/migrate` folder where we will update config files.
 
 ## 1. Prerequisites
 
-### 1.1 Configure connectivity to TMOS
+### 1.1 Configure Connectivity to TMOS
 
 In the `tmos_vars.yml` file specify the following parameters to establish connection to TMOS:
 
@@ -401,7 +401,7 @@ In the `tmos_vars.yml` file specify the following parameters to establish connec
 - `no_f5_teem`
 - name of the file for UCS backup.
 
-### 1.2 Configure connectivity to BIG-IP Next
+### 1.2 Configure Connectivity to BIG-IP Next
 
 In the `next_vars.yml` file specify the following parameters to establish connectivity to BIG-IP Next:
 
@@ -410,7 +410,7 @@ In the `next_vars.yml` file specify the following parameters to establish connec
 - `ans_vs1` (virtual server in TMOS) and `bigip_next` (address of BIG-IP Next instance to deploy to) for deployment
 - `ip_map` specified for virtual addresses for virtual servers to be updated during the migration process (but application addresses within pools won't be changed). Note that during the migration process the addresses will be updated accordingly: **10.1.10.90 => 10.1.10.190** and **10.1.10.91 => 10.1.10.191**. The original application will not be disabled and its routing will go via **10.1.10.90** & **10.1.10.91**, whereas the new routing will go via **10.1.10.190** & **10.1.10.191** which will let two simultaneous routings go to the app.
 
-### 1.3 Configure connectivity to Central Manager and add SSH private keys
+### 1.3 Configure Connectivity to Central Manager and Add SSH Private Keys
 
 In the `inventory.ini` file specify the following parameters:
 

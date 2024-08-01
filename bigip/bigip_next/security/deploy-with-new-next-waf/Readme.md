@@ -16,9 +16,9 @@
   - [6. Build Docker](#6-build-docker)
   - [7. Install Dependencies](#7-install-dependencies)
   - [8. Infrastructure Configuration](#8-infrastructure-configuration)
-  - [9. Validate NGINX App and TMOS](#9-validate-nginx-app-and-tmos)
+  - [9. Verify NGINX App and TMOS](#9-verify-nginx-app-and-tmos)
 - [Docker Setup (_optional_)](#docker-setup-optional)
-  - [1. Clone repository](#1-clone-repository)
+  - [1. Clone Repository](#1-clone-repository)
   - [2. Build Docker](#2-build-docker)
   - [3. Enter Docker](#3-enter-docker)
 - [Manual Workflow Guide](#manual-workflow-guide)
@@ -27,14 +27,14 @@
   - [3. Create WAF Security Policy](#3-create-waf-security-policy)
   - [4. Add Pool Member](#4-add-pool-member)
   - [5. Deploy App](#5-deploy-app)
-  - [6. Validate App](#6-validate-app)
+  - [6. Verify App](#6-verify-app)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
-  - [2. Add access creds for BIG-IP Next](#2-add-access-creds-for-big-ip-next)
-  - [3. Initialize terraform](#3-initialize-terraform)
-  - [4. Preview app and security policy config (_optional_)](#4-preview-app-and-security-policy-config-optional)
-  - [5. Deploy app and security policy](#5-deploy-app-and-security-policy)
-  - [6. Verify the deployed app with its policy](#6-verify-the-deployed-app-with-its-policy)
+  - [2. Add Access Credentials for BIG-IP Next](#2-add-access-credentials-for-big-ip-next)
+  - [3. Initialize Terraform](#3-initialize-terraform)
+  - [4. Preview App and Security Policy Config (_optional_)](#4-preview-app-and-security-policy-config-optional)
+  - [5. Deploy App and Security Policy](#5-deploy-app-and-security-policy)
+  - [6. Verify the Deployed App with its Policy](#6-verify-the-deployed-app-with-its-policy)
 
 # Overview
 
@@ -123,7 +123,7 @@ Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-### 9. Validate NGINX App and TMOS
+### 9. Verify NGINX App and TMOS
 
 Let's verify the app is up and running:
 
@@ -149,7 +149,7 @@ Congrats! We have just completed configuration of infrastructure using Blueprint
 
 # Docker Setup (_optional_)
 
-## 1. Clone repository
+## 1. Clone Repository
 
 Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
 
@@ -253,9 +253,9 @@ As soon as the deployment process is over, you will see a notification in the lo
 
 ![alt text](./assets/deployment-complete.png)
 
-## 6. Validate App
+## 6. Verify App
 
-You can validate the app by running the following commands:
+You can verify the app by running the following commands:
 
 ```bash
 curl http://10.1.10.94/server1
@@ -280,7 +280,7 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 - CLI tool to run commands
 - Setup Docker (_optional but recommended_)
 
-## 2. Add access creds for BIG-IP Next
+## 2. Add Access Credentials for BIG-IP Next
 
 First, you need to enter the `input.tfvars` file and specify your own variables:
 
@@ -292,7 +292,7 @@ Then you go to the `app-as3.json` file which is an AS3 definition of the app to 
 
 Lastly, you can update security policy info, if needed, in the `policy.json` file containing the security policy to be deployed for the app. Note that the policy specified in the file will be deployed in blocking mode.
 
-## 3. Initialize terraform
+## 3. Initialize Terraform
 
 In the CLI run the following command to initialize terraform:
 
@@ -300,7 +300,7 @@ In the CLI run the following command to initialize terraform:
 terraform init
 ```
 
-## 4. Preview app and security policy config (_optional_)
+## 4. Preview App and Security Policy Config (_optional_)
 
 Run the following command to preview the changes that Terraform will execute: the app to be created and the security policy with its configuration.
 
@@ -308,7 +308,7 @@ Run the following command to preview the changes that Terraform will execute: th
 terraform plan -var-file=input.tfvars
 ```
 
-## 5. Deploy app and security policy
+## 5. Deploy App and Security Policy
 
 Run the following command to create and deploy the app and security policy:
 
@@ -316,7 +316,7 @@ Run the following command to create and deploy the app and security policy:
 terraform apply -var-file=input.tfvars
 ```
 
-## 6. Verify the deployed app with its policy
+## 6. Verify the Deployed App with its Policy
 
 First, let's verify the app by running the following commands:
 
@@ -347,6 +347,8 @@ Next, we will take a look at the created security policy. Navigate to the **Secu
 Finally, we can drill down into the created policy details. Click on the policy to proceed.
 
 ![alt text](./assets/policy-details.png)
+
+Congrats! You just completed automated deployment and protection of a new app on BIG-IP Next.
 
 <!-- # Additional Related Resources
 
