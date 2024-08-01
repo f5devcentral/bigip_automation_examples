@@ -13,16 +13,11 @@
     - [3. Enter Blueprint](#3-enter-blueprint)
     - [4. Clone Repository](#4-clone-repository)
     - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
-    - [6. Build Docker](#6-build-docker)
-    - [7. Install Dependencies](#7-install-dependencies)
-    - [8. Infrastructure Configuration](#8-infrastructure-configuration)
-    - [9. Verify NGINX App and TMOS](#9-verify-nginx-app-and-tmos)
   - [Docker Setup (_optional_)](#docker-setup-optional)
-    - [1. Clone Repository](#1-clone-repository)
-    - [2. Build Docker](#2-build-docker)
-    - [3. Enter Docker](#3-enter-docker)
-    - [4. Add SSH Private Keys](#4-add-ssh-private-keys)
-    - [5. Data Initialization for Docker](#5-data-initialization-for-docker-1)
+    - [1. Build Docker](#1-build-docker)
+    - [2. Install Dependencies](#2-install-dependencies)
+    - [3. Initialize BIG-IP](#3-initialize-big-ip)
+    - [4. Verify NGINX App and TMOS](#4-verify-nginx-app-and-tmos)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Inventory Setup](#1-inventory-setup)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
@@ -123,7 +118,11 @@ sh ./init.sh
 
 You can verify that the folder with the keys has been created.
 
-### 6. Build Docker
+## Docker Setup (_optional_)
+
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+
+### 1. Build Docker
 
 Next, we will build Docker. Note that executing this command can take some time.
 
@@ -137,23 +136,23 @@ As soon as the build is completed, enter Docker:
 sh ./run.sh
 ```
 
-### 7. Install Dependencies
+### 2. Install Dependencies
 
-Run the command to install the collections and libraries required in Ansible playbook:
+Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
 sh ./install-prerequisites.sh
 ```
 
-### 8. Infrastructure Configuration
+### 3. Initialize BIG-IP
 
-Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
+Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
 
 ```bash
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-### 9. Verify NGINX App and TMOS
+### 4. Verify NGINX App and TMOS
 
 Let's verify the app is up and running:
 
@@ -175,13 +174,7 @@ curl http://10.1.10.90/server1
 curl http://10.1.10.91/server1
 ```
 
-Congrats! We have just completed configuration of infrastructure using Blueprint that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide to migrate app from BIG-IP TMOS to BIG-IP Next.
-
-## Docker Setup (_optional_)
-
-We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
-
-### 1. Clone Repository
+<!-- ### 1. Clone Repository
 
 Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
 
@@ -229,7 +222,7 @@ Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory an
 sh ./init.sh
 ```
 
-You can verify that the folder with the keys has been created.
+You can verify that the folder with the keys has been created. -->
 
 ## Infrastructure Configuration
 
