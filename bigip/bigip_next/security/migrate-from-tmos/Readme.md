@@ -12,7 +12,7 @@
     - [2. Copy SSH External](#2-copy-ssh-external)
     - [3. Enter Blueprint](#3-enter-blueprint)
     - [4. Clone Repository](#4-clone-repository)
-    - [5. Create Local Key Folder](#5-create-local-key-folder)
+    - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
     - [6. Build Docker](#6-build-docker)
     - [7. Install Dependencies](#7-install-dependencies)
     - [8. Infrastructure Configuration](#8-infrastructure-configuration)
@@ -22,7 +22,7 @@
     - [2. Build Docker](#2-build-docker)
     - [3. Enter Docker](#3-enter-docker)
     - [4. Add SSH private keys](#4-add-ssh-private-keys)
-    - [5. Create Key Folder](#5-create-key-folder)
+    - [5. Data Initialization for Docker](#5-data-initialization-for-docker-1)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Inventory Setup](#1-inventory-setup)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
@@ -103,9 +103,7 @@ After the Blueprint has been deployed, navigate to the **Deployments** section a
 
 ![alt text](./assets/ubuntu-jump-host.png)
 
-Go to the **Access Methods** tab and copy the SSH external:
-
-![alt text](./assets/copy-ssh.png)
+Go to the **Access Methods** tab and copy the SSH external.
 
 ### 3. Enter Blueprint
 
@@ -115,12 +113,12 @@ Next, enter Blueprint using your SSH key via command line interface. You can use
 
 After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
 
-### 5. Create Local Key Folder
+### 5. Data Initialization for Docker
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
 
 ```bash
-./init.sh
+sh ./init.sh
 ```
 
 You can verify that the folder with the keys has been created.
@@ -130,7 +128,13 @@ You can verify that the folder with the keys has been created.
 Next, we will build Docker. Note that executing this command can take some time.
 
 ```bash
-./build.sh
+sh ./build.sh
+```
+
+As soon as the build is completed, enter Docker:
+
+```bash
+sh ./run.sh
 ```
 
 ### 7. Install Dependencies
@@ -138,7 +142,7 @@ Next, we will build Docker. Note that executing this command can take some time.
 Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
-install-prerequisites.sh
+sh ./install-prerequisites.sh
 ```
 
 ### 8. Infrastructure Configuration
@@ -217,7 +221,7 @@ Enter the `cm_key` file by running the following command and fill in the key:
 nano cm_key
 ```
 
-### 5. Create Key Folder
+### 5. Data Initialization for Docker
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
 
@@ -370,6 +374,8 @@ Congrats! Your app together with its security WAF policy is migrated to BIG-IP N
 ![alt text](./assets/deployed-apps.png)
 
 Let's navigate to the **Security** workspace and take a look at the created WAF policy.
+
+**Note that your screen may look different**.
 
 ![alt text](./assets/waf-policies-dash.png)
 

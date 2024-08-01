@@ -12,9 +12,11 @@
   - [2. Copy SSH External](#2-copy-ssh-external)
   - [3. Enter Blueprint](#3-enter-blueprint)
   - [4. Clone Repository](#4-clone-repository)
-  - [5. Create Local Key Folder](#5-create-local-key-folder)
+  - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
   - [6. Build Docker](#6-build-docker)
   - [7. Install Dependencies](#7-install-dependencies)
+  - [8. Infrastructure Configuration](#8-infrastructure-configuration)
+  - [9. Validate NGINX App and TMOS](#9-validate-nginx-app-and-tmos)
 - [Docker Setup (_optional_)](#docker-setup-optional)
   - [1. Clone repository](#1-clone-repository)
   - [2. Build Docker](#2-build-docker)
@@ -59,57 +61,61 @@ On this Linux machine you may choose to run Docker in order to take advantage of
 
 **If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint flow as the foundation for your environment: "NEXT WAF- Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
-## 1. Deploy Blueprint
+### 1. Deploy Blueprint
 
 Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
-## 2. Copy SSH External
+### 2. Copy SSH External
 
 After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
 
 ![alt text](./assets/ubuntu-jump-host.png)
 
-Go to the **Access Methods** tab and copy the SSH external:
+Go to the **Access Methods** tab and copy the SSH external.
 
-![alt text](./assets/copy-ssh.png)
-
-## 3. Enter Blueprint
+### 3. Enter Blueprint
 
 Next, enter Blueprint using your SSH key via command line interface. You can use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh) on accessing the object via SSH.
 
-## 4. Clone Repository
+### 4. Clone Repository
 
 After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
 
-## 5. Create Local Key Folder
+### 5. Data Initialization for Docker
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
 
 ```bash
-./init.sh
+sh ./init.sh
 ```
 
 You can verify that the folder with the keys has been created.
 
-## 6. Build Docker
+### 6. Build Docker
 
 Next, we will build Docker. Note that executing this command can take some time.
 
 ```bash
-./build.sh
+sh ./build.sh
 ```
 
-## 7. Install Dependencies
+As soon as the build is completed, enter Docker:
+
+```bash
+sh ./run.sh
+```
+
+### 7. Install Dependencies
 
 Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
-install-prerequisites.sh
+sh ./install-prerequisites.sh
 ```
 
-<!-- ## 8. Infrastructure Configuration
+### 8. Infrastructure Configuration
 
 Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
 
@@ -117,7 +123,7 @@ Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-## 9. Validate NGINX App and TMOS
+### 9. Validate NGINX App and TMOS
 
 Let's verify the app is up and running:
 
@@ -139,7 +145,7 @@ curl http://10.1.10.90/server1
 curl http://10.1.10.91/server1
 ```
 
-Congrats! We have just completed configuration of infrastructure using Blueprint that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide to migrate app from BIG-IP TMOS to BIG-IP Next. -->
+Congrats! We have just completed configuration of infrastructure using Blueprint that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide.
 
 # Docker Setup (_optional_)
 
