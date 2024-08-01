@@ -17,17 +17,18 @@
     - [7. Install Dependencies](#7-install-dependencies)
     - [8. Infrastructure Configuration](#8-infrastructure-configuration)
     - [9. Validate NGINX App and TMOS](#9-validate-nginx-app-and-tmos)
-  - [1. Docker Setup (_optional_)](#1-docker-setup-optional)
-    - [1.1 Clone repository](#11-clone-repository)
-    - [1.2 Build Docker](#12-build-docker)
-    - [1.3 Enter Docker](#13-enter-docker)
-    - [1.4 Add SSH private keys](#14-add-ssh-private-keys)
-    - [1.5 Create Key Folder](#15-create-key-folder)
-  - [2. Inventory Setup](#2-inventory-setup)
-  - [3. Initialize BIG-IP](#3-initialize-big-ip)
-  - [4. Install Dependencies](#4-install-dependencies)
-  - [5. Infrastructure Configuration](#5-infrastructure-configuration)
-  - [6. Validate NGINX App](#6-validate-nginx-app)
+  - [Docker Setup (_optional_)](#docker-setup-optional)
+    - [1. Clone repository](#1-clone-repository)
+    - [2. Build Docker](#2-build-docker)
+    - [3. Enter Docker](#3-enter-docker)
+    - [4. Add SSH private keys](#4-add-ssh-private-keys)
+    - [5. Create Key Folder](#5-create-key-folder)
+  - [Infrastructure Configuration](#infrastructure-configuration)
+    - [1. Inventory Setup](#1-inventory-setup)
+    - [2. Initialize BIG-IP](#2-initialize-big-ip)
+    - [3. Install Dependencies](#3-install-dependencies)
+    - [4. Configure Infrastructure](#4-configure-infrastructure)
+    - [5. Validate NGINX App](#5-validate-nginx-app)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
@@ -43,10 +44,11 @@
     - [1.3 Configure connectivity to Central Manager and add SSH private keys](#13-configure-connectivity-to-central-manager-and-add-ssh-private-keys)
   - [2. Deployment](#2-deployment)
   - [3. Verify Migrated Application](#3-verify-migrated-application)
-    - [3.1 Migrated application](#31-migrated-application)
-    - [3.2 Deployed WAF Policy](#32-deployed-waf-policy)
-    - [3.3 Deployed Certificates](#33-deployed-certificates)
-- [Additional Related Resources](#additional-related-resources)
+    - [3.1 Verify via Central Manager UI](#31-verify-via-central-manager-ui)
+      - [3.1.1 Migrated Application](#311-migrated-application)
+      - [3.1.2 Deployed WAF Policy](#312-deployed-waf-policy)
+      - [3.1.3 Deployed Certificates](#313-deployed-certificates)
+    - [3.2 Verify via CLI](#32-verify-via-cli)
 
 # Overview
 
@@ -133,7 +135,7 @@ Next, we will build Docker. Note that executing this command can take some time.
 
 ### 7. Install Dependencies
 
-Install dependencies to install the collections and libraries required in Ansible playbook by running the following command:
+Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
 install-prerequisites.sh
@@ -169,17 +171,17 @@ curl http://10.1.10.90/server1
 curl http://10.1.10.91/server1
 ```
 
-Congrats! We have just completed configuration of infrastructure that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide to migrate app from BIG-IP TMOS to BIG-IP Next.
+Congrats! We have just completed configuration of infrastructure using Blueprint that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide to migrate app from BIG-IP TMOS to BIG-IP Next.
 
-## 1. Docker Setup (_optional_)
+## Docker Setup (_optional_)
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
 
-### 1.1 Clone repository
+### 1. Clone repository
 
 Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
 
-### 1.2 Build Docker
+### 2. Build Docker
 
 Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
 
@@ -187,7 +189,7 @@ Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and ru
 sh ./build.sh
 ```
 
-### 1.3 Enter Docker
+### 3. Enter Docker
 
 Enter the docker by running the command:
 
@@ -197,7 +199,7 @@ sh ./run.sh
 
 You will see a list of files. Enter the `.ssh`.
 
-### 1.4 Add SSH private keys
+### 4. Add SSH private keys
 
 Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
 
@@ -215,7 +217,7 @@ Enter the `cm_key` file by running the following command and fill in the key:
 nano cm_key
 ```
 
-### 1.5 Create Key Folder
+### 5. Create Key Folder
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
 
@@ -225,7 +227,9 @@ sh ./init.sh
 
 You can verify that the folder with the keys has been created.
 
-## 2. Inventory Setup
+## Infrastructure Configuration
+
+### 1. Inventory Setup
 
 Let's start with inventory configuration for the migration source. Go to the inventory file and specify application and TMOS IDs:
 
@@ -233,11 +237,11 @@ Let's start with inventory configuration for the migration source. Go to the inv
  inventory.ini
 ```
 
-## 3. Initialize BIG-IP
+### 2. Initialize BIG-IP
 
 Go to the `tmos_vars.yml` and update the values to resolve the app as needed.
 
-## 4. Install Dependencies
+### 3. Install Dependencies
 
 If you are not using the Docker flow, you will need to execute the following to install the collections and libraries required in Ansible playbook:
 
@@ -245,15 +249,15 @@ If you are not using the Docker flow, you will need to execute the following to 
 install-prerequisites.sh
 ```
 
-## 5. Infrastructure Configuration
+### 4. Configure Infrastructure
 
-Next, we will run the following command to configure the source TMOS virtual server, attach the WAF policy and validate if BIG-IP is setup correctly and the app is available.
+Next, we will run the following command to configure the source TMOS virtual server and attach the WAF policy and validate if BIG-IP is setup correctly and the app is available.
 
 ```bash
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-## 6. Validate NGINX App
+### 5. Validate NGINX App
 
 Now that we have initialized and configured the infrastructure, we can check NGINX App availability and TMOS by running the commands:
 
@@ -335,7 +339,7 @@ After uploading the UCS archive we will add application for migration by clickin
 
 ![alt text](./assets/add-application.png)
 
-You will see a list of application services from your TMOS. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**.
+You will see a list of application services from your TMOS. Note that you can select green or yellow status application services, but not red ones. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**.
 
 ![alt text](./assets/add-apps-to-migration.png)
 
@@ -373,7 +377,7 @@ Let's navigate to the **Security** workspace and take a look at the created WAF 
 
 # Automated Workflow Guide
 
-In this part of the guide we will automatically migrate application to BIG-IP Next with WAF policy and then validate it using Central Manager.
+In this part of the guide we will automatically migrate application to BIG-IP Next with WAF policy and then validate it using Central Manager UI as well as CLI.
 
 Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the `bigip/bigip_next/security/migrate-from-tmos/migrate` folder where we will update config files.
 
@@ -398,7 +402,7 @@ In the `next_vars.yml` file specify the following parameters to establish connec
 - `address`, `user`, `password`, `max_applications` for Central Manager
 - `migrate_shared_object_prefix`, `migrate_app_prefix` for prefixes that Central Manager will use
 - `ans_vs1` (virtual server in TMOS) and `bigip_next` (address of BIG-IP Next instance to deploy to) for deployment
-- `ip_map` specified for virtual addresses for virtual servers to be updated during the migration process (but application addresses within pools won't be changed). These parameters are key value pairs that allow migrating applications with no need to disable them in TMOS. These parameters are specified in case you want to test the migrated application with the original one still up. Please note that original application will not be disabled.
+- `ip_map` specified for virtual addresses for virtual servers to be updated during the migration process (but application addresses within pools won't be changed). Note that during the migration process the addresses will be updated accordingly: **10.1.10.90 => 10.1.10.190** and **10.1.10.91 => 10.1.10.191**. The original application will not be disabled and its routing will go via **10.1.10.90** & **10.1.10.91**, whereas the new routing will go via **10.1.10.190** & **10.1.10.191** which will let two simultaneous routings go to the app.
 
 ### 1.3 Configure connectivity to Central Manager and add SSH private keys
 
@@ -428,7 +432,9 @@ Note that deployment can take some time.
 
 ## 3. Verify Migrated Application
 
-### 3.1 Migrated application
+### 3.1 Verify via Central Manager UI
+
+#### 3.1.1 Migrated Application
 
 Log in Central Manager and proceed to **Applications**. You will see the application migrated whose name starts with the prefix you indicated in the prerequisites step.
 
@@ -448,20 +454,42 @@ Now let's take a look at a declaration of another application to see that it has
 
 ![alt text](./assets/secondapp-declaration.png)
 
-### 3.2 Deployed WAF Policy
+#### 3.1.2 Deployed WAF Policy
 
 Navigate to **Security** => **WAF** = > **Policies**. You will see the migrated policies. Next to each policy you will see number of applications that refer to it. If `0` is indicated, no deployed applications refer to it.
 
 ![alt text](./assets/migrated-waf-cm.png)
 
-### 3.3 Deployed Certificates
+#### 3.1.3 Deployed Certificates
 
 Navigate to **Applications** => **Certificates & Keys**. You will see the list of migrated certificates.
 
 ![alt text](./assets/migrated-certs.png)
 
+### 3.2 Verify via CLI
+
+Finally, we can verify the migrated and deployed app by running the following commands to the new routing in BIG-IP Next:
+
+```bash
+curl http://10.1.10.190/server1
+```
+
+```bash
+curl http://10.1.10.191/server1
+```
+
+And old routing via TMOS can also be verified by sending the ping to it:
+
+```bash
+curl http://10.1.10.90/server1
+```
+
+```bash
+curl http://10.1.10.91/server1
+```
+
 Congrats! You just completed automated migration of application to BIG-IP Next with its WAF Policy and certificates.
 
-# Additional Related Resources
+<!-- # Additional Related Resources
 
-=====TODO=========
+=====TODO========= -->
