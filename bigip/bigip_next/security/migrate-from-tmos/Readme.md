@@ -15,9 +15,11 @@
     - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
   - [Docker Setup (_optional_)](#docker-setup-optional)
     - [1. Build Docker](#1-build-docker)
-    - [2. Install Dependencies](#2-install-dependencies)
-    - [3. Initialize BIG-IP](#3-initialize-big-ip)
-    - [4. Verify NGINX App and TMOS](#4-verify-nginx-app-and-tmos)
+    - [2. Add SSH Private Keys](#2-add-ssh-private-keys)
+    - [3. Data Initialization for Docker](#3-data-initialization-for-docker)
+    - [4. Install Dependencies](#4-install-dependencies)
+    - [5. Initialize BIG-IP](#5-initialize-big-ip)
+    - [6. Verify NGINX App and TMOS](#6-verify-nginx-app-and-tmos)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Inventory Setup](#1-inventory-setup)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
@@ -136,7 +138,39 @@ As soon as the build is completed, enter Docker:
 sh ./run.sh
 ```
 
-### 2. Install Dependencies
+### 2. Add SSH Private Keys
+
+**If you followed the Blueprint flow, you need to skip this step.**
+
+Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
+
+Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
+
+Enter the `tmos_key` file by running th following command and fill in the key:
+
+```bash
+nano tmos_key
+```
+
+Enter the `cm_key` file by running the following command and fill in the key:
+
+```bash
+nano cm_key
+```
+
+### 3. Data Initialization for Docker
+
+**If you followed the Blueprint flow, you need to skip this step.**
+
+Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
+
+```bash
+sh ./init.sh
+```
+
+You can verify that the folder with the keys has been created.
+
+### 4. Install Dependencies
 
 Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
 
@@ -144,7 +178,7 @@ Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to ins
 sh ./install-prerequisites.sh
 ```
 
-### 3. Initialize BIG-IP
+### 5. Initialize BIG-IP
 
 Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
 
@@ -152,7 +186,7 @@ Next, we will initialize BIG-IP to resolve the app. Note that the app will be re
 ansible-playbook -i inventory.ini site.yaml
 ```
 
-### 4. Verify NGINX App and TMOS
+### 6. Verify NGINX App and TMOS
 
 Let's verify the app is up and running:
 
@@ -173,56 +207,6 @@ curl http://10.1.10.90/server1
 ```bash
 curl http://10.1.10.91/server1
 ```
-
-<!-- ### 1. Clone Repository
-
-Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
-
-### 2. Build Docker
-
-Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
-
-```bash
-sh ./build.sh
-```
-
-### 3. Enter Docker
-
-Enter the docker by running the command:
-
-```bash
-sh ./run.sh
-```
-
-You will see a list of files. Enter the `.ssh`.
-
-### 4. Add SSH Private Keys
-
-Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
-
-Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
-
-Enter the `tmos_key` file by running th following command and fill in the key:
-
-```bash
-nano tmos_key
-```
-
-Enter the `cm_key` file by running the following command and fill in the key:
-
-```bash
-nano cm_key
-```
-
-### 5. Data Initialization for Docker
-
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
-
-```bash
-sh ./init.sh
-```
-
-You can verify that the folder with the keys has been created. -->
 
 ## Infrastructure Configuration
 
