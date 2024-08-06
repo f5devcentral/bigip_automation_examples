@@ -94,6 +94,10 @@ Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy i
 
 ![alt text](./assets/deploy-blueprint.png)
 
+After it has been deployed, navigate to your **Deployments** and start it:
+
+![alt text](./assets/start-depl.png)
+
 ### 2. Copy SSH External
 
 After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
@@ -111,6 +115,8 @@ Next, enter Blueprint using your SSH key via command line interface. You can use
 After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
 
 ### 5. Data Initialization for Docker
+
+**NOTE: Complete this step ONLY if you haven't done initialization yet, including in other lab.**
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
 
@@ -161,6 +167,7 @@ nano cm_key
 ### 3. Data Initialization for Docker
 
 **If you followed the Blueprint flow, you need to skip this step.**
+**You also need to skip this step if you have already done initialization earlier, including other lab.**
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
 
@@ -183,7 +190,7 @@ sh ./install-prerequisites.sh
 Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
 
 ```bash
-ansible-playbook -i inventory.ini site.yaml
+ansible-playbook -i inventory.ini site.yml
 ```
 
 ### 6. Verify NGINX App and TMOS
@@ -224,18 +231,18 @@ Go to the `tmos_vars.yml` and update the values to resolve the app as needed.
 
 ### 3. Install Dependencies
 
-If you are not using the Docker flow, you will need to execute the following to install the collections and libraries required in Ansible playbook:
+If you are not using the Docker flow, you will need to navigate to `bigip/bigip_next/security/migrate-from-tmos/init` and execute the following to install the collections and libraries required in Ansible playbook:
 
 ```bash
-install-prerequisites.sh
+sh ./install-prerequisites.sh
 ```
 
 ### 4. Configure Infrastructure
 
-Next, we will run the following command to configure the source TMOS virtual server and attach the WAF policy and verify if BIG-IP is setup correctly and the app is available.
+Next, navigate to `bigip/bigip_next/security/migrate-from-tmos/migrate` and run the following command to configure the source TMOS virtual server and attach the WAF policy and verify if BIG-IP is setup correctly and the app is available.
 
 ```bash
-ansible-playbook -i inventory.ini site.yaml
+ansible-playbook -i inventory.ini site.yml
 ```
 
 ### 5. Verify NGINX App
@@ -276,7 +283,11 @@ In this part we will provide manual steps with the associated screens for a "bro
 
 First, we will get a UCS archive that contains the source TMOS application services and then import it into BIG-IP Next Central Manager. This will let us view and deploy the app to BIG-IP Next in further steps.
 
-Log into your BIG-IP TMOS instance and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
+Log into your BIG-IP TMOS instance via the deployment we did earlier. Go to the **BIG-IP 15.1.x** component and then select **TMUI**. Enter **admin** and **admin** as login and password.
+
+![alt text](./assets/tmos-archive.png)
+
+and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
 
 ![alt text](./assets/create-ucs.png)
 

@@ -66,6 +66,10 @@ Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy i
 
 ![alt text](./assets/deploy-blueprint.png)
 
+After it has been deployed, navigate to your **Deployments** and start it:
+
+![alt text](./assets/start-depl.png)
+
 ### 2. Copy SSH External
 
 After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
@@ -84,6 +88,8 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 
 ### 5. Data Initialization for Docker
 
+**NOTE: Complete this step ONLY if you haven't done initialization yet, including in other lab.**
+
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
 
 ```bash
@@ -94,7 +100,7 @@ You can verify that the folder with the keys has been created.
 
 ## Docker Setup (_optional_)
 
-We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). **If you prefer not to use Docker, you can skip this step but in that case make sure Ansible, Python 3 and Terraform are installed in Jump Host.**
 
 ### 1. Build Docker
 
@@ -133,6 +139,7 @@ nano cm_key
 ### 3. Data Initialization for Docker
 
 **If you followed the Blueprint flow, you need to skip this step.**
+**You also need to skip this step if you have already done initialization earlier, including other lab.**
 
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
 
@@ -155,7 +162,7 @@ sh ./install-prerequisites.sh
 Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
 
 ```bash
-ansible-playbook -i inventory.ini site.yaml
+ansible-playbook -i inventory.ini site.yml
 ```
 
 ### 6. Verify NGINX App and TMOS
@@ -184,7 +191,7 @@ curl http://10.1.10.91/server1
 
 ## 1. Start Creating an App
 
-Log in BIG-IP Next Central Manager and proceed to **Application Workspace**.
+Log in BIG-IP Next Central Manager via the deployment we did earlier, and proceed to **Application Workspace**.
 
 ![alt text](./assets/cm-navigate.png)
 
@@ -232,7 +239,7 @@ Back on the app configuration page, take a look at the configured properties and
 
 ![alt text](./assets/deploy-app.png)
 
-After that, we will specify the deployment instance. CLick the **Start Adding** button, choose an instance and add it to the list.
+After that, we will specify the deployment instance. CLick the **Start Adding** button, choose the **big-ip-next-03.example.com** instance and add it to the list.
 
 ![alt text](./assets/select-bigipnext-instance.png)
 
@@ -288,7 +295,7 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 
 - Clone and install the repository https://github.com/f5devcentral/bigip_automation_examples.git if you haven't done so yet
 - Access to BIG-IP Central Manager
-- CLI tool to run commands
+- CLI in Jump Host or Docker to run commands
 - Setup Docker (_optional but recommended_)
 
 ## 2. Add Access Credentials for BIG-IP Next
