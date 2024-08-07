@@ -13,16 +13,13 @@
     - [3. Enter Blueprint](#3-enter-blueprint)
     - [4. Clone Repository](#4-clone-repository)
     - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
-    - [6. Build Docker](#6-build-docker)
-    - [7. Install Dependencies](#7-install-dependencies)
-    - [8. Infrastructure Configuration](#8-infrastructure-configuration)
-    - [9. Verify NGINX App and TMOS](#9-verify-nginx-app-and-tmos)
   - [Docker Setup (_optional_)](#docker-setup-optional)
-    - [1. Clone Repository](#1-clone-repository)
-    - [2. Build Docker](#2-build-docker)
-    - [3. Enter Docker](#3-enter-docker)
-    - [4. Add SSH Private Keys](#4-add-ssh-private-keys)
-    - [5. Data Initialization for Docker](#5-data-initialization-for-docker-1)
+    - [1. Build Docker](#1-build-docker)
+    - [2. Add SSH Private Keys](#2-add-ssh-private-keys)
+    - [3. Data Initialization for Docker](#3-data-initialization-for-docker)
+    - [4. Install Dependencies](#4-install-dependencies)
+    - [5. Initialize BIG-IP](#5-initialize-big-ip)
+    - [6. Verify NGINX App and TMOS](#6-verify-nginx-app-and-tmos)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Inventory Setup](#1-inventory-setup)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
@@ -97,6 +94,10 @@ Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy i
 
 ![alt text](./assets/deploy-blueprint.png)
 
+After it has been deployed, navigate to your **Deployments** and start it:
+
+![alt text](./assets/start-depl.png)
+
 ### 2. Copy SSH External
 
 After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
@@ -115,6 +116,8 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 
 ### 5. Data Initialization for Docker
 
+**NOTE: Complete this step ONLY if you haven't done initialization yet, including in other lab.**
+
 Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
 
 ```bash
@@ -123,7 +126,11 @@ sh ./init.sh
 
 You can verify that the folder with the keys has been created.
 
-### 6. Build Docker
+## Docker Setup (_optional_)
+
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+
+### 1. Build Docker
 
 Next, we will build Docker. Note that executing this command can take some time.
 
@@ -137,23 +144,56 @@ As soon as the build is completed, enter Docker:
 sh ./run.sh
 ```
 
-### 7. Install Dependencies
+### 2. Add SSH Private Keys
 
-Run the command to install the collections and libraries required in Ansible playbook:
+**If you followed the Blueprint flow, you need to skip this step.**
+
+Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
+
+Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
+
+Enter the `tmos_key` file by running th following command and fill in the key:
+
+```bash
+nano tmos_key
+```
+
+Enter the `cm_key` file by running the following command and fill in the key:
+
+```bash
+nano cm_key
+```
+
+### 3. Data Initialization for Docker
+
+**If you followed the Blueprint flow, you need to skip this step.**
+**You also need to skip this step if you have already done initialization earlier, including other lab.**
+
+Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
+
+```bash
+sh ./init.sh
+```
+
+You can verify that the folder with the keys has been created.
+
+### 4. Install Dependencies
+
+Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
 sh ./install-prerequisites.sh
 ```
 
-### 8. Infrastructure Configuration
+### 5. Initialize BIG-IP
 
-Enter `bigip/bigip_next/security/migrate-from-tmos/init` to initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
+Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
 
 ```bash
-ansible-playbook -i inventory.ini site.yaml
+ansible-playbook -i inventory.ini site.yml
 ```
 
-### 9. Verify NGINX App and TMOS
+### 6. Verify NGINX App and TMOS
 
 Let's verify the app is up and running:
 
@@ -175,62 +215,6 @@ curl http://10.1.10.90/server1
 curl http://10.1.10.91/server1
 ```
 
-Congrats! We have just completed configuration of infrastructure using Blueprint that will be used for further [manual](#manual-workflow-guide) or [automated](#automated-workflow-guide) flow steps of this guide to migrate app from BIG-IP TMOS to BIG-IP Next.
-
-## Docker Setup (_optional_)
-
-We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
-
-### 1. Clone Repository
-
-Clone and install the repository: https://github.com/f5devcentral/bigip_automation_examples.git
-
-### 2. Build Docker
-
-Enter the folder `bigip/bigip_next/security/migrate-from-tmos/docker-env` and run the following command to build Docker that will include Terraform, Ansible and nano. Note that executing this command can take some time.
-
-```bash
-sh ./build.sh
-```
-
-### 3. Enter Docker
-
-Enter the docker by running the command:
-
-```bash
-sh ./run.sh
-```
-
-You will see a list of files. Enter the `.ssh`.
-
-### 4. Add SSH Private Keys
-
-Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
-
-Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
-
-Enter the `tmos_key` file by running th following command and fill in the key:
-
-```bash
-nano tmos_key
-```
-
-Enter the `cm_key` file by running the following command and fill in the key:
-
-```bash
-nano cm_key
-```
-
-### 5. Data Initialization for Docker
-
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
-
-```bash
-sh ./init.sh
-```
-
-You can verify that the folder with the keys has been created.
-
 ## Infrastructure Configuration
 
 ### 1. Inventory Setup
@@ -247,18 +231,18 @@ Go to the `tmos_vars.yml` and update the values to resolve the app as needed.
 
 ### 3. Install Dependencies
 
-If you are not using the Docker flow, you will need to execute the following to install the collections and libraries required in Ansible playbook:
+If you are not using the Docker flow, you will need to navigate to `bigip/bigip_next/security/migrate-from-tmos/init` and execute the following to install the collections and libraries required in Ansible playbook:
 
 ```bash
-install-prerequisites.sh
+sh ./install-prerequisites.sh
 ```
 
 ### 4. Configure Infrastructure
 
-Next, we will run the following command to configure the source TMOS virtual server and attach the WAF policy and verify if BIG-IP is setup correctly and the app is available.
+Next, navigate to `bigip/bigip_next/security/migrate-from-tmos/migrate` and run the following command to configure the source TMOS virtual server and attach the WAF policy and verify if BIG-IP is setup correctly and the app is available.
 
 ```bash
-ansible-playbook -i inventory.ini site.yaml
+ansible-playbook -i inventory.ini site.yml
 ```
 
 ### 5. Verify NGINX App
@@ -299,7 +283,11 @@ In this part we will provide manual steps with the associated screens for a "bro
 
 First, we will get a UCS archive that contains the source TMOS application services and then import it into BIG-IP Next Central Manager. This will let us view and deploy the app to BIG-IP Next in further steps.
 
-Log into your BIG-IP TMOS instance and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
+Log into your BIG-IP TMOS instance via the deployment we did earlier. Go to the **BIG-IP 15.1.x** component and then select **TMUI**. Enter **admin** and **admin** as login and password.
+
+![alt text](./assets/tmos-archive.png)
+
+and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
 
 ![alt text](./assets/create-ucs.png)
 
