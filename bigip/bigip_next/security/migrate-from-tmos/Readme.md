@@ -346,7 +346,7 @@ Next, you will see **Application Migration** page displaying the app to be migra
 
 ### 2.3 Import Shared Objects
 
-In the **Pre Deployment** step we will import shared objects into Central Manager.
+In the **Pre Deployment** step we will import shared objects into Central Manager. Click **Import** button:
 
 ![alt text](./assets/import-shared-objects.png)
 
@@ -406,7 +406,7 @@ The result should look like this:
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7837105753625208781<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
 ```
-Now, sitch to the **WAF Dashboards**, select **Last 5 Minutes** and see that the event was catched and is displayed:
+Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that the event was catched and is displayed:
 
 ![alt text](./assets/waf-dash.png)
 
