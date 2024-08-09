@@ -15,8 +15,8 @@ http {
         listen 80;
 
         {% for i in range(1, 21) %}
-        location /server{{ i }} {
-            return 200 "OK. Server - {{ i }}\n";
+        location /endpoint{{ i }} {
+            return 200 "OK. Endpoint - {{ i }}\n";
         }
         {% endfor %}
     }
