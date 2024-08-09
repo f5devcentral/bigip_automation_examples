@@ -510,15 +510,15 @@ Navigate to **Applications** => **Certificates & Keys**. You will see the list o
 Finally, we can verify the migrated and deployed app by running the following commands to the new routing in BIG-IP Next:
 
 ```bash
-curl http://10.1.10.190/server1
+curl http://10.1.10.190/endpoint1
 ```
 ```bash
-curl http://10.1.10.191/server1
+curl http://10.1.10.191/endpoint1
 ```
 
 Verify that WAF was migrated too:
 ```bash
-curl 'http://10.1.10.91/endpoint2?query=<script>alert(1)</script>'
+curl 'http://10.1.10.191/endpoint1?query=<script>alert(1)</script>'
 ```
 The expected output should look like:
 ```
@@ -528,11 +528,11 @@ The expected output should look like:
 And old routing via TMOS can also be verified by sending the ping to it:
 
 ```bash
-curl http://10.1.10.90/server1
+curl http://10.1.10.90/endpoint1
 ```
 
 ```bash
-curl http://10.1.10.91/server1
+curl http://10.1.10.91/endpoint1
 ```
 
 Congrats! You just completed automated migration of application to BIG-IP Next with its WAF Policy and certificates.
