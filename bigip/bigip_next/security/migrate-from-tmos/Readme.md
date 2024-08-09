@@ -27,14 +27,16 @@
     - [2.1 Upload UCS Archive into Central Manager](#21-upload-ucs-archive-into-central-manager)
     - [2.2 Add Application for Migration](#22-add-application-for-migration)
     - [2.3 Import Shared Objects](#23-import-shared-objects)
-    - [2.4 Deploy](#24-deploy)
-    - [2.5 Check App Availability](#25-check-app-availability)
+    - [2.4 Deploy as Draft](#24-deploy-as-draft)
+    - [2.5 Update Application Virtual Address](#25-update-application-virtual-address)
+    - [2.6 Deploy the Application to Big-IP Next Instance](#26-deploy-the-application-to-big-ip-next-instance)
+    - [2.7 Check App Availability](27-check-app-availability)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
     - [1.1 Configure Connectivity to TMOS](#11-configure-connectivity-to-tmos)
     - [1.2 Configure Connectivity to BIG-IP Next](#12-configure-connectivity-to-big-ip-next)
     - [1.3 Configure Connectivity to Central Manager and Add SSH Private Keys](#13-configure-connectivity-to-central-manager-and-add-ssh-private-keys)
-  - [2. Deployment](#2-deployment)
+  - [2. Migration and Deployment](#2-migration-and-deployment)
   - [3. Verify Migrated Application](#3-verify-migrated-application)
     - [3.1 Verify via Central Manager UI](#31-verify-via-central-manager-ui)
       - [3.1.1 Migrated Application](#311-migrated-application)
@@ -359,7 +361,6 @@ And finally, click the **Deploy** button. Note that we did not yet selected the 
 The **Deployments** page will show the deployment result. Take a look and **Finish** it.
 
 ![alt text](./assets/finished-deployment.png)
-
 
 ### 2.5 Update Application Virtual Address
 If we deploy the application now, there will be IP addresses conflict. So, in order to preserv the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
