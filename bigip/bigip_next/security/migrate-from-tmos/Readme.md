@@ -17,10 +17,10 @@
     - [1. Build Docker](#1-build-docker)
     - [2. Add SSH Private Keys](#2-add-ssh-private-keys)
   - [Infrastructure Configuration](#infrastructure-configuration)
-    - [1. Install Dependencies](#4-install-dependencies)
-    - [2. Initialize BIG-IP](#5-initialize-big-ip)
-    - [3. Data Initialization for Docker](#3-data-initialization-for-docker)
-    - [4. Verify Apps and TMOS](#6-verify-nginx-app-and-tmos)
+    - [1. Install Dependencies](#1-install-dependencies)
+    - [2. Initialize BIG-IP](#2-initialize-big-ip)
+    - [3. Verify Apps and TMOS](#3-verify-nginx-app-and-tmos)
+      [4. Network Map](#4-network-map)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
@@ -271,6 +271,9 @@ The expected output should look like:
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
+
+### 4. Network Map
+![alt text](./assets/network-map.png)
 
 # Manual Workflow Guide
 
