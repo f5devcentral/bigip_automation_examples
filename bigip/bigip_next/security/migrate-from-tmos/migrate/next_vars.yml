@@ -8,9 +8,9 @@ migrate_shared_object_prefix: "migrated_"
 migrate_app_prefix: "Common_"
 
 deploy_tree:
-  ans_vs1:
+  auto_ans_vs1:
     - bigip_next: 10.1.1.10
-  ans_vs2:
+  auto_ans_vs2:
     - bigip_next: 10.1.1.10
 
 ip_map:
