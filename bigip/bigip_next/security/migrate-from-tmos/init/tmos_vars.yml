@@ -10,10 +10,12 @@ node_ip: 10.1.20.102
 node_name: ans_node
 pool_name: ans_pool
 virtual_server:
-  - name: ans_vs1
+  - name: auto_ans_vs1
     ip: 10.1.10.90
-  - name: ans_vs2
+  - name: auto_ans_vs2
     ip: 10.1.10.91
+  - name: manual_ans_vs1
+    ip: 10.1.10.95
 virtual_server_port: 80
 asm_policy_name: ans_policy_asm
 ltm_policy_name: ans_policy_ltm
