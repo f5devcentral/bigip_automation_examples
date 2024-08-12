@@ -46,7 +46,7 @@
 
 # Overview
 
-This guide showcases migration of an app with a configured WAF policy from TMOS to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager accelerates app migration and provides management of your BIG-IP Next infrastructure and app services. We will perform the app migration of virtual server(s) together with the configured security profiles: WAF, Bot, DDoS.
+This guide showcases the migration of an app with a configured WAF policy from TMOS to BIG-IP Next using BIG-IP Next Central Manager. BIG-IP Next Central Manager accelerates app migration and provides management of your BIG-IP Next infrastructure and app services. We will perform the app migration of virtual server(s) together with the configured security profiles: WAF, Bot, DDoS.
 
 The first part of this guide will focus on _manual_ migration of an application, while the second part focuses on the _automation_ scripts of the migration and config steps:
 
@@ -123,9 +123,11 @@ sh ./init.sh
 
 You can verify that the folder with the SSH keys has been created. The folder is used during Docker build operation.
 
-## Docker Setup (_optional_)
+## Docker Setup
 
-We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). If you prefer not to use Docker, you can skip this step.
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
+
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the directory: `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository.**
 
 ### 1. Build Docker
 
@@ -143,9 +145,9 @@ sh ./run.sh
 
 ### 2. Add SSH Private Keys
 
-**If you followed the Blueprint flow, you need to skip this step.**
+**If you followed the Blueprint flow, you need to skip this step because the keys are already included.**
 
-Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
+Next, we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
 
 Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
 
@@ -173,7 +175,12 @@ sh ./install-prerequisites.sh
 
 ### 2. Initialize BIG-IP
 
-Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90**, **10.1.10.91**, **10.1.10.95** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. The additional configuration can be perfomred in **tmos_vars.yml** file, which looke like this:
+In this step, we will initialize BIG-IP to resolve the app. 
+
+If you would like to make changes to the IP addressed pre-defined for the sample app(s), you can do so here. Note that by default, the app will be resolved in **10.1.10.90**, **10.1.10.91**, **10.1.10.95** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. 
+
+The configuration used for initialization is defined in **tmos_vars.yml** file, which you can modify only if you choose to do so, making sure the structure follows the default yml layout below.  You can proceed to the step to execute Ansible playbook below without making any changes as well.
+
 ```yml
 provider: 
   server: 10.1.1.12
@@ -226,6 +233,8 @@ The **[app]** secton is the target destination of the deployment for the sample 
 
 After reviewing the files, run the following command to start initializing:
 
+**Executing initialization via Ansible playbook**
+
 ```bash
 ansible-playbook -i inventory.ini site.yml
 ```
@@ -242,7 +251,7 @@ curl http://10.1.20.102/endpoint1
 curl http://10.1.20.102/endpoint2
 ```
 
-The expected output should look like:
+The expected output should look like this:
 ```
 OK. Endpoint - 1
 ```
@@ -255,11 +264,11 @@ curl http://10.1.10.90/endpoint1
 ```bash
 curl http://10.1.10.91/endpoint2
 ```
-The expected output should look like:
+The expected output should look like this:
 ```
 OK. Endpoint - 1
 ```
-And verify that WAF is applied to TMOS routing by running the following commands:
+Also verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
 curl 'http://10.1.10.90/endpoint1?query=<script>alert(1)</script>'
@@ -277,7 +286,7 @@ The expected output should look like:
 
 # Manual Workflow Guide
 
-In this part we will provide manual steps with the associated screens for a "brownfield" use-case, i.e. a migration of an existing application from TMOS to BIG-IP Next. Using BIG-IP Next Central Manager ensures migration of configuration options such as WAF policies. The following steps will demonstrate the manual migration process:
+In this part, we will provide manual steps with the associated screens for a "brownfield" use-case, i.e. a migration of an existing application from TMOS to BIG-IP Next. Using BIG-IP Next Central Manager ensures migration of configuration options such as WAF policies. The following steps will demonstrate the manual migration process:
 
 - Get BIG-IP UCS Archive
 - Upload UCS Archive into BIG-IP Next Central Manager
@@ -319,7 +328,7 @@ On the application management page, click the **Add Application** button.
 
 ![alt text](./assets/add-app.png)
 
-Click the **New Migration** button. This will open new application migration configuration.
+Click the **New Migration** button. This will open a new application migration configuration.
 
 ![alt text](./assets/new-migration.png)
 
