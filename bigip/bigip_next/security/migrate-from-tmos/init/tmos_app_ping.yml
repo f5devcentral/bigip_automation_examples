@@ -14,7 +14,7 @@
 
     - name: Check if the server is available
       uri:
-        url: "http://{{ item.ip }}:{{ virtual_server_port }}/server1"
+        url: "http://{{ item.ip }}:{{ virtual_server_port }}/endpoint1"
         method: GET
         status_code: 200
       register: result

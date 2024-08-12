@@ -9,37 +9,34 @@
 - [Environment \& Pre-requisites](#environment--pre-requisites)
   - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
     - [1. Deploy Blueprint](#1-deploy-blueprint)
-    - [2. Copy SSH External](#2-copy-ssh-external)
+    - [2. Setup SSH Keys](#2-setup-ssh-keys)
     - [3. Enter Blueprint](#3-enter-blueprint)
     - [4. Clone Repository](#4-clone-repository)
     - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
   - [Docker Setup (_optional_)](#docker-setup-optional)
     - [1. Build Docker](#1-build-docker)
     - [2. Add SSH Private Keys](#2-add-ssh-private-keys)
-    - [3. Data Initialization for Docker](#3-data-initialization-for-docker)
-    - [4. Install Dependencies](#4-install-dependencies)
-    - [5. Initialize BIG-IP](#5-initialize-big-ip)
-    - [6. Verify NGINX App and TMOS](#6-verify-nginx-app-and-tmos)
   - [Infrastructure Configuration](#infrastructure-configuration)
-    - [1. Inventory Setup](#1-inventory-setup)
+    - [1. Install Dependencies](#1-install-dependencies)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
-    - [3. Install Dependencies](#3-install-dependencies)
-    - [4. Configure Infrastructure](#4-configure-infrastructure)
-    - [5. Verify NGINX App](#5-verify-nginx-app)
+    - [3. Verify Apps and TMOS](#3-verify-nginx-app-and-tmos)
+      [4. Network Map](#4-network-map)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
     - [2.1 Upload UCS Archive into Central Manager](#21-upload-ucs-archive-into-central-manager)
     - [2.2 Add Application for Migration](#22-add-application-for-migration)
     - [2.3 Import Shared Objects](#23-import-shared-objects)
-    - [2.4 Deploy](#24-deploy)
-    - [2.5 Check App Availability](#25-check-app-availability)
+    - [2.4 Deploy as Draft](#24-deploy-as-draft)
+    - [2.5 Update Application Virtual Address](#25-update-application-virtual-address)
+    - [2.6 Deploy the Application to Big-IP Next Instance](#26-deploy-the-application-to-big-ip-next-instance)
+    - [2.7 Check App Availability](27-check-app-availability)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
     - [1.1 Configure Connectivity to TMOS](#11-configure-connectivity-to-tmos)
     - [1.2 Configure Connectivity to BIG-IP Next](#12-configure-connectivity-to-big-ip-next)
     - [1.3 Configure Connectivity to Central Manager and Add SSH Private Keys](#13-configure-connectivity-to-central-manager-and-add-ssh-private-keys)
-  - [2. Deployment](#2-deployment)
+  - [2. Migration and Deployment](#2-migration-and-deployment)
   - [3. Verify Migrated Application](#3-verify-migrated-application)
     - [3.1 Verify via Central Manager UI](#31-verify-via-central-manager-ui)
       - [3.1.1 Migrated Application](#311-migrated-application)
@@ -98,21 +95,21 @@ After it has been deployed, navigate to your **Deployments** and start it:
 
 ![alt text](./assets/start-depl.png)
 
-### 2. Copy SSH External
+### 2. Setup SSH Keys
 
-After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
-
-![alt text](./assets/ubuntu-jump-host.png)
-
-Go to the **Access Methods** tab and copy the SSH external.
+To enter the Blueprint VM (jumphost), the SSH tool will be used. In order to setup SSH access keys use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh).
 
 ### 3. Enter Blueprint
 
-Next, enter Blueprint using your SSH key via command line interface. You can use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh) on accessing the object via SSH.
+After the Blueprint has been deployed and SSH keys are setup, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
+
+![alt text](./assets/ubuntu-jump-host.png)
+
+Go to the **Access Methods** tab and copy the SSH external. Execute, to copied command in command line.
 
 ### 4. Clone Repository
 
-After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
+After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify the SSH keys in Blueprint since they are already specified.
 
 ### 5. Data Initialization for Docker
 
@@ -124,7 +121,7 @@ Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of
 sh ./init.sh
 ```
 
-You can verify that the folder with the keys has been created.
+You can verify that the folder with the SSH keys has been created. The folder is used during Docker build operation.
 
 ## Docker Setup (_optional_)
 
@@ -152,7 +149,7 @@ Next we will add SSH private keys for TMOS and Central Manager. Note that you wi
 
 Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
 
-Enter the `tmos_key` file by running th following command and fill in the key:
+Enter the `tmos_key` file by running the following command and fill in the key:
 
 ```bash
 nano tmos_key
@@ -164,20 +161,9 @@ Enter the `cm_key` file by running the following command and fill in the key:
 nano cm_key
 ```
 
-### 3. Data Initialization for Docker
+## Infrastructure Configuration
 
-**If you followed the Blueprint flow, you need to skip this step.**
-**You also need to skip this step if you have already done initialization earlier, including other lab.**
-
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
-
-```bash
-sh ./init.sh
-```
-
-You can verify that the folder with the keys has been created.
-
-### 4. Install Dependencies
+### 1. Install Dependencies
 
 Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
 
@@ -185,89 +171,109 @@ Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to ins
 sh ./install-prerequisites.sh
 ```
 
-### 5. Initialize BIG-IP
+### 2. Initialize BIG-IP
 
-Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
+Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90**, **10.1.10.91**, **10.1.10.95** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. The additional configuration can be perfomred in **tmos_vars.yml** file, which looke like this:
+```yml
+provider: 
+  server: 10.1.1.12
+  server_port: 443
+  user: admin
+  password: admin
+  validate_certs: false
+  no_f5_teem: false
+
+node_ip: 10.1.20.102
+node_name: ans_node
+pool_name: ans_pool
+virtual_server:
+  - name: auto_ans_vs1
+    ip: 10.1.10.90
+  - name: auto_ans_vs2
+    ip: 10.1.10.91
+  - name: manual_ans_vs1
+    ip: 10.1.10.95
+virtual_server_port: 80
+asm_policy_name: ans_policy_asm
+ltm_policy_name: ans_policy_ltm
+```
+
+File has three main sections:
+1. Provider setup - config to enter BigIP TMOS node
+2. Sample application setup: **node_ip**, **node_name** and **pool_name**
+3. List of Virtual Servers to be created in TMOS Big-IP
+4. Policy names configuration. Policy is created in **blocking** mode and the signatures and set to be **enforced**
+
+Data in tmos_vars.yml file corresponds to the Blueprint setup. So, in case of Bluperint usage, nothing is required to change in it. In case of running initialisation scripts in custom environment please check the IPs and names, so they will not override anything.
+
+The hosts to install the sample app and call TMOS Big-IP commands are configured in **inventory.ini**:
+```ini
+[app]
+10.1.1.4
+
+[app:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/id_rsa
+
+[tmos]
+10.1.1.12
+
+[tmos:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/tmos_key
+ansible_ssh_user=root
+```
+
+The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. Access to TMOS Big-IP is specified in **[tmos]** section. The file is configured for the **Blueprint** setup, no need to chage it.
+
+After reviewing the files, run the following command to start initializing:
 
 ```bash
 ansible-playbook -i inventory.ini site.yml
 ```
 
-### 6. Verify NGINX App and TMOS
+### 3. Verify Apps and TMOS
 
-Let's verify the app is up and running:
+Let's verify the app is up and running, execute:
 
 ```bash
-curl http://10.1.20.102/server1
+curl http://10.1.20.102/endpoint1
 ```
 
 ```bash
-curl http://10.1.20.102/server2
+curl http://10.1.20.102/endpoint2
+```
+
+The expected output should look like:
+```
+OK. Endpoint - 1
 ```
 
 Verify TMOS routing by running the following commands:
 
 ```bash
-curl http://10.1.10.90/server1
+curl http://10.1.10.90/endpoint1
 ```
+```bash
+curl http://10.1.10.91/endpoint2
+```
+The expected output should look like:
+```
+OK. Endpoint - 1
+```
+And verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
-curl http://10.1.10.91/server1
+curl 'http://10.1.10.90/endpoint1?query=<script>alert(1)</script>'
 ```
-
-## Infrastructure Configuration
-
-### 1. Inventory Setup
-
-Let's start with inventory configuration for the migration source. Go to the inventory file and specify application and TMOS IDs:
-
 ```bash
- inventory.ini
+curl 'http://10.1.10.91/endpoint2?query=<script>alert(1)</script>'
+```
+The expected output should look like:
+```
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
 
-### 2. Initialize BIG-IP
-
-Go to the `tmos_vars.yml` and update the values to resolve the app as needed.
-
-### 3. Install Dependencies
-
-If you are not using the Docker flow, you will need to navigate to `bigip/bigip_next/security/migrate-from-tmos/init` and execute the following to install the collections and libraries required in Ansible playbook:
-
-```bash
-sh ./install-prerequisites.sh
-```
-
-### 4. Configure Infrastructure
-
-Next, navigate to `bigip/bigip_next/security/migrate-from-tmos/migrate` and run the following command to configure the source TMOS virtual server and attach the WAF policy and verify if BIG-IP is setup correctly and the app is available.
-
-```bash
-ansible-playbook -i inventory.ini site.yml
-```
-
-### 5. Verify NGINX App
-
-Now that we have initialized and configured the infrastructure, we can check NGINX App availability and TMOS by running the commands:
-
-For the app:
-
-```bash
-curl http://10.1.20.102/server1
-```
-
-```bash
-curl http://10.1.20.102/server2
-```
-
-For TMOS:
-
-```bash
-curl http://10.1.10.90/server1
-```
-
-```bash
-curl http://10.1.10.91/server1
-```
+### 4. Network Map
+![alt text](./assets/network-map.png)
 
 # Manual Workflow Guide
 
@@ -321,7 +327,11 @@ First, we will configure general properties: give it a name and add a descriptio
 
 ![alt text](./assets/migration-name.png)
 
-Next, we will drag and drop the UCS archive file downloaded [earlier](#1-get-big-ip-ucs-archive). Select grouping application services by IP addresses for this demo flow and click **Next**. Note that file uploading can take some time.
+Next, we will drag and drop the UCS archive file downloaded [earlier](#1-get-big-ip-ucs-archive). Enter the BIG-IP TMOS master key. In case of **Blueprint** usage, the master key is:
+```
+cgGaYTNid4Gvqdelf/85cw==
+```
+Select grouping application services by IP addresses for this demo flow and click **Next**. Note that file uploading can take some time.
 
 ![alt text](./assets/upload-ucs.png)
 
@@ -331,23 +341,23 @@ After uploading the UCS archive we will add application for migration by clickin
 
 ![alt text](./assets/add-application.png)
 
-You will see a list of application services from your TMOS. Note that you can select green or yellow status application services, but not red ones. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**.
+You will see a list of application services from your TMOS. Note that you can select green or yellow status application services, but not red ones. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**. To migrate a preconfigured app, select the **Common_manual_ans_vs1** and click the **Add** button
 
 ![alt text](./assets/add-apps-to-migration.png)
 
-Next, you will see **Application Migration** page displaying the app to be migrated. Click the **Next** button.
+Next, you will see **Application Migration** page displaying the app to be migrated. 
 
 ![alt text](./assets/app-mig-list.png)
 
 ### 2.3 Import Shared Objects
 
-In the **Pre Deployment** step we will import shared objects into Central Manager.
+In the **Pre Deployment** step we will import shared objects into Central Manager. Click **Import** button:
 
 ![alt text](./assets/import-shared-objects.png)
 
-### 2.4 Deploy
+### 2.4 Deploy as Draft
 
-And finally, we will select deploy location for the app and click the **Deploy** button. This will start the deployment process that can take some time.
+And finally, click the **Deploy** button. Note that we did not yet selected the deploy location, just leave **Save as Draft**.
 
 ![alt text](./assets/deploy.png)
 
@@ -355,7 +365,21 @@ The **Deployments** page will show the deployment result. Take a look and **Fini
 
 ![alt text](./assets/finished-deployment.png)
 
-### 2.5 Check App Availability
+### 2.5 Update Application Virtual Address
+If we deploy the application now, there will be IP addresses conflict. So, in order to preserv the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
+![alt text](./assets/migrated-app-list.png)
+
+In appeared window find the **virtualAddress** key and replace **10.1.10.95** ip address with **10.1.10.195** and click the **Review & Deploy** button.
+![alt text](./assets/migrated-app-ip-update.png)
+
+### 2.6 Deploy the Application to Big-IP Next Instance
+In the apperaared window, click the **Start Adding** button and select the **big-ip-next-03-example.com** instance. Then click **Add to list**
+![alt text](./assets/migrated-app-deploy-next-instance.png)
+
+The deploy to location will be added. Click the **Deploy** button:
+![alt text](./assets/migrated-app-deploy-next-instance-location.png)
+
+### 2.7 Check App Availability
 
 Congrats! Your app together with its security WAF policy is migrated to BIG-IP Next with the help of BIG-IP Next Central Manager which made the whole migration process super fast and easy.
 
@@ -366,6 +390,27 @@ Let's navigate to the **Security** workspace and take a look at the created WAF 
 **Note that your screen may look different**.
 
 ![alt text](./assets/waf-policies-dash.png)
+
+Now, let's send some requests to the migrated application:
+```bash
+curl http://10.1.10.195/endpoint1
+```
+```bash
+curl http://10.1.10.195/endpoint2
+```
+The expected output should look like:
+```
+OK. Endpoint - 1
+```
+And check that WAF is migrated too:
+```bash
+curl 'http://10.1.10.195/endpoint1?query=<script>alert(1)</script>'
+```
+The result should look like this:
+```
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7837105753625208781<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
+```
+Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that the event was catched and is displayed:
 
 ![alt text](./assets/waf-dash.png)
 
@@ -395,7 +440,7 @@ In the `next_vars.yml` file specify the following parameters to establish connec
 
 - `address`, `user`, `password`, `max_applications` for Central Manager
 - `migrate_shared_object_prefix`, `migrate_app_prefix` for prefixes that Central Manager will use
-- `ans_vs1` (virtual server in TMOS) and `bigip_next` (address of BIG-IP Next instance to deploy to) for deployment
+- `auto_ans_vs1` (virtual server in TMOS) and `bigip_next` (address of BIG-IP Next instance to deploy to) for deployment
 - `ip_map` specified for virtual addresses for virtual servers to be updated during the migration process (but application addresses within pools won't be changed). Note that during the migration process the addresses will be updated accordingly: **10.1.10.90 => 10.1.10.190** and **10.1.10.91 => 10.1.10.191**. The original application will not be disabled and its routing will go via **10.1.10.90** & **10.1.10.91**, whereas the new routing will go via **10.1.10.190** & **10.1.10.191** which will let two simultaneous routings go to the app.
 
 ### 1.3 Configure Connectivity to Central Manager and Add SSH Private Keys
@@ -407,7 +452,7 @@ In the `inventory.ini` file specify the following parameters:
 - TMOS IP address
 - SSH private key to access TMOS
 
-## 2. Deployment
+## 2. Migration and Deployment
 
 In the `site.yml` file you can see the migration steps that will be performed:
 
@@ -465,21 +510,29 @@ Navigate to **Applications** => **Certificates & Keys**. You will see the list o
 Finally, we can verify the migrated and deployed app by running the following commands to the new routing in BIG-IP Next:
 
 ```bash
-curl http://10.1.10.190/server1
+curl http://10.1.10.190/endpoint1
+```
+```bash
+curl http://10.1.10.191/endpoint1
 ```
 
+Verify that WAF was migrated too:
 ```bash
-curl http://10.1.10.191/server1
+curl 'http://10.1.10.191/endpoint1?query=<script>alert(1)</script>'
+```
+The expected output should look like:
+```
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
 
 And old routing via TMOS can also be verified by sending the ping to it:
 
 ```bash
-curl http://10.1.10.90/server1
+curl http://10.1.10.90/endpoint1
 ```
 
 ```bash
-curl http://10.1.10.91/server1
+curl http://10.1.10.91/endpoint1
 ```
 
 Congrats! You just completed automated migration of application to BIG-IP Next with its WAF Policy and certificates.
