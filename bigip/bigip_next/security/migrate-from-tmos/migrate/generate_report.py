@@ -3,7 +3,7 @@ import sys
 import json
 
 def generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map):
-    headers = ['Old_App_Name', 'New_App_Name', 'Status', 'Old_IP_Address', 'New_IP_Address', 'as3_unsupported']
+    headers = ['Old_App_Name', 'New_App_Name', 'Status', 'Old_IP_Address', 'New_IP_Address', 'Unsupported']
     with open(output_file, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
@@ -25,7 +25,7 @@ def generate_csv_report(output_file, migrate_apps, migrate_app_prefix, ip_map):
                     'Status': vs.get('status', 'unknown'),
                     'Old_IP_Address': old_ip_without_port,
                     'New_IP_Address': new_ip,
-                    'as3_unsupported': as3_unsupported
+                    'Unsupported': as3_unsupported
                 }
                 writer.writerow(row)
 

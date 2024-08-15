@@ -81,7 +81,7 @@
         content: "{{ cm_apps.json._embedded | to_json }}"
         dest: "migrate_apps.json"
 
-    - name: Create report CSV
+    - name: Create migration report (csv)
       delegate_to: localhost
       local_action:
         module: command
