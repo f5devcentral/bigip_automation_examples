@@ -74,6 +74,25 @@
       vars:
         query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0`]]"
 
+    - name: Write migrate apps data to a temporary JSON file
+      delegate_to: localhost
+      local_action:
+        module: copy
+        content: "{{ cm_apps.json._embedded | to_json }}"
+        dest: "migrate_apps.json"
+
+    - name: Create report CSV
+      delegate_to: localhost
+      local_action:
+        module: command
+        args:
+          cmd: >
+            python3 generate_report.py
+            '{{ report_file }}'
+            'migrate_apps.json'
+            '{{ migrate_app_prefix }}'
+            '{{ ip_map | to_json }}'
+
     - name: Extract not installed Shared Objects
       set_fact:
         app_shared_objects_names: "{{ migrate_apps | shared_object_names(migrate_shared_object_prefix) }}"
