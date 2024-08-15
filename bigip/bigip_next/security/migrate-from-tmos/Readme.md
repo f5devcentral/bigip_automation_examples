@@ -282,6 +282,9 @@ The expected output should look like:
 ```
 
 ### 4. Network Map
+
+The resulting infrastructure for BIG-IP TMOS will have three sample virtual servers to support both Automated migration (auto_ans_vs1 and vs2), as well as Manual migration (manual_ans_vs1) with the corresponding pools:
+
 ![alt text](./assets/network-map.png)
 
 # Manual Workflow Guide
@@ -346,7 +349,7 @@ Select grouping application services by IP addresses for this demo flow and clic
 
 ### 2.2 Add Application for Migration
 
-After uploading the UCS archive we will add application for migration by clicking the **Add Application** button.
+After uploading the UCS archive we will add the application to migrate by clicking the **Add Application** button.
 
 ![alt text](./assets/add-application.png)
 
@@ -366,7 +369,7 @@ In the **Pre Deployment** step we will import shared objects into Central Manage
 
 ### 2.4 Deploy as Draft
 
-And finally, click the **Deploy** button. Note that we did not yet selected the deploy location, just leave **Save as Draft**.
+And finally, click the **Deploy** button. Note that we haven't yet selected the deploy location, so just leave **Save as Draft**.
 
 ![alt text](./assets/deploy.png)
 
@@ -375,22 +378,22 @@ The **Deployments** page will show the deployment result. Take a look and **Fini
 ![alt text](./assets/finished-deployment.png)
 
 ### 2.5 Update Application Virtual Address
-If we deploy the application now, there will be IP addresses conflict. So, in order to preserv the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
+If we deploy the application now, there will be an IP address conflict. So, in order to preserve the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
 ![alt text](./assets/migrated-app-list.png)
 
-In appeared window find the **virtualAddress** key and replace **10.1.10.95** ip address with **10.1.10.195** and click the **Review & Deploy** button.
+In appeared window find the **virtualAddress** key and replace **10.1.10.95** IP address with **10.1.10.195** and click the **Review & Deploy** button.
 ![alt text](./assets/migrated-app-ip-update.png)
 
 ### 2.6 Deploy the Application to Big-IP Next Instance
 In the apperaared window, click the **Start Adding** button and select the **big-ip-next-03-example.com** instance. Then click **Add to list**
 ![alt text](./assets/migrated-app-deploy-next-instance.png)
 
-The deploy to location will be added. Click the **Deploy** button:
+The deploy-to location will be added. Click the **Deploy** button:
 ![alt text](./assets/migrated-app-deploy-next-instance-location.png)
 
 ### 2.7 Check App Availability
 
-Congrats! Your app together with its security WAF policy is migrated to BIG-IP Next with the help of BIG-IP Next Central Manager which made the whole migration process super fast and easy.
+Congrats! Your app along with the corresponding security WAF policy is migrated to BIG-IP Next with the help of BIG-IP Next Central Manager which streamlines the entire migration process.
 
 ![alt text](./assets/deployed-apps.png)
 
@@ -407,7 +410,7 @@ curl http://10.1.10.195/endpoint1
 ```bash
 curl http://10.1.10.195/endpoint2
 ```
-The expected output should look like:
+The expected output should look like this:
 ```
 OK. Endpoint - 1
 ```
@@ -419,13 +422,13 @@ The result should look like this:
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7837105753625208781<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
 ```
-Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that the event was catched and is displayed:
+Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that the event has been created, with the request intercepted and details displayed:
 
 ![alt text](./assets/waf-dash.png)
 
 # Automated Workflow Guide
 
-In this part of the guide we will automatically migrate application to BIG-IP Next with WAF policy and then verify it using Central Manager UI as well as CLI.
+In this part of the guide we will automatically migrate the application with two virtual servers to BIG-IP Next with a shared WAF policy and then verify it using Central Manager UI as well as CLI.
 
 Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the `bigip/bigip_next/security/migrate-from-tmos/migrate` folder where we will update config files.
 
