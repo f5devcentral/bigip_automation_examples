@@ -16,3 +16,5 @@ deploy_tree:
 ip_map:
   10.1.10.90: 10.1.10.190
   10.1.10.91: 10.1.10.191
+
+report_file: report.csv
