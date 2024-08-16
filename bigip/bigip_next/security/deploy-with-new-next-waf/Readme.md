@@ -8,18 +8,17 @@
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-  - [1. Deploy Blueprint](#1-deploy-blueprint)
-  - [2. Copy SSH External](#2-copy-ssh-external)
-  - [3. Enter Blueprint](#3-enter-blueprint)
-  - [4. Clone Repository](#4-clone-repository)
-  - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
-  - [Docker Setup (_optional_)](#docker-setup-optional)
-    - [1. Build Docker](#1-build-docker)
-    - [2. Add SSH Private Keys](#2-add-ssh-private-keys)
-    - [3. Data Initialization for Docker](#3-data-initialization-for-docker)
-    - [4. Install Dependencies](#4-install-dependencies)
-    - [5. Initialize BIG-IP](#5-initialize-big-ip)
-    - [6. Verify NGINX App and TMOS](#6-verify-nginx-app-and-tmos)
+    - [1. Deploy Blueprint](#1-deploy-blueprint)
+    - [2. Setup SSH Keys](#2-setup-ssh-keys)
+    - [3. Enter Blueprint](#3-enter-blueprint)
+    - [4. Clone Repository](#4-clone-repository)
+    - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
+- [Docker Setup](#docker-setup)
+- [Infrastructure Configuration](#infrastructure-configuration)
+    - [1. Install Dependencies](#1-install-dependencies)
+    - [2. Initialize Environment](#2-initialize-environment)
+    - [3. Verify Endpoints](#3-verify-endpoints)
+      [4. Network Map](#4-network-map)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Start Creating an App](#1-start-creating-an-app)
   - [2. Add Pool and Server](#2-add-pool-and-server)
@@ -49,20 +48,25 @@ There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy cov
 
 You may use your own environment with BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
 
-- BIG-IP NEXT Instance(s), where we will deploy the new app config
+- BIG-IP NEXT Instance(s), where we will deploy the migrated app config
 
-- BIG-IP NEXT Central Manager, which we will use for configuring the app and WAF Policy
+- BIG-IP NEXT Central Manager, which we will use for migrating the virtual servers to NEXT instances and WAF Policy config
 
-For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP NEXT CM.
-On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Terraform, etc.)
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP CM instance. On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.)
+
+Before starting application migration we will need to set up our environment. Environment configuration will include the following steps:
+
+- Docker setup (optional)
+
+- Running Ansible playbook
 
 # Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint flow as the foundation for your environment: "NEXT WAF- Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint flow as the foundation for your environment: "NEXT WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **NEXT WAF - Automation**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -70,17 +74,17 @@ After it has been deployed, navigate to your **Deployments** and start it:
 
 ![alt text](./assets/start-depl.png)
 
-### 2. Copy SSH External
+### 2. Setup SSH Keys
 
-After the Blueprint has been deployed, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
-
-![alt text](./assets/ubuntu-jump-host.png)
-
-Go to the **Access Methods** tab and copy the SSH external.
+To enter the Blueprint VM (jumphost), the SSH tool will be used. In order to setup SSH access keys use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh).
 
 ### 3. Enter Blueprint
 
-Next, enter Blueprint using your SSH key via command line interface. You can use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh) on accessing the object via SSH.
+After the Blueprint has been deployed and SSH keys are setup, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab to see three components we are going to use: **Ubuntu Jump Host (client/server)**, **BIG-IP 15.1.x**, **BIG-IP Next Central Manager**. Proceed to the **Ubuntu Jump Host**.
+
+![alt text](./assets/ubuntu-jump-host.png)
+
+Go to the **Access Methods** tab and copy the SSH external. Execute, to copied command in command line.
 
 ### 4. Clone Repository
 
@@ -96,13 +100,13 @@ Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of
 sh ./init.sh
 ```
 
-You can verify that the folder with the keys has been created.
+You can verify that the folder with the SSH keys has been created. The folder is used during Docker build operation.
 
-## Docker Setup (_optional_)
+## Docker Setup
 
-We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide). **If you prefer not to use Docker, you can skip this step but in that case make sure Ansible, Python 3 and Terraform are installed in Jump Host.**
+We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
 
-### 1. Build Docker
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the directory: `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository.**
 
 Next, we will build Docker. Note that executing this command can take some time.
 
@@ -116,40 +120,9 @@ As soon as the build is completed, enter Docker:
 sh ./run.sh
 ```
 
-### 2. Add SSH Private Keys
+## Infrastructure Configuration
 
-**If you followed the Blueprint flow, you need to skip this step.**
-
-Next we will add SSH private keys for TMOS and Central Manager. Note that you will need to add keys only for Ansible.
-
-Inside the `.ssh`, you will see `tmos_key` for private key to access TMOS and `cm_key` for key to access Central Manager.
-
-Enter the `tmos_key` file by running th following command and fill in the key:
-
-```bash
-nano tmos_key
-```
-
-Enter the `cm_key` file by running the following command and fill in the key:
-
-```bash
-nano cm_key
-```
-
-### 3. Data Initialization for Docker
-
-**If you followed the Blueprint flow, you need to skip this step.**
-**You also need to skip this step if you have already done initialization earlier, including other lab.**
-
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory and run the `init.sh` to create a local key folder:
-
-```bash
-sh ./init.sh
-```
-
-You can verify that the folder with the keys has been created.
-
-### 4. Install Dependencies
+### 1. Install Dependencies
 
 Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
 
@@ -157,34 +130,44 @@ Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to ins
 sh ./install-prerequisites.sh
 ```
 
-### 5. Initialize BIG-IP
+### 2. Initialize Environment
 
-Next, we will initialize BIG-IP to resolve the app. Note that the app will be resolved in **10.1.10.90** and **10.1.10.91** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. Run the following command to start initializing:
+In this step, we will initialize the sample app. 
 
-```bash
-ansible-playbook -i inventory.ini site.yml
+The hosts to install the sample app is configured in **inventory.ini**:
+```ini
+[app]
+10.1.1.4
+
+[app:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/id_rsa
 ```
 
-### 6. Verify NGINX App and TMOS
+The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. For this demo, no need to change other sections, if any present in the file. The file is configured for the **Blueprint** setup, no need to chage it.
 
-Let's verify the app is up and running:
+After reviewing the files, run the following command to start initializing:
+
+**Executing initialization via Ansible playbook**
 
 ```bash
-curl http://10.1.20.102/server1
+ansible-playbook -i inventory.ini app_install.yml
+```
+
+### 3. Verify Endpoints
+
+Let's verify the app is up and running, execute:
+
+```bash
+curl http://10.1.20.102/endpoint1
 ```
 
 ```bash
-curl http://10.1.20.102/server2
+curl http://10.1.20.102/endpoint2
 ```
 
-Verify TMOS routing by running the following commands:
-
-```bash
-curl http://10.1.10.90/server1
+The expected output should look like this:
 ```
-
-```bash
-curl http://10.1.10.91/server1
+OK. Endpoint - 1
 ```
 
 # Manual Workflow Guide
@@ -276,15 +259,27 @@ As soon as the deployment process is over, you will see a notification in the lo
 You can verify the app by running the following commands:
 
 ```bash
-curl http://10.1.10.94/server1
+curl http://10.1.10.94/endpoint1
+```
+```bash
+curl http://10.1.10.94/endpoint2
 ```
 
-```bash
-curl http://10.1.10.94/server2
+The expected output should look like this:
 ```
+OK. Endpoint - 1
+```
+Also verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
-curl http://10.1.10.94/server10
+curl 'http://10.1.10.94/endpoint1?query=<script>alert(1)</script>'
+```
+```bash
+curl 'http://10.1.10.94/endpoint2?query=<script>alert(1)</script>'
+```
+The expected output should look like:
+```
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
 
 Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager lets us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
@@ -339,16 +334,30 @@ terraform apply -var-file=input.tfvars
 First, let's verify the app by running the following commands:
 
 ```bash
-curl http://10.1.10.93/server1
+curl http://10.1.10.93/endpoint1
+```
+```bash
+curl http://10.1.10.93/endpoint2
 ```
 
-```bash
-curl http://10.1.10.93/server2
+The expected output should look like this:
 ```
+OK. Endpoint - 1
+```
+Also verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
-curl http://10.1.10.93/server3
+curl 'http://10.1.10.93/endpoint1?query=<script>alert(1)</script>'
 ```
+```bash
+curl 'http://10.1.10.93/endpoint2?query=<script>alert(1)</script>'
+```
+The expected output should look like:
+```
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
+```
+
+Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF policy to it using BIG-IP Next Central Manager. Central Manager lets us configure the WAF Policy in an easy and straightforward way making blocking mode available right away.
 
 Next, log into your Central Manager and navigate to the **Application Workspace**.
 

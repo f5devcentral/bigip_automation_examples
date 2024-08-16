@@ -7,13 +7,13 @@
 - [Overview](#overview)
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
-  - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+- [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
     - [1. Deploy Blueprint](#1-deploy-blueprint)
     - [2. Setup SSH Keys](#2-setup-ssh-keys)
     - [3. Enter Blueprint](#3-enter-blueprint)
     - [4. Clone Repository](#4-clone-repository)
     - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
-  - [Docker Setup (_optional_)](#docker-setup-optional)
+  - [Docker Setup](#docker-setup)
     - [1. Build Docker](#1-build-docker)
     - [2. Add SSH Private Keys](#2-add-ssh-private-keys)
   - [Infrastructure Configuration](#infrastructure-configuration)
@@ -87,7 +87,7 @@ Before starting application migration we will need to set up our environment. En
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **NEXT WAF- Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **NEXT WAF - Automation**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
