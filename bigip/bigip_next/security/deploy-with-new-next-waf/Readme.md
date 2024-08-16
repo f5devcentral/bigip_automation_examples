@@ -141,16 +141,9 @@ The hosts to install the sample app is configured in **inventory.ini**:
 
 [app:vars]
 ansible_ssh_private_key_file=/home/ubuntu/.ssh/id_rsa
-
-[tmos]
-10.1.1.12
-
-[tmos:vars]
-ansible_ssh_private_key_file=/home/ubuntu/.ssh/tmos_key
-ansible_ssh_user=root
 ```
 
-The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. For this demo, no need to change the **[tmos]** secton. The file is configured for the **Blueprint** setup, no need to chage it.
+The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. For this demo, no need to change other sections, if any present in the file. The file is configured for the **Blueprint** setup, no need to chage it.
 
 After reviewing the files, run the following command to start initializing:
 
