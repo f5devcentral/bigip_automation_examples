@@ -74,24 +74,25 @@
       vars:
         query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(irules) == `0`]]"
 
-    - name: Write migrate apps data to a temporary JSON file
+    - name: Generate migration report
       delegate_to: localhost
-      local_action:
-        module: copy
-        content: "{{ cm_apps.json._embedded | to_json }}"
-        dest: "migrate_apps.json"
-
-    - name: Create migration report (csv)
-      delegate_to: localhost
-      local_action:
-        module: command
-        args:
-          cmd: >
-            python3 generate_report.py
-            '{{ report_file }}'
-            'migrate_apps.json'
-            '{{ migrate_app_prefix }}'
-            '{{ ip_map | to_json }}'
+      copy:
+        content: |
+          {% set headers = ['Old_Vs_Name', 'New_App_Name', 'Status', 'Old_IP_Address', 'New_IP_Address', 'Unsupported'] %}
+          {{ headers | join(',') }}
+          {% for app in cm_apps.json._embedded.applications %}
+          {% for vs in app.virtual_servers | default([]) %}
+          {% set app_name = app.name %}
+          {% set vs_name = vs.name %}
+          {% set old_ip = vs.ip_addresses[0] if vs.ip_addresses | default([]) else '-' %}
+          {% set old_ip_without_port = old_ip.split('/')[0] if old_ip != '-' else '-' %}
+          {% set new_ip = ip_map.get(old_ip_without_port, '-') %}
+          {% set status = vs.status | default('unknown') %}
+          {% set as3_unsupported = ';'.join(vs.as3_unsupported | default([])) if status != 'green' else '-' %}
+          {{ vs_name.replace(migrate_app_prefix, '', 1) }},{{ app_name }},{{ status }},{{ old_ip_without_port }},{{ new_ip }},{{ as3_unsupported }}
+          {% endfor %}
+          {% endfor %}
+        dest: "{{ report_file }}"
 
     - name: Extract not installed Shared Objects
       set_fact:
