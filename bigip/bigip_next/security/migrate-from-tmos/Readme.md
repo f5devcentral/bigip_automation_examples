@@ -489,19 +489,19 @@ The report may look like this:
 ```
 | Old_Vs_Name               | New_App_Name                   | Status | Old_IP_Address | New_IP_Address | Unsupported                    |
 | ------------------------- | ------------------------------ | ------ | -------------- | -------------- | ------------------------------ |
-| SSL_OFFLOAD_VS_W_PASSWORD | Common_SSL_OFFLOAD_VS_W_PAS... | blue   | 10.1.10.60     | -              | -                              |
+| FAST_L4                   | Common_FAST_L4                 | yellow | 10.1.10.51     | -              | ltm profile fastl4 /tenant7... |
+| auto_ans_vs1              | Common_auto_ans_vs1            | yellow | 10.1.10.90     | 10.1.10.190    | ltm profile http /tenant9c9... |
+| LTM_POLICY_VS             | Common_LTM_POLICY_VS           | yellow | 10.1.10.54     | -              | ltm policy /tenantac4d20091... |
+| WAF_BOT_DEFENSE           | Common_WAF_BOT_DEFENSE         | yellow | 10.1.10.55     | -              | ltm profile http /tenantddf... |
+| manual_ans_vs1            | Common_manual_ans_vs1          | yellow | 10.1.10.95     | -              | ltm profile tcp /tenant0430... |
+| auto_ans_vs2              | Common_auto_ans_vs2            | yellow | 10.1.10.91     | 10.1.10.191    | ltm profile http /tenantee0... |
 | IP_FORWARD_VS             | Common_IP_FORWARD_VS           | red    | 10.1.10.59     | -              | -                              |
-| LTM_POLICY_VS             | Common_LTM_POLICY_VS_bUrg      | yellow | 10.1.10.54     | -              | ltm monitor http /tenant778... |
-| TCP_PROG                  | Common_TCP_PROG_IAvD           | yellow | 10.1.10.52     | -              | ltm profile http /tenant59d... |
-| SSL_OFFLOAD_VS_443        | Common_SSL_OFFLOAD_VS_443_gSKs | yellow | 10.1.10.53     | -              | ltm virtual-address /tenant... |
-| SSL_OFFLOAD_VS_80         | Common_SSL_OFFLOAD_VS_443_gSKs | yellow | 10.1.10.53     | -              | ltm profile tcp /tenant61c3... |
-| WAF_DOS_PROFILE           | Common_WAF_DOS_PROFILE_FbYY    | yellow | 10.1.10.56     | -              | ltm monitor http /tenantd91... |
-| auto_ans_vs1              | Common_auto_ans_vs1_bYEx       | yellow | 10.1.10.90     | 10.1.10.190    | ltm monitor http /tenant382... |
-| auto_ans_vs2              | Common_auto_ans_vs2_eqma       | yellow | 10.1.10.91     | 10.1.10.191    | ltm profile tcp /tenantc016... |
-| WAF_BOT_DEFENSE           | Common_WAF_BOT_DEFENSE_bYGg    | yellow | 10.1.10.55     | -              | ltm profile client-ssl /ten... |
-| manual_ans_vs1            | Common_manual_ans_vs1_NAlt     | yellow | 10.1.10.95     | -              | ltm profile http /tenantce8... |
-| FAST_L4                   | Common_FAST_L4_cetQ            | yellow | 10.1.10.51     | -              | ltm monitor http /tenant035... |
-| WAF_VANILLA_VS            | Common_WAF_VANILLA_VS_CHhy     | yellow | 10.1.10.58     | -              | ltm profile client-ssl /ten... |
+| WAF_VANILLA_VS            | Common_WAF_VANILLA_VS          | yellow | 10.1.10.58     | -              | ltm virtual-address /tenant... |
+| SSL_OFFLOAD_VS_443        | Common_SSL_OFFLOAD_VS_443      | yellow | 10.1.10.53     | -              | ltm virtual-address /tenant... |
+| SSL_OFFLOAD_VS_80         | Common_SSL_OFFLOAD_VS_443      | yellow | 10.1.10.53     | -              | ltm virtual-address /tenant... |
+| SSL_OFFLOAD_VS_W_PASSWORD | Common_SSL_OFFLOAD_VS_W_PAS... | blue   | 10.1.10.60     | -              | -                              |
+| TCP_PROG                  | Common_TCP_PROG                | yellow | 10.1.10.52     | -              | ltm profile http /tenant58c... |
+| WAF_DOS_PROFILE           | Common_WAF_DOS_PROFILE         | yellow | 10.1.10.56     | -              | ltm profile http /tenantcb9... |
 ```
 
 ## 3. Verify Migrated Application
