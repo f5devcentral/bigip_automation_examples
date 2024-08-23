@@ -210,9 +210,13 @@ First, we need to enable the WAF Policy using the toggle. Next, click the **Crea
 
 ![alt text](./assets/waf-policy.png)
 
-Give WAF policy a name and enable the L7 DoS Protection for the app. Take a look at other configuration, such as enabled Bot Defense and Threat Intelligence options. Also make sure to have **Blocking** selected for Enforcement Mode. As you can see, BIG-IP Next Central Manager provides an opportunity to set up the blocking enforcement mode right at the WAF Policy configuration stage, which ensures application security for our app from day one. When the policy properties have been configured, proceed by clicking **Save**.
+Give WAF policy a click on Advanced View to expand the section for WAF Template Selection. Note the Policy settings such as Bot Defense and Threat Intelligence. Let's select **L7 DoS protection** and let's make sure to have **Blocking** selected for Enforcement Mode. As you can see, BIG-IP Next Central Manager provides day-one enforcement in blocking mode at the time of WAF Policy configuration. 
 
-![alt text](./assets/waf-config.png)
+![alt text](./assets/NextWafTemplate-1.png)
+
+Expand the drop-down for the **Template** taking note of the Ratings Based Template, a new addition in Next WAF, which provides a balanced protection from day one and takes the guesswork out of tuning. When the policy properties have been configured, proceed by clicking **Save**.
+
+![alt text](./assets/NextWafTemplate-2.png)
 
 The name should appear in WAF Policy name field. Click **Save** to move on.
 
