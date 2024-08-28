@@ -5,21 +5,11 @@
 - [Update Signature Package for Next WAF in Central Manager and Push to All Instances](#update-signature-package-for-next-waf-in-central-manager-and-push-to-all-instances)
 - [Table of Contents](#table-of-contents)
 - [Overview](#overview)
-- [Setup Diagram](#setup-diagram)
-- [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Manual Workflow Guide](#manual-workflow-guide)
 
 # Overview
 
 This guide provides manual walk-through steps and automated Terraform scripts for updating signature package for Next WAF in Central Manager and then pushing them to all the instances.
-
-# Setup Diagram
-
-TBD
-
-# Environment & Pre-requisites
-
-TBD
 
 # Manual Workflow Guide
 
@@ -27,7 +17,7 @@ Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier 
 
 ![alt text](./assets/go-to-security.png)
 
-Go to the **Live Updates**section and click the button to manually download latest updates to Central Manager.
+Go to the **Live Updates** section and click the button to manually download latest updates to Central Manager.
 
 ![alt text](./assets/live_updates.png)
 
