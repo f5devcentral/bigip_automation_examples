@@ -2,6 +2,8 @@
 
 # Table of Contents
 
+- [Update Signature Package for Next WAF in Central Manager and Push to All Instances](#update-signature-package-for-next-waf-in-central-manager-and-push-to-all-instances)
+- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
 - [Docker Setup](#docker-setup)
 - [Manual Workflow Guide](#manual-workflow-guide)
@@ -15,7 +17,7 @@ This flow is one of three use-cases of the [Operations](https://github.com/f5dev
 
 # Docker Setup
 
-You may choose to leverage the provided sample application by using the included Docker. You may run it on Linux machine in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.)
+You may choose to use the included Docker. You may run it on Linux machine in order to take advantage of Ansible tooling.
 
 If you chose to use Docker, follow the steps to set it up in this [guide](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/deploy-with-new-next-waf#docker-setup).
 
@@ -25,11 +27,11 @@ Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier 
 
 ![alt text](./assets/go-to-security.png)
 
-Go to the **Live Updates** section and click the button to manually download latest updates to Central Manager.
+Go to the **Live Updates** section. You will see the **Attack Signatures** tab. Click the button to manually download latest updates for **Attack Signatures** to Central Manager. You can repeat this step for **Bot Signatures** and **Threat Campaigns** accordingly.
 
 ![alt text](./assets/live_updates.png)
 
-Download and installation to Central Manager will start. Note that this process can take some time.
+Download and installation of Attack Signatures updates to Central Manager will start. Note that this process can take some time.
 
 After the installation to the Central Manager has been completed, the file will appear on the list. Select the file and click **Install All** to upload the update file to the instances. This will open a window with the detailed information.
 
@@ -53,7 +55,7 @@ Navigate to the **Instances** tab and take a look at the installation status.
 
 # Automated Workflow Guide
 
-In this part of the guide we will automatically check for Next WAF updates and install them to the instances after that.
+In this part of the guide we will automatically check for Next WAF updates of **Attack Signatures**, **Bot Signatures** and **Threat Campaigns**, and then install them to the instances after that.
 
 Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host.
 
@@ -67,7 +69,7 @@ In the `bigip/bigip_next/security/operations/live-update/next_vars.yml` file spe
 
 ## 2. Checking for Updates and Installing Them
 
-Start checking for updates and pushing them to all the instances by running the following command:
+Start checking for updates of Attack Signatures, Bot Signatures and Threat Campaigns and pushing them all to the instances by running the following command:
 
 ```bash
 ansible-playbook playbooks/site.yml
