@@ -2,8 +2,6 @@
 
 # Table of Contents
 
-- [Update Signature Package for Next WAF in Central Manager and Push to All Instances](#update-signature-package-for-next-waf-in-central-manager-and-push-to-all-instances)
-- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
 - [Docker Setup](#docker-setup)
 - [Manual Workflow Guide](#manual-workflow-guide)
