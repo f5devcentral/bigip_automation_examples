@@ -13,6 +13,39 @@ http {
 
     server {
         listen 80;
+        server_name localhost;
+
+        # Define the location for /api/v1/item
+        location /api/v1/item {
+            if ($request_method = GET) {
+                return 200 '{"items":[{% for i in range(0, 10) %}{"id":"{{ i }}","name":"Item{{ i }}","description":"Description{{ i }}","price":{{ i * 10.0 }}},{% endfor %}{"id":"100","name":"Item100","description":"Description100","price":1000.0}]}';
+                add_header Content-Type application/json;
+            }
+
+            if ($request_method = POST) {
+                return 201 '{"id":"101","name":"New Item","description":"Newly created item","price":15.5}';
+                add_header Content-Type application/json;
+            }
+        }
+
+        # Loop through and generate configurations for /api/v1/item/{id} where id is from 0 to 100
+        {% for i in range(0, 10) %}
+        location /api/v1/item/{{ i }} {
+            if ($request_method = GET) {
+                return 200 '{"id":"{{ i }}","name":"Item{{ i }}","description":"Description{{ i }}","price":{{ i * 10.0 }}}';
+                add_header Content-Type application/json;
+            }
+
+            if ($request_method = PUT) {
+                return 200 '{"id":"{{ i }}","name":"Updated Item{{ i }}","description":"Updated description","price":{{ (i * 10.0) + 1.0 }}}';
+                add_header Content-Type application/json;
+            }
+
+            if ($request_method = DELETE) {
+                return 204 '';
+            }
+        }
+        {% endfor %}
 
         {% for i in range(1, 21) %}
         location /endpoint{{ i }} {
@@ -21,4 +54,3 @@ http {
         {% endfor %}
     }
 }
-
