@@ -115,6 +115,12 @@ Rerun the following command to see if the script has been updated:
 curl -X PUT "http://10.1.10.93/api/v1/script/1?code=<script>showPopup()</script>"
 ```
 
+If the script is updated, you will see the following output:
+
+```bash
+"message": "Script updated successfully."
+```
+
 # Automated Workflow Guide
 
 TBD
