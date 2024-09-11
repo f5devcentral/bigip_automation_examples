@@ -7,7 +7,7 @@
 - [Overview](#overview)
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
-- [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+  - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
     - [1. Deploy Blueprint](#1-deploy-blueprint)
     - [2. Setup SSH Keys](#2-setup-ssh-keys)
     - [3. Enter Blueprint](#3-enter-blueprint)
@@ -19,8 +19,8 @@
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Install Dependencies](#1-install-dependencies)
     - [2. Initialize BIG-IP](#2-initialize-big-ip)
-    - [3. Verify Apps and TMOS](#3-verify-nginx-app-and-tmos)
-      [4. Network Map](#4-network-map)
+    - [3. Verify Apps and TMOS](#3-verify-apps-and-tmos)
+    - [4. Network Map](#4-network-map)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
@@ -30,7 +30,7 @@
     - [2.4 Deploy as Draft](#24-deploy-as-draft)
     - [2.5 Update Application Virtual Address](#25-update-application-virtual-address)
     - [2.6 Deploy the Application to Big-IP Next Instance](#26-deploy-the-application-to-big-ip-next-instance)
-    - [2.7 Check App Availability](27-check-app-availability)
+    - [2.7 Check App Availability](#27-check-app-availability)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
     - [1.1 Configure Connectivity to TMOS](#11-configure-connectivity-to-tmos)
@@ -115,7 +115,13 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 
 **NOTE: Complete this step ONLY if you haven't done initialization yet, including in other lab.**
 
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
+Go to the following directory of the cloned repository:
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
+
+Run the `init.sh` to create a local key folder:
 
 ```bash
 sh ./init.sh
@@ -127,7 +133,11 @@ You can verify that the folder with the SSH keys has been created. The folder is
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
 
-**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the directory: `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository.**
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
 
 ### 1. Build Docker
 
@@ -167,7 +177,13 @@ nano cm_key
 
 ### 1. Install Dependencies
 
-Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
+Navigate to
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/init
+```
+
+Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
 sh ./install-prerequisites.sh
@@ -175,14 +191,14 @@ sh ./install-prerequisites.sh
 
 ### 2. Initialize BIG-IP
 
-In this step, we will initialize BIG-IP to resolve the app. 
+In this step, we will initialize BIG-IP to resolve the app.
 
-If you would like to make changes to the IP addressed pre-defined for the sample app(s), you can do so here. Note that by default, the app will be resolved in **10.1.10.90**, **10.1.10.91**, **10.1.10.95** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP. 
+If you would like to make changes to the IP addressed pre-defined for the sample app(s), you can do so here. Note that by default, the app will be resolved in **10.1.10.90**, **10.1.10.91**, **10.1.10.95** IPs which are virtual addresses of routing via TMOS. The app itself will be in **10.1.20.102** IP.
 
-The configuration used for initialization is defined in **tmos_vars.yml** file, which you can modify only if you choose to do so, making sure the structure follows the default yml layout below.  You can proceed to the step to execute Ansible playbook below without making any changes as well.
+The configuration used for initialization is defined in **tmos_vars.yml** file, which you can modify only if you choose to do so, making sure the structure follows the default yml layout below. You can proceed to the step to execute Ansible playbook below without making any changes as well.
 
 ```yml
-provider: 
+provider:
   server: 10.1.1.12
   server_port: 443
   user: admin
@@ -206,6 +222,7 @@ ltm_policy_name: ans_policy_ltm
 ```
 
 File has three main sections:
+
 1. Provider setup - config to enter BigIP TMOS node
 2. Sample application setup: **node_ip**, **node_name** and **pool_name**
 3. List of Virtual Servers to be created in TMOS Big-IP
@@ -214,6 +231,7 @@ File has three main sections:
 Data in tmos_vars.yml file corresponds to the Blueprint setup. So, in case of Bluperint usage, nothing is required to change in it. In case of running initialisation scripts in custom environment please check the IPs and names, so they will not override anything.
 
 The hosts to install the sample app and call TMOS Big-IP commands are configured in **inventory.ini**:
+
 ```ini
 [app]
 10.1.1.4
@@ -229,7 +247,7 @@ ansible_ssh_private_key_file=/home/ubuntu/.ssh/tmos_key
 ansible_ssh_user=root
 ```
 
-The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. Access to TMOS Big-IP is specified in **[tmos]** section. The file is configured for the **Blueprint** setup, no need to chage it.
+The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. Access to TMOS Big-IP is specified in **[tmos]** section. The file is configured for the **Blueprint** setup, no need to change it.
 
 After reviewing the files, run the following command to start initializing:
 
@@ -252,6 +270,7 @@ curl http://10.1.20.102/endpoint2
 ```
 
 The expected output should look like this:
+
 ```
 OK. Endpoint - 1
 ```
@@ -261,22 +280,29 @@ Verify TMOS routing by running the following commands:
 ```bash
 curl http://10.1.10.90/endpoint1
 ```
+
 ```bash
 curl http://10.1.10.91/endpoint2
 ```
+
 The expected output should look like this:
+
 ```
 OK. Endpoint - 1
 ```
+
 Also verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
 curl 'http://10.1.10.90/endpoint1?query=<script>alert(1)</script>'
 ```
+
 ```bash
 curl 'http://10.1.10.91/endpoint2?query=<script>alert(1)</script>'
 ```
+
 The expected output should look like:
+
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
@@ -340,9 +366,11 @@ First, we will configure general properties: give it a name and add a descriptio
 ![alt text](./assets/migration-name.png)
 
 Next, we will drag and drop the UCS archive file downloaded [earlier](#1-get-big-ip-ucs-archive). Enter the BIG-IP TMOS master key. In case of **Blueprint** usage, the master key is:
+
 ```
 cgGaYTNid4Gvqdelf/85cw==
 ```
+
 Select grouping application services by IP addresses for this demo flow and click **Next**. Note that file uploading can take some time.
 
 ![alt text](./assets/upload-ucs.png)
@@ -357,7 +385,7 @@ You will see a list of application services from your TMOS. Note that you can se
 
 ![alt text](./assets/add-apps-to-migration.png)
 
-Next, you will see **Application Migration** page displaying the app to be migrated. 
+Next, you will see **Application Migration** page displaying the app to be migrated.
 
 ![alt text](./assets/app-mig-list.png)
 
@@ -378,6 +406,7 @@ The **Deployments** page will show the deployment result. Take a look and **Fini
 ![alt text](./assets/finished-deployment.png)
 
 ### 2.5 Update Application Virtual Address
+
 If we deploy the application now, there will be an IP address conflict. So, in order to preserve the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
 ![alt text](./assets/migrated-app-list.png)
 
@@ -385,6 +414,7 @@ In appeared window find the **virtualAddress** key and replace **10.1.10.95** IP
 ![alt text](./assets/migrated-app-ip-update.png)
 
 ### 2.6 Deploy the Application to Big-IP Next Instance
+
 In the apperaared window, click the **Start Adding** button and select the **big-ip-next-03-example.com** instance. Then click **Add to list**
 ![alt text](./assets/migrated-app-deploy-next-instance.png)
 
@@ -404,24 +434,33 @@ Let's navigate to the **Security** workspace and take a look at the created WAF 
 ![alt text](./assets/waf-policies-dash.png)
 
 Now, let's send some requests to the migrated application:
+
 ```bash
 curl http://10.1.10.195/endpoint1
 ```
+
 ```bash
 curl http://10.1.10.195/endpoint2
 ```
+
 The expected output should look like this:
+
 ```
 OK. Endpoint - 1
 ```
+
 And check that WAF is migrated too:
+
 ```bash
 curl 'http://10.1.10.195/endpoint1?query=<script>alert(1)</script>'
 ```
+
 The result should look like this:
+
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7837105753625208781<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
 ```
+
 Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that the event has been created, with the request intercepted and details displayed:
 
 ![alt text](./assets/waf-dash.png)
@@ -430,7 +469,11 @@ Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that th
 
 In this part of the guide we will automatically migrate the application with two virtual servers to BIG-IP Next with a shared WAF policy and then verify it using Central Manager UI as well as CLI.
 
-Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the `bigip/bigip_next/security/migrate-from-tmos/migrate` folder where we will update config files.
+Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the following folder where we will update config files:
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/migrate
+```
 
 ## 1. Prerequisites
 
@@ -478,14 +521,17 @@ Start the deployment by running the following command:
 ```bash
 ansible-playbook -i inventory.ini site.yml
 ```
+
 Note that deployment can take some time.
 
 Review the migration report. We recommend reviewing Status, taking note of those indicated Red and Blue, which may require manual action to resolve:
+
 ```bash
 ~/.local/bin/csvlook -d ',' --max-column-width 30 report.csv
 ```
 
 The report may look like this:
+
 ```
 | Old_Vs_Name               | New_App_Name                   | Status | Old_IP_Address | New_IP_Address | Unsupported                    |
 | ------------------------- | ------------------------------ | ------ | -------------- | -------------- | ------------------------------ |
@@ -547,15 +593,19 @@ Finally, we can verify the migrated and deployed app by running the following co
 ```bash
 curl http://10.1.10.190/endpoint1
 ```
+
 ```bash
 curl http://10.1.10.191/endpoint1
 ```
 
 Verify that WAF was migrated too:
+
 ```bash
 curl 'http://10.1.10.191/endpoint1?query=<script>alert(1)</script>'
 ```
+
 The expected output should look like:
+
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```

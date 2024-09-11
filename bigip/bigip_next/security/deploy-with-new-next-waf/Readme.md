@@ -93,7 +93,13 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 
 **NOTE: Complete this step ONLY if you haven't done initialization yet, including in other lab.**
 
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
+Go to the following directory of the cloned repository:
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
+
+Run the `init.sh` to create a local key folder:
 
 ```bash
 sh ./init.sh
@@ -105,7 +111,11 @@ You can verify that the folder with the SSH keys has been created. The folder is
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
 
-**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the directory: `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository.**
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
 
 Next, we will build Docker. Note that executing this command can take some time.
 
@@ -123,7 +133,13 @@ sh ./run.sh
 
 ### 1. Install Dependencies
 
-Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
+Enter the directory:
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/init
+```
+
+Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
 sh ./install-prerequisites.sh
@@ -305,6 +321,12 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 - Setup Docker (_optional but recommended_)
 
 ## 2. Add Access Credentials for BIG-IP Next
+
+Proceed to the following directory:
+
+```bash
+bigip/bigip_next/security/deploy-with-new-next-waf
+```
 
 First, you need to enter the `input.tfvars` file and specify your own variables:
 

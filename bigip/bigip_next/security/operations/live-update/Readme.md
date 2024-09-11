@@ -61,7 +61,13 @@ Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docke
 
 ## 1. Configure Connectivity
 
-In the `bigip/bigip_next/security/operations/live-update/next_vars.yml` file specify the following parameters for Central Manager to establish connectivity:
+Proceed to the following file:
+
+```bash
+bigip/bigip_next/security/operations/live-update/next_vars.yml
+```
+
+Specify the following parameters for Central Manager to establish connectivity:
 
 - `address`
 - `user`
