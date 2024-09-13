@@ -59,7 +59,3 @@
     - name: Zip URLs to parameters in policy format
       set_fact:
         policy_update_facts: "{{ override_signature | zip_to_policy(policy_mastercopy) }}"
-
-    - name: debug
-      debug: 
-        var: policy_mastercopy
