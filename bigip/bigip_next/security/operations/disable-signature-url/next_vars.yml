@@ -1,0 +1,21 @@
+central_manager:
+  address: 10.1.1.5
+  user: admin
+  password: Welcome123!
+
+override_signature:
+  - name: waf_greenfield_demo_policy
+    url: 
+      name: /api/v1/script/*
+      method: POST
+    parameters: 
+      - name: code
+        signatures:
+          - 200000098
+          - 200001088
+          - 200001475
+      - name: query
+        signatures:
+          - 200001088
+          - 200001475
+          - 200101609

@@ -1,0 +1,65 @@
+---
+- name: Push URL/Parameter signature override to policy
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Load variables from next_vars.yml
+      include_vars:
+        file: ../next_vars.yml
+
+    - name: Login to CM and retrieve the access token
+      uri:
+        url: "https://{{ central_manager.address }}/api/login"
+        method: POST
+        body_format: json
+        body:
+          username: "{{ central_manager.user }}"
+          password: "{{ central_manager.password }}"
+        headers:
+          Content-Type: "application/json"
+        validate_certs: no
+      register: login_response
+      failed_when: login_response.status != 200
+
+    - name: Extract access token
+      set_fact:
+        access_token: "{{ login_response.json.access_token }}"
+
+    - name: Get available policies
+      uri:
+        url: "https://{{ central_manager.address }}/api/waf/v1/policies?select=name"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: workspace_policies
+
+    - name: Map policy name to id
+      set_fact:
+        policies_name_to_id: "{{ dict(workspace_policies.json._embedded.policies | map(attribute='name') | list | zip(workspace_policies.json._embedded.policies | map(attribute='id') | list)) }}"
+
+    - name: Get policy list to update
+      set_fact:
+        policies_to_update: "{{ override_signature | json_query('[*].name') | flatten }}"
+
+    - name: Download policies to update
+      uri:
+        url: "https://{{ central_manager.address }}/api/waf/v1/policies/{{ policies_name_to_id[item] }}"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: policy_mastercopy
+      with_items: "{{ policies_to_update }}"
+      failed_when: policy_mastercopy.status != 200
+
+    - name: Zip URLs to parameters in policy format
+      set_fact:
+        policy_update_facts: "{{ override_signature | zip_to_policy(policy_mastercopy) }}"
+
+    - name: debug
+      debug: 
+        var: policy_mastercopy
