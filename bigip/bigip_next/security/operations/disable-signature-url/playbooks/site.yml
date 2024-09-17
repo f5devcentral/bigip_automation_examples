@@ -59,3 +59,24 @@
     - name: Zip URLs to parameters in policy format
       set_fact:
         policy_update_facts: "{{ override_signature | zip_to_policy(policy_mastercopy) }}"
+
+    - name: Put Updates to policies
+      uri:
+        url: "https://{{ central_manager.address }}/api/waf/v1/policies/{{ policies_name_to_id[item] }}"
+        method: PUT
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+        body: "{{ policy_update_facts[item] }}"
+        body_format: json
+      with_items: "{{ policies_to_update }}"
+
+    - name: Deploy and wait for each policy
+      deploy_policy_module:
+        policy_name: "{{ item }}"
+        cm_url: "{{ central_manager.address }}"
+        username: "{{ central_manager.user }}"
+        password: "{{ central_manager.password }}"
+        comment: "Deploy from ansible script"
+      with_items: "{{ policies_to_update }}"

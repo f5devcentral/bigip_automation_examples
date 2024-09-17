@@ -19,10 +19,9 @@ default_parameter = {
     "maximumLength": 10,
     "metacharsOnParameterValueCheck": True,
     "minimumLength": 0,
-    "name": "code",
+    "name": "unknown",
     "parameterLocation": "any",
     "performStaging": False,
-    "url": [],
     "sensitiveParameter": False,
     "signatureOverrides": [],
     "type": "explicit",
@@ -59,8 +58,8 @@ class FilterModule(object):
             rValue[policyName] = get_policy(policy_master_copy, policyName)
             for parameter in override.get('parameters', {}):
                 parameter_info = copy.deepcopy(default_parameter)
+                parameter_info["name"] = parameter["name"]
                 found = False
-                    
                 policy_parameters = rValue[policyName]["declaration"]["policy"].get('parameters', [])
 
                 for entry in policy_parameters:
@@ -70,8 +69,6 @@ class FilterModule(object):
                 if found == False:
                     policy_parameters.append(parameter_info)
 
-                urls = parameter_info.get('url', [])
-                add_item_if_not_present(urls, override["url"], 'name')
                 signature_overrides = parameter_info.get('signatureOverrides', [])
                 for signature in parameter["signatures"]:
                     signature_entry = copy.deepcopy(default_signature_override)

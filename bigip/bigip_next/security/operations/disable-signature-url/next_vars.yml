@@ -5,9 +5,6 @@ central_manager:
 
 override_signature:
   - name: waf_greenfield_demo_policy
-    url: 
-      name: /api/v1/script/*
-      method: POST
     parameters: 
       - name: code
         signatures:
