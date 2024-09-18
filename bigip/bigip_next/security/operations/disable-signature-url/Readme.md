@@ -12,9 +12,9 @@
   - [3. Add Signature Overrides](#3-add-signature-overrides)
   - [4. Verify Updates](#4-verify-updates)
 - [Automated Workflow Guide](#automated-workflow-guide)
-  - [Configure Connectivity to Central Manager](#configure-connectivity-to-central-manager)
-  - [Deploy Updates](#deploy-updates)
-  - [Verify Deployed Updates](#verify-deployed-updates)
+  - [1. Configure Connectivity to Central Manager](#1-configure-connectivity-to-central-manager)
+  - [2. Deploy Updates](#2-deploy-updates)
+  - [3. Verify Deployed Updates](#3-verify-deployed-updates)
 
 # Overview
 
@@ -128,7 +128,7 @@ If the script is updated, you will see the following output:
 
 If you are following the Blueprint flow, you will use the app deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide, therefore you will need to follow the steps described in the [Environment](#environment) section if you have not done so yet in order to set up the environment and deploy app with WAF policy. You can skip the [Environment](#environment) section if you have already deployed the app with WAF.
 
-## Configure Connectivity to Central Manager
+## 1. Configure Connectivity to Central Manager
 
 **If you are using the Blueprint, you can skip this step since all the configuration is done there.**
 
@@ -166,7 +166,7 @@ Enter the `next_vars.yml` file that includes 2 parts and specify your network pa
       - 200101609
   ```
 
-## Deploy Updates
+## 2. Deploy Updates
 
 Run the following command to deploy updated parameter with signature override and create a new parameter with its own overrides. Note that deploy can take some time.
 
@@ -174,13 +174,13 @@ Run the following command to deploy updated parameter with signature override an
 ansible-playbook ./playbooks/site.yml
 ```
 
-## Verify Deployed Updates
+## 3. Verify Deployed Updates
 
 Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier or via your own one, and proceed to **Security Workspace**. Proceed to **WAF** = > **Policies**. Enter the deployed policy by clicking on it.
 
 ![alt text](./assets/navigate-to-policies-new.png)
 
-Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the previous step, as well `query` parameter created in the previous step. Enter the `code` parameter.
+Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the [previous step](#2-deploy-updates), as well `query` parameter just created. Enter the `code` parameter.
 
 ![alt text](./assets/new-code-param.png)
 
