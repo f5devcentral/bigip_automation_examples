@@ -53,6 +53,34 @@
         task_url: "{{ task_url }}"
       register: polling_result
 
-    - name: Live updates pull result
-      debug:
-        var: polling_result
+    - name: Generate live update status report
+      set_fact:
+        downloaded_list: "{{ polling_result['downloaded'] | default([]) }}"
+        installed_list: "{{ polling_result['installed'] | default([]) }}"
+
+    - name: Combine lists
+      set_fact:
+        file_info: "{{ (downloaded_list | union(installed_list)) | map('regex_replace', '^(.{22}).*$', '\\1...') | list }}"
+
+    - name: Save report to file
+      ansible.builtin.copy:
+        content: |
+          {% if downloaded_list | length > 0 or installed_list | length > 0 %}
+          Check live update: {{ polling_result.created }} -- {{ polling_result.completed }}
+          Status: {{ polling_result.status }}
+          {% if polling_result.failure_reason %}
+          Failure reason: {{ polling_result.failure_reason }}
+          {% endif %}
+
+          +---------------------------+-----------------------+----------------------+
+          | File                      | Downloaded            | Installed             |
+          +---------------------------+-----------------------+----------------------+
+          {% for file in file_info %}
+          | {{ "%-25s" | format(file) }} | {{ 'X' if file in downloaded_list else '' }}                     | {{ 'X' if file in installed_list else '' }}                     |
+          {% endfor %}
+          +---------------------------+-----------------------+----------------------+
+          {% else %}
+          BigIP Next is up to date
+          {% endif %}          
+        dest: "{{ check_updates_report }}"
+        mode: '0644'
