@@ -80,7 +80,7 @@
           {% endfor %}
           +---------------------------+-----------------------+----------------------+
           {% else %}
-          BigIP Next is up to date
+          BigIP Next Signature Sets are up to date
           {% endif %}          
         dest: "{{ check_updates_report }}"
         mode: '0644'
