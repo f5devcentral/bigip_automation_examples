@@ -55,32 +55,32 @@
 
     - name: Generate live update status report
       set_fact:
-        downloaded_list: "{{ polling_result['downloaded'] | default([]) }}"
-        installed_list: "{{ polling_result['installed'] | default([]) }}"
+        downloaded_list: "{{ polling_result['data']['downloaded'] | default([]) }}"
+        installed_list: "{{ polling_result['data']['installed'] | default([]) }}"
 
     - name: Combine lists
       set_fact:
-        file_info: "{{ (downloaded_list | union(installed_list)) | map('regex_replace', '^(.{22}).*$', '\\1...') | list }}"
+        file_info: "{{ (downloaded_list | union(installed_list)) | list }}"
 
     - name: Save report to file
       ansible.builtin.copy:
         content: |
           {% if downloaded_list | length > 0 or installed_list | length > 0 %}
-          Check live update: {{ polling_result.created }} -- {{ polling_result.completed }}
-          Status: {{ polling_result.status }}
-          {% if polling_result.failure_reason %}
-          Failure reason: {{ polling_result.failure_reason }}
+          Check live update: {{ polling_result.data.created }} -- {{ polling_result.data.completed }}
+          Status: {{ polling_result.data.status }}
+          {% if polling_result.data.failure_reason %}
+          Failure reason: {{ polling_result.data.failure_reason }}
           {% endif %}
-
-          +---------------------------+-----------------------+----------------------+
-          | File                      | Downloaded            | Installed             |
-          +---------------------------+-----------------------+----------------------+
+    
+          +-----------------------------------------------+-----------------------+----------------------+
+          | File                                          | Downloaded            | Installed            |
+          +-----------------------------------------------+-----------------------+----------------------+
           {% for file in file_info %}
-          | {{ "%-25s" | format(file) }} | {{ 'X' if file in downloaded_list else '' }}                     | {{ 'X' if file in installed_list else '' }}                     |
+          | {{ (file[:42] + '...' if file | length > 45 else "%-45s" | format(file)) }} | {{ 'X' if file in downloaded_list else ' ' }}                     | {{ 'X' if file in installed_list else ' ' }}                    |
           {% endfor %}
-          +---------------------------+-----------------------+----------------------+
+          +-----------------------------------------------+-----------------------+----------------------+
           {% else %}
           BigIP Next Signature Sets are up to date
-          {% endif %}          
+          {% endif %}
         dest: "{{ check_updates_report }}"
         mode: '0644'
