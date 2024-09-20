@@ -34,8 +34,11 @@ class CMPolling:
                 continue
 
             response.raise_for_status()
-            status = response.json().get("status")
-            self.logger('CM: > ' + status)
+            response_json = response.json()
+            status = response_json.get("status")
+            id = response_json.get("id")
+            name = response_json.get("name")
+            self.logger('Task Polling: ' + id + ' - ' + name + ' > ' + status)
             if status == "completed":
                 return {"success": True, "data": response.json()}
             time.sleep(5)
