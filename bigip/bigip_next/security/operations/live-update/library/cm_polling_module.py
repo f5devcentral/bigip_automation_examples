@@ -5,12 +5,13 @@ import requests
 import time
 
 class CMPolling:
-    def __init__(self, cm_url, username, password, logger):
+    def __init__(self, cm_url, username, password, logger, timeout):
         self.cm_url = cm_url
         self.username = username
         self.password = password
         self.access_token = None
         self.logger = logger
+        self.timeout = timeout
         self.login()
 
     def login(self):
@@ -26,7 +27,7 @@ class CMPolling:
         status_url = f"https://{self.cm_url}{task_url}"
         headers = {"Authorization": f"Bearer {self.access_token}", "Content-Type": "application/json"}
 
-        for _ in range(180):  # 180 retries with 5 seconds delay = 15 minutes
+        for _ in range(self.timeout * 12): # check every 5 seconds -> 12 times a minute
             response = requests.get(status_url, headers=headers, verify=False)
             if response.status_code == 401:  # Token expired, need to re-login
                 self.login()
@@ -58,7 +59,8 @@ def run_module():
         cm_url=dict(type='str', required=True),
         username=dict(type='str', required=True),
         password=dict(type='str', required=True),
-        task_url=dict(type='str', required=True)
+        task_url=dict(type='str', required=True),
+        timeout=dict(type='int', required=True)
     )
 
     result = dict(
@@ -75,12 +77,13 @@ def run_module():
     username = module.params['username']
     password = module.params['password']
     task_url = module.params['task_url']
+    timeout = module.params['timeout']
 
     def custom_logger(str):
         module.log(str)
 
     try:
-        cm = CMPolling(cm_url, username, password, custom_logger)
+        cm = CMPolling(cm_url, username, password, custom_logger, timeout)
         poll_result = cm.poll_status(task_url)
         if poll_result["success"]:
             result["success"] = True

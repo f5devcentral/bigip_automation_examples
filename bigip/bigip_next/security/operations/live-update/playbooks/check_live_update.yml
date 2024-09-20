@@ -51,6 +51,7 @@
         username: "{{ central_manager.user }}"
         password: "{{ central_manager.password }}"
         task_url: "{{ task_url }}"
+        timeout: "{{ task_timeout_minutes }}"
       register: polling_result
 
     - name: Generate live update status report

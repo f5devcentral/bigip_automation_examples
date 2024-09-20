@@ -5,3 +5,4 @@ central_manager:
 
 check_updates_report: ../check-updates-report.txt
 push_updates_report: ../push-updates-report.txt
+task_timeout_minutes: 15
