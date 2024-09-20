@@ -118,42 +118,30 @@
       register: install_result
       with_items: "{{ task_refs_list }}"
 
-    #    - name: Check if task_refs_list is empty and end playbook if it is
-    #      when: task_refs_list | length == 0
-    #      block:
-    #        - debug:
-    #            msg: "No files were installed. Ending playbook."
-    #        - name: End the playbook
-    #          meta: end_play
-    #
+    - name: Check if task_refs_list is empty and end playbook if it is
+      when: task_refs_list | length == 0
+      block:
+        - debug:
+            msg: "No files were installed. Ending playbook."
+        - ansible.builtin.copy:
+            content: |
+              BigIP Next is up to date. No files fere installed
+            dest: "{{ push_updates_report }}"
+            mode: '0644'
+        - name: End the playbook
+          meta: end_play
 
-    # - name: Extract installation task information
-    #   set_fact:
-    #     tasks_info: "{{ tasks_info | default([]) + [task_info] }}"
-    #   vars:
-    #     task_info:
-    #       filename: "{{ item.data.file_name }}"
-    #       created: "{{ item.data.created }}"
-    #       completed: "{{ item.data.completed }}"
-    #       instance_status: "{{ item.data.instances | items2dict(key_name='instance_id', value_name='status') }}"
-    #   loop: "{{ install_result.results }}"
-  
-    - set_fact:
-        tasks_info:
-          - completed: "2024-09-20T13:14:59.752429Z"
-            created: "2024-09-20T13:12:04.044495Z"
-            filename: "ASM-AttackSignatures_20240919_075902.im"
-            instance_status:
-              "19bbff57-7eff-482e-b7cc-c4eda2b7eff0": "failed"
-              "56e2f88b-6cca-4f0b-ae43-f5cc75b04639": "completed"
-              "76dd47ef-8ff8-4cd3-a1a5-ec6208387533": "completed"
-          - completed: "2024-09-20T13:14:59.752429Z"
-            created: "2024-09-20T13:12:04.044495Z"
-            filename: "1ASM-AttackSignatures_20240919_075902.im"
-            instance_status:
-              "56e2f88b-6cca-4f0b-ae43-f5cc75b04639": "completed"
-              "19bbff57-7eff-482e-b7cc-c4eda2b7eff0": "failed"
-              "76dd47ef-8ff8-4cd3-a1a5-ec6208387533": "completed"
+
+    - name: Extract installation task information
+      set_fact:
+        tasks_info: "{{ tasks_info | default([]) + [task_info] }}"
+      vars:
+        task_info:
+          filename: "{{ item.data.file_name }}"
+          created: "{{ item.data.created }}"
+          completed: "{{ item.data.completed }}"
+          instance_status: "{{ item.data.instances | items2dict(key_name='instance_id', value_name='status') }}"
+      loop: "{{ install_result.results }}"
 
     - name: Create report variable
       set_fact:
