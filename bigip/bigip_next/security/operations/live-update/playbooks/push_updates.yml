@@ -23,6 +23,24 @@
     - name: Extract access token
       set_fact:
         access_token: "{{ login_response.json.access_token }}"
+    
+    - name: Get instances information
+      uri:
+        url: "https://{{ central_manager.address }}/api/device/v1/summary?select=id,hostname"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: next_instances
+    
+    - name: Compose id to hostname dictionary
+      set_fact:
+        id_hostname_dict: "{{ next_instances.json._embedded.devices | items2dict(key_name='id', value_name='hostname') }}"
+
+    - name: Instances
+      debug:
+        var: id_hostname_dict
 
     - name: Initialize file names list
       set_fact:
@@ -87,6 +105,84 @@
         task_url: "{{ task_url }}"
       register: polling_result
 
-    - name: Live updates push result
-      debug:
-        var: polling_result
+    - name: Extract all task_ref to a list
+      set_fact:
+        task_refs_list: "{{ polling_result.data.install_refs | map(attribute='task_ref') | list }}"
+
+    - name: Get install results
+      cm_polling_module:
+        cm_url: "{{ central_manager.address }}"
+        username: "{{ central_manager.user }}"
+        password: "{{ central_manager.password }}"
+        task_url: "/api/waf/{{ item }}"
+      register: install_result
+      with_items: "{{ task_refs_list }}"
+
+    #    - name: Check if task_refs_list is empty and end playbook if it is
+    #      when: task_refs_list | length == 0
+    #      block:
+    #        - debug:
+    #            msg: "No files were installed. Ending playbook."
+    #        - name: End the playbook
+    #          meta: end_play
+    #
+
+    # - name: Extract installation task information
+    #   set_fact:
+    #     tasks_info: "{{ tasks_info | default([]) + [task_info] }}"
+    #   vars:
+    #     task_info:
+    #       filename: "{{ item.data.file_name }}"
+    #       created: "{{ item.data.created }}"
+    #       completed: "{{ item.data.completed }}"
+    #       instance_status: "{{ item.data.instances | items2dict(key_name='instance_id', value_name='status') }}"
+    #   loop: "{{ install_result.results }}"
+  
+    - set_fact:
+        tasks_info:
+          - completed: "2024-09-20T13:14:59.752429Z"
+            created: "2024-09-20T13:12:04.044495Z"
+            filename: "ASM-AttackSignatures_20240919_075902.im"
+            instance_status:
+              "19bbff57-7eff-482e-b7cc-c4eda2b7eff0": "failed"
+              "56e2f88b-6cca-4f0b-ae43-f5cc75b04639": "completed"
+              "76dd47ef-8ff8-4cd3-a1a5-ec6208387533": "completed"
+          - completed: "2024-09-20T13:14:59.752429Z"
+            created: "2024-09-20T13:12:04.044495Z"
+            filename: "1ASM-AttackSignatures_20240919_075902.im"
+            instance_status:
+              "56e2f88b-6cca-4f0b-ae43-f5cc75b04639": "completed"
+              "19bbff57-7eff-482e-b7cc-c4eda2b7eff0": "failed"
+              "76dd47ef-8ff8-4cd3-a1a5-ec6208387533": "completed"
+
+    - name: Create report variable
+      set_fact:
+        report: "{{ report | default([]) + [report_entry] }}"
+      vars:
+        instance_ids: "{{ item.instance_status.keys() | list }}"
+        hostnames: "{{ instance_ids | map('extract', id_hostname_dict) | list }}"
+        statuses: "{{ item.instance_status.values() | list }}"
+        hostname_status_list: "{{ hostnames | zip(statuses) | list }}"
+        sorted_hostname_status_list: "{{ hostname_status_list | sort(attribute=0) }}"
+        updated_instance_status: "{{ dict(sorted_hostname_status_list) }}"
+        report_entry:
+          filename: "{{ item.filename }}"
+          created: "{{ item.created }}"
+          completed: "{{ item.completed }}"
+          instance_status: "{{ updated_instance_status }}"
+      loop: "{{ tasks_info }}"
+
+    - name: Save report to a file
+      ansible.builtin.copy:
+        content: |
+          |-----------------------------------------------|-----------------------------|-----------------------------|-----------------------------------------------|--------------|
+          | Filename                                      | Created                     | Completed                   | Hostname                                      | Status       |
+          |-----------------------------------------------|-----------------------------|-----------------------------|-----------------------------------------------|--------------|
+          {% for item in report %}
+          {% for hostname, status in item.instance_status.items() %}
+          | {{ (item.filename[:42] + '...' if item.filename | length > 45 else "%-45s" | format(item.filename)) }} | {{ item.created }} | {{ item.completed }} | {{ (hostname[:42] + '...' if hostname | length > 45 else "%-45s" | format(hostname)) }} | {{ "%-12s" | format(status) }} |
+          {% endfor %}
+          |-----------------------------------------------|-----------------------------|-----------------------------|-----------------------------------------------|--------------|
+          {% endfor %}
+        dest: "{{ push_updates_report }}"
+        mode: '0644'

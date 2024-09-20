@@ -40,11 +40,11 @@ class CMPolling:
             name = response_json.get("name")
             self.logger('Task Polling: ' + id + ' - ' + name + ' > ' + status)
 
-            installing = response_json.get("currently_installing")
+            installing = response_json.get("currently_installing", "")
             if len(installing) > 0:
                 self.logger("Installing file: " + id + " - " + installing)
 
-            failure_reason = response_json.get("failure_reason")
+            failure_reason = response_json.get("failure_reason", "")
             if len(failure_reason) > 0:
                 self.logger("Failure reason:" + id + " - " + failure_reason)
 
