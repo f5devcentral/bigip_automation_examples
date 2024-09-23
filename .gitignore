@@ -4,3 +4,5 @@ terraform.*
 .terraform*
 keys
 .DS_STORE
+bigip/bigip_next/security/operations/live-update/check-updates-report.txt
+bigip/bigip_next/security/operations/live-update/push-updates-report.txt

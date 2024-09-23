@@ -79,8 +79,9 @@ def run_module():
     task_url = module.params['task_url']
     timeout = module.params['timeout']
 
-    def custom_logger(str):
-        module.log(str)
+    def custom_logger(msg):
+        with open('../logs/cm_polling.log', 'a') as f:
+            f.write(f"{msg}\n")
 
     try:
         cm = CMPolling(cm_url, username, password, custom_logger, timeout)

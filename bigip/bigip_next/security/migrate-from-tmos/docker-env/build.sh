@@ -1,1 +1,1 @@
-docker build --no-cache -t env-ansible-terraform .
+docker build -t env-ansible-terraform .
