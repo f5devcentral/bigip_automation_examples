@@ -9,7 +9,14 @@
 - [Manual Workflow Guide](#manual-workflow-guide)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Configure Connectivity](#1-configure-connectivity)
-  - [2. Checking for Updates and Installing Them](#2-checking-for-updates-and-installing-them)
+  - [2. Configure Update Logging](#2-configure-update-logging)
+    - [2.1 Connect to Running Docker](#21-connect-to-running-docker)
+    - [2.2 Run Logging](#22-run-logging)
+  - [3. Checking for Updates and Installing Them](#3-checking-for-updates-and-installing-them)
+  - [4. Reports](#4-reports)
+    - [4.1 Live Update Report](#41-live-update-report)
+    - [4.2 Push Report](#42-push-report)
+    - [4.3 Logs](#43-logs)
 
 # Overview
 
@@ -57,7 +64,7 @@ Navigate to the **Instances** tab and take a look at the installation status.
 
 In this part of the guide we will automatically check for Next WAF updates of **Attack Signatures**, **Bot Signatures** and **Threat Campaigns**, and then install them to the instances after that.
 
-Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host.
+**Before proceeding, you need to enter Docker if you chose [Docker Setup](#docker-setup) option or the environment in Jump Host.**
 
 ## 1. Configure Connectivity
 
@@ -67,24 +74,144 @@ Proceed to the following file:
 bigip/bigip_next/security/operations/live-update/next_vars.yml
 ```
 
-Specify the following parameters for Central Manager to establish connectivity:
+First, specify the following parameters for Central Manager to establish connectivity. Second, specify files to save reports to. And finally, indicate task timeout time in minutes. Note that if you have three and more BIG IP Next nodes for updates, you might need 15 and more minutes:
 
-- `address`
-- `user`
-- `password`
+```yml
+central_manager:
+  address: 10.1.1.5
+  user: admin
+  password: Welcome123!
 
-## 2. Checking for Updates and Installing Them
+check_updates_report: ../check-updates-report.txt
+push_updates_report: ../push-updates-report.txt
+task_timeout_minutes: 15
+```
 
-Start checking for updates of Attack Signatures, Bot Signatures and Threat Campaigns and pushing them all to the instances by running the following command:
+## 2. Configure Update Logging
+
+### 2.1 Connect to Running Docker
+
+In order to see the logs of the update installation process, you need to establish one more connection to Docker. To do that navigate to:
+
+```bash
+bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
+
+In this folder run the following command to connect to the running Docker:
+
+```bash
+sh ./connect.sh
+```
+
+### 2.2 Run Logging
+
+Proceed to the following folder:
+
+```bash
+bigip/bigip_next/security/operations/live-update
+```
+
+Run the following command to start logging of update into the specified file:
+
+```bash
+tail -f ./logs/cm_polling.log
+```
+
+## 3. Checking for Updates and Installing Them
+
+Start checking for updates of Attack Signatures, Bot Signatures and Threat Campaigns and pushing them all to the instances by running the following command in the first Docker connect CLI:
 
 ```bash
 ansible-playbook playbooks/site.yml
 ```
 
-Note that this process can take some time.
+You will see the update status in the second CLI set up for logging.
+
+**Note that this process can take some time.**
 
 There are two files in `bigip/bigip_next/security/operations/live-update/playbooks` that can be run separately if needed:
 
 - `bigip/bigip_next/security/operations/live-update/playbooks/check_live_update.yml` to check if there are updates available
 
 - `bigip/bigip_next/security/operations/live-update/playbooks/push_updates.yml` to push the updates
+
+## 4. Reports
+
+### 4.1 Live Update Report
+
+Run the following command to generate the update report in the first CLI:
+
+```bash
+cat check-updates-report.txt
+```
+
+You will see the following report as output showing live update time, its status, errors if any, downloaded / installed files:
+
+```
++-----------------------------------------------+-----------------------+----------------------+
+| File                                          | Downloaded            | Installed            |
++-----------------------------------------------+-----------------------+----------------------+
+| ASM-AttackSignatures_20240919_075902.im       | X                     |                      |
+| ThreatCampaigns_20240922_094028.im            | X                     |                      |
+| BotSignatures_20240918_092245.im              | X                     |                      |
++-----------------------------------------------+-----------------------+----------------------+
+```
+
+### 4.2 Push Report
+
+Run the following command to generate the update report in the first CLI:
+
+```bash
+cat push-updates-report.txt
+```
+
+You will see the following report as output showing the files and time they were pushed:
+
+```
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+| Filename                                      | Created                          | Completed                        | Hostname                                      | Status       |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+| ASM-AttackSignatures_20240919_075902.im       | 2024-09-23T12:32:44.712737Z      | 2024-09-23T12:35:43.598947Z      | big-ip-next-03.example.com                    | completed    |
+| ASM-AttackSignatures_20240919_075902.im       | 2024-09-23T12:32:44.712737Z      | 2024-09-23T12:35:43.598947Z      | big-ip-next-04.example.com                    | completed    |
+| ASM-AttackSignatures_20240919_075902.im       | 2024-09-23T12:32:44.712737Z      | 2024-09-23T12:35:43.598947Z      | next-dns-01.example.com                       | failed       |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+| BotSignatures_20240918_092245.im              | 2024-09-23T12:35:43.606853Z      | 2024-09-23T12:38:17.678116Z      | big-ip-next-03.example.com                    | completed    |
+| BotSignatures_20240918_092245.im              | 2024-09-23T12:35:43.606853Z      | 2024-09-23T12:38:17.678116Z      | big-ip-next-04.example.com                    | completed    |
+| BotSignatures_20240918_092245.im              | 2024-09-23T12:35:43.606853Z      | 2024-09-23T12:38:17.678116Z      | next-dns-01.example.com                       | failed       |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+| ThreatCampaigns_20240922_094028.im            | 2024-09-23T12:38:17.685855Z      | 2024-09-23T12:40:52.589464Z      | big-ip-next-03.example.com                    | completed    |
+| ThreatCampaigns_20240922_094028.im            | 2024-09-23T12:38:17.685855Z      | 2024-09-23T12:40:52.589464Z      | big-ip-next-04.example.com                    | completed    |
+| ThreatCampaigns_20240922_094028.im            | 2024-09-23T12:38:17.685855Z      | 2024-09-23T12:40:52.589464Z      | next-dns-01.example.com                       | failed       |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+```
+
+### 4.3 Logs
+
+You will see the following logs in the second connected CLI:
+
+```
+Task Polling: ca1dc7ea-0ab6-4ad1-873f-3198d4063d03 - Live Update Check Status > running
+Task Polling: ca1dc7ea-0ab6-4ad1-873f-3198d4063d03 - Live Update Check Status > running
+Task Polling: ca1dc7ea-0ab6-4ad1-873f-3198d4063d03 - Live Update Check Status > completed
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+...
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Installing file: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - ASM-AttackSignatures_20240919_075902.im
+...
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Installing file: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - ASM-AttackSignatures_20240919_075902.im
+...
+Installing file: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - BotSignatures_20240918_092245.im
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > running
+Installing file: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - BotSignatures_20240918_092245.im
+Task Polling: 3d0d15c0-e933-46c5-be73-0ffaa2ec2eb4 - Live Update Bulk Installation > completed
+Task Polling: aefa7751-59d0-42cf-b67b-9cbebd6f20b8 - Live Update Installation > completed
+Task Polling: 1f496150-8560-4d25-8b0d-cb7e5632a5cc - Live Update Installation > completed
+Task Polling: 83e1d615-f99d-4a49-833a-d0203cbe1009 - Live Update Installation > completed
+```
