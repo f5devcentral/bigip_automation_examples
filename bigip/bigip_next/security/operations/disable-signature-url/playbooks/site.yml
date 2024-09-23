@@ -68,7 +68,7 @@
           Authorization: "Bearer {{ access_token }}"
           Content-Type: "application/json"
         validate_certs: no
-        body: "{{ policy_update_facts[item] }}"
+        body: "{{ policy_update_facts['policies'][item] }}"
         body_format: json
       with_items: "{{ policies_to_update }}"
       register: update_result
@@ -84,10 +84,18 @@
       register: deploy_result
       with_items: "{{ policies_to_update }}"
 
-    - name: Reports update
-      debug:
-        var: update_result
-
-    - name: Deploy result
-      debug:
-        var: deploy_result
+    - name: Save Report
+      ansible.builtin.copy:
+        content: |
+          |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+          | Policy Name                                   | Deploy Task Created              | Deploy Task Completed            | Paremeter                                     | Status       | Message                                    |
+          |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+          {% for result in deploy_result.results %}
+          | {{ (result.item[:42] + '...' if result.item | length > 45 else "%-45s" | format(result.item)) }} | {{ "%-32s" | format(result.data.created) }} | {{ "%-32s" | format(result.data.completed) }} |                                               | {{ "%-12s" | format(result.task_success) }} | {{ "%-42s" | format(result.message) }} |
+          {% for p in policy_update_facts.log[result.item] %}
+          |                                               |                                  |                                  | {{ "%-45s" | format(p['name'] + ': ' + p['operation']) }} |              |                                            |
+          {% endfor %}
+          {% endfor %}
+          |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+        dest: "{{ override_report }}"
+        mode: '0644'

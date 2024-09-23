@@ -52,22 +52,26 @@ class FilterModule(object):
         }
 
     def zip_to_policy(self, data, policy_master_copy):
-        rValue = {}
+        policies = {}
+        log = {}
         for override in data:
             policyName = override.get('name', '')
-            rValue[policyName] = get_policy(policy_master_copy, policyName)
+            policies[policyName] = get_policy(policy_master_copy, policyName)
+            log[policyName] = []
             for parameter in override.get('parameters', {}):
                 parameter_info = copy.deepcopy(default_parameter)
                 parameter_info["name"] = parameter["name"]
                 found = False
-                policy_parameters = rValue[policyName]["declaration"]["policy"].get('parameters', [])
+                policy_parameters = policies[policyName]["declaration"]["policy"].get('parameters', [])
 
                 for entry in policy_parameters:
                     if entry["name"] == parameter["name"]:
                         found = True
                         parameter_info = entry
+                        log[policyName].append({"name": entry["name"], "operation": "Update"})
                 if found == False:
                     policy_parameters.append(parameter_info)
+                    log[policyName].append({"name": entry["name"], "operation": "Append"})
 
                 signature_overrides = parameter_info.get('signatureOverrides', [])
                 for signature in parameter["signatures"]:
@@ -75,6 +79,6 @@ class FilterModule(object):
                     signature_entry["signatureId"] = signature
                     add_item_if_not_present(signature_overrides, signature_entry, 'signatureId')
 
-                rValue[policyName]["declaration"]["policy"]["parameters"] = policy_parameters
+                policies[policyName]["declaration"]["policy"]["parameters"] = policy_parameters
 
-        return rValue
+        return {"policies": policies, "log": log}

@@ -15,3 +15,6 @@ override_signature:
           - 200001088
           - 200001475
           - 200101609
+
+task_timeout_minutes: 15
+override_report: ../signature-override-report.txt

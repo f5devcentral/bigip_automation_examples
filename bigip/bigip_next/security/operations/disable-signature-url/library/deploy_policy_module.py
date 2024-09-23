@@ -27,7 +27,7 @@ class CMOps:
 
         for _ in range(self.timeout * 12): # check every 5 seconds -> 12 times a minute
             response = requests.get(status_url, headers=headers, verify=False)
-            if response.status_code == 401:  # Token expired, need to re-login
+            if response.status_code == 401:  # Token exve/livepired, need to re-login
                 self.login()
                 headers["Authorization"] = f"Bearer {self.access_token}"
                 continue
@@ -117,11 +117,13 @@ def run_module():
         poll_result = cm.poll_status(task_url)
         if poll_result["success"]:
             result["success"] = True
-            result['message'] = 'Live update status completed.'
+            result["task_success"] = "Successed"
+            result['message'] = 'Task completed'
             result['data'] = poll_result['data']
         else:
             result['message'] = poll_result['data']['failure_reason']
             result['success'] =  True
+            result["task_success"] = "Failed"
             module.fail_json(msg='Polling timed out.', **result)
     except Exception as e:
         module.fail_json(msg=f'Error: {str(e)}', **result)
