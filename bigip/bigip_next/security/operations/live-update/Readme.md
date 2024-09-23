@@ -119,6 +119,12 @@ tail -f ./logs/cm_polling.log
 
 ## 3. Checking for Updates and Installing Them
 
+Navigate to the following directory in your first CLI:
+
+```bash
+bigip/bigip_next/security/operations/live-update/playbooks/site.yml
+```
+
 Start checking for updates of Attack Signatures, Bot Signatures and Threat Campaigns and pushing them all to the instances by running the following command in the first Docker connect CLI:
 
 ```bash
