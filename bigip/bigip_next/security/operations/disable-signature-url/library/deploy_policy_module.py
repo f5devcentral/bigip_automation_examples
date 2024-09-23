@@ -3,12 +3,13 @@ import requests
 import time
 
 class CMOps:
-    def __init__(self, cm_url, username, password, logger):
+    def __init__(self, cm_url, username, password, logger, timeout):
         self.cm_url = cm_url
         self.username = username
         self.password = password
         self.access_token = None
         self.logger = logger
+        self.timeout = timeout
         self.login()
 
     def login(self):
@@ -24,7 +25,7 @@ class CMOps:
         status_url = f"https://{self.cm_url}{task_url}"
         headers = {"Authorization": f"Bearer {self.access_token}", "Content-Type": "application/json"}
 
-        for _ in range(180):  # 180 retries with 5 seconds delay = 15 minutes
+        for _ in range(self.timeout * 12): # check every 5 seconds -> 12 times a minute
             response = requests.get(status_url, headers=headers, verify=False)
             if response.status_code == 401:  # Token expired, need to re-login
                 self.login()
@@ -32,12 +33,22 @@ class CMOps:
                 continue
 
             response.raise_for_status()
-            status = response.json().get("status")
-            self.logger('CM: > ' + status)
+            response_json = response.json()
+
+            status = response_json.get("status")
+            id = response_json.get("id")
+            name = response_json.get("name")
+
+            self.logger('Task Polling: ' + id + ' - ' + name + ' > ' + status)
+
+            failure_reason = response_json.get("failure_reason", "")
+            if len(failure_reason) > 0:
+                self.logger("Failure reason:" + id + " - " + failure_reason)
+
             if status == "completed":
-                return {"success": True, "data": response.json()}
+                return {"success": True, "data": response_json }
             if status == "failed":
-                return {"success": False, "data": response.json()}
+                return {"success": False, "data": response_json }
             time.sleep(5)
         return {"success": False, "data":{"failure_reason": "Deployment timed out"}}
 
@@ -75,7 +86,8 @@ def run_module():
         username=dict(type='str', required=True),
         password=dict(type='str', required=True),
         policy_name=dict(type='str', required=True),
-        comment=dict(type='str', required=True)
+        comment=dict(type='str', required=True),
+        timeout=dict(type='int', required=True)
     )
 
     result = dict(
@@ -93,12 +105,14 @@ def run_module():
     password = module.params['password']
     policy_name = module.params['policy_name']
     comment = module.params['comment']
+    timeout = module.params['timeout']
 
-    def custom_logger(str):
-        module.log(str)
+    def custom_logger(msg):
+        with open('../logs/cm_polling.log', 'a') as f:
+            f.write(f"{msg}\n")
 
     try:
-        cm = CMOps(cm_url, username, password, custom_logger)
+        cm = CMOps(cm_url, username, password, custom_logger, timeout)
         task_url = cm.deploy(policy_name, comment)
         poll_result = cm.poll_status(task_url)
         if poll_result["success"]:

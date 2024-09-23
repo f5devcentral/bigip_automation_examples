@@ -71,6 +71,7 @@
         body: "{{ policy_update_facts[item] }}"
         body_format: json
       with_items: "{{ policies_to_update }}"
+      register: update_result
 
     - name: Deploy and wait for each policy
       deploy_policy_module:
@@ -79,4 +80,14 @@
         username: "{{ central_manager.user }}"
         password: "{{ central_manager.password }}"
         comment: "Deploy from ansible script"
+        timeout: "{{ task_timeout_minutes }}"
+      register: deploy_result
       with_items: "{{ policies_to_update }}"
+
+    - name: Reports update
+      debug:
+        var: update_result
+
+    - name: Deploy result
+      debug:
+        var: deploy_result
