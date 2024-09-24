@@ -55,30 +55,34 @@ class FilterModule(object):
         policies = {}
         log = {}
         for override in data:
-            policyName = override.get('name', '')
-            policies[policyName] = get_policy(policy_master_copy, policyName)
-            log[policyName] = []
-            for parameter in override.get('parameters', {}):
-                parameter_info = copy.deepcopy(default_parameter)
-                parameter_info["name"] = parameter["name"]
-                found = False
-                policy_parameters = policies[policyName]["declaration"]["policy"].get('parameters', [])
+            policyNames = override.get('name', '')
+            if isinstance(policyNames, str):
+                policyNames = [policyNames]
 
-                for entry in policy_parameters:
-                    if entry["name"] == parameter["name"]:
-                        found = True
-                        parameter_info = entry
-                        log[policyName].append({"name": entry["name"], "operation": "Update"})
-                if found == False:
-                    policy_parameters.append(parameter_info)
-                    log[policyName].append({"name": entry["name"], "operation": "Append"})
+            for policyName in policyNames:
+                policies[policyName] = get_policy(policy_master_copy, policyName)
+                log[policyName] = []
+                for parameter in override.get('parameters', {}):
+                    parameter_info = copy.deepcopy(default_parameter)
+                    parameter_info["name"] = parameter["name"]
+                    found = False
+                    policy_parameters = policies[policyName]["declaration"]["policy"].get('parameters', [])
 
-                signature_overrides = parameter_info.get('signatureOverrides', [])
-                for signature in parameter["signatures"]:
-                    signature_entry = copy.deepcopy(default_signature_override)
-                    signature_entry["signatureId"] = signature
-                    add_item_if_not_present(signature_overrides, signature_entry, 'signatureId')
+                    for entry in policy_parameters:
+                        if entry["name"] == parameter["name"]:
+                            found = True
+                            parameter_info = entry
+                            log[policyName].append({"name": parameter["name"], "operation": "Update"})
+                    if found == False:
+                        policy_parameters.append(parameter_info)
+                        log[policyName].append({"name": parameter["name"], "operation": "Append"})
 
-                policies[policyName]["declaration"]["policy"]["parameters"] = policy_parameters
+                    signature_overrides = parameter_info.get('signatureOverrides', [])
+                    for signature in parameter["signatures"]:
+                        signature_entry = copy.deepcopy(default_signature_override)
+                        signature_entry["signatureId"] = signature
+                        add_item_if_not_present(signature_overrides, signature_entry, 'signatureId')
+
+                    policies[policyName]["declaration"]["policy"]["parameters"] = policy_parameters
 
         return {"policies": policies, "log": log}
