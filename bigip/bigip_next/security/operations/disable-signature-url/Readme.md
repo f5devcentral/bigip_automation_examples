@@ -228,7 +228,13 @@ cat signature-override-report.txt
 You will see the following report as output showing policy name, time of deploy task creation & completion, and parameters there were added:
 
 ```
-TBD
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+| Policy Name                                   | Deploy Task Created              | Deploy Task Completed            | Paremeter                                     | Status       | Message                                    |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+| waf_greenfield_demo_policy                    | 2024-09-24T15:57:58.236981Z      | 2024-09-24T15:58:11.898553Z      |                                               | Successed    | Task completed                             |
+|                                               |                                  |                                  | code: Append                                  |              |                                            |
+|                                               |                                  |                                  | query: Append                                 |              |                                            |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
 ```
 
 ### 4.2 Realtime Signature Override Logs
@@ -236,7 +242,10 @@ TBD
 You will see the following logs in the second connected CLI:
 
 ```
-TBD
+Task Polling: c36e53b1-c023-424d-89a6-c537033443b2 - Redeploy Policy > running
+Task Polling: c36e53b1-c023-424d-89a6-c537033443b2 - Redeploy Policy > running
+Task Polling: c36e53b1-c023-424d-89a6-c537033443b2 - Redeploy Policy > running
+Task Polling: c36e53b1-c023-424d-89a6-c537033443b2 - Redeploy Policy > completed
 ```
 
 ## 5. Verify Deployed Updates

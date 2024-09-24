@@ -15,7 +15,6 @@
   - [4. Reports](#4-reports)
     - [4.1 Signature Override Report](#41-signature-override-report)
     - [4.2 Realtime Signature Override Logs](#42-realtime-signature-override-logs)
-  - [5. Verify Deployed Updates](#5-verify-deployed-updates)
 
 # Overview
 
@@ -27,7 +26,9 @@ This flow is one of three use-cases of the [Operations](https://github.com/f5dev
 
 # Environment
 
-If you are an F5 employee or customer with access to UDF and you haven't done the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide yet, first you will need to complete it in order to setup the environment infrastructure and deploy the required app with WAF. Follow the steps below:
+If you are completing this use case after having done the [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md) guide, you can skip environment setup part.
+
+If this use case is the first one you take, you will need to complete the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide first in order to set up the environment and deploy app with security policy, including the following steps:
 
 - [Blueprint Setup (for F5 employees or customers with access to UDF)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
 - [Docker Setup](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#docker-setup)
@@ -57,25 +58,17 @@ If you are an F5 employee or customer with access to UDF and you haven't done th
 
 # Automated Workflow Guide
 
-If you are following the Blueprint flow, you can:
-
--
-
-will use the app deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide, therefore you will need to follow the steps described in the [Environment](#environment) section if you have not done so yet in order to set up the environment and deploy app with WAF policy. You can skip the [Environment](#environment) section if you have already deployed the app with WAF.
-
 ## 1. Configure Connectivity to Central Manager
 
-Note that we will use source files from another Operations use case - [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md).
+**Note that we will use source files from another [Operations](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/Readme.md) use case - [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md).**
 
-**If you are using the Blueprint, you will need to add the second policy for update - `juice_shop_policy`.**
-
-Proceed to the following file:
+If you are using Blueprint, you need to add the second policy for update - `juice_shop_policy` in the following file:
 
 ```bash
 bigip/bigip_next/security/operations/disable-signature-url/next_vars.yml
 ```
 
-First, specify Central Manager parameters: `address`, `user`, `password`. Second, add policy names as an array, list of parameters and signatures to be overridden. And finally, indicate file to save override reports to and task timeout time in minutes. Note that if you have three and more BIG IP Next nodes for updates, you might need 15 and more minutes:
+Your `next_vars.yml` file might be as follows:
 
 ```yml
 central_manager:
@@ -102,7 +95,15 @@ task_timeout_minutes: 15
 override_report: ../signature-override-report.txt
 ```
 
+If you are not using Blueprint, you will need to edit the file as follows:
+
+- specify Central Manager parameters: `address`, `user`, `password`,
+- add policy names as an array, list of parameters and signatures to be overridden
+- indicate file to save override reports to and task timeout time in minutes. Note that if you have three and more BIG IP Next nodes for updates, you might need 15 and more minutes.
+
 ## 2. Configure Update Logging
+
+**If you have completed the [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md) guide, your connection is already established and you can skip this step.**
 
 ### 2.1 Connect to Running Docker
 
@@ -140,7 +141,7 @@ Navigate to the following directory in your first CLI:
 bigip/bigip_next/security/operations/disable-signature-url
 ```
 
-Run the following command to deploy updated parameter with signature override and create a new parameter with its own overrides. Note that deploy can take some time.
+Run the following command to deploy the updates. Note that deploy can take some time.
 
 ```bash
 ansible-playbook ./playbooks/site.yml
@@ -161,7 +162,17 @@ cat signature-override-report.txt
 You will see the following report as output showing both policies, time of deploy task creation & completion, and parameters status:
 
 ```
-TBD
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+| Policy Name                                   | Deploy Task Created              | Deploy Task Completed            | Paremeter                                     | Status       | Message                                    |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+| waf_greenfield_demo_policy                    | 2024-09-24T16:13:18.201501Z      | 2024-09-24T16:13:31.825522Z      |                                               | Successed    | Task completed                             |
+|                                               |                                  |                                  | code: Update                                  |              |                                            |
+|                                               |                                  |                                  | query: Update                                 |              |                                            |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
+| juice_shop_policy                             | 2024-09-24T16:13:34.513242Z      | 2024-09-24T16:13:47.473602Z      |                                               | Successed    | Task completed                             |
+|                                               |                                  |                                  | code: Append                                  |              |                                            |
+|                                               |                                  |                                  | query: Append                                 |              |                                            |
+|-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
 ```
 
 ### 4.2 Realtime Signature Override Logs
@@ -169,27 +180,12 @@ TBD
 You will see the following logs in the second connected CLI:
 
 ```
-TBD
+Task Polling: eaa95fbb-8737-4b98-8f58-c30d332954b6 - Redeploy Policy > running
+Task Polling: eaa95fbb-8737-4b98-8f58-c30d332954b6 - Redeploy Policy > running
+Task Polling: eaa95fbb-8737-4b98-8f58-c30d332954b6 - Redeploy Policy > running
+Task Polling: eaa95fbb-8737-4b98-8f58-c30d332954b6 - Redeploy Policy > completed
+Task Polling: 912c997c-bf9a-4a33-8de5-2d308429ccfe - Redeploy Policy > running
+Task Polling: 912c997c-bf9a-4a33-8de5-2d308429ccfe - Redeploy Policy > running
+Task Polling: 912c997c-bf9a-4a33-8de5-2d308429ccfe - Redeploy Policy > running
+Task Polling: 912c997c-bf9a-4a33-8de5-2d308429ccfe - Redeploy Policy > completed
 ```
-
-## 5. Verify Deployed Updates
-
-Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier or via your own one, and proceed to **Security Workspace**. Proceed to **WAF** = > **Policies**. Enter the deployed policy by clicking on it.
-
-![alt text](./assets/navigate-to-policies-new.png)
-
-Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the [previous step](#2-deploy-updates), as well `query` parameter just created. Enter the `code` parameter.
-
-![alt text](./assets/new-code-param.png)
-
-You will see the newly added signature. Note that the two signatures created earlier were not modified.
-
-![alt text](./assets/new-override-added.png)
-
-Go back to the **Parameters** page and enter the newly added parameter `query`.
-
-![alt text](./assets/query-param.png)
-
-You will see four newly created signatured in the new parameter. Note that parameters added earlier within the [Manual Workflow Guide](#manual-workflow-guide) haven't been changed. We just added a new signature to the existing parameter, and added a new parameter with its own signatures.
-
-![alt text](./assets/four-new-query-overrides.png)
