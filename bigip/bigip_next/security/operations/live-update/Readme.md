@@ -11,12 +11,12 @@
   - [1. Configure Connectivity](#1-configure-connectivity)
   - [2. Configure Update Logging](#2-configure-update-logging)
     - [2.1 Connect to Running Docker](#21-connect-to-running-docker)
-    - [2.2 Run Logging](#22-run-logging)
+    - [2.2 Review Logs in Real-Time](#22-review-logs-in-real-time)
   - [3. Checking for Updates and Installing Them](#3-checking-for-updates-and-installing-them)
   - [4. Reports](#4-reports)
     - [4.1 Live Update Report](#41-live-update-report)
-    - [4.2 Push Report](#42-push-report)
-    - [4.3 Logs](#43-logs)
+    - [4.2 Push Updates Report](#42-push-updates-report)
+    - [4.3 Realtime Live Update Logs](#43-realtime-live-update-logs)
 
 # Overview
 
@@ -91,7 +91,7 @@ task_timeout_minutes: 15
 
 ### 2.1 Connect to Running Docker
 
-If the docker option is used there is a possibility to to see the logs of the update installation process. First, you need to establish one more SSH connection to jumphost. Second, connecto to the running docker. To do that navigate to:
+If the docker option is used, there is a possibility to see the logs of the update installation process. First, you need to establish one more SSH connection to jumphost. Second, connect to the running docker. To do that navigate to:
 
 ```bash
 bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
@@ -122,7 +122,7 @@ tail -f ./logs/cm_polling.log
 Navigate to the following directory in your first CLI:
 
 ```bash
-bigip/bigip_next/security/operations/live-update/playbooks/site.yml
+bigip/bigip_next/security/operations/live-update
 ```
 
 Start checking for updates of Attack Signatures, Bot Signatures and Threat Campaigns and pushing them all to the instances by running the following command in the first Docker connect CLI:
@@ -152,6 +152,7 @@ cat check-updates-report.txt
 ```
 
 You will see the following report as output showing live update time, its status, errors if any, downloaded / installed files:
+
 ```
 Check live update: 2024-09-24T09:59:59.798777Z -- 2024-09-24T10:00:07.183222Z
 Status: completed

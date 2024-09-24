@@ -13,8 +13,14 @@
   - [4. Verify Updates](#4-verify-updates)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Configure Connectivity to Central Manager](#1-configure-connectivity-to-central-manager)
-  - [2. Deploy Updates](#2-deploy-updates)
-  - [3. Verify Deployed Updates](#3-verify-deployed-updates)
+  - [2. Configure Update Logging](#2-configure-update-logging)
+    - [2.1 Connect to Running Docker](#21-connect-to-running-docker)
+    - [2.2 Review Logs in Real-Time](#22-review-logs-in-real-time)
+  - [3. Deploy Updates](#3-deploy-updates)
+  - [4. Reports](#4-reports)
+    - [4.1 Signature Override Report](#41-signature-override-report)
+    - [4.2 Realtime Signature Override Logs](#42-realtime-signature-override-logs)
+  - [5. Verify Deployed Updates](#5-verify-deployed-updates)
 
 # Overview
 
@@ -132,41 +138,74 @@ If you are following the Blueprint flow, you will use the app deployed in the [D
 
 **If you are using the Blueprint, you can skip this step since all the configuration is done there.**
 
-Navigate to the following folder:
+Proceed to the following file:
+
+```bash
+bigip/bigip_next/security/operations/disable-signature-url/next_vars.yml
+```
+
+First, specify Central Manager parameters: `address`, `user`, `password`. Second, specify information for signature overrides including WAF name, list of parameters and signatures to be overridden. And finally, indicate file to save override reports to and task timeout time in minutes. Note that if you have three and more BIG IP Next nodes for updates, you might need 15 and more minutes:
+
+```yml
+central_manager:
+  address: 10.1.1.5
+  user: admin
+  password: Welcome123!
+
+override_signature:
+  - name: waf_greenfield_demo_policy
+    parameters:
+      - name: code
+        signatures:
+          - 200001088
+      - name: query
+        signatures:
+          - 200000098
+          - 200001088
+          - 200001475
+          - 200101609
+
+task_timeout_minutes: 15
+override_report: ../signature-override-report.txt
+```
+
+## 2. Configure Update Logging
+
+### 2.1 Connect to Running Docker
+
+If the docker option is used, there is a possibility to see the logs of parameter update with signature overrides process. First, you need to establish one more SSH connection to jumphost. Second, connect to the running docker. To do that navigate to:
+
+```bash
+bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
+
+In this folder run the following command to connect to the running Docker:
+
+```bash
+sh ./connect.sh
+```
+
+### 2.2 Review Logs in Real-Time
+
+Proceed to the following folder:
 
 ```bash
 bigip/bigip_next/security/operations/disable-signature-url
 ```
 
-Enter the `next_vars.yml` file that includes 2 parts and specify your network parameters to establish connectivity to Central Manager:
+Run the following command to review logs:
 
-- First, specify Central Manager parameters: `central_manager`, `address`, `user`, `password`. The Blueprint configured app will have the following configuration:
+```bash
+tail -f ./logs/cm_polling.log
+```
 
-  ```bash
-  central_manager:
-    address: 10.1.1.5
-    user: admin
-    password: Welcome123!
-  ```
+## 3. Deploy Updates
 
-- Second, information for signature overrides including WAF name, list of parameters and signatures to be overridden. The Blueprint configured app will have the following configuration:
+Navigate to the following directory in your first CLI:
 
-  ```bash
-  override_signature:
-  - name: waf_greenfield_demo_policy
-    parameters:
-    - name: code
-      signatures:
-      - 200001088
-    - name: query
-      signatures:
-      - 200000098
-      - 200001088
-      - 200001475
-      - 200101609
-  ```
-
-## 2. Deploy Updates
+```bash
+bigip/bigip_next/security/operations/disable-signature-url
+```
 
 Run the following command to deploy updated parameter with signature override and create a new parameter with its own overrides. Note that deploy can take some time.
 
@@ -174,7 +213,33 @@ Run the following command to deploy updated parameter with signature override an
 ansible-playbook ./playbooks/site.yml
 ```
 
-## 3. Verify Deployed Updates
+You will see the process status in the second CLI set up for logging.
+
+## 4. Reports
+
+### 4.1 Signature Override Report
+
+Run the following command to view update logs:
+
+```bash
+cat signature-override-report.txt
+```
+
+You will see the following report as output showing policy name, time of deploy task creation & completion, and parameters there were added:
+
+```
+TBD
+```
+
+### 4.2 Realtime Signature Override Logs
+
+You will see the following logs in the second connected CLI:
+
+```
+TBD
+```
+
+## 5. Verify Deployed Updates
 
 Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier or via your own one, and proceed to **Security Workspace**. Proceed to **WAF** = > **Policies**. Enter the deployed policy by clicking on it.
 
