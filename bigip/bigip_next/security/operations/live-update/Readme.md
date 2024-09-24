@@ -152,14 +152,16 @@ cat check-updates-report.txt
 ```
 
 You will see the following report as output showing live update time, its status, errors if any, downloaded / installed files:
-
 ```
+Check live update: 2024-09-24T09:59:59.798777Z -- 2024-09-24T10:00:07.183222Z
+Status: completed
+
 +-----------------------------------------------+-----------------------+----------------------+
 | File                                          | Downloaded            | Installed            |
 +-----------------------------------------------+-----------------------+----------------------+
-| ASM-AttackSignatures_20240919_075902.im       | X                     |                      |
-| ThreatCampaigns_20240922_094028.im            | X                     |                      |
 | BotSignatures_20240918_092245.im              | X                     |                      |
+| ThreatCampaigns_20240922_094028.im            | X                     |                      |
+| ASM-AttackSignatures_20240919_075902.im       | X                     |                      |
 +-----------------------------------------------+-----------------------+----------------------+
 ```
 
