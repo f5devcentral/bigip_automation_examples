@@ -44,7 +44,7 @@ After the installation to the Central Manager has been completed, the file will 
 
 ![alt text](./assets/install_all.png)
 
-CLick on the **Instances** tab to see the instances update file will be installed to. Proceed by clicking **Install All**.
+Click on the **Instances** tab to see the instances update file will be installed to. Proceed by clicking **Install All**.
 
 ![alt text](./assets/installation-instances.png)
 
@@ -74,7 +74,7 @@ Proceed to the following file:
 bigip/bigip_next/security/operations/live-update/next_vars.yml
 ```
 
-First, specify the following parameters for Central Manager to establish connectivity. Second, specify files to save reports to. And finally, indicate task timeout time in minutes. Note that if you have three and more BIG IP Next nodes for updates, you might need 15 and more minutes:
+First, specify the following parameters for Central Manager to establish connectivity. Second, specify files to save reports to. And finally, indicate update task timeout time in minutes. Note that if you have three and more BIG IP Next nodes for updates, you might need 15 and more minutes:
 
 ```yml
 central_manager:
@@ -91,7 +91,7 @@ task_timeout_minutes: 15
 
 ### 2.1 Connect to Running Docker
 
-In order to see the logs of the update installation process, you need to establish one more connection to Docker. To do that navigate to:
+If the docker option is used there is a possibility to to see the logs of the update installation process. First, you need to establish one more SSH connection to jumphost. Second, connecto to the running docker. To do that navigate to:
 
 ```bash
 bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
@@ -103,7 +103,7 @@ In this folder run the following command to connect to the running Docker:
 sh ./connect.sh
 ```
 
-### 2.2 Run Logging
+### 2.2 Review Logs in Real-Time
 
 Proceed to the following folder:
 
@@ -111,7 +111,7 @@ Proceed to the following folder:
 bigip/bigip_next/security/operations/live-update
 ```
 
-Run the following command to start logging of update into the specified file:
+Run the following command to review logs:
 
 ```bash
 tail -f ./logs/cm_polling.log
@@ -145,7 +145,7 @@ There are two files in `bigip/bigip_next/security/operations/live-update/playboo
 
 ### 4.1 Live Update Report
 
-Run the following command to generate the update report in the first CLI:
+Run the following command to view update logs:
 
 ```bash
 cat check-updates-report.txt
@@ -163,9 +163,9 @@ You will see the following report as output showing live update time, its status
 +-----------------------------------------------+-----------------------+----------------------+
 ```
 
-### 4.2 Push Report
+### 4.2 Push Updates Report
 
-Run the following command to generate the update report in the first CLI:
+Run the following command to view the report:
 
 ```bash
 cat push-updates-report.txt
@@ -191,7 +191,7 @@ You will see the following report as output showing the files and time they were
 |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
 ```
 
-### 4.3 Logs
+### 4.3 Realtime Live Update Logs
 
 You will see the following logs in the second connected CLI:
 
