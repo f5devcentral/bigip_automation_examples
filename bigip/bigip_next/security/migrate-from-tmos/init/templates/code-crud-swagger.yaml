@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: Script API
+  description: API to perform CRUD operations on Scripts
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /script:
+    get:
+      summary: Get all scripts
+      responses:
+        '200':
+          description: A list of scripts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Script'
+    post:
+      summary: Create a new script
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Script'
+      responses:
+        '201':
+          description: Script created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+  /script/{id}:
+    get:
+      summary: Get script by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested script
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+        '404':
+          description: Script not found
+    put:
+      summary: Update an existing script by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The new name of the script
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The new description of the script
+        - name: code
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The new code of the script
+          example: "<script>alert('script test')</script>"
+        - name: orderNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: The order number of the script
+      responses:
+        '200':
+          description: Script updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+        '404':
+          description: Script not found
+    delete:
+      summary: Delete a script by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Script deleted successfully
+        '404':
+          description: Script not found
+
+components:
+  schemas:
+    Script:
+      type: object
+      required:
+        - name
+        - code
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the script
+          example: '12345'
+        name:
+          type: string
+          description: The name of the script
+          example: "Sample Script"
+        description:
+          type: string
+          description: A description of the script
+          example: "This is a sample script for demonstration purposes."
+        code:
+          type: string
+          description: Code of the script
+          example: "<script>alert('script test')</script>"
+        orderNumber:
+          type: integer
+          description: The order number of the script
+          example: 1
+
