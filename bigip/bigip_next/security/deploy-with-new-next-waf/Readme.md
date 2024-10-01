@@ -8,17 +8,16 @@
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-    - [1. Deploy Blueprint](#1-deploy-blueprint)
-    - [2. Setup SSH Keys](#2-setup-ssh-keys)
-    - [3. Enter Blueprint](#3-enter-blueprint)
-    - [4. Clone Repository](#4-clone-repository)
-    - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
-- [Docker Setup](#docker-setup)
-- [Infrastructure Configuration](#infrastructure-configuration)
+  - [1. Deploy Blueprint](#1-deploy-blueprint)
+  - [2. Setup SSH Keys](#2-setup-ssh-keys)
+  - [3. Enter Blueprint](#3-enter-blueprint)
+  - [4. Clone Repository](#4-clone-repository)
+  - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
+  - [Docker Setup](#docker-setup)
+  - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Install Dependencies](#1-install-dependencies)
     - [2. Initialize Environment](#2-initialize-environment)
     - [3. Verify Endpoints](#3-verify-endpoints)
-      [4. Network Map](#4-network-map)
 - [Manual Workflow Guide](#manual-workflow-guide)
   - [1. Start Creating an App](#1-start-creating-an-app)
   - [2. Add Pool and Server](#2-add-pool-and-server)
@@ -94,7 +93,13 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 
 **NOTE: Complete this step ONLY if you haven't done initialization yet, including in other lab.**
 
-Go to the `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository. Run the `init.sh` to create a local key folder:
+Go to the following directory of the cloned repository:
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
+
+Run the `init.sh` to create a local key folder:
 
 ```bash
 sh ./init.sh
@@ -106,7 +111,11 @@ You can verify that the folder with the SSH keys has been created. The folder is
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
 
-**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the directory: `bigip/bigip_next/security/migrate-from-tmos/docker-env/` directory of the cloned repository.**
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/docker-env/
+```
 
 Next, we will build Docker. Note that executing this command can take some time.
 
@@ -124,7 +133,13 @@ sh ./run.sh
 
 ### 1. Install Dependencies
 
-Enter `bigip/bigip_next/security/migrate-from-tmos/init`. Run the command to install the collections and libraries required in Ansible playbook:
+Enter the directory:
+
+```bash
+bigip/bigip_next/security/migrate-from-tmos/init
+```
+
+Run the command to install the collections and libraries required in Ansible playbook:
 
 ```bash
 sh ./install-prerequisites.sh
@@ -132,9 +147,10 @@ sh ./install-prerequisites.sh
 
 ### 2. Initialize Environment
 
-In this step, we will initialize the sample app. 
+In this step, we will initialize the sample app.
 
 The hosts to install the sample app is configured in **inventory.ini**:
+
 ```ini
 [app]
 10.1.1.4
@@ -166,6 +182,7 @@ curl http://10.1.20.102/endpoint2
 ```
 
 The expected output should look like this:
+
 ```
 OK. Endpoint - 1
 ```
@@ -210,7 +227,7 @@ First, we need to enable the WAF Policy using the toggle. Next, click the **Crea
 
 ![alt text](./assets/waf-policy.png)
 
-Give WAF policy a click on Advanced View to expand the section for WAF Template Selection. Note the Policy settings such as Bot Defense and Threat Intelligence. Let's select **L7 DoS protection** and let's make sure to have **Blocking** selected for Enforcement Mode. As you can see, BIG-IP Next Central Manager provides day-one enforcement in blocking mode at the time of WAF Policy configuration. 
+Give WAF policy a click on Advanced View to expand the section for WAF Template Selection. Note the Policy settings such as Bot Defense and Threat Intelligence. Let's select **L7 DoS protection** and let's make sure to have **Blocking** selected for Enforcement Mode. As you can see, BIG-IP Next Central Manager provides day-one enforcement in blocking mode at the time of WAF Policy configuration.
 
 ![alt text](./assets/NextWafTemplate-1.png)
 
@@ -265,23 +282,29 @@ You can verify the app by running the following commands:
 ```bash
 curl http://10.1.10.94/endpoint1
 ```
+
 ```bash
 curl http://10.1.10.94/endpoint2
 ```
 
 The expected output should look like this:
+
 ```
 OK. Endpoint - 1
 ```
+
 Also verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
 curl 'http://10.1.10.94/endpoint1?query=<script>alert(1)</script>'
 ```
+
 ```bash
 curl 'http://10.1.10.94/endpoint2?query=<script>alert(1)</script>'
 ```
+
 The expected output should look like:
+
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
@@ -298,6 +321,12 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 - Setup Docker (_optional but recommended_)
 
 ## 2. Add Access Credentials for BIG-IP Next
+
+Proceed to the following directory:
+
+```bash
+bigip/bigip_next/security/deploy-with-new-next-waf
+```
 
 First, you need to enter the `input.tfvars` file and specify your own variables:
 
@@ -340,23 +369,29 @@ First, let's verify the app by running the following commands:
 ```bash
 curl http://10.1.10.93/endpoint1
 ```
+
 ```bash
 curl http://10.1.10.93/endpoint2
 ```
 
 The expected output should look like this:
+
 ```
 OK. Endpoint - 1
 ```
+
 Also verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
 curl 'http://10.1.10.93/endpoint1?query=<script>alert(1)</script>'
 ```
+
 ```bash
 curl 'http://10.1.10.93/endpoint2?query=<script>alert(1)</script>'
 ```
+
 The expected output should look like:
+
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
