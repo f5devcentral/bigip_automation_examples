@@ -45,13 +45,13 @@ There are two workflows to deploy an app to BIG-IP Next with Next WAF Policy cov
 
 # Environment & Pre-requisites
 
-You may use your own environment with BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
+You may use your own environment with BIG-IP Next, in which, as a pre-requisite, you need to have at a minimum:
 
-- BIG-IP NEXT Instance(s), where we will deploy the migrated app config
+- BIG-IP Next Instance(s), where we will deploy the migrated app config
 
-- BIG-IP NEXT Central Manager, which we will use for migrating the virtual servers to NEXT instances and WAF Policy config
+- BIG-IP Next Central Manager, which we will use for migrating the virtual servers to Next instances and WAF Policy config
 
-For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP CM instance. On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.)
+For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP CM instance. On this Linux machine, you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.)
 
 Before starting application migration we will need to set up our environment. Environment configuration will include the following steps:
 
@@ -61,11 +61,11 @@ Before starting application migration we will need to set up our environment. En
 
 # Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint flow as the foundation for your environment: "NEXT WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "Next WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **NEXT WAF - Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **Next WAF - Automation**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -416,6 +416,3 @@ Finally, we can drill down into the created policy details. Click on the policy 
 
 Congrats! You just completed automated deployment and protection of a new app on BIG-IP Next.
 
-<!-- # Additional Related Resources
-
-=======TODO======== -->

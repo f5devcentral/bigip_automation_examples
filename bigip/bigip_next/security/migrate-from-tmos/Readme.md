@@ -62,13 +62,13 @@ The first part of this guide will focus on _manual_ migration of an application,
 
 # Environment & Pre-requisites
 
-You may use your own environment with BIG-IP TMOS and BIG-IP NEXT, in which, as a pre-requisite, you need to have at a minimum:
+You may use your own environment with BIG-IP TMOS and BIG-IP Next, in which, as a pre-requisite, you need to have at a minimum:
 
 - BIG-IP TMOS v16 or v17, where we will deploy a sample app virtual server and WAF policy for migration
 
-- BIG-IP NEXT Instance(s), where we will deploy the migrated app config
+- BIG-IP Next Instance(s), where we will deploy the migrated app config
 
-- BIG-IP NEXT Central Manager, which we will use for migrating the virtual servers to NEXT instances and WAF Policy config
+- BIG-IP Next Central Manager, which we will use for migrating the virtual servers to Next instances and WAF Policy config
 
 For executing automation scripts, you need to utilize a Linux machine with network access to the BIG-IP instances: BIG-IP TMOS, BIG-IP CM.
 On this Linux machine you may choose to run Docker in order to take advantage of the sample app(s) and tooling (Ansible, Terraform, etc.)
@@ -83,11 +83,11 @@ Before starting application migration we will need to set up our environment. En
 
 ## Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP NEXT blueprint flow as the foundation for your environment: "NEXT WAF- Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "Next WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **NEXT WAF - Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **Next WAF - Automation**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -97,7 +97,7 @@ After it has been deployed, navigate to your **Deployments** and start it:
 
 ### 2. Setup SSH Keys
 
-To enter the Blueprint VM (jumphost), the SSH tool will be used. In order to setup SSH access keys use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh).
+To enter the Blueprint VM (jumphost), the SSH tool will be used. In order to set up SSH access keys use [this guide](https://help.udf.f5.com/en/articles/3347769-accessing-a-component-via-ssh).
 
 ### 3. Enter Blueprint
 
@@ -105,7 +105,7 @@ After the Blueprint has been deployed and SSH keys are setup, navigate to the **
 
 ![alt text](./assets/ubuntu-jump-host.png)
 
-Go to the **Access Methods** tab and copy the SSH external. Execute, to copied command in command line.
+Go to the **Access Methods** tab and copy the SSH external. Execute copied command in the command line.
 
 ### 4. Clone Repository
 
@@ -226,9 +226,9 @@ File has three main sections:
 1. Provider setup - config to enter BigIP TMOS node
 2. Sample application setup: **node_ip**, **node_name** and **pool_name**
 3. List of Virtual Servers to be created in TMOS Big-IP
-4. Policy names configuration. Policy is created in **blocking** mode and the signatures and set to be **enforced**
+4. Policy name configuration. Policy is created in **blocking** mode and the signatures and set to be **enforced**
 
-Data in tmos_vars.yml file corresponds to the Blueprint setup. So, in case of Bluperint usage, nothing is required to change in it. In case of running initialisation scripts in custom environment please check the IPs and names, so they will not override anything.
+Data in tmos_vars.yml file corresponds to the Blueprint setup. So, in case of Bluperint usage, nothing is required to change in it. In case of running initialization scripts in custom environment please check the IPs and names, so they will not override anything.
 
 The hosts to install the sample app and call TMOS Big-IP commands are configured in **inventory.ini**:
 
@@ -247,7 +247,7 @@ ansible_ssh_private_key_file=/home/ubuntu/.ssh/tmos_key
 ansible_ssh_user=root
 ```
 
-The **[app]** secton is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. Access to TMOS Big-IP is specified in **[tmos]** section. The file is configured for the **Blueprint** setup, no need to change it.
+The **[app]** section is the target destination of the deployment for the sample app. It is **Ubuntu Jump Host (client/server)** in **Blueprint** setup. Access to TMOS Big-IP is specified in **[tmos]** section. The file is configured for the **Blueprint** setup, no need to change it.
 
 After reviewing the files, run the following command to start initializing:
 
@@ -291,7 +291,7 @@ The expected output should look like this:
 OK. Endpoint - 1
 ```
 
-Also verify that WAF is applied to TMOS routing by running the following commands:
+Also, verify that WAF is applied to TMOS routing by running the following commands:
 
 ```bash
 curl 'http://10.1.10.90/endpoint1?query=<script>alert(1)</script>'
@@ -315,7 +315,7 @@ The resulting infrastructure for BIG-IP TMOS will have three sample virtual serv
 
 # Manual Workflow Guide
 
-In this part, we will provide manual steps with the associated screens for a "brownfield" use-case, i.e. a migration of an existing application from TMOS to BIG-IP Next. Using BIG-IP Next Central Manager ensures migration of configuration options such as WAF policies. The following steps will demonstrate the manual migration process:
+In this part, we will provide manual steps with the associated screens for a "brownfield" use case, i.e. a migration of an existing application from TMOS to BIG-IP Next. Using BIG-IP Next Central Manager ensures migration of configuration options such as WAF policies. The following steps will demonstrate the manual migration process:
 
 - Get BIG-IP UCS Archive
 - Upload UCS Archive into BIG-IP Next Central Manager
@@ -331,7 +331,7 @@ Log into your BIG-IP TMOS instance via the deployment we did earlier. Go to the 
 
 ![alt text](./assets/tmos-archive.png)
 
-and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in archive name and click **Finish**.
+and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in the archive name and click **Finish**.
 
 ![alt text](./assets/create-ucs.png)
 
@@ -381,7 +381,7 @@ After uploading the UCS archive we will add the application to migrate by clicki
 
 ![alt text](./assets/add-application.png)
 
-You will see a list of application services from your TMOS. Note that you can select green or yellow status application services, but not red ones. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the right upper corner. If the application is eligible, proceed by clicking **Add**. To migrate a preconfigured app, select the **Common_manual_ans_vs1** and click the **Add** button
+You will see a list of application services from your TMOS. Note that you can select green or yellow status application services, but not red ones. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the upper right corner. If the application is eligible, proceed by clicking **Add**. To migrate a preconfigured app, select the **Common_manual_ans_vs1** and click the **Add** button
 
 ![alt text](./assets/add-apps-to-migration.png)
 
@@ -410,7 +410,7 @@ The **Deployments** page will show the deployment result. Take a look and **Fini
 If we deploy the application now, there will be an IP address conflict. So, in order to preserve the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
 ![alt text](./assets/migrated-app-list.png)
 
-In appeared window find the **virtualAddress** key and replace **10.1.10.95** IP address with **10.1.10.195** and click the **Review & Deploy** button.
+In the window the appears, find the **virtualAddress** key and replace **10.1.10.95** IP address with **10.1.10.195** and click the **Review & Deploy** button.
 ![alt text](./assets/migrated-app-ip-update.png)
 
 ### 2.6 Deploy the Application to Big-IP Next Instance
@@ -467,7 +467,7 @@ Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that th
 
 # Automated Workflow Guide
 
-In this part of the guide we will automatically migrate the application with two virtual servers to BIG-IP Next with a shared WAF policy and then verify it using Central Manager UI as well as CLI.
+In this part of the guide, we will automatically migrate the application with two virtual servers to BIG-IP Next with a shared WAF policy and then verify it using Central Manager UI as well as CLI.
 
 Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the following folder where we will update config files:
 
@@ -479,7 +479,7 @@ bigip/bigip_next/security/migrate-from-tmos/migrate
 
 ### 1.1 Configure Connectivity to TMOS
 
-In the `tmos_vars.yml` file specify the following parameters to establish connection to TMOS:
+In the `tmos_vars.yml` file specify the following parameters to establish a connection to TMOS:
 
 - `server`
 - `server_port`
@@ -514,7 +514,7 @@ In the `site.yml` file you can see the migration steps that will be performed:
 - Backup TMOS BIG-IP as UCS
 - Migration of supported apps to BIG-IP Next that includes both creating and deploying them
 
-Please note that only certificates and WAF policies are migrated.
+Please note that only certificates and WAF policies are migrated.  **NOTE: For migration of iRules and Monitors look at the LTM migration workflow guide in this repository.** 
 
 Start the deployment by running the following command:
 
@@ -556,17 +556,17 @@ The report may look like this:
 
 #### 3.1.1 Migrated Application
 
-Log in Central Manager and proceed to **Applications**. You will see the application migrated whose name starts with the prefix you indicated in the prerequisites step.
+Log in to Central Manager and proceed to **Applications**. You will see the application migrated whose name starts with the prefix you indicated in the prerequisites step.
 
 ![alt text](./assets/migrated-app-cm.png)
 
 Please note that applications that were not specified in destinations are also migrated but not deployed. You will see `draft` next to their names.
 
-Let's drill down into deployed application details. Click on application to see pool member it is deployed to. Next, you can click the **Edit** button.
+Let's drill down into deployed application details. Click on the application to see the pool member it is deployed to. Next, you can click the **Edit** button.
 
 ![alt text](./assets/app-details-cm.png)
 
-In the opened declaration we can see the WAF policy, as well as virtual address that has changed acc to the mapping we specified earlier.
+In the opened declaration we can see the WAF policy, as well as the virtual address that has changed according to the mapping we specified earlier.
 
 ![alt text](./assets/app-declaration.png)
 
@@ -576,7 +576,7 @@ Now let's take a look at a declaration of another application to see that it has
 
 #### 3.1.2 Deployed WAF Policy
 
-Navigate to **Security** => **WAF** = > **Policies**. You will see the migrated policies. Next to each policy you will see number of applications that refer to it. If `0` is indicated, no deployed applications refer to it.
+Navigate to **Security** => **WAF** = > **Policies**. You will see the migrated policies. Next to each policy, you will see the number of applications that refer to it. If `0` is indicated, no deployed applications refer to it.
 
 ![alt text](./assets/migrated-waf-cm.png)
 
@@ -603,14 +603,13 @@ Verify that WAF was migrated too:
 ```bash
 curl 'http://10.1.10.191/endpoint1?query=<script>alert(1)</script>'
 ```
-
-The expected output should look like:
+The expected output should look like this:
 
 ```
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7857824916379271192<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html
 ```
 
-And old routing via TMOS can also be verified by sending the ping to it:
+The old routing via TMOS can also be verified by sending the ping to it:
 
 ```bash
 curl http://10.1.10.90/endpoint1
@@ -620,8 +619,6 @@ curl http://10.1.10.90/endpoint1
 curl http://10.1.10.91/endpoint1
 ```
 
-Congrats! You just completed automated migration of application to BIG-IP Next with its WAF Policy and certificates.
+Congrats! You just completed the automated migration of the application to BIG-IP Next with its WAF Policy and certificates.
 
-<!-- # Additional Related Resources
 
-=====TODO========= -->
