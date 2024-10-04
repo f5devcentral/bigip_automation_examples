@@ -1,4 +1,4 @@
-# Operations
+# BIG-IP Next WAF Operations
 
 # Table of Contents
 
@@ -8,7 +8,7 @@
 
 # Overview
 
-**Operations** guide showcases managing updates for BIG-IP Next WAF using Central Manager (CM) and automation via CM APIs. BIG-IP Next Central Manager accelerates app migration and simplifies management of BIG-IP Next infrastructure and app services.
+**Next WAF Operations** guide showcases managing updates for BIG-IP Next WAF using Central Manager (CM) and automation via CM APIs. BIG-IP Next Central Manager accelerates app migration and simplifies management of BIG-IP Next infrastructure and app services.
 
 We will focus on _manual_ management of Next WAF as well as _automation_ scripts for the following three use-cases:
 
