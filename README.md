@@ -29,7 +29,7 @@ This is a consolidated repo of Workflow Guides for `F5` products: `BigIP` and `B
   | ------------------------------------ | ------------------------------------------------------------------------------ |
   |Migrate Apps with WAF Policy from BIG-IP TMOS to BIG-IP Next (Coming Soon) | [Manual Steps and Automation (Ansible) for BIG-IP TMOS to Next Migration](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/migrate-from-tmos) |
   |Deploy and Protect Apps on BIG-IP Next (Coming Soon) | [Manual Steps and Automation (Terraform) for Deploying a New App with WAF Policy](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/deploy-with-new-next-waf) |
-  |Next WAF Operations (Coming Soon) |  [Manual Steps and Automation (Ansible)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/operations/Readme.md) |
+  |Next WAF Operations (Coming Soon) |  [Manual Steps and Automation (Ansible) for WAF Signature Updates & Operations](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/operations/Readme.md) |
   
 ## Getting Started
 
