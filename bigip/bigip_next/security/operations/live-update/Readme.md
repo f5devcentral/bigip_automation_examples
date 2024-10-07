@@ -94,7 +94,7 @@ task_timeout_minutes: 15
 If the docker option is used, there is a possibility to see the logs of the update installation process. First, you need to establish one more SSH connection to jumphost. Second, connect to the running docker. To do that navigate to:
 
 ```bash
-bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 In this folder run the following command to connect to the running Docker:
