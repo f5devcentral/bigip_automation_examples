@@ -29,13 +29,13 @@ If this use case is the first one you take, you will need to complete the [Deplo
 - [Blueprint Setup (for F5 employees or customers with access to UDF)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
 - [Docker Setup](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#docker-setup)
 - [Infrastructure Configuration - items 1 & 2](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#infrastructure-configuration)
-- [Automated Workflow Guide - items 1 - 5](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/operations-liveupdate/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#automated-workflow-guide) to deploy the app with the WAF policy
+- [Automated Workflow Guide - items 1 - 5](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#automated-workflow-guide) to deploy the app with the WAF policy
 - Verify the Deployed App with its Policy:
 
   - (optional) If you want to view app's APIs, enter the Swagger file of app API by running the following command:
 
     ```bash
-    cat ~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/init/templates/code-crud-swagger.yaml
+    cat ~/bigip_automation_examples/bigip/bigip_next/env-init/environment/templates/code-crud-swagger.yaml
     ```
 
   - Run the following command to see the list of scripts:
@@ -106,7 +106,7 @@ If you are not using Blueprint, you will need to edit the file as follows:
 If the docker option is used, there is a possibility to see the logs of parameter update with signature overrides process. First, you need to establish one more SSH connection to jumphost. Second, connect to the running docker. To do that navigate to:
 
 ```bash
-bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 In this folder run the following command to connect to the running Docker:
