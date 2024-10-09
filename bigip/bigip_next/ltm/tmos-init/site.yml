@@ -1,0 +1,16 @@
+---
+- name: Main Playbook
+  hosts: app
+  become: true
+
+- name: Configure NGINX application
+  import_playbook: app_install.yml
+
+- name: Setup TMOS virtual server routine
+  import_playbook: tmos_setup.yml
+
+- name: Attach policy
+  import_playbook: tmos_policy.yml
+
+- name: Check TMOS BIG-IP is setup correctly and app is available
+  import_playbook: tmos_app_ping.yml

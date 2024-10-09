@@ -1,0 +1,21 @@
+provider: 
+  server: 10.1.1.12
+  server_port: 443
+  user: admin
+  password: admin
+  validate_certs: false
+  no_f5_teem: false
+
+node_ip: 10.1.20.102
+node_name: ans_node
+pool_name: ans_pool
+virtual_server:
+  - name: auto_ans_vs1
+    ip: 10.1.10.90
+  - name: auto_ans_vs2
+    ip: 10.1.10.91
+  - name: manual_ans_vs1
+    ip: 10.1.10.95
+virtual_server_port: 80
+asm_policy_name: ans_policy_asm
+ltm_policy_name: ans_policy_ltm

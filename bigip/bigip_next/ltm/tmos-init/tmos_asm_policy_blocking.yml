@@ -1,0 +1,67 @@
+---
+- name: AWAF Policy manage
+  gather_facts: false
+  hosts: tmos
+  connection: httpapi
+
+  vars_files:
+    - tmos_vars.yml
+
+  vars:
+    ansible_host: "{{ provider.server }}"
+    ansible_user: "{{ provider.user }}"
+    ansible_httpapi_password: "{{ provider.password }}"
+    ansible_httpapi_port: "{{ provider.server_port }}"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: "{{ provider.validate_certs }}"
+
+  tasks:
+    - name: Set ASM Policy to Blocking Mode
+      f5networks.f5_bigip.bigip_awaf_policy:
+        name: "{{ asm_policy_name }}"
+        server_technologies:
+          - Nginx
+        partition: "Common"
+        template: "POLICY_TEMPLATE_RAPID_DEPLOYMENT"
+        enforcement_mode: "blocking"
+        apply_policy: true
+        state: "present"
+
+    - name: Get list of ASM policies
+      f5networks.f5_bigip.bigip_device_info:
+        gather_subset:
+          - asm-policies
+      register: asm_policies
+
+    - name: Find the ASM policy ID by policy name
+      set_fact:
+        asm_policy_id: "{{ item.policy_id }}"
+      loop: "{{ asm_policies.asm_policies }}"
+      when: item.name == asm_policy_name
+
+    - name: Enforce all signatures in ASM policy
+      uri:
+        url: "https://{{ ansible_host }}:{{ ansible_httpapi_port }}/mgmt/tm/asm/policies/{{ asm_policy_id }}/signatures"
+        method: PATCH
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_httpapi_password }}"
+        validate_certs: "{{ ansible_httpapi_validate_certs }}"
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "enabled": true,
+            "performStaging": false
+          }
+        status_code: 200, 500
+        timeout: 180
+
+    - name: Apply policy
+      bigip_asm_policy_manage:
+        provider: "{{ provider }}"
+        name: "{{ asm_policy_name }}"
+        partition: "Common"
+        active: true
+        apply: true
