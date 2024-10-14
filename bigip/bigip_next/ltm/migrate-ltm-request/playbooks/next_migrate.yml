@@ -72,7 +72,8 @@
       set_fact:
         migrate_apps: "{{ cm_apps.json | json_query(query) | reject('equalto', []) | flatten(1) }} "
       vars:
-        query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow')]]"
+        query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(waf_policies) == `0`]]"
+
 
     - name: Generate migration report
       delegate_to: localhost
@@ -125,11 +126,39 @@
       vars:
         query: "json._embedded.certificates[].name"
       when: next_certs_total | int != 0
+    #--------------------------------------------------------------------------------------------------
+    - name: Get Installed iRules
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/api/irule/v1/irules"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+      register: next_irules_available
 
+    - name: Any iRule Available
+      set_fact:
+        next_irules_total: "{{ next_irules_available | json_query(query) | int }}"
+      vars:
+        query: "json.total"
+
+    - name: Set installed_irules_names to empty if next_irules_total is 0
+      set_fact:
+        installed_irules_names: []
+      when: next_irules_total | int == 0
+
+    - name: Filter installed iRules names
+      set_fact:
+        installed_irules_names: "{{ next_irules_available | json_query(query) | list }}"
+      vars:
+        query: "json._embedded.irules[].name"
+      when: next_irules_total | int != 0
+    #--------------------------------------------------------------------------------------------------
     - name: Get Apps with missing dependent objects
       set_fact:
         import_dependecies_apps: "{{ app_shared_objects_names | get_apps_to_import_dependencies(installed_irules_names, installed_certs_names) }}"
-
+    
     - name: Prepare apps to install dependencies
       delegate_to: localhost
       uri:
@@ -143,7 +172,7 @@
           Authorization: "Bearer {{ access_token }}"
         validate_certs: no
       register: result
-
+    
     - name: Install dependencies if necessary
       delegate_to: localhost
       uri:
@@ -158,11 +187,11 @@
         status_code: 200
       with_items: "{{ import_dependecies_apps }}"
       register: result
-
+    
     - name: Get applications AS3 preview
       set_fact:
         preview_links: "{{ migrate_apps | map(attribute='as3_preview') | list }}"
-
+    
     - name: Download each AS3 preview file
       delegate_to: localhost
       uri:
@@ -177,14 +206,14 @@
       with_items: "{{ preview_links }}"
       loop_control:
         label: "{{ item }}"
-
+    
     - name: Save App AS3 preview files
       delegate_to: localhost
       copy:
         content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
         dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
       with_items: "{{ as3_app_preview_files.results }}"
-
+    
     - name: Create AS3 applications
       delegate_to: localhost
       uri:
@@ -199,15 +228,15 @@
         status_code: 200
       with_items: "{{ as3_app_preview_files.results }}"
       register: documents
-
+    
     - name: Map applications to document ids
       set_fact:
         apps_to_id_map: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
-
+    
     - name: Create Deployment array by tree
       set_fact:
         deployment_array: "{{ apps_to_id_map | create_deployment_array(deploy_tree) }}"
-
+    
     - name: Deploy applications to destination BigIP Next
       delegate_to: localhost
       uri:
@@ -225,7 +254,7 @@
       loop_control:
         pause: 30
       register: deployment_result
-
+    
     - name: Deployment Results
       debug:
         msg: "{{deployment_result}}"

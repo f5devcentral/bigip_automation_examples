@@ -6,7 +6,7 @@
     - f5networks.f5_modules
 
   vars_files:
-    - tmos_vars.yml
+    - ../tmos_vars.yml
 
   tasks:
     - name: Create UCS archive

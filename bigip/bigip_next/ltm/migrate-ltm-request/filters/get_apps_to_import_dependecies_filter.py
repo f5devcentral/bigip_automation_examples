@@ -12,12 +12,12 @@ class FilterModule(object):
                     obj_to_create.append(obj_name)
                     server_list.append(server['id'])
 
-    def get_apps_to_import_dependencies(self, data, installed_waf_names, installed_certificates):
-        if len(installed_waf_names) == 0 or len(installed_certificates) == 0:
+    def get_apps_to_import_dependencies(self, data, installed_irules, installed_certificates):
+        if len(installed_irules) == 0 or len(installed_certificates) == 0:
             return list(map(lambda server: server['id'], data))
 
         rValue = []
-        self.update_server_list_by_object(data, 'waf', installed_waf_names, rValue)
+        self.update_server_list_by_object(data, 'irules', installed_irules, rValue)
         self.update_server_list_by_object(data, 'cert', installed_certificates, rValue)
 
         return rValue
