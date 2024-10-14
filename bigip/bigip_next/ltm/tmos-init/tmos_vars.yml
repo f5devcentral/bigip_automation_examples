@@ -28,4 +28,4 @@ virtual_server:
 health_monitors:
   - name: ltm-custom-monitor
     url: /health
-    response: Healthy
+    response: Healthy\n

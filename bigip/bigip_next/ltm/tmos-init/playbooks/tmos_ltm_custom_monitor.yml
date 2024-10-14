@@ -19,7 +19,7 @@
       f5networks.f5_modules.bigip_monitor_http:
         name: "{{ item.name }}"
         parent: "http"  # Inherit from the default HTTP monitor
-        send: "GET {{ item.url }} HTTP/1.1\r\n"
+        send: "GET {{ item.url }} \r\n"
         receive: "{{ item.response }}"
         interval: 5
         timeout: 16
