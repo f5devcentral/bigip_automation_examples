@@ -5,7 +5,7 @@
   gather_facts: false
 
   vars_files:
-    - tmos_vars.yml
+    - ../tmos_vars.yml
 
   tasks:
     - name: Check server is available
