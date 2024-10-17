@@ -20,3 +20,4 @@
       as3_ltm_policy_migrate:
         config_files: "{{ ltm_policy_migrate_params.config_files }}"
         applications: "{{ ltm_policy_migrate_params.applications }}"
+        migrations: "{{ ltm_policy_migrate_params.migrations }}"

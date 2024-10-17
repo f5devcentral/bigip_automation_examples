@@ -238,7 +238,7 @@
           {
             "config_files": {{ downloaded_files_response.results | to_json }},
             "applications": {{ as3_app_preview_files.results | to_json }},
-            "migrations": {{ cm_apps.json | to_json }}
+            "migrations": {{ cm_apps.json._embedded.applications | to_json }}
           }
         dest: ../ltm_policy_migrate_params.json
 
@@ -247,6 +247,7 @@
       as3_ltm_policy_migrate:
         config_files: "{{ downloaded_files_response.results }}"
         applications: "{{ as3_app_preview_files.results }}"
+        migrations: "{{ cm_apps.json._embedded.applications }}"
 
     #    - name: Save App AS3 preview files
     #      delegate_to: localhost

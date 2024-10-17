@@ -3,9 +3,10 @@ import requests
 import time
 
 class LtmPolicyMigrate:
-    def __init__(self, config_files, applications, logger):
+    def __init__(self, config_files, applications, migrations, logger):
         self.config_files = config_files
         self.applications = applications
+        self.migrations = migrations
         self.logger = logger
 
     def migrate_routing_policy(self):
@@ -16,6 +17,7 @@ def run_module():
     module_args = dict(
         config_files=dict(type='list', required=True),
         applications=dict(type='list', required=True),
+        migrations=dict(type='list', required=True)
     )
 
     result = dict(
@@ -30,13 +32,14 @@ def run_module():
 
     config_files = module.params['config_files']
     applications = module.params['applications']
+    migrations = module.params['migrations']
 
     def custom_logger(msg):
         with open('../logs/ltm_policy_migration.log', 'a') as f:
             f.write("{0}\n".format(msg))
 
     try:
-        cm = LtmPolicyMigrate(config_files, applications, custom_logger)
+        cm = LtmPolicyMigrate(config_files, applications, migrations, custom_logger)
         poll_result = cm.migrate_routing_policy()
         if poll_result["success"]:
             result["success"] = True
