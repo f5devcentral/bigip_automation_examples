@@ -1,0 +1,22 @@
+---
+- name: Run with files. DEV ONLY
+  hosts: tmos
+  gather_facts: false
+
+  tasks:
+    - name: Read parameters from file for LTM policy migration
+      delegate_to: localhost
+      slurp:
+        src: ../ltm_policy_migrate_params.json
+      register: params_file_content
+    
+    - name: Parse parameters from file
+      delegate_to: localhost
+      set_fact:
+        ltm_policy_migrate_params: "{{ params_file_content.content | b64decode | from_json }}"
+    
+    - name: Migrate routing LTM policies to iRules
+      delegate_to: localhost
+      as3_ltm_policy_migrate:
+        config_files: "{{ ltm_policy_migrate_params.config_files }}"
+        applications: "{{ ltm_policy_migrate_params.applications }}"
