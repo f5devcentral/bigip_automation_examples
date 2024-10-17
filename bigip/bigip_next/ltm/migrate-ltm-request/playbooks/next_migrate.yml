@@ -237,7 +237,8 @@
         content: |
           {
             "config_files": {{ downloaded_files_response.results | to_json }},
-            "applications": {{ as3_app_preview_files.results | to_json }}
+            "applications": {{ as3_app_preview_files.results | to_json }},
+            "migrations": {{ cm_apps.json | to_json }}
           }
         dest: ../ltm_policy_migrate_params.json
 
