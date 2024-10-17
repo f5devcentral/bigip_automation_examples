@@ -1,6 +1,24 @@
 from ansible.module_utils.basic import AnsibleModule
 import requests
 import time
+import base64
+
+from . import extract_ltm_policies
+
+def get_node_by_class(tree, class_name, parent_key=None):
+    if isinstance(tree, dict):
+        if 'class' in tree and tree['class'] == class_name:
+            return parent_key
+        for key, value in tree.items():
+            rValue = get_node_by_class(value, class_name, key)
+            if rValue:
+                return rValue
+    elif isinstance(tree, list):
+        for item in tree:
+            rValue = get_node_by_class(item, class_name, parent_key)
+            if rValue:
+                return rValue
+    return None
 
 class LtmPolicyMigrate:
     def __init__(self, config_files, applications, migrations, logger):
@@ -9,8 +27,63 @@ class LtmPolicyMigrate:
         self.migrations = migrations
         self.logger = logger
 
+    def match_config(self, config_files):
+        rValue = []
+        for _, file_name in enumerate(config_files.values()):
+            for cf in self.config_files:
+                if cf["item"]["value"] == file_name:
+                    self.logger(file_name)
+                    rValue.append({
+                        'file_name': file_name,
+                        'content': cf["content"]
+                    })
+                    break
+        return rValue
+
+    def match_as3app_by_vs_name(self, app_name, vs_name):
+        for app in self.applications:
+            tenant_name = get_node_by_class(app["json"], "Tenant")
+            tenant_info = app["json"][tenant_name]
+            if app_name in tenant_info:
+                return {
+                        'adc': app["json"],
+                        'tenant_name': tenant_name
+                }
+        return None
+
+    def migrate_ltm_routes(self, config, tenant, app, vs):
+        ltm_policies = []
+        for cfg in config:
+            policies = extract_ltm_policies(cfg.content)
+            for p in policies:
+                ltm_policies.append(p)
+
+        for p in ltm_policies:
+            self.logger(p)
+
+
+        return[]
+
     def migrate_routing_policy(self):
-        self.logger("migrate")
+        for migration in self.migrations:
+            for vs in migration["virtual_servers"]:
+                as3_app_info = self.match_as3app_by_vs_name(migration["name"], vs["name"])
+                if as3_app_info is None:
+                    continue
+
+                config = self.match_config(vs["config_files"])
+                migrated_ltm = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
+
+                for irule in migrated_ltm:
+                    adc = as3_app_info["adc"]
+                    adc[as3_app_info["tenant"]][migration["name"]][irule["name"]] = {
+                            'iRule': { 'base64': base64.b64encode(irule["content"]) },
+                            'class': "iRule"
+                    }
+                    adc[as3_app_info["tenant"]][migration["name"]][vs["name"]].iRules.append({
+                        'use': iRule["path"]
+                    })
+
         return {"success": True, "data": "Migration data here"}
 
 def run_module():

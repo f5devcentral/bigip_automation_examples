@@ -4,3 +4,4184 @@ migrate
 migrate
 migrate
 migrate
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+-----------------------------------
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+-----------------------------------
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+-----------------------------------
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+-----------------------------------
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+-----------------------------------
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+***********************************
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+-----------------------------------
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+***********************************
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+-----------------------------------
+profile_base_default_v15.conf
+bigip.conf
+***********************************
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+-----------------------------------
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+***********************************
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+-----------------------------------
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+***********************************
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+-----------------------------------
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+***********************************
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+ltm monitor http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+ltm policy /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS {
+    controls { asm }
+    requires { http }
+    rules {
+        default {
+            actions {
+                1 {
+                    asm
+                    enable
+                    policy /Common/policy1
+                }
+            }
+            ordinal 1
+        }
+    }
+    strategy /Common/first-match
+}
+ltm node /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100 {
+    address 10.1.20.100
+}
+security bot-defense asm-profile /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 {
+    app-service none
+}
+sys file ssl-cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:waf-vanilla_440614_2
+    revision 2
+    source-path /var/run/key_mgmt/1Po1M6/ssl.crt/waf-vanilla
+}
+ltm virtual /tenantf895f58211b9d/Common_WAF_VANILLA_VS/Common_WAF_VANILLA_VS {
+    creation-time 2024-01-08:09:00:34
+    destination /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58:443
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:58:31
+    mask 255.255.255.255
+    policies {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS { }
+    }
+    pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1
+    profiles {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+            context clientside
+        }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm profile client-ssl /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        waf-vanilla_waf-vanilla_0 {
+            cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            chain /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+sys file ssl-key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:waf-vanilla_440612_1
+    revision 1
+    source-path /var/run/key_mgmt/ddHISa/ssl.key/waf-vanilla
+}
+asm policy /Common/policy1 {
+    active
+    policy-template POLICY_TEMPLATE_FUNDAMENTAL
+}
+ltm pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1 {
+    members {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15
+}
+ltm virtual-address /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58 {
+    address 10.1.10.58
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+-----------------------------------
+ltm monitor http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+ltm policy /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS {
+    controls { asm }
+    requires { http }
+    rules {
+        default {
+            actions {
+                1 {
+                    asm
+                    enable
+                    policy /Common/policy1
+                }
+            }
+            ordinal 1
+        }
+    }
+    strategy /Common/first-match
+}
+ltm node /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100 {
+    address 10.1.20.100
+}
+security bot-defense asm-profile /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 {
+    app-service none
+}
+sys file ssl-cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:waf-vanilla_440614_2
+    revision 2
+    source-path /var/run/key_mgmt/1Po1M6/ssl.crt/waf-vanilla
+}
+ltm virtual /tenantf895f58211b9d/Common_WAF_VANILLA_VS/Common_WAF_VANILLA_VS {
+    creation-time 2024-01-08:09:00:34
+    destination /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58:443
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:58:31
+    mask 255.255.255.255
+    policies {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS { }
+    }
+    pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1
+    profiles {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+            context clientside
+        }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm profile client-ssl /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        waf-vanilla_waf-vanilla_0 {
+            cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            chain /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+sys file ssl-key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:waf-vanilla_440612_1
+    revision 1
+    source-path /var/run/key_mgmt/ddHISa/ssl.key/waf-vanilla
+}
+asm policy /Common/policy1 {
+    active
+    policy-template POLICY_TEMPLATE_FUNDAMENTAL
+}
+ltm pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1 {
+    members {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15
+}
+ltm virtual-address /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58 {
+    address 10.1.10.58
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+-----------------------------------
+ltm profile http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+ltm policy /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS {
+    controls { asm }
+    requires { http }
+    rules {
+        default {
+            actions {
+                1 {
+                    asm
+                    enable
+                    policy /Common/policy1
+                }
+            }
+            ordinal 1
+        }
+    }
+    strategy /Common/first-match
+}
+ltm node /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100 {
+    address 10.1.20.100
+}
+security bot-defense asm-profile /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 {
+    app-service none
+}
+sys file ssl-cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:waf-vanilla_440614_2
+    revision 2
+    source-path /var/run/key_mgmt/1Po1M6/ssl.crt/waf-vanilla
+}
+ltm virtual /tenantf895f58211b9d/Common_WAF_VANILLA_VS/Common_WAF_VANILLA_VS {
+    creation-time 2024-01-08:09:00:34
+    destination /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58:443
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:58:31
+    mask 255.255.255.255
+    policies {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS { }
+    }
+    pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1
+    profiles {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+            context clientside
+        }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm profile client-ssl /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        waf-vanilla_waf-vanilla_0 {
+            cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            chain /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+sys file ssl-key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:waf-vanilla_440612_1
+    revision 1
+    source-path /var/run/key_mgmt/ddHISa/ssl.key/waf-vanilla
+}
+asm policy /Common/policy1 {
+    active
+    policy-template POLICY_TEMPLATE_FUNDAMENTAL
+}
+ltm pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1 {
+    members {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15
+}
+ltm virtual-address /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58 {
+    address 10.1.10.58
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+-----------------------------------
+ltm monitor http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+ltm policy /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS {
+    controls { asm }
+    requires { http }
+    rules {
+        default {
+            actions {
+                1 {
+                    asm
+                    enable
+                    policy /Common/policy1
+                }
+            }
+            ordinal 1
+        }
+    }
+    strategy /Common/first-match
+}
+ltm node /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100 {
+    address 10.1.20.100
+}
+security bot-defense asm-profile /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 {
+    app-service none
+}
+sys file ssl-cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:waf-vanilla_440614_2
+    revision 2
+    source-path /var/run/key_mgmt/1Po1M6/ssl.crt/waf-vanilla
+}
+ltm virtual /tenantf895f58211b9d/Common_WAF_VANILLA_VS/Common_WAF_VANILLA_VS {
+    creation-time 2024-01-08:09:00:34
+    destination /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58:443
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:58:31
+    mask 255.255.255.255
+    policies {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS { }
+    }
+    pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1
+    profiles {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+            context clientside
+        }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm profile client-ssl /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        waf-vanilla_waf-vanilla_0 {
+            cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            chain /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+sys file ssl-key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:waf-vanilla_440612_1
+    revision 1
+    source-path /var/run/key_mgmt/ddHISa/ssl.key/waf-vanilla
+}
+asm policy /Common/policy1 {
+    active
+    policy-template POLICY_TEMPLATE_FUNDAMENTAL
+}
+ltm pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1 {
+    members {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15
+}
+ltm virtual-address /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58 {
+    address 10.1.10.58
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+-----------------------------------
+ltm monitor http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+ltm policy /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS {
+    controls { asm }
+    requires { http }
+    rules {
+        default {
+            actions {
+                1 {
+                    asm
+                    enable
+                    policy /Common/policy1
+                }
+            }
+            ordinal 1
+        }
+    }
+    strategy /Common/first-match
+}
+ltm node /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100 {
+    address 10.1.20.100
+}
+security bot-defense asm-profile /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 {
+    app-service none
+}
+sys file ssl-cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:waf-vanilla_440614_2
+    revision 2
+    source-path /var/run/key_mgmt/1Po1M6/ssl.crt/waf-vanilla
+}
+ltm virtual /tenantf895f58211b9d/Common_WAF_VANILLA_VS/Common_WAF_VANILLA_VS {
+    creation-time 2024-01-08:09:00:34
+    destination /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58:443
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:58:31
+    mask 255.255.255.255
+    policies {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS { }
+    }
+    pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1
+    profiles {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+            context clientside
+        }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm profile client-ssl /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        waf-vanilla_waf-vanilla_0 {
+            cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            chain /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+sys file ssl-key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:waf-vanilla_440612_1
+    revision 1
+    source-path /var/run/key_mgmt/ddHISa/ssl.key/waf-vanilla
+}
+asm policy /Common/policy1 {
+    active
+    policy-template POLICY_TEMPLATE_FUNDAMENTAL
+}
+ltm pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1 {
+    members {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15
+}
+ltm virtual-address /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58 {
+    address 10.1.10.58
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+-----------------------------------
+ltm monitor http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+ltm policy /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS {
+    controls { asm }
+    requires { http }
+    rules {
+        default {
+            actions {
+                1 {
+                    asm
+                    enable
+                    policy /Common/policy1
+                }
+            }
+            ordinal 1
+        }
+    }
+    strategy /Common/first-match
+}
+ltm node /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100 {
+    address 10.1.20.100
+}
+security bot-defense asm-profile /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 {
+    app-service none
+}
+sys file ssl-cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:waf-vanilla_440614_2
+    revision 2
+    source-path /var/run/key_mgmt/1Po1M6/ssl.crt/waf-vanilla
+}
+ltm virtual /tenantf895f58211b9d/Common_WAF_VANILLA_VS/Common_WAF_VANILLA_VS {
+    creation-time 2024-01-08:09:00:34
+    destination /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58:443
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:58:31
+    mask 255.255.255.255
+    policies {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/asm_auto_l7_policy__WAF-VANILLA-VS { }
+    }
+    pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1
+    profiles {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/ASM_policy1 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/tcp_default_v15 { }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+            context clientside
+        }
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm profile client-ssl /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla-ssl {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        waf-vanilla_waf-vanilla_0 {
+            cert /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            chain /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_1
+            key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+sys file ssl-key /tenantf895f58211b9d/Common_WAF_VANILLA_VS/waf-vanilla_2 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:waf-vanilla_440612_1
+    revision 1
+    source-path /var/run/key_mgmt/ddHISa/ssl.key/waf-vanilla
+}
+asm policy /Common/policy1 {
+    active
+    policy-template POLICY_TEMPLATE_FUNDAMENTAL
+}
+ltm pool /tenantf895f58211b9d/Common_WAF_VANILLA_VS/pool1 {
+    members {
+        /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantf895f58211b9d/Common_WAF_VANILLA_VS/http_default_v15
+}
+ltm virtual-address /tenantf895f58211b9d/Common_WAF_VANILLA_VS/10.1.10.58 {
+    address 10.1.10.58
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+profile_base_default_v15.conf
+bigip.conf
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+base_monitors_default_v15.conf
+profile_base_default_v15.conf
+bigip.conf
+/api/v1/migrations/30/virtuals/312/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/bigip.conf
+/api/v1/migrations/30/virtuals/314/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/bigip.conf
+/api/v1/migrations/30/virtuals/315/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/315/files/bigip.conf
+/api/v1/migrations/30/virtuals/317/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/bigip.conf
+/api/v1/migrations/30/virtuals/319/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/bigip.conf
+/api/v1/migrations/30/virtuals/320/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/bigip.conf
+/api/v1/migrations/30/virtuals/312/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/bigip.conf
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+ltm monitor http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/websecurity_default_v15 { }
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+ltm pool /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-pool-prod {
+    members {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-prod:80 {
+            address 10.1.20.102
+        }
+    }
+    monitor /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-custom-monitor
+}
+ltm node /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-prod {
+    address 10.1.20.102
+}
+ltm virtual /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/Common_ltm-app-vs {
+    creation-time 2024-10-14:06:21:35
+    destination /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/10.1.10.71:80
+    ip-protocol tcp
+    last-modified-time 2024-10-14:06:21:35
+    mask 255.255.255.255
+    metadata {
+        f5-ansible.last_modified {
+            value "2024-10-14 13:21:41.442247"
+        }
+        f5-ansible.version {
+            value 2.16.11
+        }
+    }
+    policies {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy { }
+    }
+    pool /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-pool-prod
+    profiles {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 { }
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/tcp_default_v15 { }
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm monitor http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-custom-monitor {
+    adaptive disabled
+    destination *:*
+    interval 5
+    ip-dscp 0
+    recv Healthy\n
+    recv-disable none
+    send "GET /health 
+"
+    time-until-up 0
+    timeout 16
+    manual-resume disabled
+    reverse disabled
+    transparent disabled
+    up-interval 0
+}
+ltm virtual-address /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/10.1.10.71 {
+    address 10.1.10.71
+    arp enabled
+    icmp-echo enabled
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/314/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/bigip.conf
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+-----------------------------------
+ltm monitor http /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm node /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm profile tcp /tenant71a592e11dcff/Common_TCP_PROG_CuVR/f5_tcp_progressive {
+    app-service none
+    auto-proxy-buffer-size enabled
+    auto-receive-window-size enabled
+    auto-send-buffer-size enabled
+    congestion-control woodside
+    init-cwnd 16
+    init-rwnd 16
+    nagle auto
+    proxy-buffer-high 262144
+    proxy-buffer-low 196608
+    push-flag auto
+    receive-window-size 131072
+    send-buffer-size 262144
+    abc enabled
+    ack-on-push enabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-mss enabled
+    proxy-options disabled
+    rate-pace enabled
+    rate-pace-max-rate 0
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm virtual-address /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.10.52 {
+    address 10.1.10.52
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm virtual /tenant71a592e11dcff/Common_TCP_PROG_CuVR/Common_TCP_PROG {
+    creation-time 2024-01-05:15:31:18
+    destination /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.10.52:8080
+    ip-protocol tcp
+    last-modified-time 2024-01-08:10:01:20
+    mask 255.255.255.255
+    pool /tenant71a592e11dcff/Common_TCP_PROG_CuVR/pool1
+    profiles {
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/f5_tcp_progressive { }
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm pool /tenant71a592e11dcff/Common_TCP_PROG_CuVR/pool1 {
+    members {
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/315/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/315/files/bigip.conf
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+-----------------------------------
+ltm profile http /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm virtual /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/Common_SSL_OFFLOAD_VS_80 {
+    creation-time 2024-01-08:12:55:53
+    destination /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/10.1.10.53:80
+    ip-protocol tcp
+    last-modified-time 2024-01-08:12:56:24
+    mask 255.255.255.255
+    profiles {
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/http_default_v15 { }
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/tcp_default_v15 { }
+    }
+    rules {
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/redirect_irule
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/10.1.10.53 {
+    address 10.1.10.53
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm rule /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/redirect_irule {
+# Copyright 2003-2006, 2012-2013, 2016, 2019.  F5 Networks, Inc.  See End User License Agreement ("EULA")
+# for license terms. Notwithstanding anything to the contrary in the EULA,
+# Licensee may copy and modify this software product for its internal business
+# purposes. Further, Licensee may upload, publish and distribute the modified
+# version of the software product on devcentral.f5.com.
+#
+    when HTTP_REQUEST {
+       HTTP::redirect https://[getfield [HTTP::host] ":" 1][HTTP::uri]
+    }
+}
+***********************************
+/api/v1/migrations/30/virtuals/317/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/bigip.conf
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+-----------------------------------
+ltm monitor http /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm node /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm profile client-ssl /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-no-password {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        ssl-offload-vs-no-password_ssl-offload-vs-no-password_0 {
+            cert /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password
+            chain /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password
+            key /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password_1
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+ltm virtual /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/Common_SSL_OFFLOAD_VS_443 {
+    creation-time 2024-01-08:12:59:54
+    destination /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.10.53:443
+    ip-protocol tcp
+    last-modified-time 2024-01-08:12:59:54
+    mask 255.255.255.255
+    pool /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/pool1
+    profiles {
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 { }
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-no-password {
+            context clientside
+        }
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/tcp_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.10.53 {
+    address 10.1.10.53
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+sys file ssl-key /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:ssl-offload-vs-no-password_440576_1
+    revision 1
+    source-path /var/run/key_mgmt/2pakm4/ssl.key/ssl-offload-vs-no-password
+}
+ltm pool /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/pool1 {
+    members {
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15
+}
+sys file ssl-cert /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:ssl-offload-vs-no-password_440578_2
+    revision 2
+    source-path /var/run/key_mgmt/oT8RAd/ssl.crt/ssl-offload-vs-no-password
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/319/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/bigip.conf
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+-----------------------------------
+ltm monitor http /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm node /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+ltm virtual /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/Common_LTM_POLICY_VS {
+    creation-time 2023-09-05:15:23:52
+    destination /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.10.54:80
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:57:37
+    mask 255.255.255.255
+    policies {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 { }
+    }
+    pool /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/pool1
+    profiles {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 { }
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/tcp_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.10.54 {
+    address 10.1.10.54
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm pool /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/pool1 {
+    members {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/320/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/bigip.conf
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+-----------------------------------
+ltm monitor http /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile fastl4 /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/fastL4_default_v15 {
+    idle-timeout 300
+    mss-override 0
+    pva-acceleration full
+    reassemble-fragments disabled
+    reset-on-timeout enabled
+}
+ltm node /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm virtual-address /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.10.51 {
+    address 10.1.10.51
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm virtual /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/Common_FAST_L4 {
+    creation-time 2024-01-05:15:27:37
+    destination /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.10.51:80
+    ip-protocol tcp
+    last-modified-time 2024-01-08:09:04:31
+    mask 255.255.255.255
+    pool /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/pool1
+    profiles {
+        /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/fastL4_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm pool /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/pool1 {
+    members {
+        /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/312/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/bigip.conf
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+ltm monitor http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/websecurity_default_v15 { }
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+ltm pool /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-pool-prod {
+    members {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-prod:80 {
+            address 10.1.20.102
+        }
+    }
+    monitor /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-custom-monitor
+}
+ltm node /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-prod {
+    address 10.1.20.102
+}
+ltm virtual /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/Common_ltm-app-vs {
+    creation-time 2024-10-14:06:21:35
+    destination /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/10.1.10.71:80
+    ip-protocol tcp
+    last-modified-time 2024-10-14:06:21:35
+    mask 255.255.255.255
+    metadata {
+        f5-ansible.last_modified {
+            value "2024-10-14 13:21:41.442247"
+        }
+        f5-ansible.version {
+            value 2.16.11
+        }
+    }
+    policies {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy { }
+    }
+    pool /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-pool-prod
+    profiles {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 { }
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/tcp_default_v15 { }
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm monitor http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-custom-monitor {
+    adaptive disabled
+    destination *:*
+    interval 5
+    ip-dscp 0
+    recv Healthy\n
+    recv-disable none
+    send "GET /health 
+"
+    time-until-up 0
+    timeout 16
+    manual-resume disabled
+    reverse disabled
+    transparent disabled
+    up-interval 0
+}
+ltm virtual-address /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/10.1.10.71 {
+    address 10.1.10.71
+    arp enabled
+    icmp-echo enabled
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/314/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/bigip.conf
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+-----------------------------------
+ltm monitor http /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm node /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm profile tcp /tenant71a592e11dcff/Common_TCP_PROG_CuVR/f5_tcp_progressive {
+    app-service none
+    auto-proxy-buffer-size enabled
+    auto-receive-window-size enabled
+    auto-send-buffer-size enabled
+    congestion-control woodside
+    init-cwnd 16
+    init-rwnd 16
+    nagle auto
+    proxy-buffer-high 262144
+    proxy-buffer-low 196608
+    push-flag auto
+    receive-window-size 131072
+    send-buffer-size 262144
+    abc enabled
+    ack-on-push enabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-mss enabled
+    proxy-options disabled
+    rate-pace enabled
+    rate-pace-max-rate 0
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm virtual-address /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.10.52 {
+    address 10.1.10.52
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm virtual /tenant71a592e11dcff/Common_TCP_PROG_CuVR/Common_TCP_PROG {
+    creation-time 2024-01-05:15:31:18
+    destination /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.10.52:8080
+    ip-protocol tcp
+    last-modified-time 2024-01-08:10:01:20
+    mask 255.255.255.255
+    pool /tenant71a592e11dcff/Common_TCP_PROG_CuVR/pool1
+    profiles {
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/f5_tcp_progressive { }
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm pool /tenant71a592e11dcff/Common_TCP_PROG_CuVR/pool1 {
+    members {
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/315/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/315/files/bigip.conf
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+-----------------------------------
+ltm profile http /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm virtual /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/Common_SSL_OFFLOAD_VS_80 {
+    creation-time 2024-01-08:12:55:53
+    destination /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/10.1.10.53:80
+    ip-protocol tcp
+    last-modified-time 2024-01-08:12:56:24
+    mask 255.255.255.255
+    profiles {
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/http_default_v15 { }
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/tcp_default_v15 { }
+    }
+    rules {
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/redirect_irule
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/10.1.10.53 {
+    address 10.1.10.53
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm rule /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/redirect_irule {
+# Copyright 2003-2006, 2012-2013, 2016, 2019.  F5 Networks, Inc.  See End User License Agreement ("EULA")
+# for license terms. Notwithstanding anything to the contrary in the EULA,
+# Licensee may copy and modify this software product for its internal business
+# purposes. Further, Licensee may upload, publish and distribute the modified
+# version of the software product on devcentral.f5.com.
+#
+    when HTTP_REQUEST {
+       HTTP::redirect https://[getfield [HTTP::host] ":" 1][HTTP::uri]
+    }
+}
+***********************************
+/api/v1/migrations/30/virtuals/317/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/bigip.conf
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+-----------------------------------
+ltm monitor http /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm node /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm profile client-ssl /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-no-password {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        ssl-offload-vs-no-password_ssl-offload-vs-no-password_0 {
+            cert /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password
+            chain /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password
+            key /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password_1
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+ltm virtual /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/Common_SSL_OFFLOAD_VS_443 {
+    creation-time 2024-01-08:12:59:54
+    destination /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.10.53:443
+    ip-protocol tcp
+    last-modified-time 2024-01-08:12:59:54
+    mask 255.255.255.255
+    pool /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/pool1
+    profiles {
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 { }
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-no-password {
+            context clientside
+        }
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/tcp_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.10.53 {
+    address 10.1.10.53
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+sys file ssl-key /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:ssl-offload-vs-no-password_440576_1
+    revision 1
+    source-path /var/run/key_mgmt/2pakm4/ssl.key/ssl-offload-vs-no-password
+}
+ltm pool /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/pool1 {
+    members {
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15
+}
+sys file ssl-cert /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:ssl-offload-vs-no-password_440578_2
+    revision 2
+    source-path /var/run/key_mgmt/oT8RAd/ssl.crt/ssl-offload-vs-no-password
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/319/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/bigip.conf
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+-----------------------------------
+ltm monitor http /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm node /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+ltm virtual /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/Common_LTM_POLICY_VS {
+    creation-time 2023-09-05:15:23:52
+    destination /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.10.54:80
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:57:37
+    mask 255.255.255.255
+    policies {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 { }
+    }
+    pool /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/pool1
+    profiles {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 { }
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/tcp_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.10.54 {
+    address 10.1.10.54
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm pool /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/pool1 {
+    members {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/320/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/bigip.conf
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+-----------------------------------
+ltm monitor http /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile fastl4 /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/fastL4_default_v15 {
+    idle-timeout 300
+    mss-override 0
+    pva-acceleration full
+    reassemble-fragments disabled
+    reset-on-timeout enabled
+}
+ltm node /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm virtual-address /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.10.51 {
+    address 10.1.10.51
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm virtual /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/Common_FAST_L4 {
+    creation-time 2024-01-05:15:27:37
+    destination /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.10.51:80
+    ip-protocol tcp
+    last-modified-time 2024-01-08:09:04:31
+    mask 255.255.255.255
+    pool /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/pool1
+    profiles {
+        /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/fastL4_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm pool /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/pool1 {
+    members {
+        /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/312/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/312/files/bigip.conf
+tenantb8dffe8c155de
+Common_ltm-app-vs_ZAzB
+Common_ltm-app-vs
+-----------------------------------
+ltm monitor http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm profile web-security /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/websecurity_default_v15 { }
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+ltm pool /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-pool-prod {
+    members {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-prod:80 {
+            address 10.1.20.102
+        }
+    }
+    monitor /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-custom-monitor
+}
+ltm node /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-prod {
+    address 10.1.20.102
+}
+ltm virtual /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/Common_ltm-app-vs {
+    creation-time 2024-10-14:06:21:35
+    destination /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/10.1.10.71:80
+    ip-protocol tcp
+    last-modified-time 2024-10-14:06:21:35
+    mask 255.255.255.255
+    metadata {
+        f5-ansible.last_modified {
+            value "2024-10-14 13:21:41.442247"
+        }
+        f5-ansible.version {
+            value 2.16.11
+        }
+    }
+    policies {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy { }
+    }
+    pool /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-pool-prod
+    profiles {
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/http_default_v15 { }
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/tcp_default_v15 { }
+        /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/websecurity_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm monitor http /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-custom-monitor {
+    adaptive disabled
+    destination *:*
+    interval 5
+    ip-dscp 0
+    recv Healthy\n
+    recv-disable none
+    send "GET /health 
+"
+    time-until-up 0
+    timeout 16
+    manual-resume disabled
+    reverse disabled
+    transparent disabled
+    up-interval 0
+}
+ltm virtual-address /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/10.1.10.71 {
+    address 10.1.10.71
+    arp enabled
+    icmp-echo enabled
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/314/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/314/files/bigip.conf
+tenant71a592e11dcff
+Common_TCP_PROG_CuVR
+Common_TCP_PROG
+-----------------------------------
+ltm monitor http /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm node /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm profile tcp /tenant71a592e11dcff/Common_TCP_PROG_CuVR/f5_tcp_progressive {
+    app-service none
+    auto-proxy-buffer-size enabled
+    auto-receive-window-size enabled
+    auto-send-buffer-size enabled
+    congestion-control woodside
+    init-cwnd 16
+    init-rwnd 16
+    nagle auto
+    proxy-buffer-high 262144
+    proxy-buffer-low 196608
+    push-flag auto
+    receive-window-size 131072
+    send-buffer-size 262144
+    abc enabled
+    ack-on-push enabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-mss enabled
+    proxy-options disabled
+    rate-pace enabled
+    rate-pace-max-rate 0
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm virtual-address /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.10.52 {
+    address 10.1.10.52
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm virtual /tenant71a592e11dcff/Common_TCP_PROG_CuVR/Common_TCP_PROG {
+    creation-time 2024-01-05:15:31:18
+    destination /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.10.52:8080
+    ip-protocol tcp
+    last-modified-time 2024-01-08:10:01:20
+    mask 255.255.255.255
+    pool /tenant71a592e11dcff/Common_TCP_PROG_CuVR/pool1
+    profiles {
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/f5_tcp_progressive { }
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm pool /tenant71a592e11dcff/Common_TCP_PROG_CuVR/pool1 {
+    members {
+        /tenant71a592e11dcff/Common_TCP_PROG_CuVR/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant71a592e11dcff/Common_TCP_PROG_CuVR/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/315/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/315/files/bigip.conf
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_80
+-----------------------------------
+ltm profile http /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm virtual /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/Common_SSL_OFFLOAD_VS_80 {
+    creation-time 2024-01-08:12:55:53
+    destination /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/10.1.10.53:80
+    ip-protocol tcp
+    last-modified-time 2024-01-08:12:56:24
+    mask 255.255.255.255
+    profiles {
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/http_default_v15 { }
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/tcp_default_v15 { }
+    }
+    rules {
+        /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/redirect_irule
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/10.1.10.53 {
+    address 10.1.10.53
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm rule /tenantcd781f9412d1c/Common_SSL_OFFLOAD_VS_80/redirect_irule {
+# Copyright 2003-2006, 2012-2013, 2016, 2019.  F5 Networks, Inc.  See End User License Agreement ("EULA")
+# for license terms. Notwithstanding anything to the contrary in the EULA,
+# Licensee may copy and modify this software product for its internal business
+# purposes. Further, Licensee may upload, publish and distribute the modified
+# version of the software product on devcentral.f5.com.
+#
+    when HTTP_REQUEST {
+       HTTP::redirect https://[getfield [HTTP::host] ":" 1][HTTP::uri]
+    }
+}
+***********************************
+/api/v1/migrations/30/virtuals/317/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/317/files/bigip.conf
+tenantcd781f9412d1c
+Common_SSL_OFFLOAD_VS_80
+Common_SSL_OFFLOAD_VS_443
+-----------------------------------
+ltm monitor http /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm node /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm profile client-ssl /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-no-password {
+    alert-timeout indefinite
+    allow-dynamic-record-sizing disabled
+    allow-non-ssl disabled
+    app-service none
+    cache-size 262144
+    cache-timeout 3600
+    cert-key-chain {
+        ssl-offload-vs-no-password_ssl-offload-vs-no-password_0 {
+            cert /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password
+            chain /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password
+            key /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password_1
+        }
+    }
+    cipher-group none
+    ciphers DEFAULT
+    data-0rtt disabled
+    generic-alert enabled
+    handshake-timeout 10
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    max-active-handshakes indefinite
+    max-aggregate-renegotiation-per-minute indefinite
+    max-renegotiations-per-minute 5
+    maximum-record-size 16384
+    mod-ssl-methods disabled
+    mode enabled
+    notify-cert-status-to-virtual-server disabled
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-no-renegotiate-timeout 10
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-max-record-delay indefinite
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    secure-renegotiation require
+    server-name none
+    session-mirroring disabled
+    session-ticket disabled
+    session-ticket-timeout 0
+    sni-default false
+    sni-require false
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    authenticate once
+    authenticate-depth 9
+    ca-file none
+    cert-extension-includes { basic-constraints subject-alternative-name }
+    client-cert-ca none
+    crl-file none
+    peer-cert-mode ignore
+}
+ltm virtual /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/Common_SSL_OFFLOAD_VS_443 {
+    creation-time 2024-01-08:12:59:54
+    destination /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.10.53:443
+    ip-protocol tcp
+    last-modified-time 2024-01-08:12:59:54
+    mask 255.255.255.255
+    pool /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/pool1
+    profiles {
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15 { }
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-no-password {
+            context clientside
+        }
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/tcp_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.10.53 {
+    address 10.1.10.53
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+sys file ssl-key /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password_1 {
+    cache-path /config/filestore/files_d/Common_d/certificate_key_d/:Common:ssl-offload-vs-no-password_440576_1
+    revision 1
+    source-path /var/run/key_mgmt/2pakm4/ssl.key/ssl-offload-vs-no-password
+}
+ltm pool /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/pool1 {
+    members {
+        /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/http_default_v15
+}
+sys file ssl-cert /tenantd0ee98441069f/Common_SSL_OFFLOAD_VS_443_gOcg/ssl-offload-vs-no-password {
+    cache-path /config/filestore/files_d/Common_d/certificate_d/:Common:ssl-offload-vs-no-password_440578_2
+    revision 2
+    source-path /var/run/key_mgmt/oT8RAd/ssl.crt/ssl-offload-vs-no-password
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/319/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/319/files/bigip.conf
+tenant47804d051ed50
+Common_LTM_POLICY_VS_xBnt
+Common_LTM_POLICY_VS
+-----------------------------------
+ltm monitor http /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile http /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 {
+    basic-auth-realm none
+    lws-width 80
+    oneconnect-transformations enabled
+    oneconnect-status-reuse "200 206"
+    proxy-type reverse
+    enforcement {
+        max-header-count 64
+        max-header-size 32768
+        pipeline allow
+        unknown-method allow
+    }
+    request-chunking sustain
+    response-chunking sustain
+}
+ltm profile tcp /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/tcp_default_v15 {
+    abc enabled
+    ack-on-push enabled
+    auto-proxy-buffer-size disabled
+    auto-receive-window-size disabled
+    auto-send-buffer-size disabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control high-speed
+    deferred-accept disabled
+    delayed-acks enabled
+    delay-window-control disabled
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-timeout 5
+    fin-wait-2-timeout 300
+    idle-timeout 300
+    init-cwnd 10
+    init-rwnd 10
+    ip-tos-to-client 0
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    minimum-rto 1000
+    mptcp disabled
+    nagle disabled
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 65535
+    proxy-buffer-low 32768
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag default
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 65535
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 131072
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+ltm node /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+ltm virtual /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/Common_LTM_POLICY_VS {
+    creation-time 2023-09-05:15:23:52
+    destination /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.10.54:80
+    ip-protocol tcp
+    last-modified-time 2024-01-19:08:57:37
+    mask 255.255.255.255
+    policies {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 { }
+    }
+    pool /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/pool1
+    profiles {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15 { }
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/tcp_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm virtual-address /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.10.54 {
+    address 10.1.10.54
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm pool /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/pool1 {
+    members {
+        /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
+/api/v1/migrations/30/virtuals/320/files/base_monitors_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/profile_base_default_v15.conf
+/api/v1/migrations/30/virtuals/320/files/bigip.conf
+tenant8e00ebb71a69d
+Common_FAST_L4_AXwc
+Common_FAST_L4
+-----------------------------------
+ltm monitor http /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/http_default_v15 {
+    destination *:*
+    ip-dscp 0
+    interval 5
+    manual-resume disabled
+    recv none
+    recv-disable none
+    reverse disabled
+    send "GET /\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+ltm profile fastl4 /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/fastL4_default_v15 {
+    idle-timeout 300
+    mss-override 0
+    pva-acceleration full
+    reassemble-fragments disabled
+    reset-on-timeout enabled
+}
+ltm node /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.20.100 {
+    address 10.1.20.100
+}
+ltm virtual-address /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.10.51 {
+    address 10.1.10.51
+    arp enabled
+    icmp-echo selective
+    mask 255.255.255.255
+    traffic-group /Common/traffic-group-1
+}
+ltm virtual /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/Common_FAST_L4 {
+    creation-time 2024-01-05:15:27:37
+    destination /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.10.51:80
+    ip-protocol tcp
+    last-modified-time 2024-01-08:09:04:31
+    mask 255.255.255.255
+    pool /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/pool1
+    profiles {
+        /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/fastL4_default_v15 { }
+    }
+    serverssl-use-sni disabled
+    source 0.0.0.0/0
+    source-address-translation {
+        type automap
+    }
+    translate-address enabled
+    translate-port enabled
+}
+ltm pool /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/pool1 {
+    members {
+        /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/10.1.20.100:8080 {
+            address 10.1.20.100
+        }
+    }
+    monitor /tenant8e00ebb71a69d/Common_FAST_L4_AXwc/http_default_v15
+}
+ltm default-node-monitor {
+    rule /Common/icmp
+}
+***********************************
