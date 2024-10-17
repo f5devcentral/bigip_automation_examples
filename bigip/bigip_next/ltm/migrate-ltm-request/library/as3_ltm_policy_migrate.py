@@ -1,24 +1,10 @@
 from ansible.module_utils.basic import AnsibleModule
-import requests
-import time
+import sys
+import os
 import base64
 
-from . import extract_ltm_policies
-
-def get_node_by_class(tree, class_name, parent_key=None):
-    if isinstance(tree, dict):
-        if 'class' in tree and tree['class'] == class_name:
-            return parent_key
-        for key, value in tree.items():
-            rValue = get_node_by_class(value, class_name, key)
-            if rValue:
-                return rValue
-    elif isinstance(tree, list):
-        for item in tree:
-            rValue = get_node_by_class(item, class_name, parent_key)
-            if rValue:
-                return rValue
-    return None
+from ansible.module_utils.config_parser import extract_ltm_policies
+from ansible.module_utils.tree_helper import get_node_by_class
 
 class LtmPolicyMigrate:
     def __init__(self, config_files, applications, migrations, logger):
@@ -32,7 +18,6 @@ class LtmPolicyMigrate:
         for _, file_name in enumerate(config_files.values()):
             for cf in self.config_files:
                 if cf["item"]["value"] == file_name:
-                    self.logger(file_name)
                     rValue.append({
                         'file_name': file_name,
                         'content': cf["content"]
@@ -52,14 +37,16 @@ class LtmPolicyMigrate:
         return None
 
     def migrate_ltm_routes(self, config, tenant, app, vs):
+        self.logger(tenant + ' / '+ app + ' / ' + vs )
         ltm_policies = []
         for cfg in config:
-            policies = extract_ltm_policies(cfg.content)
+            policies = extract_ltm_policies(cfg["content"])
             for p in policies:
                 ltm_policies.append(p)
 
         for p in ltm_policies:
             self.logger(p)
+            self.logger('*****************')
 
 
         return[]
