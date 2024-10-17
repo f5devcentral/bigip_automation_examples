@@ -2,11 +2,20 @@ from ansible.module_utils.basic import AnsibleModule
 import requests
 import time
 
+class LtmPolicyMigrate:
+    def __init__(self, config_files, applications, logger):
+        self.config_files = config_files
+        self.applications = applications
+        self.logger = logger
+
+    def migrate_routing_policy(self):
+        self.logger("migrate")
+        return {"success": True, "data": "Migration data here"}
 
 def run_module():
     module_args = dict(
-        config_files=dict(type='dict', required=True),
-        applications=dict(type='dict', required=True),
+        config_files=dict(type='list', required=True),
+        applications=dict(type='list', required=True),
     )
 
     result = dict(
@@ -20,14 +29,14 @@ def run_module():
     )
 
     config_files = module.params['config_files']
-    applications = module.params['application']
+    applications = module.params['applications']
 
     def custom_logger(msg):
         with open('../logs/ltm_policy_migration.log', 'a') as f:
-            f.write(f"{msg}\n")
+            f.write("{0}\n".format(msg))
 
     try:
-        cm = LtmPolicyMigrate(config_files, applications)
+        cm = LtmPolicyMigrate(config_files, applications, custom_logger)
         poll_result = cm.migrate_routing_policy()
         if poll_result["success"]:
             result["success"] = True
@@ -38,7 +47,7 @@ def run_module():
             result['success'] = False
             module.fail_json(msg='LTM policy migration error.', **result)
     except Exception as e:
-        module.fail_json(msg=f'Error: {str(e)}', **result)
+        module.fail_json(msg='Error: {0}'.format(str(e)), **result)
 
     module.exit_json(**result)
 
