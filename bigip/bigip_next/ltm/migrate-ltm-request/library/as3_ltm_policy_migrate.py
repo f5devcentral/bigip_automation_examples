@@ -48,7 +48,6 @@ class LtmPolicyMigrate:
             self.logger(p)
             self.logger('*****************')
 
-
         return[]
 
     def migrate_routing_policy(self):
