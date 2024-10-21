@@ -4564,3 +4564,2970 @@ ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
 }
 *****************
 tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 14, column 19.
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+Previous tokens: [Token('IDENTIFIER', '0')]
+
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 14, column 19.
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+Previous tokens: [Token('IDENTIFIER', '0')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 14, column 19.
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+Previous tokens: [Token('IDENTIFIER', '0')]
+
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 14, column 19.
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+Previous tokens: [Token('IDENTIFIER', '0')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 17, column 28.
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+Previous tokens: [Token('IDENTIFIER', 'values')]
+
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 18, column 28.
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+Previous tokens: [Token('IDENTIFIER', 'values')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 17, column 28.
+Expected one of: 
+	* RBRACE
+	* IDENTIFIER
+Previous tokens: [Token('IDENTIFIER', 'values')]
+
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('LBRACE', '{') at line 18, column 28.
+Expected one of: 
+	* RBRACE
+	* IDENTIFIER
+Previous tokens: [Token('IDENTIFIER', 'values')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+name 'json' is not defined
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+name 'json' is not defined
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{"ltm_policy": {"identifier": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": {"controls": ["forwarding"]}, "requires": {"requires": ["http"]}, "rules": {"requires": ["http"]}, "strategy": {"strategy": "/Common/first-match"}}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{"ltm_policy": {"identifier": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": null, "rules": {"requires": ["http"]}, "strategy": {"strategy": "/Common/first-match"}}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{"ltm_policy": {"identifier": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": {"controls": ["forwarding"]}, "requires": {"requires": ["http"]}, "rules": {"requires": ["http"]}, "strategy": {"strategy": "/Common/first-match"}}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{"ltm_policy": {"identifier": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": {"controls": ["forwarding"]}, "requires": {"requires": ["http"]}, "rules": {"requires": ["http"]}, "strategy": {"strategy": "/Common/first-match"}}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{"ltm_policy": {"identifier": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": null, "rules": {"requires": ["http"]}, "strategy": {"strategy": "/Common/first-match"}}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptors': Tree('descriptor', [{'controls': [['forwarding']]}])}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptors': Tree('descriptor', [{'requires': [['http']]}])}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptors': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [{'conditions': []}]}}]}, {'strategy': '/Common/first-match'}])}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptors': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [{'conditions': []}]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptors': Tree('descriptor', [{'controls': [['forwarding']]}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptors': Tree('descriptor', [{'requires': [['http']]}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptors': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [{'conditions': []}]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptors': Tree('descriptor', [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'actions': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [{'conditions': []}]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptors': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [{'conditions': []}]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [{'name': 0, 'values': 'http-header'}]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [{'name': 0, 'values': 'http-header'}]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, 'http-header', 'name', 'X-STAGING', 'values', 'staging']]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, 'http-header', 'name', 'X-STAGING', 'values', 'staging']]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-header', 'name', 'X-STAGING', Tree('complex_condition', ['values', 'staging'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('REQUIRES', 'requires') at line 2, column 5.
+Expected one of: 
+	* CONTROLS
+Previous tokens: [Token('LBRACE', '{')]
+
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': Tree('descriptor', [{'requires': [['http']]}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'actions': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-header', 'name', 'X-STAGING', Tree('complex_condition', ['values', 'staging'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': Tree('descriptor', [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'actions': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-uri', 'path', 'contains', Tree('complex_condition', ['values', '/headers'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-header', 'name', 'X-STAGING', Tree('complex_condition', ['values', 'staging'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': Tree('descriptor', [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-uri', 'path', 'contains', Tree('complex_condition', ['values', '/headers'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': Tree('descriptor', [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-header', 'name', 'X-STAGING', Tree('complex_condition', ['values', 'staging'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': Tree('descriptor', [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-uri', 'path', 'contains', Tree('complex_condition', ['values', '/headers'])])]]}}]}, {'strategy': '/Common/first-match'}])}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': {'d': {'controls': [['forwarding']]}}}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "descriptor": {"d": {"controls": [["forwarding"]]}}}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': {'d': {'requires': [['http']]}}}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "descriptor": {"d": {"requires": [["http"]]}}}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': {'d': [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-header', 'name', 'X-STAGING', Tree('complex_condition', ['values', 'staging'])])]]}}]}, {'strategy': '/Common/first-match'}]}}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': {'d': [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-uri', 'path', 'contains', Tree('complex_condition', ['values', '/headers'])])]]}}]}, {'strategy': '/Common/first-match'}]}}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': {'d': [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}])]]}}]}, {'strategy': '/Common/first-match'}]}}}
+in exception
+Object of type Tree is not JSON serializable
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': {'d': [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, Tree('condition', ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}])]]}}]}, {'strategy': '/Common/first-match'}]}}}
+in exception
+Object of type Tree is not JSON serializable
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': {'d': [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}]]]}}]}, {'strategy': '/Common/first-match'}]}}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "descriptor": {"d": [{"controls": [["forwarding"]]}, {"requires": [["http"]]}, {"rules": [{"rule_name": "staging-rule", "actions": {"actions": [{"action": [0, "forward", "select", "pool", "/Common/ltm-pool-staging"]}]}, "conditions": {"conditions": [[0, ["http-header", "name", "X-STAGING", {"name": "values", "values": ["staging"]}]]]}}]}, {"strategy": "/Common/first-match"}]}}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': {'d': [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}]]]}}]}, {'strategy': '/Common/first-match'}]}}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "descriptor": {"d": [{"requires": [["http"]]}, {"rules": [{"rule_name": "headers", "actions": {"actions": [{"action": [0, "http-header", "insert", "name", "new-header", "value", "bingo"]}]}, "conditions": {"conditions": [[0, ["http-uri", "path", "contains", {"name": "values", "values": ["/headers"]}]]]}}]}, {"strategy": "/Common/first-match"}]}}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'descriptor': [{'controls': [['forwarding']]}, {'requires': [['http']]}, {'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}]]]}}]}, {'strategy': '/Common/first-match'}]}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "descriptor": [{"controls": [["forwarding"]]}, {"requires": [["http"]]}, {"rules": [{"rule_name": "staging-rule", "actions": {"actions": [{"action": [0, "forward", "select", "pool", "/Common/ltm-pool-staging"]}]}, "conditions": {"conditions": [[0, ["http-header", "name", "X-STAGING", {"name": "values", "values": ["staging"]}]]]}}]}, {"strategy": "/Common/first-match"}]}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'descriptor': [{'requires': [['http']]}, {'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}]]]}}]}, {'strategy': '/Common/first-match'}]}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "descriptor": [{"requires": [["http"]]}, {"rules": [{"rule_name": "headers", "actions": {"actions": [{"action": [0, "http-header", "insert", "name", "new-header", "value", "bingo"]}]}, "conditions": {"conditions": [[0, ["http-uri", "path", "contains", {"name": "values", "values": ["/headers"]}]]]}}]}, {"strategy": "/Common/first-match"}]}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+LTMPolicyTransformer.get_by_name() takes 2 positional arguments but 3 were given
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+LTMPolicyTransformer.get_by_name() takes 2 positional arguments but 3 were given
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+LTMPolicyTransformer.get_by_name() takes 2 positional arguments but 3 were given
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+LTMPolicyTransformer.get_by_name() takes 2 positional arguments but 3 were given
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': [['forwarding']], 'requires': [['http']], 'rules': [{'rule_name': 'staging-rule', 'actions': {'actions': [{'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}]}, 'conditions': {'conditions': [[0, ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}]]]}}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": [["forwarding"]], "requires": [["http"]], "rules": [{"rule_name": "staging-rule", "actions": {"actions": [{"action": [0, "forward", "select", "pool", "/Common/ltm-pool-staging"]}]}, "conditions": {"conditions": [[0, ["http-header", "name", "X-STAGING", {"name": "values", "values": ["staging"]}]]]}}], "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': [['http']], 'rules': [{'rule_name': 'headers', 'actions': {'actions': [{'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}]}, 'conditions': {'conditions': [[0, ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}]]]}}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": [["http"]], "rules": [{"rule_name": "headers", "actions": {"actions": [{"action": [0, "http-header", "insert", "name", "new-header", "value", "bingo"]}]}, "conditions": {"conditions": [[0, ["http-uri", "path", "contains", {"name": "values", "values": ["/headers"]}]]]}}], "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': {'rule_name': 'staging-rule', 'actions': {'index': {'action': [0, 'forward', 'select', 'pool', '/Common/ltm-pool-staging']}, 'data': []}, 'conditions': {'conditions': [[0, ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}]]]}}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": {"rule_name": "staging-rule", "actions": {"index": {"action": [0, "forward", "select", "pool", "/Common/ltm-pool-staging"]}, "data": []}, "conditions": {"conditions": [[0, ["http-header", "name", "X-STAGING", {"name": "values", "values": ["staging"]}]]]}}, "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': {'rule_name': 'headers', 'actions': {'index': {'action': [0, 'http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}, 'data': []}, 'conditions': {'conditions': [[0, ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}]]]}}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": {"rule_name": "headers", "actions": {"index": {"action": [0, "http-header", "insert", "name", "new-header", "value", "bingo"]}, "data": []}, "conditions": {"conditions": [[0, ["http-uri", "path", "contains", {"name": "values", "values": ["/headers"]}]]]}}, "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': {'rule_name': 'staging-rule', 'actions': {'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}, 'conditions': {'conditions': [[0, ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}]]]}}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": {"rule_name": "staging-rule", "actions": {"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}, "conditions": {"conditions": [[0, ["http-header", "name", "X-STAGING", {"name": "values", "values": ["staging"]}]]]}}, "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': {'rule_name': 'headers', 'actions': {'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}, 'conditions': {'conditions': [[0, ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}]]]}}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": {"rule_name": "headers", "actions": {"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}, "conditions": {"conditions": [[0, ["http-uri", "path", "contains", {"name": "values", "values": ["/headers"]}]]]}}, "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': {'rule_name': 'staging-rule', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': {'conditions': [[0, ['http-header', 'name', 'X-STAGING', {'name': 'values', 'values': ['staging']}]]]}}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": {"rule_name": "staging-rule", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": {"conditions": [[0, ["http-header", "name", "X-STAGING", {"name": "values", "values": ["staging"]}]]]}}, "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': {'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': {'conditions': [[0, ['http-uri', 'path', 'contains', {'name': 'values', 'values': ['/headers']}]]]}}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": {"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": {"conditions": [[0, ["http-uri", "path", "contains", {"name": "values", "values": ["/headers"]}]]]}}, "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': {'rule_name': 'staging-rule', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'X-STAGING', {'name': 'values', 'block': ['staging']}]]}]}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": {"rule_name": "staging-rule", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "X-STAGING", {"name": "values", "block": ["staging"]}]]}]}, "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': {'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}, 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": {"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}, "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'staging-rule', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'X-STAGING', {'name': 'values', 'block': ['staging']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "staging-rule", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "X-STAGING", {"name": "values", "block": ["staging"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4

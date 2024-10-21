@@ -2,9 +2,12 @@ from ansible.module_utils.basic import AnsibleModule
 import sys
 import os
 import base64
+import json
 
 from ansible.module_utils.config_parser import extract_ltm_policies
 from ansible.module_utils.tree_helper import get_node_by_class
+from ansible.module_utils.ltm_policy_transformer import parse_ltm_policy
+from ansible.module_utils.ltm_policy_transformer import convert_to_irule
 
 class LtmPolicyMigrate:
     def __init__(self, config_files, applications, migrations, logger):
@@ -44,10 +47,20 @@ class LtmPolicyMigrate:
             for p in policies:
                 ltm_policies.append(p)
 
-        for p in ltm_policies:
-            self.logger(p)
-            self.logger('*****************')
+        try:
+            for p in ltm_policies:
+                self.logger(p)
+                ltm_parsed = parse_ltm_policy(p)               
 
+                self.logger(ltm_parsed)
+
+                st = json.dumps(ltm_parsed)
+                self.logger(st)
+                self.logger('*****************')        
+        except Exception as X:
+            self.logger("in exception")
+            self.logger(X)
+            
         return[]
 
     def migrate_routing_policy(self):

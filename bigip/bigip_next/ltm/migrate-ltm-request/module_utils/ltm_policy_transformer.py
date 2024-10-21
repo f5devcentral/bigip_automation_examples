@@ -4,7 +4,8 @@ from lark import Lark, Transformer
 ltm_policy_grammar = """
     start: ltm_policy
 
-    ltm_policy: "ltm policy" IDENTIFIER "{" controls? requires rules strategy "}"
+    ltm_policy: "ltm policy" IDENTIFIER "{" descriptor+  "}"
+    descriptor: (controls | requires | rules | strategy)+
 
     controls: "controls" "{" control_values "}"
     requires: "requires" "{" require_values "}"
@@ -17,12 +18,12 @@ ltm_policy_grammar = """
     rule: IDENTIFIER "{" actions conditions "}"
 
     actions: "actions" "{" action_block+ "}"
-    conditions: "conditions" "{" condition_block+ "}"
-
     action_block: NUMBER "{" IDENTIFIER+ "}"
-    condition_block: NUMBER "{" ("name" IDENTIFIER)? | ("values" "{" IDENTIFIER+ "}")? | IDNTIFIER+ "}"
 
-    strategy: "strategy" IDENTIFIER
+    conditions: "conditions" "{" condition_block+ "}"
+    condition_block: NUMBER "{" condition+ "}"
+    condition: (complex_condition | IDENTIFIER)+
+    complex_condition: IDENTIFIER "{" IDENTIFIER+ "}"
 
     IDENTIFIER: /[a-zA-Z0-9\/_.-]+/
     NUMBER: /\d+/
@@ -31,71 +32,75 @@ ltm_policy_grammar = """
     %ignore WS
 """
 
-# Define a transformer to convert the parsed tree into a JSON-like dictionary
 class LTMPolicyTransformer(Transformer):
-def start(self, items):
+    def start(self, items):        
         return {'ltm_policy': items[0]}
 
+    def get_by_name(self, arr, name):
+        for item in arr:
+            if item["name"] == name:
+                return item["data"]
+
+        return None
+
     def ltm_policy(self, items):
-        result = {
-            'identifier': items[0],
-            'controls': items[1] if len(items) > 4 else None,
-            'requires': items[2] if len(items) > 4 else None,
-            'rules': items[-3],
-            'strategy': items[-1]
-        }
-        return result
-
-    def controls(self, items):
-        return {'controls': items[0]}
-
-    def control_values(self, items):
-        return items
-
-    def requires(self, items):
-        return {'requires': items[0]}
-
-    def require_values(self, items):
-        return items
-
-    def rules(self, items):
-        return {'rules': items}
-
-    def rule(self, items):
         return {
-            'rule_name': items[0],
-            'actions': items[1],
-            'conditions': items[2]
+            "type": "ltm_policy",
+            "name": items[0],
+            "controls": self.get_by_name(items[1], "controls"),
+            "requires": self.get_by_name(items[1], "requires"),
+            "rules": self.get_by_name(items[1], "rules"),
+            "strategy": self.get_by_name(items[1], "strategy")
         }
 
+    def descriptor(self, items):
+        return  items
+    
+    def controls(self, items):
+        return {"name": "controls", "data": items[0]}
+    
+    def requires(self, items):
+        return {"name": "requires", "data": items[0]}
+    
+    def rules(self, items):
+        return {"name": "rules", "data": items}
+    
+    def rule(self, items):
+        return {"rule_name": items[0], "actions": items[1], "conditions": items[2]}
+    
     def actions(self, items):
-        return {'actions': items}
-
+        return items
+    
     def action_block(self, items):
-        return {'number': items[0], 'actions': items[1:]}
+        return {"index": items[0], "block": items[1:]}
 
     def conditions(self, items):
-        return {'conditions': items}
-
+        return items
+    
     def condition_block(self, items):
-        condition_dict = {'number': items[0]}
-        if len(items) > 1:
-            if items[1] == "name":
-                condition_dict['name'] = items[2]
-            elif items[1] == "values":
-                condition_dict['values'] = items[3:]
-            else:
-                condition_dict['conditions'] = items[1:]
-        return condition_dict
+        return {"index": items[0], "block": items[1:]}
 
+    def condition(self, items):
+        return items
+
+    def complex_condition(self, items):
+        return {"name": items[0], "block": items[1:]}
+    
     def strategy(self, items):
-        return {'strategy': items[0]}
-
+        return {"name": "strategy", "data": items[0]}
+    
+    def control_values(self, items):
+        return items
+    
+    def require_values(self, items):
+        return items
+    
     def IDENTIFIER(self, token):
         return str(token)
-
+    
     def NUMBER(self, token):
         return int(token)
+
 # Create the Lark parser
 parser = Lark(ltm_policy_grammar, start='start', parser='lalr', transformer=LTMPolicyTransformer())
 
@@ -130,39 +135,4 @@ def convert_to_irule(parsed_policy):
     
     irule += "}"
     return irule
-
-# Example usage: Parse and convert the policy to an iRule
-ltm_policy_str = """
-ltm policy /tenant1c7deb84161b7/Common_vs-migration/policy-routing {
-    controls { forwarding }
-    requires { http }
-    rules {
-        route-fqdn {
-            actions {
-                0 {
-                    forward
-                    select
-                    pool /Common/nginx
-                }
-            }
-            conditions {
-                0 {
-                    http-host
-                    values { app1.fqdn.com }
-                }
-            }
-        }
-    }
-    strategy /Common/first-match
-}
-"""
-
-# Step 1: Parse the LTM policy
-parsed_policy = parse_ltm_policy(ltm_policy_str)
-
-# Step 2: Convert the parsed policy to an iRule
-irule = convert_to_irule(parsed_policy)
-
-# Output the iRule
-print(irule)
 
