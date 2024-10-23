@@ -7531,3 +7531,2079 @@ ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
 {"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
 *****************
 tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenantb8dffe8c155de / Common_ltm-app-vs_ZAzB / Common_ltm-app-vs
+ltm policy /tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'staging-rule', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'X-STAGING', {'name': 'values', 'block': ['staging']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb8dffe8c155de/Common_ltm-app-vs_ZAzB/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "staging-rule", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "X-STAGING", {"name": "values", "block": ["staging"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant71a592e11dcff / Common_TCP_PROG_CuVR / Common_TCP_PROG
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenantcd781f9412d1c / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenant47804d051ed50 / Common_LTM_POLICY_VS_xBnt / Common_LTM_POLICY_VS
+ltm policy /tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant47804d051ed50/Common_LTM_POLICY_VS_xBnt/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant8e00ebb71a69d / Common_FAST_L4_AXwc / Common_FAST_L4
+tenant7a3617f81a346 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenant7a3617f81a346 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenant682e4bea198fc / Common_FAST_L4 / Common_FAST_L4
+tenant74cd6d5c1c495 / Common_TCP_PROG / Common_TCP_PROG
+tenant1ee5941617b81 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant1ee5941617b81/Common_ltm-app-vs/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant1ee5941617b81/Common_ltm-app-vs/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'staging-rule', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'X-STAGING', {'name': 'values', 'block': ['staging']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant1ee5941617b81/Common_ltm-app-vs/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "staging-rule", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "X-STAGING", {"name": "values", "block": ["staging"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenantd296b7991ee02 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantd296b7991ee02/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantd296b7991ee02/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantd296b7991ee02/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant7a3617f81a346 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenant7a3617f81a346 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenant682e4bea198fc / Common_FAST_L4 / Common_FAST_L4
+tenant74cd6d5c1c495 / Common_TCP_PROG / Common_TCP_PROG
+tenant1ee5941617b81 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant1ee5941617b81/Common_ltm-app-vs/ltm-routing-policy {
+    controls { forwarding }
+    requires { http }
+    rules {
+        staging-rule {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name X-STAGING
+                    values { staging }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant1ee5941617b81/Common_ltm-app-vs/ltm-routing-policy', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'staging-rule', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'X-STAGING', {'name': 'values', 'block': ['staging']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant1ee5941617b81/Common_ltm-app-vs/ltm-routing-policy", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "staging-rule", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "X-STAGING", {"name": "values", "block": ["staging"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenantd296b7991ee02 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantd296b7991ee02/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantd296b7991ee02/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantd296b7991ee02/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenantd75bcd6c1e9b8 / Common_TCP_PROG / Common_TCP_PROG
+tenant3a176a04106f3 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('IDENTIFIER', 'description') at line 26, column 13.
+Expected one of: 
+	* RBRACE
+Previous tokens: [Token('RBRACE', '}')]
+
+tenantb55a73d812e71 / Common_FAST_L4 / Common_FAST_L4
+tenantb87b7670139c8 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenantd75bcd6c1e9b8 / Common_TCP_PROG / Common_TCP_PROG
+tenant3a176a04106f3 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('IDENTIFIER', 'description') at line 26, column 13.
+Expected one of: 
+	* RBRACE
+Previous tokens: [Token('RBRACE', '}')]
+
+tenantb55a73d812e71 / Common_FAST_L4 / Common_FAST_L4
+tenantb87b7670139c8 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}]}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}]}], "strategy": "/Common/first-match"}}
+*****************
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenantd75bcd6c1e9b8 / Common_TCP_PROG / Common_TCP_PROG
+tenant3a176a04106f3 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantb55a73d812e71 / Common_FAST_L4 / Common_FAST_L4
+tenantb87b7670139c8 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+Unexpected token Token('RBRACE', '}') at line 21, column 9.
+Expected one of: 
+	* DESCRIPTION
+Previous tokens: [Token('RBRACE', '}')]
+
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenantd75bcd6c1e9b8 / Common_TCP_PROG / Common_TCP_PROG
+tenant3a176a04106f3 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantb55a73d812e71 / Common_FAST_L4 / Common_FAST_L4
+tenantb87b7670139c8 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+list index out of range
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_80
+tenant787bb21d18a96 / Common_SSL_OFFLOAD_VS_80 / Common_SSL_OFFLOAD_VS_443
+tenantd75bcd6c1e9b8 / Common_TCP_PROG / Common_TCP_PROG
+tenant3a176a04106f3 / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant3a176a04106f3/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantb55a73d812e71 / Common_FAST_L4 / Common_FAST_L4
+tenantb87b7670139c8 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantb87b7670139c8/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* RBRACE
+	* IDENTIFIER
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', ['asdfsadfasdfsadf', 'asdfsa', 'asdf', 'sdf', 'asdf']]}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", ["asdfsadfasdfsadf", "asdfsa", "asdf", "sdf", "asdf"]]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* STRING
+	* RBRACE
+	* IDENTIFIER
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+name 'items' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* RBRACE
+	* STRING
+	* IDENTIFIER
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* IDENTIFIER
+	* RBRACE
+	* STRING
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* STRING
+	* RBRACE
+	* IDENTIFIER
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+in exception
+No terminal matches '"' in the current parser context, at line 18 col 27
+
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                          ^
+Expected one of: 
+	* STRING
+	* IDENTIFIER
+	* RBRACE
+
+Previous tokens: Token('IDENTIFIER', 'value')
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', "['asdfsadfasdfsadf', 'asdfsa', 'asdf', 'sdf', 'asdf']"]}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "['asdfsadfasdfsadf', 'asdfsa', 'asdf', 'sdf', 'asdf']"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': [['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]]}, {'index': 1, 'block': [['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": [["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]]}, {"index": 1, "block": [["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4

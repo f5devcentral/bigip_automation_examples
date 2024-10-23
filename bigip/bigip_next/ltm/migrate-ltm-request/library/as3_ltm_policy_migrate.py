@@ -50,13 +50,13 @@ class LtmPolicyMigrate:
         try:
             for p in ltm_policies:
                 self.logger(p)
-                ltm_parsed = parse_ltm_policy(p)               
+                ltm_parsed = parse_ltm_policy(p)
 
                 self.logger(ltm_parsed)
 
                 st = json.dumps(ltm_parsed)
                 self.logger(st)
-                self.logger('*****************')        
+                self.logger('*****************')
         except Exception as X:
             self.logger("in exception")
             self.logger(X)

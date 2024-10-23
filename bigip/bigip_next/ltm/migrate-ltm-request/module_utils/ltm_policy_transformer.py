@@ -1,7 +1,7 @@
 from lark import Lark, Transformer
 
 # Define the BNF grammar for the LTM policy
-ltm_policy_grammar = """
+ltm_policy_grammar = r"""
     start: ltm_policy
 
     ltm_policy: "ltm policy" IDENTIFIER "{" descriptor+  "}"
@@ -15,17 +15,21 @@ ltm_policy_grammar = """
     control_values: IDENTIFIER+
     require_values: IDENTIFIER+
 
-    rule: IDENTIFIER "{" actions conditions "}"
+    rule: IDENTIFIER "{" actions conditions description?"}"
 
     actions: "actions" "{" action_block+ "}"
-    action_block: NUMBER "{" IDENTIFIER+ "}"
+    action_block: NUMBER "{" (string | IDENTIFIER)+ "}"
 
     conditions: "conditions" "{" condition_block+ "}"
     condition_block: NUMBER "{" condition+ "}"
-    condition: (complex_condition | IDENTIFIER)+
-    complex_condition: IDENTIFIER "{" IDENTIFIER+ "}"
+    condition: (complex_condition | string | IDENTIFIER)+
+    complex_condition: IDENTIFIER "{" (string | IDENTIFIER)+ "}"
 
-    IDENTIFIER: /[a-zA-Z0-9\/_.-]+/
+    description: "description" IDENTIFIER+
+
+    string: "\"" STRING "\""
+    STRING: /[^"]+/
+    IDENTIFIER: /[a-zA-Z0-9\/_.-]+/s
     NUMBER: /\d+/
 
     %import common.WS
@@ -66,7 +70,7 @@ class LTMPolicyTransformer(Transformer):
         return {"name": "rules", "data": items}
     
     def rule(self, items):
-        return {"rule_name": items[0], "actions": items[1], "conditions": items[2]}
+        return { "rule_name": items[0], "actions": items[1], "conditions": items[2], "description": items[3] if len(items) > 3 else None }
     
     def actions(self, items):
         return items
@@ -94,7 +98,16 @@ class LTMPolicyTransformer(Transformer):
     
     def require_values(self, items):
         return items
+
+    def description(self, items):
+        return items
     
+    def string(self, items):
+        return items[0]
+
+    def STRING(self, token):
+        return str(token)
+
     def IDENTIFIER(self, token):
         return str(token)
     
