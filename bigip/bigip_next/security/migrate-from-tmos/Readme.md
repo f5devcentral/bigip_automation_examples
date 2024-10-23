@@ -118,7 +118,7 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 Go to the following directory of the cloned repository:
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 Run the `init.sh` to create a local key folder:
@@ -136,7 +136,7 @@ We recommend using a jump host (Linux machine) where you can configure the requi
 **NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 ### 1. Build Docker
@@ -180,7 +180,7 @@ nano cm_key
 Navigate to
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/init
+bigip/bigip_next/env-init/environment
 ```
 
 Run the command to install the collections and libraries required in Ansible playbook:
@@ -469,7 +469,7 @@ Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that th
 
 In this part of the guide, we will automatically migrate the application with two virtual servers to BIG-IP Next with a shared WAF policy and then verify it using Central Manager UI as well as CLI.
 
-Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the following folder where we will update config files:
+Before proceeding, you need to enter Docker if you chose [Docker setup](#docker-setup) option or the environment in Jump Host. Go to the following folder where we will update config files:
 
 ```bash
 bigip/bigip_next/security/migrate-from-tmos/migrate
@@ -514,7 +514,7 @@ In the `site.yml` file you can see the migration steps that will be performed:
 - Backup TMOS BIG-IP as UCS
 - Migration of supported apps to BIG-IP Next that includes both creating and deploying them
 
-Please note that only certificates and WAF policies are migrated.  **NOTE: For migration of iRules and Monitors look at the LTM migration workflow guide in this repository.** 
+Please note that only certificates and WAF policies are migrated. **NOTE: For migration of iRules and Monitors look at the LTM migration workflow guide in this repository.**
 
 Start the deployment by running the following command:
 
@@ -603,6 +603,7 @@ Verify that WAF was migrated too:
 ```bash
 curl 'http://10.1.10.191/endpoint1?query=<script>alert(1)</script>'
 ```
+
 The expected output should look like this:
 
 ```
@@ -620,5 +621,3 @@ curl http://10.1.10.91/endpoint1
 ```
 
 Congrats! You just completed the automated migration of the application to BIG-IP Next with its WAF Policy and certificates.
-
-

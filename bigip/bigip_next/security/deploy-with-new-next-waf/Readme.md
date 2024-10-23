@@ -8,11 +8,11 @@
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-  - [1. Deploy Blueprint](#1-deploy-blueprint)
-  - [2. Setup SSH Keys](#2-setup-ssh-keys)
-  - [3. Enter Blueprint](#3-enter-blueprint)
-  - [4. Clone Repository](#4-clone-repository)
-  - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
+    - [1. Deploy Blueprint](#1-deploy-blueprint)
+    - [2. Setup SSH Keys](#2-setup-ssh-keys)
+    - [3. Enter Blueprint](#3-enter-blueprint)
+    - [4. Clone Repository](#4-clone-repository)
+    - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
   - [Docker Setup](#docker-setup)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Install Dependencies](#1-install-dependencies)
@@ -96,7 +96,7 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 Go to the following directory of the cloned repository:
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 Run the `init.sh` to create a local key folder:
@@ -114,7 +114,7 @@ We recommend using a jump host (Linux machine) where you can configure the requi
 **NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 Next, we will build Docker. Note that executing this command can take some time.
@@ -136,7 +136,7 @@ sh ./run.sh
 Enter the directory:
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/init
+bigip/bigip_next/env-init/environment
 ```
 
 Run the command to install the collections and libraries required in Ansible playbook:
@@ -415,4 +415,3 @@ Finally, we can drill down into the created policy details. Click on the policy 
 ![alt text](./assets/policy-details.png)
 
 Congrats! You just completed automated deployment and protection of a new app on BIG-IP Next.
-
