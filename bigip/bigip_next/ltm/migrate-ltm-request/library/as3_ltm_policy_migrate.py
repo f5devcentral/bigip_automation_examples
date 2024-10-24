@@ -8,6 +8,7 @@ from ansible.module_utils.config_parser import extract_ltm_policies
 from ansible.module_utils.tree_helper import get_node_by_class
 from ansible.module_utils.ltm_policy_transformer import parse_ltm_policy
 from ansible.module_utils.ltm_policy_transformer import convert_to_irule
+from ansible.module_utils.ltm_policy_converter import LtmPolicyConverter
 
 class LtmPolicyMigrate:
     def __init__(self, config_files, applications, migrations, logger):
@@ -57,6 +58,10 @@ class LtmPolicyMigrate:
                 st = json.dumps(ltm_parsed)
                 self.logger(st)
                 self.logger('*****************')
+
+                irules = LtmPolicyConverter(ltm_parsed).convert()
+                self.logger(irules)
+
         except Exception as X:
             self.logger("in exception")
             self.logger(X)

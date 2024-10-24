@@ -37,7 +37,7 @@ ltm_policy_grammar = r"""
 """
 
 class LTMPolicyTransformer(Transformer):
-    def start(self, items):        
+    def start(self, items):
         return {'ltm_policy': items[0]}
 
     def get_by_name(self, arr, name):
