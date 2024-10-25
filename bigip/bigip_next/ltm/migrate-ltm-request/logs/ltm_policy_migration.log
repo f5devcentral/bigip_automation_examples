@@ -255,3 +255,459 @@ ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
 in exception
 name 'httpHeaderActionConverter' is not defined
 tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': [['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": [["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': [['http-host', {'name': 'values', 'block': ['1', '2', '3']}]]}, {'index': 1, 'block': [['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": [["http-host", {"name": "values", "block": ["1", "2", "3"]}]]}, {"index": 1, "block": [["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'httpHeaderActionConverter' is not defined
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
