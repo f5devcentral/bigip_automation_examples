@@ -85,7 +85,7 @@ def httpUriContitionConverter(context, condition):
                qry_parameter_name = block[index + 1]
                index = index + 1
          else:
-            if item.get("name") == "values":
+            if item.get("name", "") == "values":
                qry_parameter_values = item.get("block", [])
          index = index + 1
       if_operand = " ".join(list(map(lambda x: f"\"{x}\"",qry_parameter_values)))
