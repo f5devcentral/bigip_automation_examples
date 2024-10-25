@@ -18,4 +18,4 @@ class WhenClause:
 class IRule:
     def __init__(self):
         self.request = WhenClause('HTTP_REQUEST')
-        self.response = WhwnClause('HTTP_RESPONSE')
+        self.response = WhenClause('HTTP_RESPONSE')

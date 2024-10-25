@@ -10,6 +10,8 @@ from ansible.module_utils.ltm_policy_transformer import parse_ltm_policy
 from ansible.module_utils.ltm_policy_transformer import convert_to_irule
 from ansible.module_utils.ltm_policy_converter import LtmPolicyConverter
 
+import traceback
+
 class LtmPolicyMigrate:
     def __init__(self, config_files, applications, migrations, logger):
         self.config_files = config_files
@@ -65,7 +67,9 @@ class LtmPolicyMigrate:
         except Exception as X:
             self.logger("in exception")
             self.logger(X)
-            
+            self.logger(traceback.format_exc())
+
+
         return[]
 
     def migrate_routing_policy(self):

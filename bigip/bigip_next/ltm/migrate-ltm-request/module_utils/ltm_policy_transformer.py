@@ -82,7 +82,7 @@ class LTMPolicyTransformer(Transformer):
         return items
     
     def condition_block(self, items):
-        return {"index": items[0], "block": items[1:]}
+        return {"index": items[0], "block": items[1]}
 
     def condition(self, items):
         return items

@@ -25,7 +25,7 @@ class LtmPolicyConverter:
             actions = rule.get("actions", [])
             conditions = rule.get("conditions", [])
             name = rule.get("rule_name", "")
-            context = RuleConverterContext()
+            context = RuleConverterContext(actions, conditions)
 
             for condition in conditions:
                 first_clause = condition["block"][0]
