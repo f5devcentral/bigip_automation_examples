@@ -40,8 +40,10 @@ class WhenClause:
         self.ifs = []
 
     def toString(self, space=""):
-        rValue = ""
+        if len(self.ifs) == 0:
+            return ""
 
+        rValue = ""
         rValue = f"when {self.when_type} {{\r\n"
         for ifClause in self.ifs:
             rValue = rValue + ifClause.toString("  ")
@@ -51,8 +53,15 @@ class WhenClause:
 
 class IRule:
     def __init__(self):
+        self.ruleName = ""
         self.request = WhenClause('HTTP_REQUEST')
         self.response = WhenClause('HTTP_RESPONSE')
+
+    def setRuleName(self, name):
+        self.ruleName = name
+
+    def getRuleName(self):
+        return self.ruleName
 
     def toString(self, space=""):
         rValue = ""

@@ -6,7 +6,7 @@ class LtmPolicyConverter:
         self.ltm_policy = ltm_policy.get("ltm_policy", {})
     
     def convert(self):
-        rValue = []
+        iRules = []
         policy_type = self.ltm_policy.get("type", "")
         if policy_type != "ltm_policy":
             raise Exception("Not supported ltm policy type: " + policy_type)
@@ -19,6 +19,11 @@ class LtmPolicyConverter:
         policy_converter_factory = LtmPolicyConverterFactory().policyConverter.get(policy_protocol, None)
         if policy_converter_factory is None:
             raise Exception("Not supported policy field value [requires]: " + requires)
+
+        policy_strategy = self.ltm_policy.get("strategy", "")
+        if policy_strategy != "/Common/first-match":
+            raise Exception(f"Policy strategy {policy_strategy} is not supported")
+
 
         rules = self.ltm_policy.get("rules", [])
         for rule in rules:
@@ -45,6 +50,15 @@ class LtmPolicyConverter:
 
                 action_converter(context, action)
 
-            rValue.append(context.irule)
+            iRules.append(context.irule)
+        
+        rValue = iRules[0]
+        index = 1
+        while index < len(iRules):
+            currentRule + iRules[i]
+            rValue.request.ifs = rValue.request.ifs + iRules[i].request.ifs
+            rValue.response.ifs = rValue.response.ifs + iRules[i].response.ifs
+        
+        rValue.setRuleName(self.ltm_policy.get("name", ""))
 
         return rValue

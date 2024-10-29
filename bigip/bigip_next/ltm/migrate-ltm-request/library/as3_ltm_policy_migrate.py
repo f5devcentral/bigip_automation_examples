@@ -61,9 +61,9 @@ class LtmPolicyMigrate:
                 self.logger(st)
                 self.logger('*****************')
 
-                irules = LtmPolicyConverter(ltm_parsed).convert()
-                for rule in irules:
-                    self.logger(rule.toString())
+                rule = LtmPolicyConverter(ltm_parsed).convert()
+                self.logger(rule.getRuleName())
+                self.logger(rule.toString())
 
         except Exception as X:
             self.logger("in exception")
