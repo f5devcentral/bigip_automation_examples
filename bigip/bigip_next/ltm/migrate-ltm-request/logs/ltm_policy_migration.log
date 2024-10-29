@@ -3216,3 +3216,1620 @@ ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
 *****************
 [<ansible.module_utils.irule_bo.IRule object at 0x7f934e40c430>]
 tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+addActionClause() missing 1 required positional argument: 'currentIfClause'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 30, in httpHeaderActionConverter
+    context.appendRequestAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 39, in appendRequestAction
+    addActionClause(self.irule.request.ifs[0])
+TypeError: addActionClause() missing 1 required positional argument: 'currentIfClause'
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+addActionClause() missing 1 required positional argument: 'currentIfClause'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 28, in httpHeaderActionConverter
+    context.appendResponseAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_prarx0bh/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 42, in appendResponseAction
+    addActionClause(self.irule.response.ifs[0])
+TypeError: addActionClause() missing 1 required positional argument: 'currentIfClause'
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'actionClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 30, in httpHeaderActionConverter
+    context.appendRequestAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 39, in appendRequestAction
+    addActionClause(actionClause, self.irule.request.ifs[0])
+NameError: name 'actionClause' is not defined
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'actionClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 28, in httpHeaderActionConverter
+    context.appendResponseAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_bsfds7ee/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 42, in appendResponseAction
+    addActionClause(actionClause, self.irule.response.ifs[0])
+NameError: name 'actionClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 30, in httpHeaderActionConverter
+    context.appendRequestAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 39, in appendRequestAction
+    addActionClause(actionClause, self.irule.request.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 18, in addActionClause
+    currentIfClause.body.append(ifClause)
+NameError: name 'ifClause' is not defined
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 28, in httpHeaderActionConverter
+    context.appendResponseAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 42, in appendResponseAction
+    addActionClause(actionClause, self.irule.response.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_1kdab0hy/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 20, in addActionClause
+    addActionClause(ifClause, currentIfClause.ifs[0])
+NameError: name 'ifClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 30, in httpHeaderActionConverter
+    context.appendRequestAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 39, in appendRequestAction
+    addActionClause(actionClause, self.irule.request.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 18, in addActionClause
+    currentIfClause.body.append(ifClause)
+NameError: name 'ifClause' is not defined
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 28, in httpHeaderActionConverter
+    context.appendResponseAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 42, in appendResponseAction
+    addActionClause(actionClause, self.irule.response.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 20, in addActionClause
+    addActionClause(actionClause, currentIfClause.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_fu0eqrwb/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 18, in addActionClause
+    currentIfClause.body.append(ifClause)
+NameError: name 'ifClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 30, in httpHeaderActionConverter
+    context.appendRequestAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 39, in appendRequestAction
+    addActionClause(actionClause, self.irule.request.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 18, in addActionClause
+    currentIfClause.body.append(ifClause)
+NameError: name 'ifClause' is not defined
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 46, in convert
+    action_converter(context, action)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/action_converter.py", line 28, in httpHeaderActionConverter
+    context.appendResponseAction(ActionClause(action))
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 42, in appendResponseAction
+    addActionClause(actionClause, self.irule.response.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 20, in addActionClause
+    addActionClause(actionClause, currentIfClause.ifs[0])
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_i8u3bm90/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/converter_context.py", line 18, in addActionClause
+    currentIfClause.body.append(ifClause)
+NameError: name 'ifClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+[<ansible.module_utils.irule_bo.IRule object at 0x7f3ea119dea0>]
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+[<ansible.module_utils.irule_bo.IRule object at 0x7f3ea119fdf0>]
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': ['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]}, {'index': 1, 'block': ['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": ["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]}, {"index": 1, "block": ["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+[<ansible.module_utils.irule_bo.IRule object at 0x7f3ea119d090>]
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+can't multiply sequence by non-int of type 'str'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_3x35j1zj/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_3x35j1zj/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+TypeError: can't multiply sequence by non-int of type 'str'
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+'str' object has no attribute 'toString'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_3x35j1zj/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_3x35j1zj/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 60, in toString
+    rValue = self.request.toString()
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_3x35j1zj/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 47, in toString
+    rValue = rValue + ifClause.toString("  ")
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_3x35j1zj/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 20, in toString
+    rValue = rValue + bodyItem.toString(space + "  ")
+AttributeError: 'str' object has no attribute 'toString'
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+can't multiply sequence by non-int of type 'str'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_nrwik1s6/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_nrwik1s6/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+TypeError: can't multiply sequence by non-int of type 'str'
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ActionClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_nrwik1s6/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 64, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_nrwik1s6/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/ltm_policy_converter.py", line 37, in convert
+    condition_converter(context, condition)
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_nrwik1s6/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/condition_converter.py", line 20, in httpHostContitionConverter
+    requestIf = IfClause(if_condition, [ActionClause("set host_match 1")], [ActionClause("set host_match 0")])
+NameError: name 'ActionClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+can't multiply sequence by non-int of type 'str'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ajsufexm/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ajsufexm/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+TypeError: can't multiply sequence by non-int of type 'str'
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ajsufexm/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ajsufexm/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ajsufexm/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 47, in toString
+    rValue = rValue + ifClause.toString("  ")
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ajsufexm/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 24, in toString
+    rValue = rValue + ifClause.toString(space + "  ")
+NameError: name 'ifClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+can't multiply sequence by non-int of type 'str'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_mjhj2mhq/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_mjhj2mhq/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+TypeError: can't multiply sequence by non-int of type 'str'
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+name 'ifClause' is not defined
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_mjhj2mhq/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_mjhj2mhq/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_mjhj2mhq/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 47, in toString
+    rValue = rValue + ifClause.toString("  ")
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_mjhj2mhq/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 24, in toString
+    rValue = rValue + ifClause.toString(space + "  ")
+NameError: name 'ifClause' is not defined
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+can't multiply sequence by non-int of type 'str'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ue3scay_/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ue3scay_/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+TypeError: can't multiply sequence by non-int of type 'str'
+
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+in exception
+can't multiply sequence by non-int of type 'str'
+Traceback (most recent call last):
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ue3scay_/ansible_as3_ltm_policy_migrate_payload.zip/ansible/modules/as3_ltm_policy_migrate.py", line 66, in migrate_ltm_routes
+  File "/tmp/ansible_as3_ltm_policy_migrate_payload_ue3scay_/ansible_as3_ltm_policy_migrate_payload.zip/ansible/module_utils/irule_bo.py", line 62, in toString
+    rValue = rValue * self.response.toString()
+TypeError: can't multiply sequence by non-int of type 'str'
+
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {  if {  } {
+    HTTP:header insert "new-header" "bingo"
+  }
+}
+
+when HTTP_RESPONSE {}
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {  if { [HTTP::host] equals "1" or [HTTP::host] equals "2" or [HTTP::host] equals "3" } {
+    set host_match 1
+  }
+  else {    set host_match 0
+  }
+}
+
+when HTTP_RESPONSE {  if { $host_match == 1 } {
+    if { [HTTP::header "X-HEADER1"] eq "STAGING" } {
+      HTTP:header insert "X-HEADER2" "eww"
+      HTTP:cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+    }
+
+  }
+}
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': ['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]}, {'index': 1, 'block': ['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": ["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]}, {"index": 1, "block": ["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {  if { [HTTP::header "x-head"] eq "header1" or [HTTP::header "x-head"] eq "header2" } {
+    if { [URI::query [HTTP::uri] "env"] in { "env-staging-1" "env-staging-2"} } {
+      pool /Common/ltm-pool-staging
+    }
+
+  }
+}
+
+when HTTP_RESPONSE {}
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if {  } {
+    HTTP:header insert "new-header" "bingo"
+  }
+}
+
+when HTTP_RESPONSE {
+}
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if { [HTTP::host] equals "1" or [HTTP::host] equals "2" or [HTTP::host] equals "3" } {
+    set host_match 1
+  }
+  else {    set host_match 0
+  }
+}
+
+when HTTP_RESPONSE {
+  if { $host_match == 1 } {
+    if { [HTTP::header "X-HEADER1"] eq "STAGING" } {
+      HTTP:header insert "X-HEADER2" "eww"
+      HTTP:cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+    }
+
+  }
+}
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': ['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]}, {'index': 1, 'block': ['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": ["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]}, {"index": 1, "block": ["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if { [HTTP::header "x-head"] eq "header1" or [HTTP::header "x-head"] eq "header2" } {
+    if { [URI::query [HTTP::uri] "env"] in { "env-staging-1" "env-staging-2"} } {
+      pool /Common/ltm-pool-staging
+    }
+
+  }
+}
+
+when HTTP_RESPONSE {
+}
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if {  } {
+    HTTP:header insert "new-header" "bingo"
+  }
+}
+
+when HTTP_RESPONSE {
+}
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if { [HTTP::host] equals "1" or [HTTP::host] equals "2" or [HTTP::host] equals "3" } {
+    set host_match 1
+  }
+  else {    set host_match 0
+  }
+}
+
+when HTTP_RESPONSE {
+  if { $host_match == 1 } {
+    if { [HTTP::header "X-HEADER1"] eq "STAGING" } {
+      HTTP:header insert "X-HEADER2" "eww"
+      HTTP:cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+    }
+
+  }
+}
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': ['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]}, {'index': 1, 'block': ['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": ["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]}, {"index": 1, "block": ["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if { [HTTP::header "x-head"] eq "header1" or [HTTP::header "x-head"] eq "header2" } {
+    if { [URI::query [HTTP::uri] "env"] in { "env-staging-1" "env-staging-2"} } {
+      pool /Common/ltm-pool-staging
+    }
+
+  }
+}
+
+when HTTP_RESPONSE {
+}
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_80
+tenantd16948971c478 / Common_SSL_OFFLOAD_VS_443 / Common_SSL_OFFLOAD_VS_443
+tenanta66c882a1447f / Common_TCP_PROG / Common_TCP_PROG
+tenantaaeaa34d12185 / Common_LTM_POLICY_VS / Common_LTM_POLICY_VS
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'headers', 'actions': [{'index': 0, 'block': ['http-header', 'insert', 'name', 'new-header', 'value', 'bingo']}], 'conditions': [{'index': 0, 'block': ['http-uri', 'path', 'contains', {'name': 'values', 'block': ['/headers']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5", "controls": null, "requires": ["http"], "rules": [{"rule_name": "headers", "actions": [{"index": 0, "block": ["http-header", "insert", "name", "new-header", "value", "bingo"]}], "conditions": [{"index": 0, "block": ["http-uri", "path", "contains", {"name": "values", "block": ["/headers"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if {  } {
+    HTTP:header insert "new-header" "bingo"
+  }
+}
+
+when HTTP_RESPONSE {
+}
+tenant7e6ce4ee1e39f / Common_ltm-app-vs / Common_ltm-app-vs
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a', 'controls': None, 'requires': ['http'], 'rules': [{'rule_name': 'rule2', 'actions': [{'index': 0, 'block': ['http-header', 'response', 'insert', 'name', 'X-HEADER2', 'value', 'eww']}, {'index': 1, 'block': ['http-set-cookie', 'response', 'insert', 'name', 'COOKIE33', 'value', 'asdfsadfasdfsadf asdfsa asdf sdf asdf']}], 'conditions': [{'index': 0, 'block': ['http-host', {'name': 'values', 'block': ['1', '2', '3']}]}, {'index': 1, 'block': ['http-header', 'response', 'name', 'X-HEADER1', {'name': 'values', 'block': ['STAGING']}]}], 'description': None}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a", "controls": null, "requires": ["http"], "rules": [{"rule_name": "rule2", "actions": [{"index": 0, "block": ["http-header", "response", "insert", "name", "X-HEADER2", "value", "eww"]}, {"index": 1, "block": ["http-set-cookie", "response", "insert", "name", "COOKIE33", "value", "asdfsadfasdfsadf asdfsa asdf sdf asdf"]}], "conditions": [{"index": 0, "block": ["http-host", {"name": "values", "block": ["1", "2", "3"]}]}, {"index": 1, "block": ["http-header", "response", "name", "X-HEADER1", {"name": "values", "block": ["STAGING"]}]}], "description": null}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if { [HTTP::host] equals "1" or [HTTP::host] equals "2" or [HTTP::host] equals "3" } {
+    set host_match 1
+  }
+  else {
+    set host_match 0
+  }
+}
+
+when HTTP_RESPONSE {
+  if { $host_match == 1 } {
+    if { [HTTP::header "X-HEADER1"] eq "STAGING" } {
+      HTTP:header insert "X-HEADER2" "eww"
+      HTTP:cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+    }
+
+  }
+}
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+{'ltm_policy': {'type': 'ltm_policy', 'name': '/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a', 'controls': ['forwarding'], 'requires': ['http'], 'rules': [{'rule_name': 'rule1', 'actions': [{'index': 0, 'block': ['forward', 'select', 'pool', '/Common/ltm-pool-staging']}], 'conditions': [{'index': 0, 'block': ['http-header', 'name', 'x-head', {'name': 'values', 'block': ['header1', 'header2']}]}, {'index': 1, 'block': ['http-uri', 'query-parameter', 'name', 'env', {'name': 'values', 'block': ['env-staging-1', 'env-staging-2']}]}], 'description': ['ddd']}], 'strategy': '/Common/first-match'}}
+{"ltm_policy": {"type": "ltm_policy", "name": "/tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a", "controls": ["forwarding"], "requires": ["http"], "rules": [{"rule_name": "rule1", "actions": [{"index": 0, "block": ["forward", "select", "pool", "/Common/ltm-pool-staging"]}], "conditions": [{"index": 0, "block": ["http-header", "name", "x-head", {"name": "values", "block": ["header1", "header2"]}]}, {"index": 1, "block": ["http-uri", "query-parameter", "name", "env", {"name": "values", "block": ["env-staging-1", "env-staging-2"]}]}], "description": ["ddd"]}], "strategy": "/Common/first-match"}}
+*****************
+when HTTP_REQUEST {
+  if { [HTTP::header "x-head"] eq "header1" or [HTTP::header "x-head"] eq "header2" } {
+    if { [URI::query [HTTP::uri] "env"] in { "env-staging-1" "env-staging-2"} } {
+      pool /Common/ltm-pool-staging
+    }
+
+  }
+}
+
+when HTTP_RESPONSE {
+}
+tenantc2851add19c01 / Common_FAST_L4 / Common_FAST_L4

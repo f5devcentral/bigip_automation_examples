@@ -15,9 +15,9 @@ def addIfClause(ifClause, currentIfClause):
 
 def addActionClause(actionClause, currentIfClause):
     if len(currentIfClause.ifs) == 0:
-        currentIfClause.body.append(ifClause)
+        currentIfClause.body.append(actionClause)
     else:
-        addActionClause(ifClause, currentIfClause.ifs[0])
+        addActionClause(actionClause, currentIfClause.ifs[0])
 
 class RuleConverterContext:
     def __init__(self):
@@ -35,11 +35,11 @@ class RuleConverterContext:
         else:
             addIfClause(ifClause, self.irule.response.ifs[0])
 
-    def appendRequestAction(self, actionclause):
-        addActionClause(self.irule.request.ifs[0])
+    def appendRequestAction(self, actionClause):
+        addActionClause(actionClause, self.irule.request.ifs[0])
 
-    def appendResponseAction(self, actionclause):
-        addActionClause(self.irule.response.ifs[0])
+    def appendResponseAction(self, actionClause):
+        addActionClause(actionClause, self.irule.response.ifs[0])
 
 class LtmPolicyConverterFactory:
     def __init__(self):

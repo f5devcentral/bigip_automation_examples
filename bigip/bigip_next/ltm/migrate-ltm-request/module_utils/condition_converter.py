@@ -2,6 +2,7 @@ import ansible.module_utils.irule_bo
 from ansible.module_utils.rnd_string import rnd_string
 from ansible.module_utils.irule_bo import IRule
 from ansible.module_utils.irule_bo import IfClause
+from ansible.module_utils.irule_bo import ActionClause
 
 def httpHostContitionConverter(context, condition):
    values_block = condition["block"][1]
@@ -17,7 +18,7 @@ def httpHostContitionConverter(context, condition):
    var_name = f"host_match{rnd_str}"
    if_condition = " or ".join(if_conditions)
    
-   requestIf = IfClause(if_condition, ["set host_match 1"], ["set host_match 0"])
+   requestIf = IfClause(if_condition, [ActionClause("set host_match 1")], [ActionClause("set host_match 0")])
    responseIf = IfClause("$host_match == 1")
 
    context.appendRequestIf(requestIf)

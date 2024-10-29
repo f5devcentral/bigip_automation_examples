@@ -123,29 +123,5 @@ def parse_ltm_policy(policy_str):
 
 # Function to convert the parsed LTM policy to an iRule
 def convert_to_irule(parsed_policy):
-    irule = "when HTTP_REQUEST {\n"
-    
-    # Extract the rules from the parsed policy
-    rules = parsed_policy['ltm_policy']['rules']
-    for rule_name, rule_content in rules.items():
-        condition = rule_content['conditions']
-        actions = rule_content['actions']
-        
-        # Handle condition block (http-host matching)
-        for condition_item in condition:
-            if condition_item.get("http-host"):
-                host_value = condition_item["values"][0]
-                irule += f"    if {{[string tolower [HTTP::host]] equals \"{host_value}\"}} {{\n"
-        
-        # Handle action block (forwarding to pool)
-        for action_item in actions:
-            if action_item.get("forward"):
-                pool_name = action_item["pool"]
-                irule += f"        pool {pool_name}\n"
-        
-        # Close the condition
-        irule += "    }\n"
-    
-    irule += "}"
     return irule
 
