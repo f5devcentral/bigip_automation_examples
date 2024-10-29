@@ -12,7 +12,7 @@ def httpHostContitionConverter(context, condition):
    hosts = values_block.get("block", [])
    if_conditions = []
    for host in hosts:
-      if_conditions.append(f"[HTTP::host] equals \"{host}\"")
+      if_conditions.append(f"[HTTP::host] eq \"{host}\"")
    
    rnd_str = rnd_string(3)
    var_name = f"host_match_{rnd_str}"
@@ -69,7 +69,7 @@ def httpUriContitionConverter(context, condition):
       if values["name"] == "values":
          values_block = values["block"]
          for value in values_block:
-            if_conditions.append(f"[HTTP:uri] {operation} \"{value}\"")
+            if_conditions.append(f"[HTTP::uri] {operation} \"{value}\"")
          if_condition = " or ".join(if_conditions)
          context.appendRequestIf(IfClause(if_condition))
       else:

@@ -25,8 +25,8 @@ ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
 }
 iRule ==> /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5
 when HTTP_REQUEST {
-  if { [HTTP:uri] contains "/headers" } {
-    HTTP:header insert "new-header" "bingo"
+  if { [HTTP::uri] contains "/headers" } {
+    HTTP::header insert "new-header" "bingo"
   }
 }
 
@@ -70,19 +70,19 @@ ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
 }
 iRule ==> /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a
 when HTTP_REQUEST {
-  if { [HTTP::host] equals "1" or [HTTP::host] equals "2" or [HTTP::host] equals "3" } {
-    set host_match_5tz 1
+  if { [HTTP::host] eq "1" or [HTTP::host] eq "2" or [HTTP::host] eq "3" } {
+    set host_match_Idb 1
   }
   else {
-    set host_match_5tz 0
+    set host_match_Idb 0
   }
 }
 
 when HTTP_RESPONSE {
-  if { $host_match_5tz == 1 } {
+  if { $host_match_Idb == 1 } {
     if { [HTTP::header "X-HEADER1"] eq "STAGING" } {
-      HTTP:header insert "X-HEADER2" "eww"
-      HTTP:cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+      HTTP::header insert "X-HEADER2" "eww"
+      HTTP::cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
     }
 
   }

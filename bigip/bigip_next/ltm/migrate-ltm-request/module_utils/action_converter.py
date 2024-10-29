@@ -23,7 +23,7 @@ def httpHeaderActionConverter(context, action):
             index = index + 1
         index = index + 1
 
-    action = f"HTTP:header {operation} \"{headerName}\" \"{headerValue}\""
+    action = f"HTTP::header {operation} \"{headerName}\" \"{headerValue}\""
     if isResponse:
         context.appendResponseAction(ActionClause(action))
     else:
@@ -51,7 +51,7 @@ def httpSetCookieActionConverter(context, action):
             index = index + 1
         index = index + 1
 
-    action = f"HTTP:cookie {operation} name \"{headerName}\" value \"{headerValue}\""
+    action = f"HTTP::cookie {operation} name \"{headerName}\" value \"{headerValue}\""
     if isResponse:
         context.appendResponseAction(ActionClause(action))
     else:
