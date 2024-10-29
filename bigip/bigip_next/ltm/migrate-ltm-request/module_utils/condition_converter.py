@@ -15,11 +15,11 @@ def httpHostContitionConverter(context, condition):
       if_conditions.append(f"[HTTP::host] equals \"{host}\"")
    
    rnd_str = rnd_string(3)
-   var_name = f"host_match{rnd_str}"
+   var_name = f"host_match_{rnd_str}"
    if_condition = " or ".join(if_conditions)
    
-   requestIf = IfClause(if_condition, [ActionClause("set host_match 1")], [ActionClause("set host_match 0")])
-   responseIf = IfClause("$host_match == 1")
+   requestIf = IfClause(if_condition, [ActionClause(f"set {var_name} 1")], [ActionClause(f"set {var_name} 0")])
+   responseIf = IfClause(f"${var_name} == 1")
 
    context.appendRequestIf(requestIf)
    context.appendResponseIf(responseIf)
