@@ -68,9 +68,9 @@ def httpUriContitionConverter(context, condition):
       values = block[3]
       if values["name"] == "values":
          values_block = values["block"]
-         for value in values:
+         for value in values_block:
             if_conditions.append(f"[HTTP:uri] {operation} \"{value}\"")
-         if_conditions = " or ".join(if_conditions)
+         if_condition = " or ".join(if_conditions)
          context.appendRequestIf(IfClause(if_condition))
       else:
          raise Exception(f"Not supported values item: {values}")

@@ -1,0 +1,131 @@
+Converting policy ==>
+ltm policy /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5 {
+    requires { http }
+    rules {
+        headers {
+            actions {
+                0 {
+                    http-header
+                    insert
+                    name new-header
+                    value bingo
+                }
+            }
+            conditions {
+                0 {
+                    http-uri
+                    path
+                    contains
+                    values { /headers }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+iRule ==> /tenantaaeaa34d12185/Common_LTM_POLICY_VS/ltm_policy5
+when HTTP_REQUEST {
+  if { [HTTP:uri] contains "/headers" } {
+    HTTP:header insert "new-header" "bingo"
+  }
+}
+
+
+Converting policy ==>
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a {
+    requires { http }
+    rules {
+        rule2 {
+            actions {
+                0 {
+                    http-header
+                    response
+                    insert
+                    name X-HEADER2
+                    value eww
+                }
+                1 {
+                    http-set-cookie
+                    response
+                    insert
+                    name COOKIE33
+                    value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+                }
+            }
+            conditions {
+                0 {
+                    http-host
+                    values { 1 2 3 }
+                }
+                1 {
+                    http-header
+                    response
+                    name X-HEADER1
+                    values { STAGING }
+                }
+            }
+        }
+    }
+    strategy /Common/first-match
+}
+iRule ==> /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_2a
+when HTTP_REQUEST {
+  if { [HTTP::host] equals "1" or [HTTP::host] equals "2" or [HTTP::host] equals "3" } {
+    set host_match 1
+  }
+  else {
+    set host_match 0
+  }
+}
+
+when HTTP_RESPONSE {
+  if { $host_match == 1 } {
+    if { [HTTP::header "X-HEADER1"] eq "STAGING" } {
+      HTTP:header insert "X-HEADER2" "eww"
+      HTTP:cookie insert name "COOKIE33" value "asdfsadfasdfsadf asdfsa asdf sdf asdf"
+    }
+
+  }
+}
+Converting policy ==>
+ltm policy /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a {
+    controls { forwarding }
+    requires { http }
+    rules {
+        rule1 {
+            actions {
+                0 {
+                    forward
+                    select
+                    pool /Common/ltm-pool-staging
+                }
+            }
+            conditions {
+                0 {
+                    http-header
+                    name x-head
+                    values { header1 header2 }
+                }
+                1 {
+                    http-uri
+                    query-parameter
+                    name env
+                    values { env-staging-1 env-staging-2 }
+                }
+            }
+            description ddd
+        }
+    }
+    strategy /Common/first-match
+}
+iRule ==> /tenant7e6ce4ee1e39f/Common_ltm-app-vs/policy_2c_1a
+when HTTP_REQUEST {
+  if { [HTTP::header "x-head"] eq "header1" or [HTTP::header "x-head"] eq "header2" } {
+    if { [URI::query [HTTP::uri] "env"] in { "env-staging-1" "env-staging-2"} } {
+      pool /Common/ltm-pool-staging
+    }
+
+  }
+}
+
+

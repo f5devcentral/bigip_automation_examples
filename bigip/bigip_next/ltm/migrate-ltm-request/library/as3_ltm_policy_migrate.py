@@ -43,8 +43,8 @@ class LtmPolicyMigrate:
         return None
 
     def migrate_ltm_routes(self, config, tenant, app, vs):
-        self.logger(tenant + ' / '+ app + ' / ' + vs )
         ltm_policies = []
+        rValue = []
         for cfg in config:
             policies = extract_ltm_policies(cfg["content"])
             for p in policies:
@@ -52,48 +52,59 @@ class LtmPolicyMigrate:
 
         try:
             for p in ltm_policies:
+                self.logger("Converting policy ==>")
                 self.logger(p)
                 ltm_parsed = parse_ltm_policy(p)
-
-                self.logger(ltm_parsed)
-
                 st = json.dumps(ltm_parsed)
-                self.logger(st)
-                self.logger('*****************')
-
                 rule = LtmPolicyConverter(ltm_parsed).convert()
-                self.logger(rule.getRuleName())
+                self.logger(f"iRule ==> {rule.getRulePath()}")
                 self.logger(rule.toString())
 
+                rValue.append(rule)
+
         except Exception as X:
-            self.logger("in exception")
+            self.logger("Convertion error: ")
             self.logger(X)
             self.logger(traceback.format_exc())
 
-
-        return[]
+        return rValue
 
     def migrate_routing_policy(self):
-        for migration in self.migrations:
-            for vs in migration["virtual_servers"]:
-                as3_app_info = self.match_as3app_by_vs_name(migration["name"], vs["name"])
-                if as3_app_info is None:
-                    continue
+        try:
+            for migration in self.migrations:
+                for vs in migration["virtual_servers"]:
+                    as3_app_info = self.match_as3app_by_vs_name(migration["name"], vs["name"])
+                    if as3_app_info is None:
+                        continue
+    
+                    config = self.match_config(vs["config_files"])
+                    migrated_ltm = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
+    
+                    for migrated in migrated_ltm:
+                        irule = migrated.toDict()
+                        adc = as3_app_info["adc"]
+                        adc[as3_app_info["tenant_name"]][migration["name"]][irule["name"]] = {
+                                'iRule': { 'base64': base64.b64encode(irule["content_utf"]) },
+                                'class': "iRule"
+                        }
+                        virtualServer = adc[as3_app_info["tenant_name"]][migration["name"]][vs["name"]]
+                        if virtualServer.get("iRules", None) is None:
+                            virtualServer["iRules"] = []
 
-                config = self.match_config(vs["config_files"])
-                migrated_ltm = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
+                        tn = as3_app_info["tenant_name"]
+                        mn = migration["name"]
+                        irn = irule["name"]
+                        virtualServer["iRules"].append({
+                            'use': f"{tn}//{mn}//{irn}"
+                        })
+    
+            return {"success": True, "data": "Migration data here"}
+        except Exception as X:
+            self.logger("Convertion error: ")
+            self.logger(X)
+            self.logger(traceback.format_exc())
 
-                for irule in migrated_ltm:
-                    adc = as3_app_info["adc"]
-                    adc[as3_app_info["tenant"]][migration["name"]][irule["name"]] = {
-                            'iRule': { 'base64': base64.b64encode(irule["content"]) },
-                            'class': "iRule"
-                    }
-                    adc[as3_app_info["tenant"]][migration["name"]][vs["name"]].iRules.append({
-                        'use': iRule["path"]
-                    })
-
-        return {"success": True, "data": "Migration data here"}
+            return {"success": False, "data": X}
 
 def run_module():
     module_args = dict(

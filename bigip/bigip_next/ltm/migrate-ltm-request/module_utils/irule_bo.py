@@ -61,6 +61,10 @@ class IRule:
         self.ruleName = name
 
     def getRuleName(self):
+        items = self.ruleName.split("\\")
+        return items[len(items) - 1]
+
+    def getRulePath(self):
         return self.ruleName
 
     def toString(self, space=""):
@@ -71,3 +75,12 @@ class IRule:
         rValue = rValue + self.response.toString()
 
         return rValue
+
+    def toDict(self):
+        content = self.toString()
+        return {
+            "name": self.getRuleName(),
+            "content": content,
+            "content_utf": content.encode("utf-8"),
+            "path": self.getRulePath()
+        }
