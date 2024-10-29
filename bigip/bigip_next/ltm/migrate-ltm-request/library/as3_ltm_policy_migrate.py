@@ -95,16 +95,16 @@ class LtmPolicyMigrate:
                         mn = migration["name"]
                         irn = irule["name"]
                         virtualServer["iRules"].append({
-                            'use': f"{tn}//{mn}//{irn}"
+                            'use': f"/{tn}/{mn}/{irn}"
                         })
     
-            return {"success": True, "data": "Migration data here"}
+            return {"success": True, "results": self.applications}
         except Exception as X:
             self.logger("Convertion error: ")
             self.logger(X)
             self.logger(traceback.format_exc())
 
-            return {"success": False, "data": X}
+            return {"success": False, "results": []}
 
 def run_module():
     module_args = dict(
@@ -137,7 +137,7 @@ def run_module():
         if poll_result["success"]:
             result["success"] = True
             result['message'] = 'LTM policy migration completed.'
-            result['data'] = poll_result['data']
+            result['results'] = poll_result['results']
         else:
             result['message'] = 'LTM policy migration error.'
             result['success'] = False

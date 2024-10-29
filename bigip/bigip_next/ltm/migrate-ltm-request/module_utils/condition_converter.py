@@ -60,7 +60,6 @@ def httpUriContitionConverter(context, condition):
    block = condition["block"]
    location = block[1]
 
-
    if location == "path":
       operation = block[2]
       if_conditions = []

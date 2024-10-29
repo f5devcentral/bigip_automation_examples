@@ -74,119 +74,119 @@
       vars:
         query: "_embedded.applications[?virtual_servers[?(status=='green' || status=='yellow') && length(waf_policies) == `0`]]"
 
-    #    - name: Generate migration report
-    #      delegate_to: localhost
-    #      copy:
-    #        content: |
-    #          {% set headers = ['Old_Vs_Name', 'New_App_Name', 'Status', 'Old_IP_Address', 'New_IP_Address', 'Unsupported'] %}
-    #          {{ headers | join(',') }}
-    #          {% for app in cm_apps.json._embedded.applications %}
-    #          {% for vs in app.virtual_servers | default([]) %}
-    #          {% set app_name = app.name %}
-    #          {% set vs_name = vs.name %}
-    #          {% set old_ip = vs.ip_addresses[0] if vs.ip_addresses | default([]) else '-' %}
-    #          {% set old_ip_without_port = old_ip.split('/')[0] if old_ip != '-' else '-' %}
-    #          {% set new_ip = ip_map.get(old_ip_without_port, '-') %}
-    #          {% set status = vs.status | default('unknown') %}
-    #          {% set as3_unsupported = ';'.join(vs.as3_unsupported | default([])) if status != 'green' else '-' %}
-    #          {{ vs_name.replace(migrate_app_prefix, '', 1) }},{{ app_name }},{{ status }},{{ old_ip_without_port }},{{ new_ip }},{{ as3_unsupported }}
-    #          {% endfor %}
-    #          {% endfor %}
-    #        dest: "{{ report_file }}"
+    - name: Generate migration report
+      delegate_to: localhost
+      copy:
+        content: |
+          {% set headers = ['Old_Vs_Name', 'New_App_Name', 'Status', 'Old_IP_Address', 'New_IP_Address', 'Unsupported'] %}
+          {{ headers | join(',') }}
+          {% for app in cm_apps.json._embedded.applications %}
+          {% for vs in app.virtual_servers | default([]) %}
+          {% set app_name = app.name %}
+          {% set vs_name = vs.name %}
+          {% set old_ip = vs.ip_addresses[0] if vs.ip_addresses | default([]) else '-' %}
+          {% set old_ip_without_port = old_ip.split('/')[0] if old_ip != '-' else '-' %}
+          {% set new_ip = ip_map.get(old_ip_without_port, '-') %}
+          {% set status = vs.status | default('unknown') %}
+          {% set as3_unsupported = ';'.join(vs.as3_unsupported | default([])) if status != 'green' else '-' %}
+          {{ vs_name.replace(migrate_app_prefix, '', 1) }},{{ app_name }},{{ status }},{{ old_ip_without_port }},{{ new_ip }},{{ as3_unsupported }}
+          {% endfor %}
+          {% endfor %}
+        dest: "{{ report_file }}"
 
-    #    - name: Extract not installed Shared Objects
-    #      set_fact:
-    #        app_shared_objects_names: "{{ migrate_apps | shared_object_names(migrate_shared_object_prefix) }}"
-    #
-    #    - name: Get Installed Certificates
-    #      delegate_to: localhost
-    #      uri:
-    #        url: "https://{{ central_manager.address }}/api/certificate/v1/certificates?limit=10000&select=id,name,status"
-    #        method: GET
-    #        headers:
-    #          Authorization: "Bearer {{ access_token }}"
-    #        validate_certs: no
-    #      register: next_certs_available
-    #
-    #    - name: Any Certs Available
-    #      set_fact:
-    #        next_certs_total: "{{ next_certs_available | json_query(query) | int }}"
-    #      vars:
-    #        query: "json.total"
-    #
-    #    - name: Set installed_certs_names to empty if next_certs_total is 0
-    #      set_fact:
-    #        installed_certs_names: []
-    #      when: next_certs_total | int == 0
-    #
-    #    - name: Filter installed Certificates names
-    #      set_fact:
-    #        installed_certs_names: "{{ next_certs_available | json_query(query) | list }}"
-    #      vars:
-    #        query: "json._embedded.certificates[].name"
-    #      when: next_certs_total | int != 0
-    #
-    #    - name: Get Installed iRules
-    #      delegate_to: localhost
-    #      uri:
-    #        url: "https://{{ central_manager.address }}/api/irule/v1/irules"
-    #        method: GET
-    #        headers:
-    #          Authorization: "Bearer {{ access_token }}"
-    #        validate_certs: no
-    #      register: next_irules_available
-    #
-    #    - name: Any iRule Available
-    #      set_fact:
-    #        next_irules_total: "{{ next_irules_available | json_query(query) | int }}"
-    #      vars:
-    #        query: "json.total"
-    #
-    #    - name: Set installed_irules_names to empty if next_irules_total is 0
-    #      set_fact:
-    #        installed_irules_names: []
-    #      when: next_irules_total | int == 0
-    #
-    #    - name: Filter installed iRules names
-    #      set_fact:
-    #        installed_irules_names: "{{ next_irules_available | json_query(query) | list }}"
-    #      vars:
-    #        query: "json._embedded.irules[].name"
-    #      when: next_irules_total | int != 0
-    #
-    #    - name: Get Apps with missing dependent objects
-    #      set_fact:
-    #        import_dependecies_apps: "{{ app_shared_objects_names | get_apps_to_import_dependencies(installed_irules_names, installed_certs_names) }}"
-    #    
-    #    - name: Prepare apps to install dependencies
-    #      delegate_to: localhost
-    #      uri:
-    #        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/bulk-stage"
-    #        body:
-    #          applications: "{{ import_dependecies_apps }}"
-    #        body_format: json
-    #        method: PUT
-    #        headers:
-    #          Content-Type: "application/json"
-    #          Authorization: "Bearer {{ access_token }}"
-    #        validate_certs: no
-    #      register: result
-    #    
-    #    - name: Install dependencies if necessary
-    #      delegate_to: localhost
-    #      uri:
-    #        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/install-dependencies"
-    #        body: '{"applications": [{{ item }}]}'
-    #        body_format: json
-    #        method: POST
-    #        headers:
-    #          Content-Type: "application/json"
-    #          Authorization: "Bearer {{ access_token }}"
-    #        validate_certs: no
-    #        status_code: 200
-    #      with_items: "{{ import_dependecies_apps }}"
-    #      register: result
-    #    
+    - name: Extract not installed Shared Objects
+      set_fact:
+        app_shared_objects_names: "{{ migrate_apps | shared_object_names(migrate_shared_object_prefix) }}"
+
+    - name: Get Installed Certificates
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/api/certificate/v1/certificates?limit=10000&select=id,name,status"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+      register: next_certs_available
+
+    - name: Any Certs Available
+      set_fact:
+        next_certs_total: "{{ next_certs_available | json_query(query) | int }}"
+      vars:
+        query: "json.total"
+
+    - name: Set installed_certs_names to empty if next_certs_total is 0
+      set_fact:
+        installed_certs_names: []
+      when: next_certs_total | int == 0
+
+    - name: Filter installed Certificates names
+      set_fact:
+        installed_certs_names: "{{ next_certs_available | json_query(query) | list }}"
+      vars:
+        query: "json._embedded.certificates[].name"
+      when: next_certs_total | int != 0
+
+    - name: Get Installed iRules
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/api/irule/v1/irules"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+      register: next_irules_available
+
+    - name: Any iRule Available
+      set_fact:
+        next_irules_total: "{{ next_irules_available | json_query(query) | int }}"
+      vars:
+        query: "json.total"
+
+    - name: Set installed_irules_names to empty if next_irules_total is 0
+      set_fact:
+        installed_irules_names: []
+      when: next_irules_total | int == 0
+
+    - name: Filter installed iRules names
+      set_fact:
+        installed_irules_names: "{{ next_irules_available | json_query(query) | list }}"
+      vars:
+        query: "json._embedded.irules[].name"
+      when: next_irules_total | int != 0
+
+    - name: Get Apps with missing dependent objects
+      set_fact:
+        import_dependecies_apps: "{{ app_shared_objects_names | get_apps_to_import_dependencies(installed_irules_names, installed_certs_names) }}"
+    
+    - name: Prepare apps to install dependencies
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/bulk-stage"
+        body:
+          applications: "{{ import_dependecies_apps }}"
+        body_format: json
+        method: PUT
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+      register: result
+    
+    - name: Install dependencies if necessary
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/api/v1/migrations/{{ next_migration.json.id  }}/applications/install-dependencies"
+        body: '{"applications": [{{ item }}]}'
+        body_format: json
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+        status_code: 200
+      with_items: "{{ import_dependecies_apps }}"
+      register: result
+    
     - name: Get applications AS3 preview
       set_fact:
         preview_links: "{{ migrate_apps | map(attribute='as3_preview') | list }}"
@@ -231,16 +231,17 @@
       loop: "{{ all_config_files }}"
       register: downloaded_files_response
 
-    - name: Save parameters to file for LTM policy migration
-      delegate_to: localhost
-      copy:
-        content: |
-          {
-            "config_files": {{ downloaded_files_response.results | to_json }},
-            "applications": {{ as3_app_preview_files.results | to_json }},
-            "migrations": {{ cm_apps.json._embedded.applications | to_json }}
-          }
-        dest: ../ltm_policy_migrate_params.json
+    #    - name: Save parameters to file for LTM policy migration
+    #      delegate_to: localhost
+    #      copy:
+    #        content: |
+    #          {
+    #            "config_files": {{ downloaded_files_response.results | to_json }},
+    #            "applications": {{ as3_app_preview_files.results | to_json }},
+    #            "migrations": {{ cm_apps.json._embedded.applications | to_json }}
+    #          }
+    #        dest: ../ltm_policy_migrate_params.json
+    #
 
     - name: Migrate routing LTM policies to iRules
       delegate_to: localhost
@@ -248,55 +249,56 @@
         config_files: "{{ downloaded_files_response.results }}"
         applications: "{{ as3_app_preview_files.results }}"
         migrations: "{{ cm_apps.json._embedded.applications }}"
+      register: migrated_as3
 
-    #    - name: Save App AS3 preview files
-    #      delegate_to: localhost
-    #      copy:
-    #        content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
-    #        dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
-    #      with_items: "{{ as3_app_preview_files.results }}"
-    #    
-    #    - name: Create AS3 applications
-    #      delegate_to: localhost
-    #      uri:
-    #        url: "https://{{  central_manager.address  }}/api/v1/spaces/default/appsvcs/documents"
-    #        method: POST
-    #        body: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
-    #        body_format: json
-    #        headers:
-    #          Authorization: "Bearer {{  access_token  }}"
-    #          Content-Type: "application/json"
-    #        validate_certs: false
-    #        status_code: 200
-    #      with_items: "{{ as3_app_preview_files.results }}"
-    #      register: documents
-    #    
-    #    - name: Map applications to document ids
-    #      set_fact:
-    #        apps_to_id_map: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
-    #    
-    #    - name: Create Deployment array by tree
-    #      set_fact:
-    #        deployment_array: "{{ apps_to_id_map | create_deployment_array(deploy_tree) }}"
-    #    
-    #    - name: Deploy applications to destination BigIP Next
-    #      delegate_to: localhost
-    #      uri:
-    #        url: "https://{{ central_manager.address }}/mgmt/shared/appsvcs/declare/{{item.id}}/deployments?async=false"
-    #        method: POST
-    #        body:
-    #          target: "{{item.target}}"
-    #        body_format: json
-    #        headers:
-    #          Authorization: "Bearer {{  access_token  }}"
-    #          Content-Type: "application/json"
-    #        validate_certs: false
-    #        status_code: 202
-    #      loop: "{{ deployment_array }}"
-    #      loop_control:
-    #        pause: 30
-    #      register: deployment_result
-    #    
-    #    - name: Deployment Results
-    #      debug:
-    #        msg: "{{deployment_result}}"
+    - name: Save App AS3 preview files
+      delegate_to: localhost
+      copy:
+        content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
+        dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
+      with_items: "{{ migrated_as3.results }}"
+    
+    - name: Create AS3 applications
+      delegate_to: localhost
+      uri:
+        url: "https://{{  central_manager.address  }}/api/v1/spaces/default/appsvcs/documents"
+        method: POST
+        body: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
+        body_format: json
+        headers:
+          Authorization: "Bearer {{  access_token  }}"
+          Content-Type: "application/json"
+        validate_certs: false
+        status_code: 200
+      with_items: "{{ migrated_as3.results }}"
+      register: documents
+    
+    - name: Map applications to document ids
+      set_fact:
+        apps_to_id_map: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
+    
+    - name: Create Deployment array by tree
+      set_fact:
+        deployment_array: "{{ apps_to_id_map | create_deployment_array(deploy_tree) }}"
+    
+    - name: Deploy applications to destination BigIP Next
+      delegate_to: localhost
+      uri:
+        url: "https://{{ central_manager.address }}/mgmt/shared/appsvcs/declare/{{item.id}}/deployments?async=false"
+        method: POST
+        body:
+          target: "{{item.target}}"
+        body_format: json
+        headers:
+          Authorization: "Bearer {{  access_token  }}"
+          Content-Type: "application/json"
+        validate_certs: false
+        status_code: 202
+      loop: "{{ deployment_array }}"
+      loop_control:
+        pause: 30
+      register: deployment_result
+    
+    - name: Deployment Results
+      debug:
+        msg: "{{deployment_result}}"

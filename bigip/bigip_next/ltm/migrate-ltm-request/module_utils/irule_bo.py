@@ -61,7 +61,7 @@ class IRule:
         self.ruleName = name
 
     def getRuleName(self):
-        items = self.ruleName.split("\\")
+        items = self.ruleName.split("/")
         return items[len(items) - 1]
 
     def getRulePath(self):

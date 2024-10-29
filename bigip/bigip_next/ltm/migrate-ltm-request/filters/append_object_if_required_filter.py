@@ -8,7 +8,7 @@ class FilterModule(object):
         }
 
     def append_object_if_required(self, as3_request_data, next_migration_apps, migration_waf_prefix):
-        as3_app_definition = json.loads(as3_request_data["content"])
+        as3_app_definition = as3_request_data["json"]
 
         for migrate_app in next_migration_apps['json']['_embedded']['applications']:
             if as3_request_data['item'] == migrate_app['as3_preview']:
