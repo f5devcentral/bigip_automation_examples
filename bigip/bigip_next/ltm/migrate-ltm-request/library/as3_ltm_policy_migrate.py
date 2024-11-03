@@ -70,36 +70,36 @@ class LtmPolicyMigrate:
 
         return rValue
     
-    def append_pool_info(self, pool, app, tenant_name, app_name):
-        if app.get(pool["new"], None) is not None:
-            return
-        poolFound = False
-        for pool_info in self.pools:
-            if pool_info["name"] == pool["old"]:
-                poolFound = True
-                app[pool["new"]] = {
-                    "members": pool_info["members"],
-                    "class": "Pool",
-                    "monitors": []        
-                }
-                # add monitors to pool
-                for monitor in pool_info["monitors"]:
-                    app[pool["new"]]["monitors"].append({
-                        "use": f"/{tenant_name}/{app_name}/{monitor}"
-                    })
+    # def append_pool_info(self, pool, app, tenant_name, app_name):
+    #     if app.get(pool["new"], None) is not None:
+    #         return
+    #     poolFound = False
+    #     for pool_info in self.pools:
+    #         if pool_info["name"] == pool["old"]:
+    #             poolFound = True
+    #             app[pool["new"]] = {
+    #                 "members": pool_info["members"],
+    #                 "class": "Pool",
+    #                 "monitors": []        
+    #             }
+    #             # add monitors to pool
+    #             for monitor in pool_info["monitors"]:
+    #                 app[pool["new"]]["monitors"].append({
+    #                     "use": f"/{tenant_name}/{app_name}/{monitor}"
+    #                 })
 
-                    # migrate pool monitors if not migrated
-                    monitorFound = False
-                    if app.get(monitor, None) in None:
-                        for monitor_info in self.monitors:
-                            if monitor == monitor_info["name"]:
-                                app[monitor] = monitor_info["data"]
-                                monitorFound = True
-                        if monitorFound == False:
-                            raise(f"Monitor info {monitor} is required for migration. Please, update variables")
-            break # pool info found
-        if not poolFound:
-            raise(f"Pool info {pool["old"]} is required for migration. Please, update variabled to procees")
+    #                 # migrate pool monitors if not migrated
+    #                 monitorFound = False
+    #                 if app.get(monitor, None) in None:
+    #                     for monitor_info in self.monitors:
+    #                         if monitor == monitor_info["name"]:
+    #                             app[monitor] = monitor_info["data"]
+    #                             monitorFound = True
+    #                     if monitorFound == False:
+    #                         raise(f"Monitor info {monitor} is required for migration. Please, update variables")
+    #         break # pool info found
+    #     if not poolFound:
+    #         raise(f"Pool info {pool["old"]} is required for migration. Please, update variabled to procees")
 
     def migrate_routing_policy(self):
         try:
@@ -131,9 +131,9 @@ class LtmPolicyMigrate:
                             'use': f"/{tn}/{mn}/{irn}"
                         })
                     
-                        pools = migrated_result["pools"]
-                        for pool in pools:
-                            self.append_pool_info(pool, as3_app_info, tn, mn)
+                        # pools = migrated_result["pools"]
+                        # for pool in pools:
+                        #     self.append_pool_info(pool, as3_app_info, tn, mn)
 
     
             return {"success": True, "results": self.applications}
