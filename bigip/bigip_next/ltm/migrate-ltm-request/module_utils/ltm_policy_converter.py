@@ -5,7 +5,7 @@ class LtmPolicyConverter:
     def __init__(self, ltm_policy):
         self.ltm_policy = ltm_policy.get("ltm_policy", {})
     
-    def convert(self):
+    def convert(self, tenant, app, vs):
         iRules = []
         policy_type = self.ltm_policy.get("type", "")
         if policy_type != "ltm_policy":
@@ -30,7 +30,7 @@ class LtmPolicyConverter:
             actions = rule.get("actions", [])
             conditions = rule.get("conditions", [])
             name = rule.get("rule_name", "")
-            context = RuleConverterContext()
+            context = RuleConverterContext(tenant, app, vs)
 
             for condition in conditions:
                 first_clause = condition["block"][0]

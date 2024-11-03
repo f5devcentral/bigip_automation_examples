@@ -62,5 +62,11 @@ def forwardActionConverter(context, action):
     if len(block) > 4:
         raise Exception(f"Unsupported forward block: {block}")
     if block[1] == "select":
-        body = f"{block[2]} {block[3]}"
+        pool = block[3].split("/")
+        new_pool_name = f"{context.tenant()}/{context.app()}/{pool[len(pool) - 1]}"
+        context.setMigratingPool({
+            "old": block[3],
+            "new": new_pool_name
+        })
+        body = f"{block[2]} {new_pool_name}"
         context.appendRequestAction(ActionClause(body))

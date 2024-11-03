@@ -20,8 +20,21 @@ def addActionClause(actionClause, currentIfClause):
         addActionClause(actionClause, currentIfClause.ifs[0])
 
 class RuleConverterContext:
-    def __init__(self):
+    def __init__(self, tenant, app, vs):
         self.irule = IRule()
+        self.tenant = tenant
+        self.app = app
+        self.vs = vs
+        self.migratingPools = {}
+
+    def tenant(self):
+        return self.tenant
+
+    def app(self):
+        return self.app
+
+    def vs(self):
+        return self.vs
 
     def appendRequestIf(self, ifClause):
         if len(self.irule.request.ifs) == 0:
@@ -40,6 +53,9 @@ class RuleConverterContext:
 
     def appendResponseAction(self, actionClause):
         addActionClause(actionClause, self.irule.response.ifs[0])
+
+    def setMigratingPool(self, poolInfo):
+        self.migratingPools[poolInfo["old"]] = poolInfo["new"]
 
 class LtmPolicyConverterFactory:
     def __init__(self):

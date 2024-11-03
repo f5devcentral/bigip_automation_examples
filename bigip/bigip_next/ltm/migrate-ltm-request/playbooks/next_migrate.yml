@@ -249,6 +249,7 @@
         config_files: "{{ downloaded_files_response.results }}"
         applications: "{{ as3_app_preview_files.results }}"
         migrations: "{{ cm_apps.json._embedded.applications }}"
+        pools: "{{ pool_settings }}"
       register: migrated_as3
 
     - name: Save App AS3 preview files

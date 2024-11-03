@@ -13,10 +13,11 @@ from ansible.module_utils.ltm_policy_converter import LtmPolicyConverter
 import traceback
 
 class LtmPolicyMigrate:
-    def __init__(self, config_files, applications, migrations, logger):
+    def __init__(self, config_files, applications, migrations, pools,logger):
         self.config_files = config_files
         self.applications = applications
         self.migrations = migrations
+        self.pools = pools
         self.logger = logger
 
     def match_config(self, config_files):
@@ -56,7 +57,7 @@ class LtmPolicyMigrate:
                 self.logger(p)
                 ltm_parsed = parse_ltm_policy(p)
                 st = json.dumps(ltm_parsed)
-                rule = LtmPolicyConverter(ltm_parsed).convert()
+                rule = LtmPolicyConverter(ltm_parsed).convert(tenant, app, vs)
                 self.logger(f"iRule ==> {rule.getRulePath()}")
                 self.logger(rule.toString())
 
@@ -110,7 +111,8 @@ def run_module():
     module_args = dict(
         config_files=dict(type='list', required=True),
         applications=dict(type='list', required=True),
-        migrations=dict(type='list', required=True)
+        migrations=dict(type='list', required=True),
+        pools=dict(type='list', required=True)
     )
 
     result = dict(
@@ -126,13 +128,14 @@ def run_module():
     config_files = module.params['config_files']
     applications = module.params['applications']
     migrations = module.params['migrations']
+    pools = module.params['pools']
 
     def custom_logger(msg):
         with open('../logs/ltm_policy_migration.log', 'a') as f:
             f.write("{0}\n".format(msg))
 
     try:
-        cm = LtmPolicyMigrate(config_files, applications, migrations, custom_logger)
+        cm = LtmPolicyMigrate(config_files, applications, migrations, pools, custom_logger)
         poll_result = cm.migrate_routing_policy()
         if poll_result["success"]:
             result["success"] = True
