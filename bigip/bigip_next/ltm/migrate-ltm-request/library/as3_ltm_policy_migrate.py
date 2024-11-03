@@ -110,10 +110,10 @@ class LtmPolicyMigrate:
                         continue
     
                     config = self.match_config(vs["config_files"])
-                    migrated_ltm_result = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
-                    migrated_ltm = migrated_ltm_result["rule"]
+                    migrated_ltm = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
 
-                    for migrated in migrated_ltm:
+                    for migrated_result in migrated_ltm:
+                        migrated = migrated_result["rule"]
                         irule = migrated.toDict()
                         adc = as3_app_info["adc"]
                         adc[as3_app_info["tenant_name"]][migration["name"]][irule["name"]] = {
@@ -131,9 +131,9 @@ class LtmPolicyMigrate:
                             'use': f"/{tn}/{mn}/{irn}"
                         })
                     
-                    pools = migrated_ltm_result["pools"]
-                    for pool in pools:
-                        self.append_pool_info(pool, as3_app_info, tn, mn)
+                        pools = migrated_result["pools"]
+                        for pool in pools:
+                            self.append_pool_info(pool, as3_app_info, tn, mn)
 
     
             return {"success": True, "results": self.applications}
