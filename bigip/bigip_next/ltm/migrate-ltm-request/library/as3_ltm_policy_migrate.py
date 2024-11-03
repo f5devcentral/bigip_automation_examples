@@ -58,8 +58,9 @@ class LtmPolicyMigrate:
                 self.logger(p)
                 ltm_parsed = parse_ltm_policy(p)
                 rule = LtmPolicyConverter(ltm_parsed).convert(tenant, app, vs)
-                self.logger(f"iRule ==> {rule["rule"].getRulePath()}")
-                self.logger(rule["rule"].toString())
+                irule = rule["rule"]
+                self.logger(f"iRule ==> { irule.getRulePath() }")
+                self.logger(irule.toString())
 
                 rValue.append(rule)
 
