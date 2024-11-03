@@ -19,11 +19,24 @@ ip_map:
 
 report_file: report.csv
 
+monitor_settings:
+  - name: "ltm-custom-monitor"
+    data:
+      class": "Monitor"
+      interval": 5
+      monitorType": "http"
+      receive": "Healthy\\n"
+      send": "GET /health\n"
+      timeout": 16
+
 pool_settings:
   - name: "/Common/ltm-pool-staging"
-    health_monitor: ltm_custom_monitor
-    port: 80
-    node_list:
-      - 10.1.20.100
-        10.1.20.102
-
+    monitors: 
+      - ltm_custom_monitor
+    members:
+      - addressDiscovery: "static"
+        servicePort: 80
+        shareNodes: true
+        servers: 
+          - address: "10.1.20.102"
+            name: "ltm"

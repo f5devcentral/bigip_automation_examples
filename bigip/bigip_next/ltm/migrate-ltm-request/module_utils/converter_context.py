@@ -25,7 +25,7 @@ class RuleConverterContext:
         self.tenant = tenant
         self.app = app
         self.vs = vs
-        self.migratingPools = {}
+        self.migratingPools = []
 
     def tenant(self):
         return self.tenant
@@ -55,7 +55,10 @@ class RuleConverterContext:
         addActionClause(actionClause, self.irule.response.ifs[0])
 
     def setMigratingPool(self, poolInfo):
-        self.migratingPools[poolInfo["old"]] = poolInfo["new"]
+        self.migratingPools.append(poolInfo)
+    
+    def getMigratingPools(self):
+        return self.migratingPools
 
 class LtmPolicyConverterFactory:
     def __init__(self):

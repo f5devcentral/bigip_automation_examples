@@ -157,7 +157,7 @@
     - name: Get Apps with missing dependent objects
       set_fact:
         import_dependecies_apps: "{{ app_shared_objects_names | get_apps_to_import_dependencies(installed_irules_names, installed_certs_names) }}"
-    
+
     - name: Prepare apps to install dependencies
       delegate_to: localhost
       uri:
@@ -171,7 +171,7 @@
           Authorization: "Bearer {{ access_token }}"
         validate_certs: no
       register: result
-    
+
     - name: Install dependencies if necessary
       delegate_to: localhost
       uri:
@@ -186,11 +186,11 @@
         status_code: 200
       with_items: "{{ import_dependecies_apps }}"
       register: result
-    
+
     - name: Get applications AS3 preview
       set_fact:
         preview_links: "{{ migrate_apps | map(attribute='as3_preview') | list }}"
-    
+
     - name: Download each AS3 preview file
       delegate_to: localhost
       uri:
@@ -250,6 +250,7 @@
         applications: "{{ as3_app_preview_files.results }}"
         migrations: "{{ cm_apps.json._embedded.applications }}"
         pools: "{{ pool_settings }}"
+        monitors: "{{ monitor_settings }}"
       register: migrated_as3
 
     - name: Save App AS3 preview files
@@ -258,7 +259,7 @@
         content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
         dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
       with_items: "{{ migrated_as3.results }}"
-    
+
     - name: Create AS3 applications
       delegate_to: localhost
       uri:
@@ -273,15 +274,15 @@
         status_code: 200
       with_items: "{{ migrated_as3.results }}"
       register: documents
-    
+
     - name: Map applications to document ids
       set_fact:
         apps_to_id_map: "{{ documents | get_document_ids_map(migrate_app_prefix) }}"
-    
+
     - name: Create Deployment array by tree
       set_fact:
         deployment_array: "{{ apps_to_id_map | create_deployment_array(deploy_tree) }}"
-    
+
     - name: Deploy applications to destination BigIP Next
       delegate_to: localhost
       uri:
@@ -299,7 +300,7 @@
       loop_control:
         pause: 30
       register: deployment_result
-    
+
     - name: Deployment Results
       debug:
         msg: "{{deployment_result}}"

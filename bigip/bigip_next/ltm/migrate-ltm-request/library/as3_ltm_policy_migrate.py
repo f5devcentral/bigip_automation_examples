@@ -13,11 +13,12 @@ from ansible.module_utils.ltm_policy_converter import LtmPolicyConverter
 import traceback
 
 class LtmPolicyMigrate:
-    def __init__(self, config_files, applications, migrations, pools,logger):
+    def __init__(self, config_files, applications, migrations, pools, monitors, logger):
         self.config_files = config_files
         self.applications = applications
         self.migrations = migrations
         self.pools = pools
+        self.monitors = monitors
         self.logger = logger
 
     def match_config(self, config_files):
@@ -56,7 +57,6 @@ class LtmPolicyMigrate:
                 self.logger("Converting policy ==>")
                 self.logger(p)
                 ltm_parsed = parse_ltm_policy(p)
-                st = json.dumps(ltm_parsed)
                 rule = LtmPolicyConverter(ltm_parsed).convert(tenant, app, vs)
                 self.logger(f"iRule ==> {rule.getRulePath()}")
                 self.logger(rule.toString())
@@ -69,6 +69,37 @@ class LtmPolicyMigrate:
             self.logger(traceback.format_exc())
 
         return rValue
+    
+    def append_pool_info(self, pool, app, tenant_name, app_name):
+        if app.get(pool["new"], None) is not None:
+            return
+        poolFound = False
+        for pool_info in self.pools:
+            if pool_info["name"] == pool["old"]:
+                poolFound = True
+                app[pool["new"]] = {
+                    "members": pool_info["members"],
+                    "class": "Pool",
+                    "monitors": []        
+                }
+                # add monitors to pool
+                for monitor in pool_info["monitors"]:
+                    app[pool["new"]]["monitors"].append({
+                        "use": f"/{tenant_name}/{app_name}/{monitor}"
+                    })
+
+                    # migrate pool monitors if not migrated
+                    monitorFound = False
+                    if app.get(monitor, None) in None:
+                        for monitor_info in self.monitors:
+                            if monitor == monitor_info["name"]:
+                                app[monitor] = monitor_info["data"]
+                                monitorFound = True
+                        if monitorFound == False:
+                            raise(f"Monitor info {monitor} is required for migration. Please, update variables")
+            break # pool info found
+        if not poolFound:
+            raise(f"Pool info {pool["old"]} is required for migration. Please, update variabled to procees")
 
     def migrate_routing_policy(self):
         try:
@@ -79,8 +110,9 @@ class LtmPolicyMigrate:
                         continue
     
                     config = self.match_config(vs["config_files"])
-                    migrated_ltm = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
-    
+                    migrated_ltm_result = self.migrate_ltm_routes(config, as3_app_info["tenant_name"], migration["name"], vs["name"])
+                    migrated_ltm = migrated_ltm_result["rule"]
+
                     for migrated in migrated_ltm:
                         irule = migrated.toDict()
                         adc = as3_app_info["adc"]
@@ -98,6 +130,11 @@ class LtmPolicyMigrate:
                         virtualServer["iRules"].append({
                             'use': f"/{tn}/{mn}/{irn}"
                         })
+                    
+                    pools = migrated_ltm_result["pools"]
+                    for pool in pools:
+                        self.append_pool_info(pool, as3_app_info, tn, mn)
+
     
             return {"success": True, "results": self.applications}
         except Exception as X:
@@ -112,7 +149,8 @@ def run_module():
         config_files=dict(type='list', required=True),
         applications=dict(type='list', required=True),
         migrations=dict(type='list', required=True),
-        pools=dict(type='list', required=True)
+        pools=dict(type='list', required=True),
+        monitors=dict(type='list', required=True)
     )
 
     result = dict(
@@ -129,13 +167,14 @@ def run_module():
     applications = module.params['applications']
     migrations = module.params['migrations']
     pools = module.params['pools']
+    monitors=module.params['monitors']
 
     def custom_logger(msg):
         with open('../logs/ltm_policy_migration.log', 'a') as f:
             f.write("{0}\n".format(msg))
 
     try:
-        cm = LtmPolicyMigrate(config_files, applications, migrations, pools, custom_logger)
+        cm = LtmPolicyMigrate(config_files, applications, migrations, pools, monitors, custom_logger)
         poll_result = cm.migrate_routing_policy()
         if poll_result["success"]:
             result["success"] = True

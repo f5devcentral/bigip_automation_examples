@@ -26,10 +26,10 @@ class LtmPolicyConverter:
 
 
         rules = self.ltm_policy.get("rules", [])
+        pools = []
         for rule in rules:
             actions = rule.get("actions", [])
             conditions = rule.get("conditions", [])
-            name = rule.get("rule_name", "")
             context = RuleConverterContext(tenant, app, vs)
 
             for condition in conditions:
@@ -51,14 +51,16 @@ class LtmPolicyConverter:
                 action_converter(context, action)
 
             iRules.append(context.irule)
+            migrating_pools = context.getMigratingPools()
+            if len(migrating_pools) > 0:
+                pools = pools + migrating_pools
         
-        rValue = iRules[0]
+        rValue = {"rule": iRules[0], "pools": pools}
         index = 1
         while index < len(iRules):
-            currentRule + iRules[i]
-            rValue.request.ifs = rValue.request.ifs + iRules[i].request.ifs
-            rValue.response.ifs = rValue.response.ifs + iRules[i].response.ifs
+            rValue["rule"].request.ifs = rValue["rule"].request.ifs + iRules[index].request.ifs
+            rValue["rule"].response.ifs = rValue["rule"].response.ifs + iRules[index].response.ifs
         
-        rValue.setRuleName(self.ltm_policy.get("name", ""))
+        rValue["rule"].setRuleName(self.ltm_policy.get("name", ""))
 
         return rValue
