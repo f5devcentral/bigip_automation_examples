@@ -27,13 +27,13 @@ class RuleConverterContext:
         self.vs = vs
         self.migratingPools = []
 
-    def tenant(self):
+    def getTenant(self):
         return self.tenant
 
-    def app(self):
+    def getApp(self):
         return self.app
 
-    def vs(self):
+    def getVS(self):
         return self.vs
 
     def appendRequestIf(self, ifClause):
