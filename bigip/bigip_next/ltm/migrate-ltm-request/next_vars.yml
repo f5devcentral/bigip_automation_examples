@@ -35,5 +35,5 @@ pool_settings:
         servicePort: 80
         shareNodes: true
         servers: 
-          - address: "10.1.20.102"
+          - address: "10.1.20.101"
             name: "ltm"
