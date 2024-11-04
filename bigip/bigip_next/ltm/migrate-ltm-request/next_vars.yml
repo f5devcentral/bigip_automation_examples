@@ -20,7 +20,7 @@ ip_map:
 report_file: report.csv
 
 monitor_settings:
-  - name: ltm-custom-monitor
+  - name: ltm_custom_monitor
     data:
       class": Monitor
       interval": 5
