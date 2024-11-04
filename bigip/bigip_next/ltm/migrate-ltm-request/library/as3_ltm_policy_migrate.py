@@ -144,7 +144,7 @@ class LtmPolicyMigrate:
                         for pool in pools:
                             self.append_pool_info(pool, as3_app_info, tn, mn)
 
-                        self.logger(json.dump(as3_app_info))
+                        self.logger(json.dumps(as3_app_info))
 
     
             return {"success": True, "results": self.applications}
