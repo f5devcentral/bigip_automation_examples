@@ -71,16 +71,21 @@ class LtmPolicyMigrate:
 
         return rValue
     
-    def append_pool_info(self, pool, app, tenant_name, app_name):
-        new_name = pool["new"]
-        old_name = pool["old"]
+    def append_pool_info(self, pool, adc, tenant_name, app_name):
+        new_path = pool["new"]
+        old_path = pool["old"]
+
+        new_path_items = new_path.split("/")
+        new_name = new_path_items[len(new_path_items) - 1]
         
-        if app.get(new_name, None) is not None:
+        app = adc[tenant_name][app_name]
+
+        if app.get(new_path, None) is not None:
             return
         
         poolFound = False
         for pool_info in self.pools:
-            if pool_info["name"] == old_name:
+            if pool_info["name"] == old_path:
                 poolFound = True
                 app[new_name] = {
                     "members": pool_info["members"],
@@ -107,7 +112,7 @@ class LtmPolicyMigrate:
                             raise Exception(f"Monitor info {monitor} is required for migration. Please, update variables")
             break # pool info found
         if not poolFound:
-            raise Exception(f"Pool info {old_name} is required for migration. Please, update variabled to procees")
+            raise Exception(f"Pool info {old_path} is required for migration. Please, update variabled to procees")
 
     def migrate_routing_policy(self):
         try:

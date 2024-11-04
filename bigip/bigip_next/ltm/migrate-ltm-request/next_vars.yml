@@ -30,13 +30,13 @@ monitor_settings:
       timeout": 16
 
 pool_settings:
-  - name: /Common/ltm-pool-staging
+  - name: "/Common/ltm-pool-staging"
     monitors: 
       - ltm_custom_monitor
     members:
-      - addressDiscovery: static
+      - addressDiscovery: "static"
         servicePort: 80
         shareNodes: true
         servers: 
-          - address: 10.1.20.102
-            name: ltm
+          - address: "10.1.20.102"
+            name: "ltm"
