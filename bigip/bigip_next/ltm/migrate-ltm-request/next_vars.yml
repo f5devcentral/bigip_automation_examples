@@ -22,12 +22,12 @@ report_file: report.csv
 monitor_settings:
   - name: ltm_custom_monitor
     data:
-      class": Monitor
-      interval": 5
-      monitorType": http
-      receive": Healthy
-      send": GET /health
-      timeout": 16
+      class: Monitor
+      interval: 5
+      monitorType: http
+      receive: Healthy
+      send: GET /health
+      timeout: 16
 
 pool_settings:
   - name: "/Common/ltm-pool-staging"
