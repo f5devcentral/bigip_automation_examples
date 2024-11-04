@@ -101,10 +101,10 @@ class LtmPolicyMigrate:
                                 app[monitor] = monitor_info["data"]
                                 monitorFound = True
                         if monitorFound == False:
-                            raise(f"Monitor info {monitor} is required for migration. Please, update variables")
+                            raise Exception(f"Monitor info {monitor} is required for migration. Please, update variables")
             break # pool info found
         if not poolFound:
-            raise(f"Pool info {old_name} is required for migration. Please, update variabled to procees")
+            raise Exception(f"Pool info {old_name} is required for migration. Please, update variabled to procees")
 
     def migrate_routing_policy(self):
         try:
