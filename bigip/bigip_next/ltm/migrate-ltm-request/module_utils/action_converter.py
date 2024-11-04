@@ -1,6 +1,5 @@
 from ansible.module_utils.irule_bo import ActionClause
 
-
 def httpHeaderActionConverter(context, action):
     isResponse = False
     headerName = ""
@@ -61,12 +60,16 @@ def forwardActionConverter(context, action):
     block = action["block"]
     if len(block) > 4:
         raise Exception(f"Unsupported forward block: {block}")
+    operation = block[2]
+
     if block[1] == "select":
-        pool = block[3].split("/")
-        new_pool_name = f"{context.tenant()}/{context.app()}/{pool[len(pool) - 1]}"
+        path = block[3]
+        poolItems = path.split("/")
+        poolName = poolItems[len(poolItems) - 1]
+        new_pool_name = f"{context.tenant()}/{context.app()}/{poolName}"
         context.setMigratingPool({
-            "old": block[3],
+            "old": path,
             "new": new_pool_name
         })
-        body = f"{block[2]} {new_pool_name}"
+        body = f"{operation} {new_pool_name}"
         context.appendRequestAction(ActionClause(body))
