@@ -97,7 +97,10 @@ class LtmPolicyMigrate:
                     monitorFound = False
                     if app.get(monitor, None) is None:
                         for monitor_info in self.monitors:
-                            if monitor == monitor_info["name"]:
+                            monitorName = monitor_info["name"]
+                            self.logger(f"{monitor} --> {monitorName}")
+                            if monitor == monitorName:
+                                self.logger("monitor found!")
                                 app[monitor] = monitor_info["data"]
                                 monitorFound = True
                         if monitorFound == False:
