@@ -95,7 +95,7 @@ class LtmPolicyMigrate:
 
                     # migrate pool monitors if not migrated
                     monitorFound = False
-                    if app.get(monitor, None) in None:
+                    if app.get(monitor, None) is None:
                         for monitor_info in self.monitors:
                             if monitor == monitor_info["name"]:
                                 app[monitor] = monitor_info["data"]
