@@ -1,7 +1,7 @@
 central_manager:
   address: 10.1.1.5
   user: admin
-  password: Welcome123!
+  password: Welcome1234567!
   max_applications: 10000
 
 migrate_shared_object_prefix: "migrated_"

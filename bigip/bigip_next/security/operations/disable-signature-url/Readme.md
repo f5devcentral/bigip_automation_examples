@@ -150,7 +150,7 @@ First, specify Central Manager parameters: `address`, `user`, `password`. Second
 central_manager:
   address: 10.1.1.5
   user: admin
-  password: Welcome123!
+  password: Welcome1234567!
 
 override_signature:
   - name: waf_greenfield_demo_policy
