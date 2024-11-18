@@ -64,6 +64,8 @@ class FilterModule(object):
                 monitor_definition["send"] = "GET /\\r\\n"
                 monitor_definition["timeout"] = 16
 
+        return as3_app_definition
+
 
 
     def find_node(self, as3_app_definition, className):
