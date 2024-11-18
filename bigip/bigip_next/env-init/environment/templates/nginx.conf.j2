@@ -103,7 +103,7 @@ http {
 
         {% for i in range(1, 21) %}
         location /endpoint{{ i }} {
-            return 200 "OK. Endpoint 22 - {{ i }}\n";
+            return 200 "OK. Endpoint - {{ i }}\n";
         }
         {% endfor %}
     }
