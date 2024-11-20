@@ -9,7 +9,7 @@ provider:
 nodes: 
   - ip: 10.1.20.102
     name: ltm-prod
-  - ip: 10.1.20.101
+  - ip: 10.1.20.103
     name: ltm-staging
 
 pools: 

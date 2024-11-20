@@ -66,7 +66,7 @@ def forwardActionConverter(context, action):
         path = block[3]
         poolItems = path.split("/")
         poolName = poolItems[len(poolItems) - 1]
-        new_pool_name = f"{context.getTenant()}/{context.getApp()}/{poolName}"
+        new_pool_name = f"/app/{context.getTenant()}:{context.getApp()}/pool/{poolName}-service"
         context.setMigratingPool({
             "old": path,
             "new": new_pool_name

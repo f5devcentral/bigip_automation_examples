@@ -92,6 +92,10 @@ class LtmPolicyMigrate:
                     "class": "Pool",
                     "monitors": []        
                 }
+                app[f"{new_name}-service"] = {
+                    "class": "Service_Pool",
+                    "pool": new_name
+                }
                 # add monitors to pool
                 for monitor in pool_info["monitors"]:
                     app[new_name]["monitors"].append({
@@ -107,7 +111,7 @@ class LtmPolicyMigrate:
                             if monitor == monitorName:
                                 self.logger("monitor found!")
                                 app[monitor] = monitor_info["data"]
-                                monitorFound = True
+                                monitorFound = True                                
                         if monitorFound == False:
                             raise Exception(f"Monitor info {monitor} is required for migration. Please, update variables")
             break # pool info found
