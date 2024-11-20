@@ -254,7 +254,7 @@ Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier 
 
 ![alt text](./assets/navigate-to-policies-new.png)
 
-Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the [previous step](#3-deploy-updates), as well `query` parameter just created. Enter the `code` parameter.
+Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the [previous step](#3-deploy-updates), as well as `query` parameter just created. Enter the `code` parameter.
 
 ![alt text](./assets/new-code-param.png)
 
