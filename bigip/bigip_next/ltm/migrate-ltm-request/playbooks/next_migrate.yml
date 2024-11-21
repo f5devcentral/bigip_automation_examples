@@ -220,6 +220,7 @@
         downloaded_files: {}
 
     - name: Download config files
+      delegate_to: localhost
       uri:
         url: "https://{{ central_manager.address }}{{ item.value }}"
         method: GET
@@ -241,7 +242,6 @@
     #            "migrations": {{ cm_apps.json._embedded.applications | to_json }}
     #          }
     #        dest: ../ltm_policy_migrate_params.json
-    #
 
     - name: Migrate routing LTM policies to iRules
       delegate_to: localhost
