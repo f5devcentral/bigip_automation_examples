@@ -28,9 +28,9 @@
         lb_method: "round-robin"
         monitors: 
           - "/Common/http"
-        monitor_type: "and_list"
-      with_items: "{{ pools }}"
+        monitor_type: "and_list"      
       delegate_to: localhost
+      with_items: "{{ pools }}"
 
     - name: Add node to the pool
       f5networks.f5_modules.bigip_pool_member:
@@ -47,15 +47,16 @@
       loop_control:
         label: "{{ item.node.name }} -> {{ item.pool }}"
 
-    - name: Create a virtual server on the TMOS BIG-IP
+    - name: Create a virtual servers on the TMOS BIG-IP
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{  provider  }}"
         state: present
-        name: "{{ virtual_server.name }}"
-        destination: "{{ virtual_server.ip }}:{{ virtual_server.port }}"
+        name: "{{ item.name }}"
+        destination: "{{ item.ip }}:{{ item.port }}"
         pool: "{{ default_pool_name }}"
         snat: "Automap"
         profiles:
           - http
-          - websecurity
+          - websecurity      
+      with_items: "{{ virtual_server }}"
       delegate_to: localhost

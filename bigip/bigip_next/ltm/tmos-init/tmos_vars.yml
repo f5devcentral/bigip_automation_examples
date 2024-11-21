@@ -20,10 +20,25 @@ pools:
 
 default_pool_name: ltm-pool-prod
 
+virtual_server_names:
+  custom_monitor: ltm-app-custom-monitor
+  custom_monitor_manual: ltm-app-custom-monitor-manual
+  request_routing: ltm-app-routing-header
+  ssl_routing: ltm-app-routing-ssl
+
 virtual_server:
-    name: ltm-app-vs
-    ip: 10.1.10.71
-    port: 80
+    - name: ltm-app-routing-header
+      ip: 10.1.10.71
+      port: 80
+    - name: ltm-app-routing-ssl
+      ip: 10.1.10.72
+      port: 80
+    - name: ltm-app-custom-monitor-manual
+      ip: 10.1.10.73
+      port: 80
+    - name: ltm-app-custom-monitor
+      ip: 10.1.10.74
+      port: 80
 
 health_monitors:
   - name: ltm-custom-monitor

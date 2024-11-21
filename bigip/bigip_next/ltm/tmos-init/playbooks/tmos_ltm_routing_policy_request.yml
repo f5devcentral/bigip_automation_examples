@@ -23,7 +23,7 @@
         conditions:
           - type: http_header
             header_name: X-STAGING
-            header_is_any: 
+            header_is_any:
               - staging
         actions:
           - type: forward
@@ -31,10 +31,10 @@
             event: request
         state: present
 
-    - name: Attach policy to the virtual server
+    - name: Attach request routing policy to the virtual server
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
-        name: "{{ virtual_server.name }}" 
+        name: "{{ virtual_server_names.request_routing }}"
         partition: "Common"
         policies:
           - ltm-routing-policy
