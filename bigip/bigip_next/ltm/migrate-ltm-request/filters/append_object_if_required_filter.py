@@ -40,11 +40,13 @@ class FilterModule(object):
     def update_ip_if_required(self, as3_app_definition, ip_map):
         services = self.find_node(as3_app_definition, 'Service_')
         for service in services:
-            for virtualAddressIndex in range(len(service["virtualAddresses"])):
-                address = service["virtualAddresses"][virtualAddressIndex]
-                if address in ip_map:
-                    replace = ip_map[address]
-                    service["virtualAddresses"][virtualAddressIndex] = replace
+            virtualAddressesArr = service.get("virtualAddresses", None)
+            if virtualAddressesArr is not None:
+                for virtualAddressIndex in range(len(virtualAddressesArr)):
+                    address = virtualAddressesArr[virtualAddressIndex]
+                    if address in ip_map:
+                        replace = ip_map[address]
+                        virtualAddressesArr[virtualAddressIndex] = replace
 
         return as3_app_definition
 
