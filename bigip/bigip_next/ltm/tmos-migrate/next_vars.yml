@@ -8,16 +8,23 @@ migrate_shared_object_prefix: "migrated_"
 migrate_app_prefix: "Common_"
 
 deploy_tree:
-  ltm-app-vs:
+  ltm-app-custom-monitor: 
+    - bigip_next: 10.1.1.10
+  ltm-app-routing-header:
+    - bigip_next: 10.1.1.10
+  ltm-app-routing-ssl:
     - bigip_next: 10.1.1.10
 
 ip_map:
   10.1.10.71: 10.1.10.171
+  10.1.10.72: 10.1.10.172
+  10.1.10.73: 10.1.10.173
+  10.1.10.74: 10.1.10.174
 
-report_file: report.csv
+report_file: ../report.csv
 
 monitor_settings:
-  - name: ltm_custom_monitor
+  - name: ltm-custom-monitor-migration
     data:
       class: Monitor
       interval: 5
@@ -29,11 +36,11 @@ monitor_settings:
 pool_settings:
   - name: "/Common/ltm-pool-staging"
     monitors: 
-      - ltm_custom_monitor
+      - ltm-custom-monitor-migration
     members:
       - addressDiscovery: "static"
         servicePort: 80
         shareNodes: true
         servers: 
           - address: "10.1.20.103"
-            name: "ltm"
+            name: "staging-node"

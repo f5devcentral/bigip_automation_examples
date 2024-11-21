@@ -34,7 +34,7 @@
     - name: Attach request routing policy to the virtual server
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
-        name: "{{ virtual_server_names.request_routing }}"
+        name: "{{ virtual_server.names }}"
         partition: "Common"
         policies:
           - ltm-routing-policy

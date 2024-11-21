@@ -1,0 +1,13 @@
+---
+- name: Main Playbook
+  hosts: app
+  become: true
+
+- name: Setup TMOS virtual server routine
+  import_playbook: tmos_setup.yml
+
+- name: Create LTM routing policy
+  import_playbook: tmos_ltm_routing_policy_request.yml
+
+- name: Check TMOS BIG-IP is setup correctly and app is available
+  import_playbook: tmos_ltm_ping.yml

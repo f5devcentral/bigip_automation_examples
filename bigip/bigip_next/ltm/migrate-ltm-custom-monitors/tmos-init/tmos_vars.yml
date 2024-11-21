@@ -1,0 +1,17 @@
+provider: 
+  server: 10.1.1.12
+  server_port: 443
+  user: admin
+  password: admin
+  validate_certs: false
+  no_f5_teem: false
+
+default_pool_name: ltm-pool-prod
+
+virtual_server:
+    - name: ltm-app-custom-monitor-manual
+      ip: 10.1.10.73
+      port: 80
+    - name: ltm-app-custom-monitor
+      ip: 10.1.10.74
+      port: 80

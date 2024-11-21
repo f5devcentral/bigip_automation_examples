@@ -18,7 +18,7 @@
     - name: Create custom HTTP monitor for each pool and health monitor
       f5networks.f5_modules.bigip_monitor_http:
         name: "{{ item.name }}"
-        parent: "http"  # Inherit from the default HTTP monitor
+        parent: "http" # Inherit from the default HTTP monitor
         send: "GET {{ item.url }} \r\n"
         receive: "{{ item.response }}"
         interval: 5

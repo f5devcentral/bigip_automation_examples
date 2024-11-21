@@ -19,7 +19,7 @@
 
     - name: Check server is routed by LTM policy
       uri:
-        url: "http://{{ virtual_server[0].ip }}/node-server"
+        url: "http://{{ virtual_server.ip }}/node-server"
         method: GET
         headers:
           X-STAGING: staging
