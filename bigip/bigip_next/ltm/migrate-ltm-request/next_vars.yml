@@ -22,8 +22,8 @@ monitor_settings:
       class: Monitor
       interval: 5
       monitorType: http
-      receive: Healthy
-      send: GET /health
+      receive: Healthy\\n
+      send: GET /health\n
       timeout: 16
 
 pool_settings:
