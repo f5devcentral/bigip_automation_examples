@@ -109,7 +109,6 @@ class LtmPolicyMigrate:
                             monitorName = monitor_info["name"]
                             self.logger(f"{monitor} --> {monitorName}")
                             if monitor == monitorName:
-                                self.logger("monitor found!")
                                 app[monitor] = monitor_info["data"]
                                 monitorFound = True                                
                         if monitorFound == False:
@@ -152,9 +151,6 @@ class LtmPolicyMigrate:
 
                         for pool in pools:
                             self.append_pool_info(pool, adc, tn, mn)
-
-                        self.logger(as3_app_info)
-
     
             return {"success": True, "results": self.applications}
         except Exception as X:
