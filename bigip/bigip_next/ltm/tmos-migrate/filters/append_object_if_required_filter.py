@@ -4,7 +4,8 @@ class FilterModule(object):
     def filters(self):
         return {
             'append_object_if_required': self.append_object_if_required,
-            'update_ip_if_required': self.update_ip_if_required
+            'update_ip_if_required': self.update_ip_if_required,
+            'fix_monitor_defaults': self.fix_monitor_defaults
         }
 
     def append_object_if_required(self, as3_request_data, next_migration_apps, migration_waf_prefix):
@@ -35,6 +36,23 @@ class FilterModule(object):
                         }
                 break
 
+        return as3_app_definition
+    
+    def fix_monitor_defaults(self, as3_app_definition):
+        monitors = self.find_node(as3_app_definition, "Monitor")
+        for monitor_definition in monitors:
+            monitorType = monitor_definition.get("monitorType", None)
+            interval = monitor_definition.get("interval", None)
+            receive = monitor_definition.get("receive", None)
+            send = monitor_definition.get("send", None)
+            timeout = monitor_definition.get("send", None)
+
+            if (monitorType == "http" or monitorType == "https") and interval is None and receive is None and send is None and timeout is None:
+                monitor_definition["interval"] = 5
+                monitor_definition["receive"] = ""
+                monitor_definition["send"] = "GET /\\r\\n"
+                monitor_definition["timeout"] = 16
+        
         return as3_app_definition
 
     def update_ip_if_required(self, as3_app_definition, ip_map):
