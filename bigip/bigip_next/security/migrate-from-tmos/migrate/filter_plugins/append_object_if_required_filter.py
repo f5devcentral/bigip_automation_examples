@@ -47,11 +47,13 @@ class FilterModule(object):
             send = monitor_definition.get("send", None)
             timeout = monitor_definition.get("send", None)
 
-            if monitorType == "http" and interval is None and receive is None and send is None and timeout is None:
+            if (monitorType == "http" or monitorType == "https") and interval is None and receive is None and send is None and timeout is None:
                 monitor_definition["interval"] = 5
                 monitor_definition["receive"] = ""
                 monitor_definition["send"] = "GET /\\r\\n"
                 monitor_definition["timeout"] = 16
+        
+        return as3_app_definition
 
     def update_ip_if_required(self, as3_app_definition, ip_map):
         services = self.find_node(as3_app_definition, 'Service_')
