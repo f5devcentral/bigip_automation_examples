@@ -10,12 +10,11 @@
   tasks:
     - name: Check server is available
       uri:
-        url: "http://{{ item.ip }}/node-server"
+        url: "http://{{ virtual_server.ip }}/node-server"
         method: GET
         status_code: 200
         return_content: yes
       register: check_result
-      with_items: "{{ virtual_server }}"
 
     - name: Check server is routed by LTM policy
       uri:

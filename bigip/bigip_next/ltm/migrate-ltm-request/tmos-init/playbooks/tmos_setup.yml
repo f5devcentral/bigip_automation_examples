@@ -15,12 +15,11 @@
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{  provider  }}"
         state: present
-        name: "{{ item.name }}"
-        destination: "{{ item.ip }}:{{ item.port }}"
+        name: "{{ virtual_server.name }}"
+        destination: "{{ virtual_server.ip }}:{{ virtual_server.port }}"
         pool: "{{ default_pool_name }}"
         snat: "Automap"
         profiles:
           - http
           - websecurity
-      with_items: "{{ virtual_server }}"
       delegate_to: localhost
