@@ -67,6 +67,25 @@ class FilterModule(object):
                         virtualAddressesArr[virtualAddressIndex] = replace
 
         return as3_app_definition
+    
+    def fix_monitor_defaults(self, as3_app_definition):
+        monitors = self.find_node(as3_app_definition, "Monitor")
+        for monitor_definition in monitors:
+            monitorType = monitor_definition.get("monitorType", None)
+            interval = monitor_definition.get("interval", None)
+            receive = monitor_definition.get("receive", None)
+            send = monitor_definition.get("send", None)
+            timeout = monitor_definition.get("send", None)
+
+            if monitorType == "http" and interval is None and receive is None and send is None and timeout is None:
+                monitor_definition["interval"] = 5
+                monitor_definition["receive"] = ""
+                monitor_definition["send"] = "GET /\\r\\n"
+                monitor_definition["timeout"] = 16
+
+        return as3_app_definition
+
+
 
     def find_node(self, as3_app_definition, className):
         def recursive_search(d, results):

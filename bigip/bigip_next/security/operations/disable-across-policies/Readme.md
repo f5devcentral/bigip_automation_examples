@@ -70,7 +70,7 @@ Your `next_vars.yml` file might be as follows:
 central_manager:
   address: 10.1.1.5
   user: admin
-  password: Welcome123!
+  password: Welcome1234567!
 
 override_signature:
   - name:

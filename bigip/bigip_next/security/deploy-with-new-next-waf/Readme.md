@@ -8,11 +8,11 @@
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-    - [1. Deploy Blueprint](#1-deploy-blueprint)
-    - [2. Setup SSH Keys](#2-setup-ssh-keys)
-    - [3. Enter Blueprint](#3-enter-blueprint)
-    - [4. Clone Repository](#4-clone-repository)
-    - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
+  - [1. Deploy Blueprint](#1-deploy-blueprint)
+  - [2. Setup SSH Keys](#2-setup-ssh-keys)
+  - [3. Enter Blueprint](#3-enter-blueprint)
+  - [4. Clone Repository](#4-clone-repository)
+  - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
   - [Docker Setup](#docker-setup)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Install Dependencies](#1-install-dependencies)
@@ -61,11 +61,11 @@ Before starting application migration we will need to set up our environment. En
 
 # Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "Next WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "NEXT WAF-Automation (20.3.0)". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **Next WAF - Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **NEXT WAF-Automation (20.3.0)**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -199,7 +199,7 @@ Click the **Start Adding Apps** button. This will open the creation form.
 
 ![alt text](./assets/start-adding-app.png)
 
-Before moving on to app configuration, give it a name, select the type of application service, and click the **Start Creating** button.
+Before moving on to app configuration, select the type of application service, give it a name, and click the **Start Creating** button.
 
 ![alt text](./assets/app-form.png)
 
@@ -239,7 +239,7 @@ The name should appear in WAF Policy name field. Click **Save** to move on.
 
 ![alt text](./assets/save-policy.png)
 
-Back on the app configuration page, take a look at the configured properties and click **Review and Deploy**.
+Back on the app configuration page, take a look at the configured properties and click **Review & Deploy**.
 
 ![alt text](./assets/deploy-app.png)
 
