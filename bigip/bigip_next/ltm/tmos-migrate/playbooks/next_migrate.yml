@@ -232,17 +232,6 @@
       loop: "{{ all_config_files }}"
       register: downloaded_files_response
 
-    #    - name: Save parameters to file for LTM policy migration
-    #      delegate_to: localhost
-    #      copy:
-    #        content: |
-    #          {
-    #            "config_files": {{ downloaded_files_response.results | to_json }},
-    #            "applications": {{ as3_app_preview_files.results | to_json }},
-    #            "migrations": {{ cm_apps.json._embedded.applications | to_json }}
-    #          }
-    #        dest: ../ltm_policy_migrate_params.json
-
     - name: Migrate routing LTM policies to iRules
       delegate_to: localhost
       as3_ltm_policy_migrate:
