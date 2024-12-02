@@ -24,7 +24,7 @@ This guide showcases the process of automated migration of an application with a
 
 For this flow we will use an application that has production and staging environments. Initially, it is deployed in BIG-IP TMOS where LTM policy routes the incoming traffic between two environments based on its rule. We will migrate the application with the policy to BIG-IP Next and convert policy rules to iRules for traffic routing.
 
-![alt text](./assets/setup-diagram.png)
+![alt text](./assets/setup-diagram.gif)
 
 # Environment
 
