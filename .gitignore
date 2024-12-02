@@ -4,6 +4,7 @@ terraform.*
 .terraform*
 keys
 .DS_STORE
+.vscode
 bigip/bigip_next/security/operations/live-update/check-updates-report.txt
 bigip/bigip_next/security/operations/live-update/push-updates-report.txt
 bigip/bigip_next/security/operations/disable-signature-url/signature-override-report.txt
