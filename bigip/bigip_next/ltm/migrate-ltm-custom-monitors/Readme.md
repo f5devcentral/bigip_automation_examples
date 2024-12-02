@@ -146,7 +146,7 @@ nano cm_key
 
 ## Environment Setup
 
-### 1. Application Initialization
+### 1. Application Setup
 
 Navigate to the following directory:
 
@@ -160,7 +160,7 @@ And run the following command to initialize the application:
 ansible-playbook -i inventory.ini app_install.yml
 ```
 
-After initialization is complete, run the following command to restart NGINX:
+After setup is complete, run the following command to restart NGINX:
 
 ```bash
 sudo systemctl restart nginx.service
@@ -179,12 +179,10 @@ curl -X GET http://10.1.20.103/node-server
 If NGINX is initialized, you will see the following outputs:
 
 ```
-ver
 Node server 10.1.20.102
 ```
 
 ```
-ver
 Node server 10.1.20.103
 ```
 

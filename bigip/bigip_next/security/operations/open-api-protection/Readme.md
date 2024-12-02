@@ -180,7 +180,7 @@ components:
 
 ### 1.1 Verify Swagger File
 
-Make sure endpoints are not specified in the Swagger file by running the following command:
+Check that endpoints are not specified in the Swagger file by running the following command:
 
 ```bash
 cat code-crud-swagger.yaml | grep endpoint
@@ -188,13 +188,13 @@ cat code-crud-swagger.yaml | grep endpoint
 
 ### 1.2 Verify App
 
-Verify that our app returns requests:
+Verify the application return:
 
 ```bash
 curl http://10.1.10.94/endpoint1
 ```
 
-It will be returned with the following output:
+The following output will be returned:
 
 ```
 OK. Endpoint - 1
