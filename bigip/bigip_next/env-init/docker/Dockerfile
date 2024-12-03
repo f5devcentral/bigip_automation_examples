@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update the repository and install dependencies
 RUN apt-get update && apt-get install -y \
     software-properties-common \
-    curl \
+    curl wget \
     gnupg \
     lsb-release \
     nano \
@@ -19,11 +19,20 @@ RUN apt-add-repository --yes --update ppa:ansible/ansible \
     && apt-get install -y ansible
 
 # Install Terraform
-RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
-    && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
-    && apt-get update \
-    && apt-get install -y terraform \
-    && rm -rf /var/lib/apt/lists/*
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | \
+    gpg --dearmor | \
+    tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+RUN gpg --no-default-keyring \
+    --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    --fingerprint
+
+RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+    https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+    tee /etc/apt/sources.list.d/hashicorp.list
+
+RUN apt update
+RUN apt-get install -y terraform
 
 # Create a new user named 'ubuntu' and set up the home directory
 RUN useradd -m -s /bin/bash ubuntu
