@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Navigate to the 'src' directory and run npm install
+                    dir('src') {
+                        sh 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    // Navigate to the 'src' directory and run npm run build
+                    dir('src') {
+                        sh 'npm run build'
+                    }
+                }
+            }
+        }
+    }
+}
