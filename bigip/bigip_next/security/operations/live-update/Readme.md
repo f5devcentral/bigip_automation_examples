@@ -20,13 +20,13 @@
 
 # Overview
 
-This flow is one of three use-cases of the [Operations](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/Readme.md) series on applying updates to Next WAF. It provides manual walk-through steps and automated Terraform scripts for updating signature package for Next WAF in Central Manager and then pushing them to all the instances.
+This flow is one of three use-cases of the [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) series on applying updates to Next WAF. It provides manual walk-through steps and automated Terraform scripts for updating signature package for Next WAF in Central Manager and then pushing them to all the instances.
 
 # Docker Setup
 
 You may choose to use the included Docker. You may run it on Linux machine in order to take advantage of Ansible tooling.
 
-If you chose to use Docker, follow the steps to set it up in this [guide](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/deploy-with-new-next-waf#docker-setup).
+If you chose to use Docker, follow the steps to set it up in this [guide](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf#docker-setup).
 
 # Manual Workflow Guide
 

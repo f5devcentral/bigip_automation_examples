@@ -168,7 +168,7 @@ ltm-custom-monitor-migration --> ltm-custom-monitor-migration
 
 ## 4. Test Migrated Routing Policy
 
-Send the first request to the production environement of the migrated application:
+Send the first request to the production environment of the migrated application:
 
 ```bash
 curl -X GET http://10.1.10.171/node-server

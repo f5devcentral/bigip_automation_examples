@@ -18,18 +18,18 @@
 
 # Overview
 
-This flow is one of three use-cases of the [Operations](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/Readme.md) series focused on disabling signatures across multiple policies via Ansible. In the course of this guide we will add parameters with their overrides. For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide. We will assume that our app stores scripts to be embedded in webpages. We have app's server that allows app to execute CRUD operations and has its APIs specified in the Swagger file.
+This flow is one of three use-cases of the [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) series focused on disabling signatures across multiple policies via Ansible. In the course of this guide we will add parameters with their overrides. For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide. We will assume that our app stores scripts to be embedded in webpages. We have app's server that allows app to execute CRUD operations and has its APIs specified in the Swagger file.
 
 # Environment
 
-If you are completing this use case after having done the [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md) guide, you can skip environment setup part.
+If you are completing this use case after having done the [Disable signature on specific URL or parameter](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/disable-signature-url/Readme.md) guide, you can skip environment setup part.
 
-If this use case is the first one you take, you will need to complete the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide first in order to set up the environment and deploy app with security policy, including the following steps:
+If this use case is the first one you take, you will need to complete the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide first in order to set up the environment and deploy app with security policy, including the following steps:
 
-- [Blueprint Setup (for F5 employees or customers with access to UDF)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-- [Docker Setup](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#docker-setup)
-- [Infrastructure Configuration - items 1 & 2](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#infrastructure-configuration)
-- [Automated Workflow Guide - items 1 - 5](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#automated-workflow-guide) to deploy the app with the WAF policy
+- [Blueprint Setup (for F5 employees or customers with access to UDF)](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+- [Docker Setup](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#docker-setup)
+- [Infrastructure Configuration - items 1 & 2](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+- [Automated Workflow Guide - items 1 - 5](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#automated-workflow-guide) to deploy the app with the WAF policy
 - Verify the Deployed App with its Policy:
 
   - (optional) If you want to view app's APIs, enter the Swagger file of app API by running the following command:
@@ -56,7 +56,7 @@ If this use case is the first one you take, you will need to complete the [Deplo
 
 ## 1. Configure Connectivity to Central Manager
 
-**Note that we will use source files from another [Operations](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/Readme.md) use case - [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md).**
+**Note that we will use source files from another [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) use case - [Disable signature on specific URL or parameter](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/disable-signature-url/Readme.md).**
 
 If you are using Blueprint, you need to add the second policy for update - `juice_shop_policy` in the following file:
 
@@ -99,7 +99,7 @@ If you are not using Blueprint, you will need to edit the file as follows:
 
 ## 2. Configure Update Logging
 
-**If you have completed the [Disable signature on specific URL or parameter](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/disable-signature-url/Readme.md) guide, your connection is already established and you can skip this step.**
+**If you have completed the [Disable signature on specific URL or parameter](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/disable-signature-url/Readme.md) guide, your connection is already established and you can skip this step.**
 
 ### 2.1 Connect to Running Docker
 
