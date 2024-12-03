@@ -50,7 +50,7 @@ USER ubuntu
 
 # Switch to the home directory and clone the sources
 WORKDIR /home/ubuntu
-RUN git clone https://github.com/f5devcentral/bigip_automation_examples.git
+RUN git clone --branch feature/merge-all https://github.com/yoctoserge/bigip_automation_examples.git
 
 # Run Ansible and Terraform version checks
 CMD ["sh", "-c", "ansible --version && terraform --version"]
