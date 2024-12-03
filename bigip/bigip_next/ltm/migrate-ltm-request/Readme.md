@@ -36,7 +36,7 @@ If this guide is the first one you take, you will need to complete the following
 
 - [Docker setup (optional)](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#docker-setup): complete this step ONLY if you haven't done initialization yet, including in other lab and only if you chose to use Docker setup.
 
-- [Application initialization](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#1-application-initialization)
+- [Application setup](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#1-application-setup)
 
 - [TMOS initialization](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#2-tmos-initialization)
 
