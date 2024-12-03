@@ -14,13 +14,13 @@
 
 We will focus on _manual_ as well as _automated_ migration processes for the following use-cases:
 
-1. [Migrate Custom Monitor](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md),
-2. [Migrate with Routing LTM Policy](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/ltm/migrate-ltm-request/Readme.md),
+1. [Migrate Custom Monitor](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md),
+2. [Migrate with Routing LTM Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-request/Readme.md),
 
-| **Guide**                       | **Manual**                                                                                                                                                          | **Automation**                                                                                                                                                            |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Migrate Custom Monitor          | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#automated-workflow-guide) |
-| Migrate with Routing LTM Policy | N/A                                                                                                                                                                 | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/ltm/migrate-ltm-request/Readme.md#automated-workflow-guide)         |
+| **Guide**                       | **Manual**                                                                                                                                                                     | **Automation**                                                                                                                                                                       |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Migrate Custom Monitor          | [Manual flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#automated-workflow-guide) |
+| Migrate with Routing LTM Policy | N/A                                                                                                                                                                            | [Automated flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-request/Readme.md#automated-workflow-guide)         |
 
 # Environment & Pre-requisites
 

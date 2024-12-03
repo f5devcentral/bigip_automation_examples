@@ -32,13 +32,13 @@ For this flow we will use an application that has production and staging environ
 
 If this guide is the first one you take, you will need to complete the following environment setup steps. If you have already done those within another guide, you can skip them.
 
-- [Blueprint setup](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf): if you are an F5 employee or customer with access to UDF, you can use BIG-IP Next blueprint.
+- [Blueprint setup](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf): if you are an F5 employee or customer with access to UDF, you can use BIG-IP Next blueprint.
 
-- [Docker setup (optional)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#docker-setup): complete this step ONLY if you haven't done initialization yet, including in other lab and only if you chose to use Docker setup.
+- [Docker setup (optional)](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#docker-setup): complete this step ONLY if you haven't done initialization yet, including in other lab and only if you chose to use Docker setup.
 
-- [Application initialization](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#1-application-initialization)
+- [Application initialization](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#1-application-initialization)
 
-- [TMOS initialization](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#2-tmos-initialization)
+- [TMOS initialization](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/ltm/migrate-ltm-custom-monitors/Readme.md#2-tmos-initialization)
 
 ## Create App & Policy in TMOS
 
