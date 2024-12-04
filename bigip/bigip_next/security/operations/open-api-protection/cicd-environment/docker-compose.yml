@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   jenkins:
     build:
@@ -11,7 +9,7 @@ services:
       - 50000:50000
     volumes:
       - ./shared:/shared_data
-      - ./jenkins-home:/var/jenkins_home
+      - ./jenkinshome:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     environment:
