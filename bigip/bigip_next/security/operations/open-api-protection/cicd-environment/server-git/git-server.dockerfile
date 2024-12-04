@@ -27,6 +27,7 @@ RUN mkdir /tmp/script-crud-service && \
 # Copy the Jenkinsfile into the repository
 COPY repo/Jenkinsfile /tmp/script-crud-service/
 COPY repo/src /tmp/script-crud-service/src
+COPY repo/automation /tmp/script-crud-service/automation
 
 # Set Git user name and email for the git commands
 RUN git config --global user.name "Initial Commit" && \

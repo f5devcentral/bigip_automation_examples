@@ -4,6 +4,19 @@ FROM jenkins/jenkins:lts
 # Switch to the root user to install additional dependencies
 USER root
 
+# Disable interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    software-properties-common \    
+    lsb-release \        
+    python3-full \
+    python3-pip
+
+# Install Ansible
+RUN pip install ansible --break-system-packages
+
+
 # Install Node.js v22 and related dependencies
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs \
@@ -18,6 +31,7 @@ RUN jenkins-plugin-cli --plugins \
     "cloudbees-folder build-timeout timestamper ws-cleanup ant gradle" \ 
     "pipeline-graph-view git matrix-auth pam-auth ldap email-ext mailer dark-theme" \
     "configuration-as-code docker-workflow" \
+    "ansible" \
     && mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 # Copy Groovy script and configuration file
@@ -31,5 +45,3 @@ COPY global-security.yml /var/casc_configs
 
 # Change back to Jenkins user
 USER jenkins
-
-

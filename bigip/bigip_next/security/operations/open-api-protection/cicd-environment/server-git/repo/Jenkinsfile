@@ -23,5 +23,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Update Swagger Definition at BigIP Next') {
+            steps {
+                dir('automation') {
+                    ansiblePlaybook(
+                        playbook: 'playbooks/site.yml'
+                    )
+                }
+            }
+        }
     }
 }
