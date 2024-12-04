@@ -19,6 +19,7 @@ pipeline {
                     // Navigate to the 'src' directory and run npm run build
                     dir('src') {
                         sh 'npm run build'
+                        sh 'npm run publish'
                     }
                 }
             }
