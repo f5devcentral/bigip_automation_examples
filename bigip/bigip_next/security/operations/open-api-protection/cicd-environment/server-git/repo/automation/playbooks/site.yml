@@ -1,4 +1,101 @@
 ---
-- hosts: example
+- name: Request TMOS Masterkey
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - ../next_vars.yml
+
   tasks:
-    - debug: msg="{{ lookup('env','BUILD_TAG') }}"
+    - name: Login to the API
+      uri:
+        url: "https://{{  central_manager.address  }}/api/login"
+        method: POST
+        body: '{"username": "{{  central_manager.user  }}", "password": "{{  central_manager.password  }}"}'
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        validate_certs: no
+      register: login_response
+
+    - name: Save access_token
+      set_fact:
+        access_token: "{{ login_response.json.access_token }}"
+
+    - name: Get available policies
+      uri:
+        url: "https://{{ central_manager.address }}/api/waf/v1/policies?select=name"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: workspace_policies
+
+    - name: Map policy name to id
+      set_fact:
+        policies_name_to_id: > 
+          {{ 
+              dict(workspace_policies.json._embedded.policies | map(attribute='name') | list | zip(workspace_policies.json._embedded.policies | map(attribute='id') | list)) 
+          }}
+
+    - name: Map policy name to OpenAPI file id
+      uri:
+        url: "https://{{ central_manager.address }}/api/v1/spaces/default/security/waf-policies/{{ policies_name_to_id[item] }}/openapi"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: policy_openapi_file_id
+      with_items: "{{ policies_to_update }}"
+
+    - name: Combine OpenApi id and policy name in a map
+      set_fact:
+        policy_openapi_file_id_map: >
+          {{
+              dict(policies_to_update | zip(policy_openapi_file_id.results | map(attribute='json._embedded.openapi_files.0.id')))
+          }}
+
+    - name: Make unique file name
+      set_fact: 
+        unique_file_name: "{{ 'swagger.json' | make_filename_unique }}"
+
+    - name: Upload Open API Swagger 
+      shell: >
+        curl -X POST
+        -F "file=@../../interface/swagger.json"
+        -F "file_name={{ unique_file_name }}"
+        -F "file_type=openapi"
+        --insecure
+        -H "Authorization: Bearer {{ access_token }}"
+        "https://{{ central_manager.address }}/api/v1/spaces/default/security/waf/files"
+      register: swagger_upload_result
+
+    - name: Parse the response
+      set_fact:
+        file_upload_json: "{{ swagger_upload_result.stdout | from_json }}"
+
+    - name: Get file reference
+      set_fact:
+        file_upload_reference: "{{ file_upload_json['file_reference'] }}"
+    
+    - name: Set the uploaded file as an OpenAPI file for policies
+      uri:
+        url: "https://{{ central_manager.address }}/api/v1/spaces/default/security/waf-policies/{{ policies_name_to_id[item] }}/openapi/{{ policy_openapi_file_id_map[item] }}"
+        method: PUT
+        body_format: json
+        body: |
+          {
+            "id": "{{  policy_openapi_file_id_map[item] }}",
+            "openapi_file_reference": {
+              "id": "{{ file_upload_reference.split('/')[-1] }}",
+              "link": "{{ file_upload_reference }}",
+              "name": "{{ unique_file_name }}"
+            }
+          }
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      with_items: "{{ policies_to_update }}"
