@@ -11,7 +11,7 @@
       uri:
         url: "https://{{  central_manager.address  }}/api/login"
         method: POST
-        body: '{"username": "{{  central_manager.user  }}", "password": "{{  central_manager.password  }}"}'
+        body: '{"username": "{{  central_manager_user  }}", "password": "{{  central_manager_password  }}"}'
         body_format: json
         headers:
           Content-Type: "application/json"

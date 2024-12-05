@@ -24,13 +24,20 @@ pipeline {
                 }
             }
         }
-
+        
         stage('Update Swagger Definition at BigIP Next') {
             steps {
                 dir('automation') {
-                    ansiblePlaybook(
-                        playbook: 'playbooks/site.yml'
-                    )
+                    withCredentials([usernamePassword(
+                        credentialsId: 'bigipnext-access', 
+                        usernameVariable: 'CM_USER', 
+                        passwordVariable: 'CM_PASSWORD'
+                    )]) {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/site.yml',
+                            extras: "--extra-vars 'central_manager_user=${CM_USER} central_manager_password=${CM_PASSWORD}'"
+                        )
+                    }
                 }
             }
         }
