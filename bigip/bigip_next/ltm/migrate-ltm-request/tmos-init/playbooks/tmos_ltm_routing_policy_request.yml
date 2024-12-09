@@ -1,0 +1,42 @@
+- name: Configure routing LTM policy and rules
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Create LTM policy
+      f5networks.f5_modules.bigip_policy:
+        provider: "{{ provider }}"
+        name: ltm-routing-policy
+        partition: Common
+        strategy: first
+        state: present
+
+    - name: Create routing rule based on HTTP header X-STAGING -> STAGING
+      f5networks.f5_modules.bigip_policy_rule:
+        provider: "{{ provider }}"
+        policy: ltm-routing-policy
+        name: staging-rule
+        conditions:
+          - type: http_header
+            header_name: X-STAGING
+            header_is_any:
+              - staging
+        actions:
+          - type: forward
+            pool: ltm-pool-staging
+            event: request
+        state: present
+
+    - name: Attach request routing policy to the virtual server
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ virtual_server.name }}"
+        partition: "Common"
+        policies:
+          - ltm-routing-policy
+        state: "present"
+      delegate_to: localhost

@@ -35,11 +35,11 @@
 
 # Overview
 
-This guide belongs to the series of [Operations](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/Readme.md) guides on applying updates to Next WAF to protect an application. It provides manual walk-through steps and automated Terraform scripts for updating security policy for Next WAF in Central Manager.
+This guide belongs to the series of [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) guides on applying updates to Next WAF to protect an application. It provides manual walk-through steps and automated Terraform scripts for updating security policy for Next WAF in Central Manager.
 
 This guide showcases protection of API endpoint of an existing app using OpenAPI (Swagger file). The existing security policy will be updated using OpenAPI with a list of allowed URLs. Blocking and creating alarms for violations will be configured. And as a result, all requests will pass only through the API specified in OpenAPI.
 
-For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide.
+For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide.
 
 # Manual Workflow Guide
 
@@ -197,7 +197,7 @@ components:
 
 ### 1.1 Verify Swagger File
 
-Make sure endpoints are not specified in the Swagger file by running the following command:
+Check that endpoints are not specified in the Swagger file by running the following command:
 
 ```bash
 cat code-crud-swagger.yaml | grep endpoint
@@ -205,13 +205,13 @@ cat code-crud-swagger.yaml | grep endpoint
 
 ### 1.2 Verify App
 
-Verify that our app returns requests:
+Verify the application return:
 
 ```bash
 curl http://10.1.10.94/endpoint1
 ```
 
-It will be returned with the following output:
+The following output will be returned:
 
 ```
 OK. Endpoint - 1
@@ -223,7 +223,7 @@ Log in BIG-IP Next Central Manager via the GUI and navigate to the **Security Wo
 
 ![alt text](./assets/navigate-security.png)
 
-Click on the policy created in [this](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide, navigate to the **OpenAPI Protection** section and click the **Choose file** button. It will open the upload window.
+Click on the policy created in [this](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide, navigate to the **OpenAPI Protection** section and click the **Choose file** button. It will open the upload window.
 
 ![alt text](./assets/open-api-prot.png)
 

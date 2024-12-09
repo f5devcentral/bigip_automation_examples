@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Path to the API key file on the shared volume
+API_KEY_FILE="/shared_data/admin-token.txt"
+
+# Check if the API key file exists
+if [[ -f "$API_KEY_FILE" ]]; then
+  API_KEY=$(cat "$API_KEY_FILE")
+else
+  echo "API key file not found: $API_KEY_FILE"
+  exit 1
+fi
+
+# Jenkins server details
+JENKINS_URL="http://jenkins:8080/"
+USER="admin"
+JOB_NAME="Script%20CRUD%20Service%20Pipeline" # Replace spaces with %20 for URL encoding
+
+# Trigger the job
+curl -X POST "${JENKINS_URL}/job/${JOB_NAME}/build" \
+    --user "${USER}:${API_KEY}" \
+    --header "Jenkins-Crumb: $(curl -s --user "${USER}:${API_KEY}" "${JENKINS_URL}/crumbIssuer/api/json" | jq -r .crumb)"
+
+
+echo "Triggered Jenkins job with API key."

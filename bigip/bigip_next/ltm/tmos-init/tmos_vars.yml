@@ -1,0 +1,24 @@
+provider: 
+  server: 10.1.1.12
+  server_port: 443
+  user: admin
+  password: admin
+  validate_certs: false
+  no_f5_teem: false
+
+nodes: 
+  - ip: 10.1.20.102
+    name: ltm-prod
+  - ip: 10.1.20.103
+    name: ltm-staging
+
+pools: 
+  - name: ltm-pool-prod
+    nodes: [0]
+  - name: ltm-pool-staging
+    nodes: [1]
+
+health_monitors:
+  - name: ltm-custom-monitor
+    url: /health
+    response: Healthy\n

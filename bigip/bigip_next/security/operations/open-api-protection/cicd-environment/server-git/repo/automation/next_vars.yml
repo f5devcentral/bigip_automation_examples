@@ -1,0 +1,5 @@
+central_manager:
+  address: 10.1.1.5
+
+policies_to_update: 
+  - lab-waf

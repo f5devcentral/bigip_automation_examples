@@ -209,7 +209,7 @@
     - name: Save App AS3 preview files
       delegate_to: localhost
       copy:
-        content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
+        content: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) | fix_monitor_defaults }}"
         dest: "/tmp/application_{{ item.item | regex_search('\\d+(?=/preview)') }}_migrate.json"
       with_items: "{{ as3_app_preview_files.results }}"
 
@@ -218,7 +218,7 @@
       uri:
         url: "https://{{  central_manager.address  }}/api/v1/spaces/default/appsvcs/documents"
         method: POST
-        body: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) }}"
+        body: "{{ item | append_object_if_required(cm_apps, migrate_shared_object_prefix) | update_ip_if_required(ip_map) | fix_monitor_defaults }}"
         body_format: json
         headers:
           Authorization: "Bearer {{  access_token  }}"

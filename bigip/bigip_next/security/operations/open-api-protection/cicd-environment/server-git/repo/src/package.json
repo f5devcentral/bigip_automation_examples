@@ -1,0 +1,23 @@
+{
+    "name": "script-api",
+    "version": "1.0.0",
+    "description": "An Express API for managing scripts with Swagger documentation.",
+    "main": "src/app.js",
+    "scripts": {
+        "start": "node app.js",
+        "build-swagger": "node swagger.js",
+        "build": "npm run build-swagger",
+        "dev": "nodemon app.js",
+        "publish": "rm -rf ../interface && mkdir ../interface && cp ./swagger.json ../interface"
+    },
+    "dependencies": {
+        "express": "^4.21.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^4.6.3"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    },
+    "author": "Your Name",
+    "license": "MIT"
+}

@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Navigate to the 'src' directory and run npm install
+                    dir('src') {
+                        sh 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    // Navigate to the 'src' directory and run npm run build
+                    dir('src') {
+                        sh 'npm run build'
+                        sh 'npm run publish'
+                    }
+                }
+            }
+        }
+        
+        stage('Update Swagger Definition at BigIP Next') {
+            steps {
+                dir('automation') {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'bigipnext-access', 
+                        usernameVariable: 'CM_USER', 
+                        passwordVariable: 'CM_PASSWORD'
+                    )]) {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/site.yml',
+                            extras: "--extra-vars 'central_manager_user=${CM_USER} central_manager_password=${CM_PASSWORD}'"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

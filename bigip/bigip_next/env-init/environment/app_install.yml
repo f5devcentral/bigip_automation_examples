@@ -3,6 +3,9 @@
   hosts: app
   become: true
 
+  vars_files:
+    - app_vars.yml
+
   handlers:
     - name: reload-nginx
       service:
@@ -27,5 +30,8 @@
         src: templates/nginx.conf.j2
         dest: /etc/nginx/nginx.conf
         mode: "0644"
+      vars:
+        server_ips: "{{ app_servers }}"
       notify:
         - reload-nginx
+
