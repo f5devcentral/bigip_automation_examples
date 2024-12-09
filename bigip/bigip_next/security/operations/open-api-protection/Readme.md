@@ -20,28 +20,34 @@
     - [1. Deploy Blueprint](#1-deploy-blueprint)
     - [2. Setup SSH Keys](#2-setup-ssh-keys)
     - [3. Enter Blueprint](#3-enter-blueprint)
-  - [PREREQUISITES Docker COmpose](#prerequisites-docker-compose)
-    - [4. Clone Repository](#4-clone-repository)
-  - [5 Automation scripts](#5-automation-scripts)
-  - [NExt vars file](#next-vars-file)
-  - [Since we do not keep user name and password for CM access in repository, Ansible running command will include those:](#since-we-do-not-keep-user-name-and-password-for-cm-access-in-repository-ansible-running-command-will-include-those)
-  - [Verify the policy update](#verify-the-policy-update)
-- [Adding `delete` Handler](#adding-delete-handler)
-  - [1 Run CI/CD](#1-run-cicd)
-  - [Build CI/CD Environment](#build-cicd-environment)
-  - [Add CM Creds to Jenkins](#add-cm-creds-to-jenkins)
-  - [Go to the `/tmp` folder in your Ubuntu terminal.](#go-to-the-tmp-folder-in-your-ubuntu-terminal)
-  - [Add DELETE Handler to Application](#add-delete-handler-to-application)
+    - [4. Docker Compose](#4-docker-compose)
+    - [5. Clone Repository](#5-clone-repository)
+  - [Review Automation Scripts (optional)](#review-automation-scripts-optional)
+  - [Review Policy to Be Updated (optional)](#review-policy-to-be-updated-optional)
+  - [Run Policy Update](#run-policy-update)
+  - [Verify Policy Update](#verify-policy-update)
+- [Add `delete` Handler](#add-delete-handler)
+  - [CI/CD Environment](#cicd-environment)
+    - [1. Run CI/CD Initialization](#1-run-cicd-initialization)
+    - [2. Build CI/CD Environment](#2-build-cicd-environment)
+  - [Add Central Manager Credentials to Jenkins](#add-central-manager-credentials-to-jenkins)
+  - [Add `delete` Handler to Policy](#add-delete-handler-to-policy)
+    - [1. Clone Repo](#1-clone-repo)
+    - [2. Add `delete` Handler](#2-add-delete-handler)
+    - [3. Verify `delete` Handler](#3-verify-delete-handler)
+    - [4. Push Updates](#4-push-updates)
+    - [5. Review Pipeline in Jenkins](#5-review-pipeline-in-jenkins)
+    - [6. Verify `delete` Handler in Central Manager](#6-verify-delete-handler-in-central-manager)
 
 # Overview
 
 This guide belongs to the series of [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) guides on applying updates to Next WAF to protect an application. It provides manual walk-through steps and automated Terraform scripts for updating security policy for Next WAF in Central Manager.
 
-This guide showcases protection of API endpoint of an existing app using OpenAPI (Swagger file). The existing security policy will be updated using OpenAPI with a list of allowed URLs. Blocking and creating alarms for violations will be configured. And as a result, all requests will pass only through the API specified in OpenAPI.
-
 For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide.
 
 # Manual Workflow Guide
+
+The manual workflow of this guide showcases protection of API endpoint of an existing app using OpenAPI (Swagger file). The existing security policy will be updated using OpenAPI with a list of allowed URLs. Blocking and creating alarms for violations will be configured. And as a result, all requests will pass only through the API specified in OpenAPI.
 
 ## 1. Verification
 
@@ -299,7 +305,7 @@ Go back to Central Manager to see the request we just sent. Proceed to the **WAF
 
 # Automated Workflow Guide
 
-In this part of the guide we will use Ansible to update the WAF policy by uploading a new OpenAPI swagger file - `json`. TBD
+In this part of the guide we will use Ansible to first update the WAF policy by uploading a new OpenAPI swagger file, and then adding a `delete` handler to it.
 
 ## Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
@@ -307,7 +313,7 @@ In this part of the guide we will use Ansible to update the WAF policy by upload
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **Next WAF - Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **NEXT WAF-Automation (20.3.0)**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -327,11 +333,9 @@ After the Blueprint has been deployed and SSH keys are setup, navigate to the **
 
 Go to the **Access Methods** tab and copy the SSH external. Execute copied command in the command line.
 
-## PREREQUISITES Docker COmpose
+### 4. Docker Compose
 
-Note that docker compose is to be installed in this machine
-
-Run the following command to verify you have it:
+Docker compose is to be installed in this machine. Run the following command to verify if you have it:
 
 ```bash
 docker compose
@@ -339,15 +343,13 @@ docker compose
 
 If the command cannot be executed, you need to install Docker Compose. However if you are using the UDF Blueprint, you do not need to install it since it is already pre-installed.
 
-### 4. Clone Repository
+### 5. Clone Repository
 
 After that, clone the [repository](https://github.com/yoctoserge/bigip_automation_examples.git). Note that you don't need to specify the SSH keys in Blueprint since they are already specified.
 
-## 5 Automation scripts
+## Review Automation Scripts (optional)
 
-Let's take a look at automation scripts.
-
-Proceed to the following directory:
+Let's take a look at automation scripts. Proceed to the following directory:
 
 ```bash
 bigip_automation_examples/bigip/bigip_next/security/operations/open-api-protection/cicd-environment/server-git/repo
@@ -359,13 +361,13 @@ And run the following command:
 tree
 ```
 
-If you do not have it installed, you can first run:
+If you do not have it installed, you can first run the following command:
 
 ```bash
 sudo apt install tree
 ```
 
-The `tree` command will show the following repo structure, consisting of the Jenkins file, automation folder, swagger file to be installed, folder with application sources:
+The `tree` command will show the following repo structure that includes Jenkins file, automation folder, swagger file to be installed, and folder with application sources:
 
 ```bash
 .
@@ -393,9 +395,9 @@ The `tree` command will show the following repo structure, consisting of the Jen
 7 directories, 13 files
 ```
 
-## NExt vars file
+## Review Policy to Be Updated (optional)
 
-Proceed to the following directory:
+Next, we can take a look at the policy that we will update. Proceed to the following directory:
 
 ```bash
 bigip_automation_examples/bigip/bigip_next/security/operations/open-api-protection/cicd-environment/server-git/repo/automation$
@@ -407,7 +409,7 @@ And enter the variable file:
 cat next_vars.yml
 ```
 
-You will see CM address and a list of policies to update:
+You will see CM (Central Manager) address and a list of policies to update:
 
 ```bash
 central_manager:
@@ -417,15 +419,19 @@ policies_to_update:
   - lab-waf
 ```
 
-## Since we do not keep user name and password for CM access in repository, Ansible running command will include those:
+## Run Policy Update
+
+Let's run the command to update the security policy:
 
 ```bash
 ansible-playbook ./playbooks/site.yml  --extra-vars 'central_manager_user=admin central_manager_password=Welcome1234567!'
 ```
 
-## Verify the policy update
+Note that since we do not keep user name and password for CM access in repository, Ansible running command includes those.
 
-Log in BIG-IP Next Central Manager and proceed to the **Security Workspace**. Proceed to **Policies** under the **WAF** section. CLick on the policy created in the Manual Workflow.
+## Verify Policy Update
+
+Log in BIG-IP Next Central Manager and proceed to the **Security Workspace**. Proceed to **Policies** under the **WAF** section. Click on the policy created in the Manual Workflow to enter it.
 
 ![alt text](./assets/swagger-json.png)
 
@@ -433,13 +439,15 @@ Scroll the file down and take a look at the `put` and `component` elements:
 
 ![alt text](./assets/open-swagger.png)
 
-# Adding `delete` Handler
+# Add `delete` Handler
 
-In this part of the guide we will add a `delete` handler to the existing app policy. In order to do that, we will need to update the WAF security policy. So we will create a job inside CI/CD envrioment using app sources. It will automatically, when new routes appear, update API definition in BIG-IP Next.
+In this part of the guide we will add a `delete` handler to the earlier created security policy. In order to update the WAF security policy, we will create a pipeline inside CI/CD environment where Git Server and Jenkins server are pre-configured. It will automatically, when new routes appear, update API definition in BIG-IP Next.
 
-We will use DOcker Compose to run the CD/CI environment where Git Server and Jenkins server are pre-configured. We will pull the repo from the Git SCM, update sources and push back. After that the pre-configured pipeline will address Jenkins server from Git Server, and go to BIG-IP Next from Jenkins.
+In order to run the CD/CI environment we will use Docker Compose. We will then pull the repo from the Git SCM, update sources and push back. After that the pre-configured pipeline will address Jenkins server from Git Server, and go to BIG-IP Next from Jenkins.
 
-## 1 Run CI/CD
+## CI/CD Environment
+
+### 1. Run CI/CD Initialization
 
 Go to the following directory:
 
@@ -447,45 +455,43 @@ Go to the following directory:
 bigip_automation_examples/bigip/bigip_next/security/operations/open-api-protection/cicd-environment
 ```
 
-Run the initialiation script:
+Run the initialization script:
 
 ```bash
 ./init.sh
 ```
 
-## Build CI/CD Environment
+### 2. Build CI/CD Environment
 
-You can use the following command regardless of wherther you use Blueprint or not.
-
-This cimmand will compose Docker for Jenkins, Git SCM, initializaes Jenkins with initial parameters for swager file build and deploy, initializes Git SCM with sources of app that will be built and deployed vis CI/CD.
+You can run the following command to build CI/CD environment regardless of whether you use Blueprint or not:
 
 ```bash
 docker compose build
 ```
 
-Note that this can take some time.
+This command will compose Docker for Jenkins, Git SCM, initialize Jenkins with initial parameters for Swagger file to be built and deployed, initialize Git SCM with sources of app that will be built and deployed via CI/CD.
 
-NExt, run the following command to create Jenkins server and Git server:
+Next, run the following command to create Jenkins and Git servers:
 
 ```bash
 docker compose up
 ```
 
-## Add CM Creds to Jenkins
+## Add Central Manager Credentials to Jenkins
 
-In the blueprint installed earlier navigate to the **Ubuntu Jump Host (client/server)** and proceed to **Firefox**:
+Since we do not keep credentials for BIG-IP Next access, we will need to add those to Jenkins.
+
+In the Blueprint deployed earlier navigate to the **Ubuntu Jump Host (client/server)** and proceed to **Firefox**. If you are not using the UDF Blueprint, open your browser for the 9090 port on your Jumphost.
 
 ![alt text](./assets/open-firefox.png)
 
-In the opened Firefox tab go to http://10.1.1.4:9090. This will open Jenkins on Jumohost on 9090 port.
+In the opened Firefox tab go to http://10.1.1.4:9090. This will open Jenkins on Jumphost on 9090 port.
 
-If you are not using the UDF Blueprint, open your browser for the 9090 port on your Jumphost.
-
-In the opened page enter **admin** for username and password. You will see the created job.
+In the opened page enter **admin** for both username and password.
 
 ![alt text](./assets/jenkins-login.png)
 
-Since we do not keep credentials for BIG-IP Next access, navigate to **Manage Jenkins** > **Credentials**. Click the **global** button.
+You will see the created job. Navigate to **Manage Jenkins** > **Credentials**. Click the **global** button.
 
 ![alt text](./assets/jenkins-creds.png)
 
@@ -493,15 +499,21 @@ Click the **Add Credentials** button.
 
 ![alt text](./assets/add-creds.png)
 
-Fill in the opened form: **admin** for username, **Welcome1234567!** for password, and **bigipnext-access** ID.
+Fill in the opened form:
+
+- **admin** for username,
+- **Welcome1234567!** for password,
+- **bigipnext-access** for ID.
 
 ![alt text](./assets/creds-form.png)
 
 Now Jenkins is setup for running deployment to BIG-IP Next.
 
-## Go to the `/tmp` folder in your Ubuntu terminal.
+## Add `delete` Handler to Policy
 
-Run the following command:
+### 1. Clone Repo
+
+Go to the `/tmp` folder in your Ubuntu terminal and run the following command:
 
 ```bash
 git clone ssh://git@localhost:8022/home/git/script-crud-service.git
@@ -509,15 +521,15 @@ git clone ssh://git@localhost:8022/home/git/script-crud-service.git
 
 Type in **password** for the requested password.
 
-Enter the folder: `script-crud-service` and change the branch:
+Enter the `script-crud-service` folder and change the branch:
 
 ```bash
 git checkout main
 ```
 
-## Add DELETE Handler to Application
+### 2. Add `delete` Handler
 
-Go to the
+Go to the following directory:
 
 ```bash
 ./src/routes
@@ -529,11 +541,13 @@ Rename the files as follows:
 mv scriptRoutes.js scriptRoutes.old
 ```
 
+and
+
 ```bash
 mv scriptRoutes.new scriptRoutes.js
 ```
 
-Verify:
+### 3. Verify `delete` Handler
 
 Enter the file:
 
@@ -549,7 +563,9 @@ You will see the delete handler:
 router.delete("/:id", (req, res) => {
 ```
 
-Now that we have a new delete route, as well as CI/CD is setup, we can push these updates to Git SCM:
+### 4. Push Updates
+
+Now that we have a new delete route, as well as setup CI/CD, we can push these updates to Git SCM:
 
 ```bash
 git add .
@@ -561,11 +577,7 @@ Next, describe the commit:
 git commit -m "Add delete handler"
 ```
 
-If you see such message:
-
-`*** Please tell me who you are.`
-
-Run the following commands with the default user info. However if you want to personalize it, you can use your real information:
+If you see the `*** Please tell me who you are.` message, run the following commands with the default user info. However if you want to personalize it, you can use your own information:
 
 ```bash
 git config --global user.email "lab-test@example.com"
@@ -577,17 +589,21 @@ And then:
 git config --global user.name "Lab Test"
 ```
 
-And then run again:
+Finally, run again:
 
 ```bash
 git commit -m "Add delete handler"
 ```
 
+and
+
 ```bash
 git push
 ```
 
-Go back to your Jenkins. You will see the run pipeline. Enter it and proceed to the **Last build**.
+### 5. Review Pipeline in Jenkins
+
+Go back to Jenkins. You will see the run pipeline. Enter it and proceed to the **Last build**.
 
 ![alt text](./assets/last-build.png)
 
@@ -599,7 +615,9 @@ Wait for the task to be completed successfully:
 
 ![alt text](./assets/task-complete.png)
 
-Go back to BIG-IP Next Central Manager and proceed to the **Security Workspace**. Proceed to **Policies** under the **WAF** section. CLick on the policy created in the Manual Workflow and navigate to **Open API Protection**. You will see the updated OpenAPI File:
+### 6. Verify `delete` Handler in Central Manager
+
+Go to Central Manager and proceed to the **Security Workspace**. Proceed to **Policies** under the **WAF** section. Click on the policy created earlier and navigate to **Open API Protection**. You will see the updated OpenAPI File:
 
 ![alt text](./assets/updated-json.png)
 
