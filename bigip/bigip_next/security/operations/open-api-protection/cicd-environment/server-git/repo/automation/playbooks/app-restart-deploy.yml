@@ -4,11 +4,16 @@
   gather_facts: false
 
   tasks:
+    - name: Copy sources to build target
+      ansible.builtin.copy:
+        src: "../../src"
+        dest: /tmp/crud_app
+
     - name: Build Docker image
       community.docker.docker_image:
         source: build
         build:
-          path: "../../src"
+          path: "/tmp/crud_app/src"
           nocache: true
         name: script_crud_app
         push: false

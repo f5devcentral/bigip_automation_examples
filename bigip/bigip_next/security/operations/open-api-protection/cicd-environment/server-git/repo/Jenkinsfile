@@ -9,7 +9,7 @@ pipeline {
                         ansiblePlaybook(
                             playbook: 'playbooks/app-restart-deploy.yml',
                             inventory: 'inventory.ini',
-                            credentialsId: 'app-host-ssh-key',
+                            credentialsId: 'app-host-ssh-key'
                         )
                     }
                 }
