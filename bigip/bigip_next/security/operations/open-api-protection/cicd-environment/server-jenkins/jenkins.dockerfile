@@ -8,14 +8,13 @@ USER root
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-    software-properties-common \    
-    lsb-release \        
+    software-properties-common \
+    lsb-release \
     python3-full \
     python3-pip
 
 # Install Ansible
-RUN pip install ansible --break-system-packages
-
+RUN pip install ansible requests --break-system-packages
 
 # Install Node.js v22 and related dependencies
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \

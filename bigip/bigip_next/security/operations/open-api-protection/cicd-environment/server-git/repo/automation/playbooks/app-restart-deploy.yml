@@ -1,6 +1,8 @@
 ---
 - name: Build and run Script CRUD Application container for Node.js app
-  hosts: localhost
+  hosts: app_host
+  gather_facts: false
+
   tasks:
     - name: Build Docker image
       community.docker.docker_image:
