@@ -9,9 +9,9 @@
   tasks:
     - name: Login to the API
       uri:
-        url: "https://{{  central_manager.address  }}/api/login"
+        url: "https://{{  next.address  }}/api/login"
         method: POST
-        body: '{"username": "{{  central_manager_user  }}", "password": "{{  central_manager_password  }}"}'
+        body: '{"username": "{{  next_user  }}", "password": "{{  next_password  }}"}'
         body_format: json
         headers:
           Content-Type: "application/json"
@@ -24,7 +24,7 @@
 
     - name: Get available policies
       uri:
-        url: "https://{{ central_manager.address }}/api/waf/v1/policies?select=name"
+        url: "https://{{ next.address }}/api/waf/v1/policies?select=name"
         method: GET
         headers:
           Authorization: "Bearer {{ access_token }}"
@@ -34,14 +34,14 @@
 
     - name: Map policy name to id
       set_fact:
-        policies_name_to_id: > 
+        policies_name_to_id: >
           {{ 
               dict(workspace_policies.json._embedded.policies | map(attribute='name') | list | zip(workspace_policies.json._embedded.policies | map(attribute='id') | list)) 
           }}
 
     - name: Map policy name to OpenAPI file id
       uri:
-        url: "https://{{ central_manager.address }}/api/v1/spaces/default/security/waf-policies/{{ policies_name_to_id[item] }}/openapi"
+        url: "https://{{ next.address }}/api/v1/spaces/default/security/waf-policies/{{ policies_name_to_id[item] }}/openapi"
         method: GET
         headers:
           Authorization: "Bearer {{ access_token }}"
@@ -58,10 +58,10 @@
           }}
 
     - name: Make unique file name
-      set_fact: 
+      set_fact:
         unique_file_name: "{{ 'swagger.json' | make_filename_unique }}"
 
-    - name: Upload Open API Swagger 
+    - name: Upload Open API Swagger
       shell: >
         curl -X POST
         -F "file=@../../interface/swagger.json"
@@ -69,8 +69,12 @@
         -F "file_type=openapi"
         --insecure
         -H "Authorization: Bearer {{ access_token }}"
-        "https://{{ central_manager.address }}/api/v1/spaces/default/security/waf/files"
+        "https://{{ next.address }}/api/v1/spaces/default/security/waf/files"
       register: swagger_upload_result
+
+    - name: Debug OpenAPI file upload response
+      debug:
+        var: swagger_upload_result
 
     - name: Parse the response
       set_fact:
@@ -79,10 +83,10 @@
     - name: Get file reference
       set_fact:
         file_upload_reference: "{{ file_upload_json['file_reference'] }}"
-    
+
     - name: Set the uploaded file as an OpenAPI file for policies
       uri:
-        url: "https://{{ central_manager.address }}/api/v1/spaces/default/security/waf-policies/{{ policies_name_to_id[item] }}/openapi/{{ policy_openapi_file_id_map[item] }}"
+        url: "https://{{ next.address }}/api/v1/spaces/default/security/waf-policies/{{ policies_name_to_id[item] }}/openapi/{{ policy_openapi_file_id_map[item] }}"
         method: PUT
         body_format: json
         body: |

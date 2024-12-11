@@ -5,7 +5,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Navigate to the 'src' directory and run npm install
                     dir('src') {
                         sh 'npm install'
                     }
@@ -15,8 +14,7 @@ pipeline {
 
         stage('Build Project') {
             steps {
-                script {
-                    // Navigate to the 'src' directory and run npm run build
+                script {                
                     dir('src') {
                         sh 'npm run build'
                         sh 'npm run publish'
@@ -24,7 +22,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Update Swagger Definition at BigIP Next') {
             steps {
                 dir('automation') {
@@ -34,8 +32,20 @@ pipeline {
                         passwordVariable: 'CM_PASSWORD'
                     )]) {
                         ansiblePlaybook(
-                            playbook: 'playbooks/site.yml',
-                            extras: "--extra-vars 'central_manager_user=${CM_USER} central_manager_password=${CM_PASSWORD}'"
+                            playbook: 'playbooks/swagger-next.yml',
+                            extras: "--extra-vars 'next_user=${CM_USER} next_password=${CM_PASSWORD}'"
+                        )
+                    }
+                }
+            }
+        }
+
+        stage('Redeploy Application') {
+            steps {
+                script {
+                    dir('automation') {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/app-restart-deploy.yml'
                         )
                     }
                 }

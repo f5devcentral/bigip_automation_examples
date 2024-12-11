@@ -1,0 +1,25 @@
+---
+- name: Build and run Script CRUD Application container for Node.js app
+  hosts: localhost
+  tasks:
+    - name: Build Docker image
+      community.docker.docker_image:
+        source: build
+        build:
+          path: "../../src"
+          nocache: true
+        name: script_crud_app
+        push: false
+        tag: latest
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: script_crud_app
+        image: script_crud_app:latest
+        ports:
+          - "8082:8080"
+        env:
+          PORT: "8080"
+        state: started
+        restart: true
+        restart_policy: always

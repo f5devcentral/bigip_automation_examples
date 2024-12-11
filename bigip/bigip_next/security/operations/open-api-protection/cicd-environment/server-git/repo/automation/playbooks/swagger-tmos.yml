@@ -1,0 +1,58 @@
+---
+- name: Upload and update Swagger OpenAPI YAML file on BigIP TMOS
+  hosts: bigip
+  connection: local
+  gather_facts: no
+  vars:
+    bigip_host: "{{ tmos.address }}"
+    bigip_user: "{{ tmos_user }}"
+    bigip_password: "{{ tmos_password }}"
+    swagger_file_path: "../../interface/swagger.json"
+
+  tasks:
+    - name: Read Swagger JSON file content
+      ansible.builtin.slurp:
+        src: "{{ swagger_file_path }}"
+      register: swagger_file_content
+
+    - name: Upload OpenAPI file to BigIP
+      uri:
+        url: "https://{{ bigip_host }}/mgmt/tm/asm/file-transfer/uploads"
+        method: POST
+        user: "{{ bigip_user }}"
+        password: "{{ bigip_password }}"
+        headers:
+          Content-Type: "application/octet-stream"
+        body: "{{ swagger_file_content['content'] | b64decode }}"
+        validate_certs: no
+      register: upload_openapi_response
+
+    - name: Debug OpenAPI file upload response
+      debug:
+        var: upload_openapi_response
+
+    - name: Import OpenAPI into the policy
+      uri:
+        url: "https://{{ bigip_host }}/mgmt/tm/asm/tasks/import-open-api"
+        method: POST
+        user: "{{ bigip_user }}"
+        password: "{{ bigip_password }}"
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "policyName": "{{ item }}",
+            "filename": "{{ swagger_file_path | basename }}"
+          }
+        validate_certs: no
+      register: import_openapi_response
+      with_items: "{{ policies_to_update }}"
+
+    - name: Debug OpenAPI import task response
+      debug:
+        var: import_openapi_response
+
+    - name: Ensure the OpenAPI was imported successfully
+      fail:
+        msg: "Failed to import OpenAPI. Response: {{ import_openapi_response.json }}"
+      when: import_openapi_response.status != 200
