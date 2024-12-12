@@ -1,5 +1,8 @@
 tmos:
-  address: 10.1.1.5
+  address: 10.1.1.12
 
 policies_to_update: 
   - lab-waf
+
+bigip_user: admin
+bigip_password: admin
