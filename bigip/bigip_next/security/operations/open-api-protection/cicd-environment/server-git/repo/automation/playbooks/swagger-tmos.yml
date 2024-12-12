@@ -31,10 +31,6 @@
         validate_certs: no
       register: v
 
-    - name: Debug OpenAPI file upload response
-      debug:
-        var: upload_openapi_response
-
     - name: Import OpenAPI into the policy
       uri:
         url: "https://{{ tmos.address }}/mgmt/tm/asm/tasks/import-open-api"
