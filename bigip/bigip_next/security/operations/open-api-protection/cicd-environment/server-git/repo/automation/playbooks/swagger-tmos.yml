@@ -29,7 +29,7 @@
         body: "{{ swagger_file_content['content'] | b64decode | string }}"
         body_format: raw
         validate_certs: no
-      register: upload_openapi_response
+      register: v
 
     - name: Debug OpenAPI file upload response
       debug:
@@ -45,7 +45,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "policy":{"fullPath":"{{ item }}"},
+            "policy":{"fullPath":"/{{ item.partition }}/{{ item.name }}"},
             "filename": "{{ unique_file_name }}"
           }
         body_format: json
@@ -54,6 +54,17 @@
       register: import_openapi_response
       with_items: "{{ policies_to_update }}"
 
-    - name: Debug OpenAPI import task response
-      debug:
-        var: import_openapi_response
+    - name: Apply policies
+      bigip_asm_policy_manage:
+        provider:
+          server: "{{ tmos.address }}"
+          server_port: 443
+          user: "{{ bigip_user }}"
+          password: "{{ bigip_password }}"
+          validate_certs: false
+          no_f5_teem: false
+        name: "{{ item.name }}"
+        partition: "{{ item.partition }}"
+        active: true
+        apply: true
+      with_items: "{{ policies_to_update }}"

@@ -2,7 +2,8 @@ tmos:
   address: 10.1.1.12
 
 policies_to_update: 
-  - "/Common/lab-waf"
+  - partition: Common
+    name: lab-waf
 
 swagger_file_path: "../../interface/swagger.json"
 
