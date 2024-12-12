@@ -128,7 +128,7 @@
       loop: "{{ deploy_response.results }}"
 
     - name: Get deploy results
-      next_polling_module:
+      next_polling_deploy_module:
         next_url: "{{ next.address }}"
         username: "{{ next_user }}"
         password: "{{ next_password }}"

@@ -5,7 +5,7 @@ import requests
 import time
 from datetime import datetime
 
-class NextPolling:
+class NextDeployPolling:
     def __init__(self, next_url, username, password, logger, timeout):
         self.next_url = next_url
         self.username = username
@@ -48,7 +48,7 @@ class NextPolling:
 
             failure_reason = response_json.get("failure_reason", "")
             if len(failure_reason) > 0:
-                self.logger("Failure reason:" + id + " - " + failure_reason)
+                self.logger('[' + formatted_datetime + '] Failure reason:' + id + ' - ' + failure_reason)
 
             if status == "completed":
                 return {"success": True, "data": response.json()}
@@ -85,7 +85,7 @@ def run_module():
             f.write(f"{msg}\n")
 
     try:
-        process = NextPolling(next_url, username, password, custom_logger, timeout)
+        process = NextDeployPolling(next_url, username, password, custom_logger, timeout)
         poll_result = process.poll_status(task_url)
         if poll_result["success"]:
             result["success"] = True
