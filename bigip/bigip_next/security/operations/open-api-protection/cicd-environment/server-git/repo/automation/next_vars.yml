@@ -3,3 +3,5 @@ next:
 
 policies_to_update: 
   - lab-waf
+
+task_timeout_minutes: 15

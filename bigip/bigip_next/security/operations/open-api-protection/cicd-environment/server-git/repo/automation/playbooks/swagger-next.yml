@@ -103,3 +103,46 @@
           Content-Type: "application/json"
         validate_certs: no
       with_items: "{{ policies_to_update }}"
+
+    - name: Deploy the updated policies
+      uri:
+        url: "https://{{ next.address }}/api/waf/v1/tasks/deploy-policy"
+        method: POST
+        body_format: json
+        body: |
+          {
+            "policy_name": "{{ item }}",
+            "comment": "CI/CD Deploy {{ now() }}"
+          }
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+        status_code: [200, 201]
+      register: deploy_response
+      with_items: "{{ policies_to_update }}"
+
+    - name: Extract polling URL from the POST response
+      set_fact:
+        task_url: "{{ item.json._links.self.href }}"
+      loop: "{{ deploy_response.results }}"
+
+    - name: Get deploy results
+      next_polling_module:
+        next_url: "{{ next.address }}"
+        username: "{{ next_user }}"
+        password: "{{ next_password }}"
+        task_url: "{{ item }}"
+        timeout: "{{ task_timeout_minutes }}"
+      register: deploy_result
+      with_items: "{{ task_url }}"
+
+
+    - name: Polling Logs
+      debug:
+        var: file_content
+      vars: 
+        file_content: "{{ lookup('file', '../logs_next_polling.log') }}"
+      when: file_content.splitlines() | length > 0
+      run_once: true
+
