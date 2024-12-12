@@ -2,7 +2,9 @@ tmos:
   address: 10.1.1.12
 
 policies_to_update: 
-  - lab-waf
+  - "/Common/lab-waf"
+
+swagger_file_path: "../../interface/swagger.json"
 
 bigip_user: admin
 bigip_password: admin
