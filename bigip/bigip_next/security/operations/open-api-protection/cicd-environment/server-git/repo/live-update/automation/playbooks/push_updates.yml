@@ -61,7 +61,7 @@
 
     - name: Filter files with missing last_installed field and status equal to 'inactive'
       set_fact:
-        file_names: "{{ file_names + [item.file_name] }}"
+        file_names: "{{ file_names + [item] }}"
       loop: >-
         {{
           response.results
@@ -69,7 +69,6 @@
           | map(attribute='json._embedded.files')
           | map('sort', attribute='created', reverse=True) 
           | map('first')
-          | selectattr('last_installed', '==', none) 
           | selectattr('status', 'ne', 'active')  
           | map(attribute='file_name')  
           | list
