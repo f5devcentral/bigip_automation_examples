@@ -89,6 +89,25 @@ router.get("/", (req, res) => {
 
 /**
  * @swagger
+ * /script/status:
+ *   get:
+ *     summary: Get the status of the service
+ *     responses:
+ *       200:
+ *         description: Service status
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: "Status: OK\nSWAGGER Version: v1"
+ */
+router.get("/status", (req, res) => {
+  res.setHeader('content-type', 'text/plain');
+  res.send("Status: OK\r\nSwagger Version: v1\r\n");
+});
+
+/**
+ * @swagger
  * /script/{id}:
  *   get:
  *     summary: Get script by ID
@@ -166,5 +185,6 @@ router.put("/:id", (req, res) => {
     res.status(404).json({ message: "Script not found" });
   }
 });
+
 
 module.exports = router;

@@ -87,6 +87,26 @@ router.get("/", (req, res) => {
   res.json({ scripts });
 });
 
+
+/**
+ * @swagger
+ * /script/status:
+ *   get:
+ *     summary: Get the status of the service
+ *     responses:
+ *       200:
+ *         description: Service status
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: "Status: OK\nSWAGGER Version: v1"
+ */
+router.get("/status", (req, res) => {
+  res.setHeader('content-type', 'text/plain');
+  res.send("Status: OK\r\nSwagger Version: v2\r\n");
+});
+
 /**
  * @swagger
  * /script/{id}:
