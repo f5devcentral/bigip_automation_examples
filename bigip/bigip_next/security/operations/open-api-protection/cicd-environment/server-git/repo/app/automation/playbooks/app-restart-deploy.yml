@@ -18,6 +18,7 @@
         name: script_crud_app
         push: false
         tag: latest
+        force_source: true
 
     - name: Run Docker container
       community.docker.docker_container:
