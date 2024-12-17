@@ -1,6 +1,7 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const scriptRoutes = require('./routes/scriptRoutes');
+const internalRoutes = require('./routes/internalRoutes');
 const swaggerDocument = require('./swagger.json');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // API routes
 app.use('/api/v1/script', scriptRoutes);
+app.use('/internal', internalRoutes);
 
 // Start server
 app.listen(PORT, () => {
