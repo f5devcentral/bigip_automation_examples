@@ -2,6 +2,20 @@ pipeline {
     agent any
 
     stages {
+        stage('Deploy Application') {
+            steps {
+                script {
+                    dir('automation') {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/app-restart-deploy.yml',
+                            inventory: "./inventory.ini",
+                            credentialsId: 'app-host-ssh-key'
+                        )
+                    }
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 script {
@@ -38,20 +52,6 @@ pipeline {
                     }
                 }
             }
-        }
-
-        stage('Deploy Application') {
-            steps {
-                script {
-                    dir('automation') {
-                        ansiblePlaybook(
-                            playbook: 'playbooks/app-restart-deploy.yml',
-                            inventory: '10.1.1.4,',
-                            credentialsId: 'app-host-ssh-key'
-                        )
-                    }
-                }
-            }
-        }
+        }        
     }
 }
