@@ -6,14 +6,14 @@
     - "../next_vars.yml"
 
   tasks:
-    - name: Login to CM and retrieve the access token
+    - name: Login to BigIP Next and retrieve the access token
       uri:
-        url: "https://{{ central_manager.address }}/api/login"
+        url: "https://{{ next.address }}/api/login"
         method: POST
         body_format: json
         body:
-          username: "{{ central_manager.user }}"
-          password: "{{ central_manager.password }}"
+          username: "{{ next_user }}"
+          password: "{{ next_password }}"
         headers:
           Content-Type: "application/json"
         validate_certs: no
@@ -26,7 +26,7 @@
     
     - name: Get instances information
       uri:
-        url: "https://{{ central_manager.address }}/api/device/v1/summary?select=id,hostname"
+        url: "https://{{ next.address }}/api/device/v1/summary?select=id,hostname"
         method: GET
         headers:
           Authorization: "Bearer {{ access_token }}"
@@ -48,7 +48,7 @@
 
     - name: Get file information for attack signatures, bot signatures ans threat campaigns
       uri:
-        url: "https://{{ central_manager.address }}{{ item }}"
+        url: "https://{{ next.address }}{{ item }}"
         method: GET
         headers:
           Authorization: "Bearer {{ access_token }}"
@@ -61,15 +61,16 @@
 
     - name: Filter files with missing last_installed field and status equal to 'inactive'
       set_fact:
-        file_names: "{{ file_names + [item.file_name] }}"
+        file_names: "{{ file_names + [item] }}"
       loop: >-
         {{
           response.results
           | selectattr('status', 'equalto', 200)
           | map(attribute='json._embedded.files')
-          | flatten
-          | selectattr('status', 'equalto', 'inactive')
-          | rejectattr('last_installed', 'defined')
+          | map('sort', attribute='created', reverse=True) 
+          | map('first')
+          | selectattr('status', 'ne', 'active')  
+          | map(attribute='file_name')  
           | list
         }}
       vars:
@@ -81,7 +82,7 @@
 
     - name: Push all updates
       uri:
-        url: "https://{{ central_manager.address }}/api/waf/v1/tasks/live-update/install-bulk"
+        url: "https://{{ next.address }}/api/waf/v1/tasks/live-update/install-bulk"
         method: POST
         body_format: json
         body:
@@ -98,10 +99,10 @@
         task_url: "{{ post_response.json._links.self.href }}"
 
     - name: Wait for push task completion. Please wait, task completion might take up to 15 minutes
-      cm_polling_module:
-        cm_url: "{{ central_manager.address }}"
-        username: "{{ central_manager.user }}"
-        password: "{{ central_manager.password }}"
+      next_task_polling_module:
+        next_url: "{{ next.address }}"
+        username: "{{ next_user }}"
+        password: "{{ next_password }}"
         task_url: "{{ task_url }}"
         timeout: "{{ task_timeout_minutes }}"
       register: polling_result
@@ -111,10 +112,10 @@
         task_refs_list: "{{ polling_result.data.install_refs | map(attribute='task_ref') | list }}"
 
     - name: Get install results
-      cm_polling_module:
-        cm_url: "{{ central_manager.address }}"
-        username: "{{ central_manager.user }}"
-        password: "{{ central_manager.password }}"
+      next_task_polling_module:
+        next_url: "{{ next.address }}"
+        username: "{{ next_user }}"
+        password: "{{ next_password }}"
         task_url: "/api/waf/{{ item }}"
         timeout: "{{ task_timeout_minutes }}"
       register: install_result

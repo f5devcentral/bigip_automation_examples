@@ -7,14 +7,14 @@
       include_vars:
         file: ../next_vars.yml
 
-    - name: Login to CM and retrieve the access token
+    - name: Login to BigIP Next and retrieve the access token
       uri:
-        url: "https://{{ central_manager.address }}/api/login"
+        url: "https://{{ next.address }}/api/login"
         method: POST
         body_format: json
         body:
-          username: "{{ central_manager.user }}"
-          password: "{{ central_manager.password }}"
+          username: "{{ next_user }}"
+          password: "{{ next_password }}"
         headers:
           Content-Type: "application/json"
         validate_certs: no
@@ -27,7 +27,7 @@
 
     - name: Check live update status
       uri:
-        url: "https://{{ central_manager.address }}/api/waf/v1/tasks/live-update/check-status"
+        url: "https://{{ next.address }}/api/waf/v1/tasks/live-update/check-status"
         method: POST
         body_format: json
         body:
@@ -46,10 +46,10 @@
         task_url: "{{ check_status_response.json._links.self.href }}"
 
     - name: Wait for live update pull task completion. Please wait, task completion might take up to 15 minutes
-      cm_polling_module:
-        cm_url: "{{ central_manager.address }}"
-        username: "{{ central_manager.user }}"
-        password: "{{ central_manager.password }}"
+      next_task_polling_module:
+        next_url: "{{ next.address }}"
+        username: "{{ next_user }}"
+        password: "{{ next_password }}"
         task_url: "{{ task_url }}"
         timeout: "{{ task_timeout_minutes }}"
       register: polling_result
