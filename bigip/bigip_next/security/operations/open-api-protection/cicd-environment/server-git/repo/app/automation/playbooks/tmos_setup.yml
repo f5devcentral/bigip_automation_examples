@@ -1,0 +1,70 @@
+---
+- name: Configure BIG-IP Nodes, Pools, and Virtual Servers
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    provider: 
+      server: "{{ tmos.address }}"
+      server_port: 443
+      user: "{{ tmos_user }}"
+      password: "{{ tmos_password }}"
+      validate_certs: false
+      no_f5_teem: false
+
+  tasks:
+    - name: Enable Application Security
+      f5networks.f5_modules.bigip_provision:
+        provider: "{{  provider  }}"
+        module: asm
+      delegate_to: localhost
+
+
+    - name: Add a node to the TMOS BIG-IP
+      f5networks.f5_modules.bigip_node:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ node_name }}"
+        host: "{{ node_ip }}"
+      delegate_to: localhost
+
+    - name: Create a pool on the TMOS BIG-IP
+      f5networks.f5_modules.bigip_pool:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ pool_name }}"
+        lb_method: "round-robin"
+        monitors: 
+          - "/Common/http"
+        monitor_type: "and_list"
+      delegate_to: localhost
+
+    - name: Add node to the pool
+      f5networks.f5_modules.bigip_pool_member:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ node_name }}"
+        host: "{{ node_ip }}"
+        port: "{{ pool_port }}"
+        pool: "{{ pool_name }}"
+        ratio: 1
+        state: "enabled"
+      delegate_to: localhost
+
+    - name: Create a virtual server on the TMOS BIG-IP
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.name }}"
+        destination: "{{ item.ip }}:{{ item.port }}"
+        pool: "{{ pool_name }}"
+        snat: "Automap"
+        profiles:
+          - http
+          - websecurity
+      delegate_to: localhost
+      with_items: "{{ virtual_server }}" 

@@ -41,13 +41,13 @@ pipeline {
             steps {
                 dir('automation') {
                     withCredentials([usernamePassword(
-                        credentialsId: 'bigipnext-access', 
-                        usernameVariable: 'CM_USER', 
-                        passwordVariable: 'CM_PASSWORD'
+                        credentialsId: 'bigip-access', 
+                        usernameVariable: 'BIP_USER', 
+                        passwordVariable: 'BIP_PASSWORD'
                     )]) {
                         ansiblePlaybook(
-                            playbook: 'playbooks/swagger-next.yml',
-                            extras: "--extra-vars 'next_user=${CM_USER} next_password=${CM_PASSWORD}'"
+                            playbook: 'playbooks/swagger-tmos.yml',
+                            extras: "--extra-vars 'bigip_user=${BIP_USER} bigip_password=${BIP_PASSWORD}'"
                         )
                     }
                 }
