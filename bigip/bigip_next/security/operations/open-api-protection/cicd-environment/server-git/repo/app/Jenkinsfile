@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Update Swagger Definition at BigIP Next') {
+        stage('Update Swagger Definition at BigIP') {
             steps {
                 dir('automation') {
                     withCredentials([usernamePassword(
