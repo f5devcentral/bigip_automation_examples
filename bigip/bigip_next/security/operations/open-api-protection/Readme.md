@@ -2,16 +2,37 @@
 
 # Table of Contents
 
+- [API Endpoint Protection](#api-endpoint-protection)
+- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
--
-
-==TODO===
+- [Environment \& Pre-requisites](#environment--pre-requisites)
+  - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+    - [1. Deploy Blueprint](#1-deploy-blueprint)
+    - [2. Setup SSH Keys](#2-setup-ssh-keys)
+    - [3. Enter Blueprint](#3-enter-blueprint)
+  - [Docker Compose](#docker-compose)
+  - [Infrastructure Configuration](#infrastructure-configuration)
+    - [1. Clone Repository](#1-clone-repository)
+    - [2. Run Test App](#2-run-test-app)
+    - [3. Setup TMOS Initial Settings](#3-setup-tmos-initial-settings)
+    - [4. Verify App](#4-verify-app)
+- [Manual Workflow Guide](#manual-workflow-guide)
+  - [1. Create Security Policy](#1-create-security-policy)
+  - [2. Verify Protection](#2-verify-protection)
+- [Automated Workflow Guide](#automated-workflow-guide)
+  - [1. Run CI/CD Environment](#1-run-cicd-environment)
+  - [2. Connect Jenkins to BIG-IP](#2-connect-jenkins-to-big-ip)
+  - [3. Update Policy](#3-update-policy)
+    - [3.1 Clone App Repo](#31-clone-app-repo)
+    - [3.2 Update Routes](#32-update-routes)
+    - [3.3 Push Updates](#33-push-updates)
+    - [3.4 Review Updates](#34-review-updates)
 
 # Overview
 
-==TODO==
-**This guide belongs to the series of [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) guides on applying updates to Next WAF to protect an application. It provides manual walk-through steps and automated Terraform scripts for updating security policy for Next WAF in Central Manager.
-For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide.**
+==TODO OVERVIEW==
+
+This guide belongs to the series of [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) guides on protecting an application. It provides manual walk-through steps and automated Terraform scripts for creating and updating security policy with new routes in TMOS.
 
 # Environment & Pre-requisites
 
@@ -23,13 +44,13 @@ For this guide we will use the app with a WAF policy setup and deployed in the [
 
 Navigate to the **Blueprints** and search for **BigIp Automation**. Deploy it.
 
-=====TODO=====
+=====TODO SCREEN=====
 
 ![alt text](./assets/deploy-blueprint.png)
 
 After it has been deployed, navigate to your **Deployments** and start it:
 
-=====TODO=====
+=====TODO SCREEN=====
 
 ![alt text](./assets/start-depl.png)
 
@@ -41,7 +62,7 @@ To enter the Blueprint VM (jumphost), the SSH tool will be used. In order to set
 
 After the Blueprint has been deployed and SSH keys are setup, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab and proceed to the **Ubuntu Jump Host**.
 
-=====TODO=====
+=====TODO SCREEN=====
 
 ![alt text](./assets/ubuntu-jump-host.png)
 
@@ -95,11 +116,11 @@ Finally, we will verify the app is up and running. Check the application interna
 curl http://10.1.10.97/internal/node-info
 ```
 
-You will see system information in the output which means the app is run.
+You will see system information in the output.
 
 # Manual Workflow Guide
 
-The manual workflow of this guide showcases protection of API endpoint of an existing app using OpenAPI (Swagger file). The existing security policy will be updated using OpenAPI with a list of allowed URLs. In this way we will protect internal routes and make them not visible to positive security via Open API. For this purpose we will need to create a security policy.
+The manual workflow of this guide showcases protection of API endpoint of an existing app using OpenAPI (Swagger file). We will create a security policy via TMUI and add an OpenAPI file.
 
 ## 1. Create Security Policy
 
@@ -145,10 +166,7 @@ You can also verify the protection status in TMOS. Navigate to **Application Sec
 
 # Automated Workflow Guide
 
-===TODO====
-
-**In this part of the guide we will use Ansible to first update the WAF policy by uploading a new OpenAPI swagger file, and then adding a `delete` handler to it.
-via CI/CD environment. It will connect updates of positive security related to possible change of app API.**
+In this part of the guide we will use CI/CD environment to update the WAF policy with new routes.
 
 ## 1. Run CI/CD Environment
 
@@ -212,7 +230,7 @@ Fill in the opened form:
 
 Now Jenkins is setup for running deployment.
 
-## 3. Add `delete` to Policy
+## 3. Update Policy
 
 ### 3.1 Clone App Repo
 
@@ -230,9 +248,9 @@ Enter the `cd script-crud-service` folder and change the branch:
 git checkout main
 ```
 
-### 3.2 Update routes
+### 3.2 Update Routes
 
-Now let's take a look at the structure. In the `routes` you can see two files - `.new` and `.js`. So we will need to rename those - the current ones to the `old` for record, and the new one to the current script.
+Now let's take a look at the structure. In the `routes` you can see two files - `.new` and `.js`. So we will need to rename those - the current one to the `old` for record, and the new one to the current script.
 
 ```bash
 ├── Jenkinsfile
@@ -317,7 +335,7 @@ First, go to Jenkins to see the run pipeline. Enter it and proceed to the **Pipe
 
 ![alt text](./assets/last-build.png)
 
-Finally, we can verify if Swagger definition at BIG-IP is updated via TMOS.
+Finally, we can verify if Swagger definition is updated via TMOS.
 
 Go back to your deployment and proceed to TMOS. Navigate to **Application Security** => **URLs**. You will see the added `delete` URL.
 
