@@ -1,0 +1,26 @@
+worker_processes auto;
+
+http {    
+    server {
+        listen "{{ app.operation.ip }}:{{ app.operation.port }}";
+
+        location /action {
+            return 200 "Performing Action\n";
+            add_header Content-Type text/plain;
+        }
+
+        location / {
+            return 404 "Not Found\n";
+            add_header Content-Type text/plain;
+        }
+    }
+
+    server {
+        listen "{{ app.maintenance.ip }}:{{ app.maintenance.port }}";
+
+        location / {
+            return 200 "Maintenance mode\n";
+            add_header Content-Type text/plain;
+        }
+    }
+}
