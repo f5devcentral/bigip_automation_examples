@@ -1,0 +1,24 @@
+pipeline {
+  agent any
+  
+  stages {
+    stage ('Check for live update and deploy if any') {
+      steps {
+        script {
+          dir("automation") {
+            withCredentials([usernamePassword(
+                credentialsId: 'bigipnext-access', 
+                usernameVariable: 'CM_USER', 
+                passwordVariable: 'CM_PASSWORD'
+            )]) {
+                ansiblePlaybook(
+                    playbook: 'playbooks/site.yml',
+                    extras: "--extra-vars 'next_user=${CM_USER} next_password=${CM_PASSWORD}'"
+                )
+            }
+          }
+        }
+      }
+    }
+  }
+}

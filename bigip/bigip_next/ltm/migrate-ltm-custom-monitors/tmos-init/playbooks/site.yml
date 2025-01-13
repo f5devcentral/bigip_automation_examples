@@ -1,0 +1,7 @@
+---
+- name: Main Playbook
+  hosts: app
+  become: true
+
+- name: Setup TMOS virtual server routine
+  import_playbook: tmos_setup.yml

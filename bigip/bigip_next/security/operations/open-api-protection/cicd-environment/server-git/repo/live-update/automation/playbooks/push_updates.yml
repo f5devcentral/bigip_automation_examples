@@ -1,0 +1,178 @@
+---
+- name: Push updates to all Next instances
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "../next_vars.yml"
+
+  tasks:
+    - name: Login to BigIP Next and retrieve the access token
+      uri:
+        url: "https://{{ next.address }}/api/login"
+        method: POST
+        body_format: json
+        body:
+          username: "{{ next_user }}"
+          password: "{{ next_password }}"
+        headers:
+          Content-Type: "application/json"
+        validate_certs: no
+      register: login_response
+      failed_when: login_response.status != 200
+
+    - name: Extract access token
+      set_fact:
+        access_token: "{{ login_response.json.access_token }}"
+    
+    - name: Get instances information
+      uri:
+        url: "https://{{ next.address }}/api/device/v1/summary?select=id,hostname"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: next_instances
+    
+    - name: Compose id to hostname dictionary
+      set_fact:
+        id_hostname_dict: "{{ next_instances.json._embedded.devices | items2dict(key_name='id', value_name='hostname') }}"
+
+    - name: Instances
+      debug:
+        var: id_hostname_dict
+
+    - name: Initialize file names list
+      set_fact:
+        file_names: []
+
+    - name: Get file information for attack signatures, bot signatures ans threat campaigns
+      uri:
+        url: "https://{{ next.address }}{{ item }}"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+        validate_certs: no
+      register: response
+      with_items:
+        - "/api/waf/v1/live-update/attack-signatures"
+        - "/api/waf/v1/live-update/bot-signatures"
+        - "/api/waf/v1/live-update/threat-campaigns"
+
+    - name: Filter files with missing last_installed field and status equal to 'inactive'
+      set_fact:
+        file_names: "{{ file_names + [item] }}"
+      loop: >-
+        {{
+          response.results
+          | selectattr('status', 'equalto', 200)
+          | map(attribute='json._embedded.files')
+          | map('sort', attribute='created', reverse=True) 
+          | map('first')
+          | selectattr('status', 'ne', 'active')  
+          | map(attribute='file_name')  
+          | list
+        }}
+      vars:
+        item: "{{ item }}"
+
+    - name: Files to install
+      debug:
+        msg: "{{ file_names }}"
+
+    - name: Push all updates
+      uri:
+        url: "https://{{ next.address }}/api/waf/v1/tasks/live-update/install-bulk"
+        method: POST
+        body_format: json
+        body:
+          files: "{{ file_names }}"
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        validate_certs: no
+      register: post_response
+      failed_when: post_response.status not in [200, 201]
+
+    - name: Extract polling URL from the POST response
+      set_fact:
+        task_url: "{{ post_response.json._links.self.href }}"
+
+    - name: Wait for push task completion. Please wait, task completion might take up to 15 minutes
+      next_task_polling_module:
+        next_url: "{{ next.address }}"
+        username: "{{ next_user }}"
+        password: "{{ next_password }}"
+        task_url: "{{ task_url }}"
+        timeout: "{{ task_timeout_minutes }}"
+      register: polling_result
+
+    - name: Extract all task_ref to a list
+      set_fact:
+        task_refs_list: "{{ polling_result.data.install_refs | map(attribute='task_ref') | list }}"
+
+    - name: Get install results
+      next_task_polling_module:
+        next_url: "{{ next.address }}"
+        username: "{{ next_user }}"
+        password: "{{ next_password }}"
+        task_url: "/api/waf/{{ item }}"
+        timeout: "{{ task_timeout_minutes }}"
+      register: install_result
+      with_items: "{{ task_refs_list }}"
+
+    - name: Check if task_refs_list is empty and end playbook if it is
+      when: task_refs_list | length == 0
+      block:
+        - debug:
+            msg: "No files were installed. Ending playbook."
+        - ansible.builtin.copy:
+            content: |
+              BigIP Next is up to date. No files fere installed
+            dest: "{{ push_updates_report }}"
+            mode: '0644'
+        - name: End the playbook
+          meta: end_play
+
+    - name: Extract installation task information
+      set_fact:
+        tasks_info: "{{ tasks_info | default([]) + [task_info] }}"
+      vars:
+        task_info:
+          filename: "{{ item.data.file_name }}"
+          created: "{{ item.data.created }}"
+          completed: "{{ item.data.completed }}"
+          instance_status: "{{ item.data.instances | items2dict(key_name='instance_id', value_name='status') }}"
+      loop: "{{ install_result.results }}"
+
+    - name: Create report
+      set_fact:
+        report: "{{ report | default([]) + [report_entry] }}"
+      vars:
+        instance_ids: "{{ item.instance_status.keys() | list }}"
+        hostnames: "{{ instance_ids | map('extract', id_hostname_dict) | list }}"
+        statuses: "{{ item.instance_status.values() | list }}"
+        hostname_status_list: "{{ hostnames | zip(statuses) | list }}"
+        sorted_hostname_status_list: "{{ hostname_status_list | sort(attribute=0) }}"
+        updated_instance_status: "{{ dict(sorted_hostname_status_list) }}"
+        report_entry:
+          filename: "{{ item.filename }}"
+          created: "{{ item.created }}"
+          completed: "{{ item.completed }}"
+          instance_status: "{{ updated_instance_status }}"
+      loop: "{{ tasks_info }}"
+
+    - name: Save report to a file
+      ansible.builtin.copy:
+        content: |
+          |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+          | Filename                                      | Created                          | Completed                        | Hostname                                      | Status       |
+          |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+          {% for item in report %}
+          {% for hostname, status in item.instance_status.items() %}
+          | {{ (item.filename[:42] + '...' if item.filename | length > 45 else "%-45s" | format(item.filename)) }} | {{ "%-32s" | format(item.created) }} | {{ "%-32s" | format(item.completed) }} | {{ (hostname[:42] + '...' if hostname | length > 45 else "%-45s" | format(hostname)) }} | {{ "%-12s" | format(status) }} |
+          {% endfor %}
+          |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|
+          {% endfor %}
+        dest: "{{ push_updates_report }}"
+        mode: '0644'

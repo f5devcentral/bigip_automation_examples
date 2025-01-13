@@ -1,0 +1,19 @@
+tmos:
+  address: 10.1.1.12
+
+policies_to_update: 
+  - partition: Common
+    name: app-waf
+
+swagger_file_path: "../../interface/swagger.json"
+
+node_name: app_node
+node_ip: 10.1.20.103
+
+pool_port: 8082
+pool_name: app_pool
+
+virtual_server:
+  - name: app_virtual_server
+    ip: 10.1.10.97
+    port: 80

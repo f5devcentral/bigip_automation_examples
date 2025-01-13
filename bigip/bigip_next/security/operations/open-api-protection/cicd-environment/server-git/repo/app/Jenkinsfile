@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Deploy Application') {
+            steps {
+                script {
+                    dir('automation') {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/app-restart-deploy.yml',
+                            inventory: "./inventory.ini",
+                            credentialsId: 'app-host-ssh-key'
+                        )
+                    }
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    dir('src') {
+                        sh 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    dir('src') {
+                        sh 'npm run build'
+                        sh 'npm run publish'
+                    }
+                }
+            }
+        }
+
+        stage('Update Swagger Definition at BigIP') {
+            steps {
+                dir('automation') {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'bigip-access', 
+                        usernameVariable: 'BIP_USER', 
+                        passwordVariable: 'BIP_PASSWORD'
+                    )]) {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/swagger-tmos.yml',
+                            extras: "--extra-vars 'bigip_user=${BIP_USER} bigip_password=${BIP_PASSWORD}'"
+                        )
+                    }
+                }
+            }
+        }        
+    }
+}

@@ -1,0 +1,10 @@
+---
+- name: Migrate Applications
+  hosts: cm_next
+  gather_facts: false
+
+- name: Backup TMOS BIG-IP as UCS
+  import_playbook: tmos_getucs.yml
+
+- name: Migrate supported apps to BIG-IP Next
+  import_playbook: next_migrate.yml

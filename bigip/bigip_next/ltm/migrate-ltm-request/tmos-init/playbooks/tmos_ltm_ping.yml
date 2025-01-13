@@ -1,0 +1,33 @@
+---
+- name: Check if app is accessible through BIG-IP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Check server is available
+      uri:
+        url: "http://{{ virtual_server.ip }}/node-server"
+        method: GET
+        status_code: 200
+        return_content: yes
+      register: check_result
+
+    - name: Check server is routed by LTM policy
+      uri:
+        url: "http://{{ virtual_server.ip }}/node-server"
+        method: GET
+        headers:
+          X-STAGING: staging
+        status_code: 200
+        return_content: yes
+      register: route_result
+
+    - name: Output both check_result and route_result
+      debug:
+        msg:
+          - "check_result - prod:    {{ check_result.content }}"
+          - "route_result - staging: {{ route_result.content }}"
