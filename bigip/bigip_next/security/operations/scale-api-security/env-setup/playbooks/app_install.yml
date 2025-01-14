@@ -20,12 +20,6 @@
         state: present
         update_cache: true
 
-    - name: Ensure NGINX is started and enabled
-      service:
-        name: nginx
-        state: started
-        enabled: true
-
     - name: Create custom NGINX configuration
       template:
         src: ../templates/nginx.conf.j2
@@ -35,3 +29,9 @@
         server_ips: "{{ app_servers }}"
       notify:
         - reload-nginx
+
+    - name: Ensure NGINX is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: true

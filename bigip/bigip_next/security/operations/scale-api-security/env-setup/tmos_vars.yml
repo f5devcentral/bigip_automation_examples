@@ -10,15 +10,15 @@ app:
   operation:
     node: app-operation-node
     pool: app-operation-pool    
-    ip: 10.1.20.194
+    ip: 10.1.20.102
     port: 80
   maintenance:
     node: app-maintenance-node
     pool: app-maintenance-pool    
-    ip: 10.1.20.105
+    ip: 10.1.20.103
     port: 80
 
 virtual_server: 
   name: app-scale-api
-  ip: 10.1.10.100
+  ip: 10.1.10.41
   port: 80

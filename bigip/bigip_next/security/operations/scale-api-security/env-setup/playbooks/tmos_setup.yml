@@ -1,0 +1,73 @@
+---
+- name: Configure BIG-IP Nodes, Pools, and Virtual Servers
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    nodes:
+      - name: "{{ app.operation.node }}"
+        ip: "{{ app.operation.ip }}"
+      - name: "{{ app.maintenance.node }}"
+        ip: "{{ app.maintenance.ip }}"
+    pools:
+      - pool_name: "{{ app.operation.pool }}"
+        node_name: "{{ app.operation.node }}"
+        port: "{{ app.operation.port }}"
+        ip: "{{ app.operation.ip }}"
+      - pool_name: "{{ app.maintenance.pool }}"
+        node_name: "{{ app.maintenance.node }}"
+        port: "{{ app.maintenance.port }}"
+        ip: "{{ app.operation.ip }}"
+
+  tasks:
+    - name: Add a node to the TMOS BIG-IP
+      f5networks.f5_modules.bigip_node:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.name }}"
+        host: "{{ item.ip }}"
+      delegate_to: localhost
+      with_items: "{{ nodes }}"
+
+    - name: Create a pool on the TMOS BIG-IP
+      f5networks.f5_modules.bigip_pool:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.pool_name }}"
+        lb_method: "round-robin"
+        monitors: 
+          - "/Common/http"
+        monitor_type: "and_list"
+      delegate_to: localhost
+      with_items: "{{ pools }}"
+
+    - name: Add node to the pool
+      f5networks.f5_modules.bigip_pool_member:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.node_name }}"
+        host: "{{ item.ip }}"
+        port: "{{ item.port }}"
+        pool: "{{ item.pool_name }}"
+        ratio: 1
+        state: "enabled"
+      delegate_to: localhost
+      with_items: "{{ pools }}"
+
+    - name: Create a virtual server on the TMOS BIG-IP
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ virtual_server.name }}"
+        destination: "{{ virtual_server.ip }}:{{ virtual_server.port }}"
+        pool: "{{ app.operation.pool }}"
+        snat: "Automap"
+        profiles:
+          - http
+          - websecurity
+      delegate_to: localhost
+

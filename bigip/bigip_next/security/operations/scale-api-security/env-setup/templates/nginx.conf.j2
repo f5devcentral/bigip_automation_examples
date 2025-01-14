@@ -1,8 +1,15 @@
 worker_processes auto;
 
-http {    
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
     server {
-        listen "{{ app.operation.ip }}:{{ app.operation.port }}";
+        listen {{ app.operation.ip }}:{{ app.operation.port }};
 
         location /action {
             return 200 "Performing Action\n";
@@ -16,7 +23,7 @@ http {
     }
 
     server {
-        listen "{{ app.maintenance.ip }}:{{ app.maintenance.port }}";
+        listen {{ app.maintenance.ip }}:{{ app.maintenance.port }};
 
         location / {
             return 200 "Maintenance mode\n";
