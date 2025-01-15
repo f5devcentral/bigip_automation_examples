@@ -7,4 +7,4 @@ provider:
   no_f5_teem: false
 
 virtual_server_name: app-scale-api
-irule_name: ansible_maitenance_rule
+irule_name: ansible_avoid_path_traversal_attack_rule
