@@ -1,0 +1,33 @@
+---
+- name: Create and bind iRule to virtual server
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Create the iRule
+      f5networks.f5_modules.bigip_irule:
+        provider: "{{  provider  }}"
+        module: "ltm"
+        name: "{{ irule_name }}"
+        src: "../templates/irule.tcl"
+        state: present
+
+    - name: Fetch current rules for the virtual server
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ virtual_server_name }}"
+      register: vs_details
+
+    - name: Add the new rule to the existing list
+      set_fact:
+        updated_rules: "{{ vs_details.virtual_server.irules | default([]) + [irule_name] }}"
+      when: vs_details.virtual_server.irules is not none
+
+    - name: Bind the iRule to the virtual server
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ virtual_server_name }}"
+        irules: "{{ updated_rules }}"
+
