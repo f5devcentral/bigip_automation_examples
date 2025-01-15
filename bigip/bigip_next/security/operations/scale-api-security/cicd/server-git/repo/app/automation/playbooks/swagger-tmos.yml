@@ -1,0 +1,66 @@
+---
+- name: Upload and update Swagger OpenAPI YAML file on BigIP TMOS
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Read Swagger JSON file content
+      ansible.builtin.slurp:
+        src: "{{ swagger_file_path }}"
+      register: swagger_file_content
+
+    - name: Make unique file name
+      set_fact:
+        unique_file_name: "{{ swagger_file_path | basename | make_filename_unique }}"
+
+    - name: Upload OpenAPI file to BigIP
+      uri:
+        url: "https://{{ tmos.address }}/mgmt/tm/asm/file-transfer/uploads/{{ unique_file_name }}"
+        method: POST
+        user: "{{ bigip_user }}"
+        password: "{{ bigip_password }}"
+        headers:
+          Content-Type: "application/octet-stream"
+          Content-Range: "0-{{ (swagger_file_content['content'] | b64decode | length) - 1 }}/{{ swagger_file_content['content'] | b64decode | length }}"
+        body: "{{ swagger_file_content['content'] | b64decode | string }}"
+        body_format: raw
+        validate_certs: no
+      register: v
+
+    - name: Import OpenAPI into the policy
+      uri:
+        url: "https://{{ tmos.address }}/mgmt/tm/asm/tasks/import-open-api"
+        method: POST
+        user: "{{ bigip_user }}"
+        password: "{{ bigip_password }}"
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "policy":{"fullPath":"/{{ item.partition }}/{{ item.name }}"},
+            "filename": "{{ unique_file_name }}"
+          }
+        body_format: json
+        status_code: [200, 201]
+        validate_certs: no
+      register: import_openapi_response
+      with_items: "{{ policies_to_update }}"
+
+    - name: Apply policies
+      bigip_asm_policy_manage:
+        provider:
+          server: "{{ tmos.address }}"
+          server_port: 443
+          user: "{{ bigip_user }}"
+          password: "{{ bigip_password }}"
+          validate_certs: false
+          no_f5_teem: false
+        name: "{{ item.name }}"
+        partition: "{{ item.partition }}"
+        active: true
+        apply: true
+      with_items: "{{ policies_to_update }}"

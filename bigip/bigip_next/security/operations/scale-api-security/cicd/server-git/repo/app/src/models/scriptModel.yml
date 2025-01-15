@@ -1,0 +1,28 @@
+components:
+ schemas:
+   Script:
+     type: object
+     properties:
+       id:
+         type: string
+         description: Unique identifier for the script
+         example: '12345'
+       name:
+         type: string
+         description: The name of the script
+         example: 'Sample Script'
+       description:
+         type: string
+         description: A description of the script
+         example: 'This is a sample script for demonstration purposes.'
+       code:
+         type: string
+         description: Code of the script
+         example: "<script>alert('script test')</script>"
+       orderNumber:
+         type: integer
+         description: The order number of the script
+         example: 1
+     required:
+       - name
+       - code
