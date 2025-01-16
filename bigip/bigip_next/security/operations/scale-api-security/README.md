@@ -8,6 +8,31 @@
 - [Manual Configuration](#manual-configuration)
   - [Enable Server Maintenance Mode using Policy via TMOS](#enable-server-maintenance-mode-using-policy-via-tmos)
     - [Test Sites Availability](#test-sites-availability)
+    - [Create Policy and Maintenance Rule](#create-policy-and-maintenance-rule)
+    - [Add Policy to Virtual Server](#add-policy-to-virtual-server)
+    - [Test Maintenance Mode](#test-maintenance-mode)
+    - [Disable Maintenance Mode \& Test](#disable-maintenance-mode--test)
+  - [Enable Server Maintenance Mode using iRule via TMOS](#enable-server-maintenance-mode-using-irule-via-tmos)
+    - [Test Sites Availability](#test-sites-availability-1)
+    - [Create Maintenance iRule](#create-maintenance-irule)
+    - [Add iRule to Virtual Server](#add-irule-to-virtual-server)
+    - [Test Maintenance Mode](#test-maintenance-mode-1)
+    - [Disable Maintenance Mode \& Test](#disable-maintenance-mode--test-1)
+- [Automated Configuration](#automated-configuration)
+  - [Enable Server Maintenance Mode using Policy via Terraform](#enable-server-maintenance-mode-using-policy-via-terraform)
+    - [Test Sites Availability](#test-sites-availability-2)
+    - [Run Terraform with Maintenance Policy](#run-terraform-with-maintenance-policy)
+      - [1. Initialize Terraform](#1-initialize-terraform)
+      - [2. Import Server](#2-import-server)
+      - [3. Apply Terraform](#3-apply-terraform)
+    - [Test Maintenance Mode](#test-maintenance-mode-2)
+    - [Disable Maintenance Mode](#disable-maintenance-mode)
+    - [Check Policy \& Test](#check-policy--test)
+  - [Avoid Path Traversal using iRule via Ansible](#avoid-path-traversal-using-irule-via-ansible)
+    - [Test](#test)
+    - [Add iRule](#add-irule)
+    - [Test Added iRule](#test-added-irule)
+    - [Detach iRule](#detach-irule)
 
 # Environment Setup
 
@@ -87,13 +112,11 @@ curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 
 As you can see from the output, the first site has changed its status and is in **Maintenance mode** now, whereas the second one is still performing.
 
-### Disable Maintenance Mode
+### Disable Maintenance Mode & Test
 
 Back in your TMOS, **Virtual Servers** => **Virtual Server List**, in the opened server configuration click the **Manage** button for policies. Remove the added maintenance policy.
 
-### Test Sites Availability
-
-First, run the following command:
+Finally, let's test the sites. First, run the following command:
 
 ```bash
 curl --resolve app.domain.local:80:10.1.10.41 http://app.domain.local/action
@@ -159,13 +182,11 @@ curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 
 As you can see from the output, the first site has changed its status and is in **Maintenance mode** now, whereas the second one is still performing.
 
-### Disable Maintenance Mode
+### Disable Maintenance Mode & Test
 
 Back in your TMOS, **Virtual Servers** => **Virtual Server List**, in the opened server configuration click the **Manage** button under iRules. Remove the added maintenance iRule.
 
-### Test Sites Availability
-
-First, run the following command:
+Finally, let's test the sites. First, run the following command:
 
 ```bash
 curl --resolve app.domain.local:80:10.1.10.41 http://app.domain.local/action
@@ -241,15 +262,13 @@ Finally, run Terraform:
 terraform apply -var-file=terraform.tfvars
 ```
 
-### Check Applied Maintenance Policy via TMOS
+### Test Maintenance Mode
 
-Navigate to **Local Traffic** => **Policies** => **Policy List**. You will see the published policy.
+First, we will check the applied maintenance policy via TMOS. Navigate to **Local Traffic** => **Policies** => **Policy List**. You will see the published policy.
 
 Next, proceed to **Virtual Servers** => **Virtual Server List**. Enter the server and proceed to **Resources**. You will see the applied maintenance policy.
 
-### Test Maintenance Mode
-
-First, run the first site:
+Next, we will test the maintenance mode. First, run the first site:
 
 ```bash
 curl --resolve app.domain.local:80:10.1.10.41 http://app.domain.local/action
@@ -283,11 +302,11 @@ Run the updated Terraform with removed policy:
 terraform apply -var-file=terraform.tfvars
 ```
 
-### Check Removed Maintenance Policy via TMOS
+### Check Policy & Test
 
-In **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see that that applied earlier maintenance policy is removed.
+first, we will check the removed maintenance policy via TMOS. In **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see that that applied earlier maintenance policy is removed.
 
-### Test Sites Availability
+After that, we will test sites availability.
 
 First, run the following command:
 
