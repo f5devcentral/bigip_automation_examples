@@ -28,11 +28,17 @@
     - [Test Maintenance Mode](#test-maintenance-mode-2)
     - [Disable Maintenance Mode](#disable-maintenance-mode)
     - [Check Policy \& Test](#check-policy--test)
-  - [Avoid Path Traversal using iRule via Ansible](#avoid-path-traversal-using-irule-via-ansible)
+  - [Update virual servers at scale: avoid Path Traversal using iRule via Ansible](#avoid-path-traversal-using-irule-via-ansible)
     - [Test](#test)
     - [Add iRule](#add-irule)
     - [Test Added iRule](#test-added-irule)
     - [Detach iRule](#detach-irule)
+- [Update application to scale via GitOPS](#update-application-to-scale)
+  - [Run the CI/CD environment](#run-the-ci/cd-environment)
+  - [Overview the scale solution](#overview-the-scale-solution)
+  - [Ansible script to scale the application](#ansible-script-to-scale-the-application)
+  - [Run the pipelines](#run-the-pipeline)
+  - [Test Waiting Room](#test-waiting-room)
 
 # Environment Setup
 
@@ -324,6 +330,12 @@ As you can see from the output, both sites are in **Performing Action**.
 
 ## Avoid Path Traversal using iRule via Ansible
 
+Apply avoid path traversal attack rule at scale: to bunch of servers. To specify the servers list, open the config file and update the list.
+
+```
+//TODO: Add the config file to update
+```
+
 Let's take a look at the iRule we are going to apply by navigating to:
 
 ```bash
@@ -405,3 +417,31 @@ curl http://10.1.10.41/action
 ```
 
 The output shows it's in **Performing Action**.
+
+# Update application to scale via GitOPS
+
+On schedule scake the application to correpond the predictable demand.
+
+## Run the CI/CD environment
+
+Run Git and Jenkins environment to apply Ansible scaling script to the TMOS instance. Use logins/passwords from Jenkins secrets.
+
+## Overview the scale solution
+
+1. Add nodes
+2. Add pools
+3. Add IRule to route traffic as well as put excessive requests to wait room
+
+## Ansible script to scale the application
+
+```yaml
+TODO: Add IRUle to perform the waiting room routine
+```
+
+## Run the pipelines
+
+Login to Jenkins. Run the pipeline. Overivew thhe result
+
+## Test Waiting Room
+
+Open Firefox. Open tab to a application. Open another tab. The second tab will be put to the Waiting room. In 10 seconds, the request will be automatically touted to the app page.
