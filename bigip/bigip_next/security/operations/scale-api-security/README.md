@@ -2,7 +2,7 @@
 
 # Table of Contents
 
-- [Scale API Security](#scale-api-security)
+- [DRAFT: Scale API Security Session demo](#draft-scale-api-security-session-demo)
 - [Table of Contents](#table-of-contents)
 - [Environment Setup](#environment-setup)
 - [Manual Configuration](#manual-configuration)
@@ -28,16 +28,15 @@
     - [Test Maintenance Mode](#test-maintenance-mode-2)
     - [Disable Maintenance Mode](#disable-maintenance-mode)
     - [Check Policy \& Test](#check-policy--test)
-  - [Update virual servers at scale: avoid Path Traversal using iRule via Ansible](#avoid-path-traversal-using-irule-via-ansible)
-    - [Test](#test)
+  - [Avoid Path Traversal using iRule via Ansible](#avoid-path-traversal-using-irule-via-ansible)
     - [Add iRule](#add-irule)
     - [Test Added iRule](#test-added-irule)
     - [Detach iRule](#detach-irule)
-- [Update application to scale via GitOPS](#update-application-to-scale)
-  - [Run the CI/CD environment](#run-the-ci/cd-environment)
+- [Update application to scale via GitOPS](#update-application-to-scale-via-gitops)
+  - [Run the CI/CD environment](#run-the-cicd-environment)
   - [Overview the scale solution](#overview-the-scale-solution)
   - [Ansible script to scale the application](#ansible-script-to-scale-the-application)
-  - [Run the pipelines](#run-the-pipeline)
+  - [Run the pipelines](#run-the-pipelines)
   - [Test Waiting Room](#test-waiting-room)
 
 # Environment Setup
@@ -336,13 +335,13 @@ Apply avoid path traversal attack rule at scale: to bunch of servers. To specify
 //TODO: Add the config file to update
 ```
 
-Let's take a look at the iRule we are going to apply by navigating to:
+Then we can take a look at the iRule we are going to apply by navigating to:
 
 ```bash
 bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl
 ```
 
-### Test
+<!-- ### Test
 
 Proceed to the following directory:
 
@@ -362,11 +361,11 @@ After that, run the POST request to send the data to the server:
 curl -X POST -d "filename=../sensitive_file" "http://10.1.10.41/action"
 ```
 
-As you can see from the output, both are in **Performing Action**.
+As you can see from the output, both are in **Performing Action**. -->
 
 ### Add iRule
 
-Run the command to create the iRule and add to virtual server:
+Run the command to create the iRule and add to a batch of 20 virtual servers:
 
 ```bash
 ansible-playbook ./playbooks/create-attach-rule.yml
@@ -378,27 +377,15 @@ First, we will take a look at the added iRule vie TMOS.
 
 In **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see the added iRule.
 
-Next, we will rerun the requests:
+Next, we will rerun the request to test the servers:
 
 ```bash
-curl -X GET "http://10.1.10.41/action?filename=../sensitive_file"
-```
-
-```bash
-curl -X POST -d "filename=../sensitive_file" "http://10.1.10.41/action"
+for ip in $(seq 41 60); do echo "Requesting http://10.1.10.$ip"; curl -X GET "http://10.1.10.$ip/action?filename=../sensitive_file_$ip"; done
 ```
 
 As seen from the outputs, the request is not answered.
 
-Finally, we will take a look at the server traffic via TMOS. You can also see the traffic via TMOS. Navigate to the **System** => **Logs** => **Local Traffic** to see the even and the applied iRule.
-
-Now let's test the app:
-
-```bash
-curl http://10.1.10.41/action
-```
-
-The output shows it's in **Performing Action**.
+Finally, we will take a look at the server traffic via TMOS. You can also see the traffic via TMOS. Navigate to the **System** => **Logs** => **Local Traffic** to see the events and the applied iRule.
 
 ### Detach iRule
 
@@ -410,13 +397,19 @@ ansible-playbook ./playbooks/detach-rule.yml
 
 Navigate to **Local Traffic** => **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see no resources attached.
 
-Now let's test the app:
+Run the GET request:
 
 ```bash
-curl http://10.1.10.41/action
+curl -X GET "http://10.1.10.41/action?filename=../sensitive_file"
 ```
 
-The output shows it's in **Performing Action**.
+After that, run the POST request to send the data to the server:
+
+```bash
+curl -X POST -d "filename=../sensitive_file" "http://10.1.10.41/action"
+```
+
+As you can see from the output, both are in **Performing Action**.
 
 # Update application to scale via GitOPS
 
