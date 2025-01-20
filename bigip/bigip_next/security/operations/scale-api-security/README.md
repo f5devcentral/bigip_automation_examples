@@ -32,12 +32,12 @@
     - [Add iRule](#add-irule)
     - [Test Added iRule](#test-added-irule)
     - [Detach iRule](#detach-irule)
-- [Update application to scale via GitOPS](#update-application-to-scale-via-gitops)
-  - [Run the CI/CD environment](#run-the-cicd-environment)
-  - [Overview the scale solution](#overview-the-scale-solution)
-  - [Ansible script to scale the application](#ansible-script-to-scale-the-application)
-  - [Run the pipelines](#run-the-pipelines)
-  - [Test Waiting Room](#test-waiting-room)
+  - [Update Application to Scale via GitOPS](#update-application-to-scale-via-gitops)
+    - [Run the CI/CD Environment](#run-the-cicd-environment)
+    - [Overview the Scale Solution](#overview-the-scale-solution)
+    - [Ansible Script to Scale the Application](#ansible-script-to-scale-the-application)
+    - [Run the Pipelines](#run-the-pipelines)
+    - [Test Waiting Room](#test-waiting-room)
 
 # Environment Setup
 
@@ -211,8 +211,6 @@ As you can see from the output, both sites are in **Performing Action**.
 
 In this part of the guide we will use Terraform automated scripts to switch one of the sites that are on one virtual server to maintenance mode, whereas the second one will stay up and running. We will use LTM policy to do that.
 
-Note that since we already have a virtual server in TMOS, we will first need to import server configuration to Terraform, and only after that we will apply Terraform.
-
 ### Test Sites Availability
 
 First, run the following command to see the `app.domain.local` is up and running:
@@ -253,7 +251,9 @@ terraform init
 
 #### 2. Import Server
 
-Next, import server configuration to Terraform:
+Since we already have infrastructure in TMOS, we cannot apply the configuration. First we will need to import server configuration to Terraform local state, and only after that we will apply Terraform scenario.
+
+Run the following command to import server configuration to Terraform:
 
 ```bash
 terraform import bigip_ltm_virtual_server.http /Common/app-scale-api
@@ -341,28 +341,6 @@ Then we can take a look at the iRule we are going to apply by navigating to:
 bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl
 ```
 
-<!-- ### Test
-
-Proceed to the following directory:
-
-```bash
-cd ~/bigip_automation_examples/bigip/bigip_next/security/operations/scale-api-security/ata-ansible
-```
-
-Run first the GET request:
-
-```bash
-curl -X GET "http://10.1.10.41/action?filename=../sensitive_file"
-```
-
-After that, run the POST request to send the data to the server:
-
-```bash
-curl -X POST -d "filename=../sensitive_file" "http://10.1.10.41/action"
-```
-
-As you can see from the output, both are in **Performing Action**. -->
-
 ### Add iRule
 
 Run the command to create the iRule and add to a batch of 20 virtual servers:
@@ -411,30 +389,30 @@ curl -X POST -d "filename=../sensitive_file" "http://10.1.10.41/action"
 
 As you can see from the output, both are in **Performing Action**.
 
-# Update application to scale via GitOPS
+## Update Application to Scale via GitOPS
 
-On schedule scake the application to correpond the predictable demand.
+On schedule scale the application to correspond to the predictable demand.
 
-## Run the CI/CD environment
+### Run the CI/CD Environment
 
 Run Git and Jenkins environment to apply Ansible scaling script to the TMOS instance. Use logins/passwords from Jenkins secrets.
 
-## Overview the scale solution
+### Overview the Scale Solution
 
 1. Add nodes
 2. Add pools
 3. Add IRule to route traffic as well as put excessive requests to wait room
 
-## Ansible script to scale the application
+### Ansible Script to Scale the Application
 
 ```yaml
 TODO: Add IRUle to perform the waiting room routine
 ```
 
-## Run the pipelines
+### Run the Pipelines
 
-Login to Jenkins. Run the pipeline. Overivew thhe result
+Login to Jenkins. Run the pipeline. Overview the result
 
-## Test Waiting Room
+### Test Waiting Room
 
-Open Firefox. Open tab to a application. Open another tab. The second tab will be put to the Waiting room. In 10 seconds, the request will be automatically touted to the app page.
+Open Firefox. Open tab to an application. Open another tab. The second tab will be put to the Waiting room. In 10 seconds, the request will be automatically routed to the app page.
