@@ -19,6 +19,9 @@ app:
     port: 80
 
 virtual_server: 
-  name: app-scale-api
-  ip: 10.1.10.41
-  port: 80
+    name: app-scale-api-{{ip}}
+    ip: 10.1.10.{{ip}}
+    port: 80
+
+start_ip: 41
+end_ip: 60

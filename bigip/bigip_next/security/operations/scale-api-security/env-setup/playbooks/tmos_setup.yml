@@ -58,16 +58,21 @@
       delegate_to: localhost
       with_items: "{{ pools }}"
 
-    - name: Create a virtual server on the TMOS BIG-IP
+    - name: Create virtual servers on the TMOS BIG-IP
       f5networks.f5_modules.bigip_virtual_server:
-        provider: "{{  provider  }}"
+        provider: "{{ provider }}"
         state: present
-        name: "{{ virtual_server.name }}"
-        destination: "{{ virtual_server.ip }}:{{ virtual_server.port }}"
+        name: "{{ virtual_server.name | replace('{{ip}}', ip | string) }}"
+        destination: "{{ virtual_server.ip | replace('{{ip}}', ip | string) }}:{{ virtual_server.port }}"
         pool: "{{ app.operation.pool }}"
         snat: "Automap"
         profiles:
           - http
           - websecurity
+      loop: "{{ range(start_ip, end_ip + 1) }}"
+      loop_control:
+        loop_var: ip
+      async: 30
+      poll: 0
       delegate_to: localhost
 
