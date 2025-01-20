@@ -7,7 +7,6 @@ when HTTP_REQUEST {
   if { ($file starts_with "/") or ($file starts_with "../") } { 
     log local0. "[IP::client_addr] requested $file" 
     HTTP::respond 403 content "I'm sorry, but your request for $file is contains invalid characters. Please try your request again.\n" 
-    HTTP::close
     return
   } 
 
@@ -25,7 +24,7 @@ when HTTP_REQUEST_DATA {
   if { ($file starts_with "/") or ($file starts_with "../") } { 
     log local0. "[IP::client_addr] requested $file" 
     HTTP::respond 403 content "I'm sorry, but your request for $file is contains invalid characters. Please try your request again.\n" 
-    HTTP::close 
+    return
   } 
 
   HTTP::release 
