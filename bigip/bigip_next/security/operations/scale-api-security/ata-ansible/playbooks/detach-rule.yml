@@ -1,30 +1,41 @@
 ---
-- name: Detach iRule from virtual server
+- name: Detach iRule from all virtual servers
   hosts: localhost
   gather_facts: no
   vars_files:
     - ../tmos_vars.yml
 
+  vars:
+    start_ip: 41
+    end_ip: 60
+
   tasks:
-    - name: Fetch current rules for the virtual server
+    - name: Fetch current rules for all virtual servers
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
-        name: "{{ virtual_server_name }}"
+        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
       register: vs_details
+      loop: "{{ range(start_ip, end_ip + 1) }}"
+      loop_control:
+        loop_var: ip
+      async: 30
+      poll: 0
 
-    - name: Extract existing rules for the target virtual server
+    - name: Extract and remove the specified iRule from the list for each virtual server
       set_fact:
-        existing_rules: >-
-          {{
-            vs_details.virtual_server.irules | default([])
-          }}
+        updated_rules: "{{ item.virtual_server.irules | default([]) | difference([irule_name]) }}"
+      loop: "{{ vs_details.results }}"
+      loop_control:
+        loop_var: item
 
-    - name: Remove the specified iRule from the list
-      set_fact:
-        updated_rules: "{{ existing_rules | difference([irule_name]) }}"
-
-    - name: Bind the iRule to the virtual server
+    - name: Bind the updated rules to all virtual servers
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
-        name: "{{ virtual_server_name }}"
+        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
         irules: "{{ updated_rules }}"
+      loop: "{{ range(start_ip, end_ip + 1) }}"
+      loop_control:
+        loop_var: ip
+      async: 30
+      poll: 0
+
