@@ -1,27 +1,41 @@
 ---
-- name: Create and bind iRule to virtual server
+- name: Configure BIG-IP Nodes, Pools, and Virtual Servers
   hosts: localhost
-  gather_facts: no
+  connection: local
+  gather_facts: false
+
   vars_files:
     - ../tmos_vars.yml
 
+  vars:
+    provider:
+      server: "{{ tmos.address }}"
+      server_port: 443
+      user: "{{ tmos_user }}"
+      password: "{{ tmos_password }}"
+      validate_certs: false
+      no_f5_teem: false
+
   tasks:
+    - name: Render the iRule template
+      template:
+        src: "../templates/scale-irule.tcl.j2"
+        dest: "/tmp/{{ irule_name }}.tcl"
+
     - name: Create the iRule
       f5networks.f5_modules.bigip_irule:
-        provider: "{{  provider  }}"можем продавать
+        provider: "{{  provider  }}"
         module: "ltm"
         name: "{{ irule_name }}"
-        src: "../templates/irule.tcl"
+        src: "/tmp/{{ irule_name }}.tcl"
         state: present
 
     - name: Fetch current rules for the virtual servers
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
-        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
+        name: "{{ item }}"
       register: vs_details
-      loop: "{{ range(start_ip, end_ip + 1) }}"
-      loop_control:
-        loop_var: ip
+      loop: "{{ virtual_servers }}"
       async: 30
       poll: 0
 
@@ -35,10 +49,8 @@
     - name: Bind the iRule to the virtual servers
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
-        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
+        name: "{{ item }}"
         irules: "{{ updated_rules }}"
-      loop: "{{ range(start_ip, end_ip + 1) }}"
-      loop_control:
-        loop_var: ip
+      loop: "{{ virtual_servers }}"
       async: 30
       poll: 0
