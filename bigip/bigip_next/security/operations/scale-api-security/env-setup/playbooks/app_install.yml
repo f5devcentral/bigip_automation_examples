@@ -1,35 +1,70 @@
 ---
-- name: Install and configure NGINX
+- name: Build and configure OpenResty from source
   hosts: app
-  gather_facts: false
+  gather_facts: true
   become: true
 
   vars_files:
     - ../tmos_vars.yml
 
-  handlers:
-    - name: reload-nginx
+  tasks:
+    - name: Stop and disable default NGINX service if running
       service:
         name: nginx
-        state: reloaded
+        state: stopped
+        enabled: false
+      ignore_errors: true
 
-  tasks:
-    - name: Install NGINX
+    - name: Install dependencies for building OpenResty
       apt:
-        name: nginx
+        name:
+          - build-essential
+          - libpcre3
+          - libpcre3-dev
+          - zlib1g
+          - zlib1g-dev
+          - libssl-dev
+          - curl
+          - gnupg
         state: present
         update_cache: true
 
-    - name: Create custom NGINX configuration
+    - name: Download OpenResty source code
+      get_url:
+        url: https://openresty.org/download/openresty-1.21.4.1.tar.gz
+        dest: /usr/local/src/openresty.tar.gz
+
+    - name: Extract OpenResty source code
+      unarchive:
+        src: /usr/local/src/openresty.tar.gz
+        dest: /usr/local/src/
+        remote_src: true
+
+    - name: Build and install OpenResty
+      shell: |
+        cd /usr/local/src/openresty-1.21.4.1
+        ./configure --prefix=/usr/local/openresty
+        make
+        make install
+
+    - name: Configure OpenResty service
+      copy:
+        src: ../templates/openresty.service
+        dest: /etc/systemd/system/openresty.service
+        mode: "0644"
+
+    - name: Configure app in OpenResty
       template:
         src: ../templates/nginx.conf.j2
-        dest: /etc/nginx/nginx.conf
+        dest: /usr/local/openresty/nginx/conf/nginx.conf
         mode: "0644"
-      notify:
-        - reload-nginx
 
-    - name: Ensure NGINX is started and enabled
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: Start and enable OpenResty service
       service:
-        name: nginx
-        state: started
+        name: openresty
+        state: restarted
         enabled: true

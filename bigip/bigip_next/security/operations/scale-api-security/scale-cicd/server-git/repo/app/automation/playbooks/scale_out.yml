@@ -19,7 +19,7 @@
   tasks:
     - name: Render the iRule template
       template:
-        src: "../templates/scale-irule.tcl.j2"
+        src: "../templates/scale-irule.tlc.j2"
         dest: "/tmp/{{ irule_name }}.tcl"
 
     - name: Create the iRule
@@ -30,14 +30,50 @@
         src: "/tmp/{{ irule_name }}.tcl"
         state: present
 
-    - name: Fetch current rules for the virtual servers
-      f5networks.f5_modules.bigip_virtual_server:
-        provider: "{{ provider }}"
-        name: "{{ item }}"
+    - name: Create or update the VIP URL data group
+      f5networks.f5_modules.bigip_data_group:
+        provider:
+          server: "{{ tmos.address }}"
+          user: "{{ tmos_user }}"
+          password: "{{ tmos_password }}"
+          server_port: 443
+          validate_certs: no
+        name: "{{ shortcode }}-vip-url-list"
+        type: string
+        internal: true
+        records: "{{ vip_urls }}"
+        state: present
+    
+    - name: Log in to TMOS
+      uri:
+        url: "https://{{ tmos.address }}/mgmt/shared/authn/login"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "username": "{{ tmos_user }}",
+            "password": "{{ tmos_password }}",
+            "loginProviderName": "tmos"
+          }
+        body_format: json
+        validate_certs: no
+      register: login_response
+
+    - name: Extract authentication token
+      set_fact:
+        auth_token: "{{ login_response.json.token }}"
+
+    - name: Fetch current rules for the virtual servers using API
+      uri:
+        url: "https://{{ tmos.address }}/mgmt/tm/ltm/virtual/{{ item }}"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+          X-F5-Auth-Token: "{{ auth_token.token }}"
+        validate_certs: no
       register: vs_details
       loop: "{{ virtual_servers }}"
-      async: 30
-      poll: 0
 
     - name: Add the new rule to the existing list for each virtual server
       set_fact:

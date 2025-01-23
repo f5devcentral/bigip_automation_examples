@@ -16,6 +16,13 @@ http {
             add_header Content-Type text/plain;
         }
 
+        location /long-operation {
+            content_by_lua_block {
+                ngx.sleep(30)  -- Delay for 30 seconds
+                ngx.say("Long Operation Completed")
+            }
+        }
+
         location / {
             return 404 "Not Found\n";
             add_header Content-Type text/plain;
@@ -31,3 +38,4 @@ http {
         }
     }
 }
+

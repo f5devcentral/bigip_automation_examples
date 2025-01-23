@@ -7,19 +7,11 @@ tmos_user: admin
 tmos_password: admin
 
 virtual_servers:
-  - api-scale-api-41
-  - api-scale-api-42
-  - api-scale-api-43
-  - api-scale-api-44
-  - api-scale-api-45
-  - api-scale-api-46
-  - api-scale-api-47
-  - api-scale-api-48
-  - api-scale-api-49
-  - api-scale-api-50
-  - api-scale-api-51
-  - api-scale-api-52
-  - api-scale-api-53
-  - api-scale-api-54
-  - api-scale-api-55
-  - api-scale-api-56
+  - app-scale-api-41
+  - app-scale-api-45
+
+vip_urls:
+  - key: sample_url
+    value: 10.1.1.10
+
+shortcode: APPSITE
