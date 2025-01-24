@@ -32,8 +32,6 @@
 
 ==TODO OVERVIEW==
 
-This guide belongs to the series of [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) guides on protecting an application. It provides manual walk-through steps and automated Terraform scripts for creating and updating security policy with new routes in TMOS.
-
 # Environment & Pre-requisites
 
 ## Blueprint Setup _(for F5 employees or customers with access to UDF)_
@@ -91,7 +89,7 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 Proceed to the following directory:
 
 ```
-cd ~/bigip_automation_examples/bigip/bigip_next/security/operations/open-api-protection/cicd-environment/server-git/repo/app/automation
+cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server-git/repo/app/automation
 ```
 
 And run the following command to start the app:
@@ -139,7 +137,7 @@ In the opened form fill in the required information:
 - upload the swagger file stored in the following directory:
 
 ```bash
-bigip/bigip_next/security/operations/open-api-protection/cicd-environment/server-git/repo/app/src/swagger.json
+bigip/open-api-protection/cicd-environment/server-git/repo/app/src/swagger.json
 ```
 
 - select the created virtual server
@@ -173,7 +171,7 @@ In this part of the guide we will use CI/CD environment to update the WAF policy
 First, navigate to the following directory:
 
 ```bash
-cd ~/bigip_automation_examples/bigip/bigip_next/security/operations/open-api-protection/cicd-environment
+cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment
 ```
 
 And then initialize the environment:
