@@ -5,11 +5,11 @@ when HTTP_REQUEST {
     if {$host1 contains "app.domain.local"} {
 
         ## Set variables
-        set OWR APPSITE
-        set max_visitors 1
-        set IdleTimeout 30
-        set MonitorTimeout 20
-        set WaitingRoomTimeout 30
+        set OWR {{shortcode}}
+        set max_visitors {{ max_visitors }}
+        set IdleTimeout {{ visitor_idle_timeout }}
+        set MonitorTimeout {{ monitor_timeout }}
+        set WaitingRoomTimeout {{ waiting_room_timeout }}
 
         ## Determine the connection identifier from the X-Connection header
         if {[HTTP::header exists "X-Connection"] && ([HTTP::header "X-Connection"] ne "")} {

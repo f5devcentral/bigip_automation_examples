@@ -14,4 +14,8 @@ vip_urls:
   - key: sample_url
     value: 10.1.1.10
 
-shortcode: APPSITE
+shortcode: APPLICATION
+max_visitors: 1
+visitor_idle_timeout: 35
+monitor_timeout: 25
+waiting_room_timeout: 35
