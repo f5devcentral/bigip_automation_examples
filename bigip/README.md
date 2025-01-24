@@ -1,4 +1,4 @@
-# F5 BIG-IP / BIG-IP Next Automation Examples
+# F5 BIG-IP Automation Examples
 
 ## Overview
 
