@@ -14,59 +14,36 @@ RUN mkdir /var/run/sshd && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
 # Create a bare Git repository
-RUN mkdir -p /home/git/script-crud-service.git && \
-    cd /home/git/script-crud-service.git && \
+RUN mkdir -p /home/git/scale-app.git && \
+    cd /home/git/scale-app.git && \
     git init --bare
 
 # Directly interact with the bare repository (no need to clone)
-RUN mkdir /tmp/script-crud-service && \
-    cd /tmp/script-crud-service && \
+RUN mkdir /tmp/scale-app && \
+    cd /tmp/scale-app && \
     git init --initial-branch main && \
-    git remote add origin /home/git/script-crud-service.git
+    git remote add origin /home/git/scale-app.git
 
 # Copy the Jenkinsfile into the repository
-COPY repo/app/Jenkinsfile /tmp/script-crud-service/
-COPY repo/app/src /tmp/script-crud-service/src
-COPY repo/app/automation /tmp/script-crud-service/automation
+COPY repo/app/Jenkinsfile /tmp/scale-app/
+COPY repo/app/automation /tmp/scale-app/automation
 
 # Set Git user name and email for the git commands
 RUN git config --global user.name "Initial Commit" && \
     git config --global user.email "initial@commit.com"
 
 # Commit the Jenkinsfile into the repository
-RUN cd /tmp/script-crud-service && \
+RUN cd /tmp/scale-app && \
     git add . && \
     git commit -m "Initial commit with Jenkinsfile" && \
     git push origin main
 
-RUN chown -R git:git /home/git/script-crud-service.git
-COPY post-receive /home/git/script-crud-service.git/hooks/post-receive
+RUN chown -R git:git /home/git/scale-app.git
+COPY post-receive /home/git/scale-app.git/hooks/post-receive
 
 # Set the proper permissions for the hook
-RUN chmod +x /home/git/script-crud-service.git/hooks/post-receive && \
-    chown git:git /home/git/script-crud-service.git/hooks/post-receive
-
-# Create a bare Git repository
-RUN mkdir -p /home/git/live-update.git && \
-    cd /home/git/live-update.git && \
-    git init --bare
-
-# Directly interact with the bare repository (no need to clone)
-RUN mkdir /tmp/live-update && \
-    cd /tmp/live-update && \
-    git init --initial-branch main && \
-    git remote add origin /home/git/live-update.git
-
-# Copy the automation scripts
-COPY repo/live-update/. /tmp/live-update
-
-# Commit the automation scripts to the repository 
-RUN cd /tmp/live-update && \
-    git add . && \
-    git commit -m "Initial commit of live-update scripts" && \
-    git push origin main
-
-RUN chown -R git:git /home/git/live-update.git
+RUN chmod +x /home/git/scale-app.git/hooks/post-receive && \
+    chown git:git /home/git/scale-app.git/hooks/post-receive
 
 # Generate SSH key for the git user
 RUN mkdir -p /root/.ssh && \

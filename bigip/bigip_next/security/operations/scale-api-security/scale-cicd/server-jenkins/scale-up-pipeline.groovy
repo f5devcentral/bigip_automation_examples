@@ -16,7 +16,7 @@ import com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey.
 def jenkins = Jenkins.get()
 
 // Pipeline Job Name
-def jobName = "Script CRUD Service Pipeline"
+def jobName = "Scale Up Pipeline"
 
 // Git credentials setup
 def gitUser = "root"
@@ -60,7 +60,7 @@ if (jenkins.getItem(jobName) == null) {
 
     // Define the pipeline to be read from the repository's Jenkinsfile
     def scm = new GitSCM(
-        [new UserRemoteConfig("ssh://gitserver:22/home/git/script-crud-service.git", null, null, credentialsId)], 
+        [new UserRemoteConfig("ssh://gitserver:22/home/git/scale-app.git", null, null, credentialsId)], 
         [new BranchSpec("*/main")], // Set the branch to 'main'
         false,
         Collections.emptyList(),
