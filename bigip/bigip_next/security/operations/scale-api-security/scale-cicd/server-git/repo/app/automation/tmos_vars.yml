@@ -3,9 +3,6 @@ tmos:
 
 irule_name: irule_waiting_room
 
-tmos_user: admin
-tmos_password: admin
-
 virtual_servers:
   - app-scale-api-41
   - app-scale-api-45
