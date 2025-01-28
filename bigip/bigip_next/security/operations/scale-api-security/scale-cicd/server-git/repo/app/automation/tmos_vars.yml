@@ -4,8 +4,9 @@ tmos:
 irule_name: irule_waiting_room
 
 virtual_servers:
-  - app-scale-api-41
-  - app-scale-api-45
+  - app-scale-api-42
+  - app-scale-api-43
+  - app-scale-api-50
 
 vip_urls:
   - key: sample_url

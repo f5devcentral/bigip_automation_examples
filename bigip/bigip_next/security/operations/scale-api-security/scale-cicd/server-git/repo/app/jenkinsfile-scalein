@@ -12,7 +12,7 @@ pipeline {
                     )]) {
                         ansiblePlaybook(
                             playbook: 'playbooks/scale_in.yml',
-                            extras: "--extra-vars 'bigip_user=${BIP_USER} bigip_password=${BIP_PASSWORD}'"
+                            extras: "--extra-vars 'tmos_user=${BIP_USER} tmos_password=${BIP_PASSWORD}'"
                         )
                     }
                 }

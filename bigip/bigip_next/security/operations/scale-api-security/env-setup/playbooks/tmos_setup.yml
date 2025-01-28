@@ -58,7 +58,21 @@
       delegate_to: localhost
       with_items: "{{ pools }}"
 
-    - name: Create virtual servers on the TMOS BIG-IP
+
+    - name: Create virtual server for single operation
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        state: present
+        name: "{{ vs_single.name }}"
+        destination: "{{ vs_single.ip }}:{{ vs_single.port }}"
+        pool: "{{ app.operation.pool }}"
+        snat: "Automap"
+        profiles:
+          - http
+          - websecurity
+      delegate_to: localhost
+
+    - name: Create virtual servers for batch operations on the TMOS BIG-IP
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
         state: present
