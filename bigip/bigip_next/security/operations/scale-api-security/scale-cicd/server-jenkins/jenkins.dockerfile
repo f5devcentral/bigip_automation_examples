@@ -35,7 +35,8 @@ RUN jenkins-plugin-cli --plugins \
 
 # Copy Groovy script and configuration file
 COPY admin-user.groovy /usr/share/jenkins/ref/init.groovy.d/
-COPY scale-up-pipeline.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY scale-out-pipeline.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY scale-in-pipeline.groovy /usr/share/jenkins/ref/init.groovy.d/
 COPY ssh-key.groovy /usr/share/jenkins/ref/init.groovy.d/
 
 ENV CASC_JENKINS_CONFIG="/var/casc_configs"

@@ -16,7 +16,7 @@ import com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey.
 def jenkins = Jenkins.get()
 
 // Pipeline Job Name
-def jobName = "Scale Up Pipeline"
+def jobName = "Scale Out Pipeline"
 
 // Git credentials setup
 def gitUser = "root"
@@ -69,7 +69,7 @@ if (jenkins.getItem(jobName) == null) {
         Collections.emptyList()
     )
 
-    def pipelineDefinition = new CpsScmFlowDefinition(scm, "Jenkinsfile") // Use 'Jenkinsfile' from SCM
+    def pipelineDefinition = new CpsScmFlowDefinition(scm, "jenkinsfile-scaleout")
     job.setDefinition(pipelineDefinition)
     jenkins.add(job, job.name)
 

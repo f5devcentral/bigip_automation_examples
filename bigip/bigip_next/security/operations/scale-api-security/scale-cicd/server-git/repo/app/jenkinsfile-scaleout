@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Update Swagger Definition at BigIP') {
+        stage('Scale Oot') {
             steps {
                 dir('automation') {
                     withCredentials([usernamePassword(

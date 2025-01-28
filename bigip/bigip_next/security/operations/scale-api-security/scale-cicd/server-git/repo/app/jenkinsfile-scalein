@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Scale In') {
+            steps {
+                dir('automation') {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'bigip-access',
+                        usernameVariable: 'BIP_USER',
+                        passwordVariable: 'BIP_PASSWORD'
+                    )]) {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/scale_in.yml',
+                            extras: "--extra-vars 'bigip_user=${BIP_USER} bigip_password=${BIP_PASSWORD}'"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
