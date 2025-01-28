@@ -25,14 +25,15 @@ RUN mkdir /tmp/scale-app && \
     git remote add origin /home/git/scale-app.git
 
 # Copy the Jenkinsfile into the repository
-COPY repo/app/Jenkinsfile /tmp/scale-app/
+COPY repo/app/jenkinsfile-scalein /tmp/scale-app/
+COPY repo/app/jenkinsfile-scaleout /tmp/scale-app/
 COPY repo/app/automation /tmp/scale-app/automation
 
 # Set Git user name and email for the git commands
 RUN git config --global user.name "Initial Commit" && \
     git config --global user.email "initial@commit.com"
 
-# Commit the Jenkinsfile into the repository
+# Commit the Jenkinsfiles into the repository
 RUN cd /tmp/scale-app && \
     git add . && \
     git commit -m "Initial commit with Jenkinsfile" && \
