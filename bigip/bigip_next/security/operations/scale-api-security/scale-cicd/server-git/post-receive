@@ -14,7 +14,7 @@ fi
 # Jenkins server details
 JENKINS_URL="http://jenkins:8080/"
 USER="admin"
-JOB_NAME="Script%20CRUD%20Service%20Pipeline" # Replace spaces with %20 for URL encoding
+JOB_NAME="Scale Out Pipeline" # Replace spaces with %20 for URL encoding
 
 # Trigger the job
 curl -X POST "${JENKINS_URL}/job/${JOB_NAME}/build" \
