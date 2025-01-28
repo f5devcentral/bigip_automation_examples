@@ -24,7 +24,7 @@ http {
         }
 
         location / {
-            return 404 "Not Found\n";
+            return 200 "Alive\n";
             add_header Content-Type text/plain;
         }
     }
@@ -37,5 +37,27 @@ http {
             add_header Content-Type text/plain;
         }
     }
-}
 
+    {% for server in scale_out %}
+    server {
+        listen {{ server }};
+
+        location /action {
+            add_header Content-Type text/plain;
+            return 200 "Performing action at: {{ server }}\n";
+        }
+
+        location /long-operation {
+            content_by_lua_block {
+                ngx.sleep(30)  -- Delay for 30 seconds
+                ngx.say("Long Operation Completed as {{ server }}")
+            }
+        }
+
+        location / {
+            add_header Content-Type text/plain;
+            return 200 "Alive\n";
+        }
+    }
+    {% endfor %}
+}

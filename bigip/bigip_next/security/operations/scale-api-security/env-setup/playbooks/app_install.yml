@@ -8,6 +8,25 @@
     - ../tmos_vars.yml
 
   tasks:
+    - name: Extract IPs from scale_out
+      set_fact:
+        ip_list: "{{ scale_out | map('split', ':') | map('first') | list }}"
+
+    - name: Check if IP is already assigned and remove it
+      shell: |
+        if ip addr show dev ens6 | grep -q {{ item }}; then
+          ip addr del {{ item }}/24 dev ens6;
+        fi
+      with_items: "{{ ip_list }}"
+      ignore_errors: true
+
+    - name: Add secondary IPs to ens6 with broadcast address
+      shell: |
+        ip addr add {{ item }}/24 brd {{ scale_out_broadcast }} dev {{ scale_interface }}
+      with_items: "{{ ip_list }}"
+      register: add_ip_results
+      failed_when: add_ip_results.rc != 0
+
     - name: Stop and disable default NGINX service if running
       service:
         name: nginx

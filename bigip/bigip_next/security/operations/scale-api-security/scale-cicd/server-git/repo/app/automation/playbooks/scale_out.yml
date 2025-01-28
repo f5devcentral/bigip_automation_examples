@@ -90,3 +90,17 @@
       loop: "{{ virtual_servers }}"
       async: 30
       poll: 0
+
+    - name: Add node to the pool
+      f5networks.f5_modules.bigip_pool_member:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.name }}"
+        host: "{{ item.ip }}"
+        port: "{{ item.port }}"
+        pool: "{{ scale_pool_name }}"
+        ratio: 1
+        state: "enabled"
+      delegate_to: localhost
+      with_items: "{{ nodes.large }}"
+

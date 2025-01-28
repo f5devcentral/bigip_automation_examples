@@ -23,5 +23,16 @@ virtual_server:
     ip: 10.1.10.{{ip}}
     port: 80
 
+scale_out_broadcast: 10.1.20.255
+scale_interface: ens6
+scale_out:
+  - 10.1.20.104:4044
+  - 10.1.20.105:4044
+  - 10.1.20.106:4044
+  - 10.1.20.107:4044
+  - 10.1.20.108:4044
+  - 10.1.20.109:4044
+
+
 start_ip: 41
 end_ip: 60
