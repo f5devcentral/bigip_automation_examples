@@ -8,7 +8,7 @@
   tasks:
     - name: Create the iRule
       f5networks.f5_modules.bigip_irule:
-        provider: "{{  provider  }}"можем продавать
+        provider: "{{  provider  }}"
         module: "ltm"
         name: "{{ irule_name }}"
         src: "../templates/irule.tcl"
