@@ -17,7 +17,7 @@
       no_f5_teem: false
 
   tasks:
-    - name: Remaove nodes from the pool
+    - name: Remove nodes from the pool
       f5networks.f5_modules.bigip_pool_member:
         provider: "{{  provider  }}"
         state: present

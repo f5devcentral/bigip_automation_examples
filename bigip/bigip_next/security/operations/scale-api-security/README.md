@@ -33,11 +33,16 @@
     - [Test Added iRule](#test-added-irule)
     - [Detach iRule](#detach-irule)
   - [Update Application to Scale via GitOPS](#update-application-to-scale-via-gitops)
-    - [Run the CI/CD Environment](#run-the-cicd-environment)
-    - [Overview the Scale Solution](#overview-the-scale-solution)
-    - [Ansible Script to Scale the Application](#ansible-script-to-scale-the-application)
-    - [Run the Pipelines](#run-the-pipelines)
+    - [Run CI/CD Environment](#run-cicd-environment)
+    - [Connect Jenkins to BIG-IP](#connect-jenkins-to-big-ip)
+    - [Scale Application](#scale-application)
+      - [1. Check Current Server Configuration](#1-check-current-server-configuration)
+      - [2. Run Zoom Out Pipeline](#2-run-zoom-out-pipeline)
+      - [3. Check Applied iRule](#3-check-applied-irule)
     - [Test Waiting Room](#test-waiting-room)
+    - [Zoom In Application](#zoom-in-application)
+      - [1. Run Zoom In Pipeline](#1-run-zoom-in-pipeline)
+      - [2. Check Updated Server Configuration](#2-check-updated-server-configuration)
 
 # Environment Setup
 
@@ -261,10 +266,16 @@ terraform import bigip_ltm_virtual_server.http /Common/app-scale-api
 
 #### 3. Apply Terraform
 
-Finally, run Terraform:
+Finally, run Terraform planning:
 
 ```bash
-terraform apply -var-file=terraform.tfvars
+terraform plan
+```
+
+And then apply:
+
+```bash
+terraform apply
 ```
 
 ### Test Maintenance Mode
@@ -391,28 +402,238 @@ As you can see from the output, both are in **Performing Action**.
 
 ## Update Application to Scale via GitOPS
 
-On schedule scale the application to correspond to the predictable demand.
+In this part of the guide we will assume that our application is going to experience increased load on specific dates. As a solution, we can scale the application to correspond to the predictable demand when needed. We can also create waiting room for those requests that exceed the limit so that they could wait there and automatically connect to the servers as soon as it has available resource.
 
-### Run the CI/CD Environment
+### Run CI/CD Environment
 
-Run Git and Jenkins environment to apply Ansible scaling script to the TMOS instance. Use logins/passwords from Jenkins secrets.
+Run Git and Jenkins environment to apply Ansible scaling script to the TMOS instance.
 
-### Overview the Scale Solution
+To do that, navigate to the following directory:
 
-1. Add nodes
-2. Add pools
-3. Add IRule to route traffic as well as put excessive requests to wait room
-
-### Ansible Script to Scale the Application
-
-```yaml
-TODO: Add IRUle to perform the waiting room routine
+```bash
+cd ~/bigip_automation_examples/bigip/bigip_next/security/operations/scale-api-security/scale-cicd
 ```
 
-### Run the Pipelines
+If you have not initialized the environment in the previous steps of this lab and this is the first step you are taking, run the following command to do that (or skip if you have already done it earlier):
 
-Login to Jenkins. Run the pipeline. Overview the result
+```bash
+./init.sh
+```
+
+After that, build Docker for Jenkins:
+
+```bash
+docker compose build
+```
+
+And finally, run CI/CD environment including Git and Jenkins connected to each other:
+
+```bash
+docker compose up -d
+```
+
+### Connect Jenkins to BIG-IP
+
+Since we do not keep credentials in scripts, we will need to add those to Jenkins.
+
+In the Blueprint deployed earlier navigate to the **Ubuntu Jump Host (client/server)** and proceed to **Firefox**.
+
+**If you are not using the UDF Blueprint, open your browser for the 9090 port on your Jump Host.**
+
+![alt text](./assets/open-firefox.png)
+
+In the opened Firefox tab go to http://10.1.10.4:9090. This will open Jenkins on Jumphost at 9090 port.
+
+In the opened page enter **admin** for both username and password.
+
+![alt text](./assets/jenkins-login.png)
+
+Navigate to **Manage Jenkins** > **Credentials**. Click the **global** button.
+
+![alt text](./assets/jenkins-creds.png)
+
+Click the **Add Credentials** button.
+
+![alt text](./assets/add-creds.png)
+
+Fill in the opened form:
+
+- **admin** for username,
+- **admin** for password,
+- **bigip-access** for ID.
+
+![alt text](./assets/creds-form-1.png)
+
+Now Jenkins is setup for running deployment.
+
+### Scale Application
+
+#### 1. Check Current Server Configuration
+
+First, let's make sure we have only two nodes. From your deployed Blueprint navigate to TMOS. Go to **Local Traffic** => **Nodes**. You will see two nodes.
+
+![alt text](./assets/nodes-before.png)
+
+We can take a look at the operation pool and its members as well. Move on to **Pools** and enter the **app-operation pool**. You will see only one member.
+
+![alt text](./assets/pool-before.png)
+
+#### 2. Run Zoom Out Pipeline
+
+Go back to the Firefox with open Jenkins and start the **Scale Out Pipeline**.
+
+![alt text](./assets/scale-out.png)
+
+Click **Build Now** and enter the build to see its progress.
+
+![alt text](./assets/zoom-out-navigate.png)
+
+Proceed to **Console Output**.
+
+![alt text](./assets/console-output-nav.png)
+
+You can see build progress. As soon as it is successfully completed, scroll it. You will see added nodes, pools, and updated virtual servers so that they could have waiting room. iRule is added to route traffic as well as put excessive requests to the waiting room.
+
+![alt text](./assets/completed-zoom-out.png)
+
+#### 3. Check Applied iRule
+
+Back in TMOS go to **Nodes** to see all the added nodes.
+
+![alt text](./assets/added-nodes.png)
+
+Then move on to **Pools** and enter the **app-operation pool**. Open the **Members** tab to see the added members.
+
+![alt text](./assets/added-members.png)
+
+Finally, we can take a look at the added iRule. Go to **iRules** and enter the added **irule_waiting_room**.
+
+![alt text](./assets/added-irule.png)
+
+Let's take a closer look at the iRule:
+
+- **Line 9** specifies `set max_visitors 1` which is maximum number of visitors that can be at the server. This number can be updated as needed.
+
+- **Line 5** specifies host name - `"app.domain.local"`. It can be changed as needed or specified as variable.
+
+- `html` page which will be shown to a user who got into the waiting room starts from **line 65** and can be updated as needed:
+
+```bash
+                   HTTP::respond 503 content {
+                        <html>
+                        <head>
+                        <meta http-equiv="refresh" content="60">
+                        <title>Online Waiting Room</title>
+                        </head>
+                        <body>
+                        <center>
+                        <h1>Online Waiting Room</h1>
+                        <h2>We're Sorry</h2>
+                        <p>We currently have an exceptionally large number of visitors on the site, and you are in the queue.</p>
+                        <p>Please hold tight, it should only be a few minutes. Make sure you stay on this page as you will be automatically redirected.</p>
+                        </center>
+                        </body>
+                        </html>
+                    }
+```
+
+- **Line 39** shows `getcount` which is the current statistics of server load:
+
+```bash
+        if {[HTTP::uri] equals "/getcount"} {
+            HTTP::respond 200 content "<html><body>Total: \[$TotalVisitors\] Max: \[$max_visitors\] Waiting: \[$WaitingRoomCount\] RPMCount: \[$RPMCount\]</body></html>\r\n"
+            TCP::close
+            return
+        }
+```
+
+- **Line 15** shows `header` name responsible for connection ID. If header is not sent, ID will be `"default_connection"`.
+
+```bash
+if {[HTTP::header exists "X-Connection"] && ([HTTP::header "X-Connection"] ne "")} {
+            set Connection_ID [HTTP::header "X-Connection"]
+        } else {
+            # Fallback if X-Connection is missing or empty
+            set Connection_ID "default_connection"
+        }
+```
 
 ### Test Waiting Room
 
-Open Firefox. Open tab to an application. Open another tab. The second tab will be put to the Waiting room. In 10 seconds, the request will be automatically routed to the app page.
+Let's assume we have a few users. First, send the following request imitating one user:
+
+```bash
+curl --resolve app.domain.local:80:10.1.10.42 -X GET "http://app.domain.local/long-operation" -H "X-Connection: $(date +%s%3N)"
+```
+
+The server will respond:
+
+```bash
+Long Operation Completed
+```
+
+Next, open another Ubuntu window and run the following command to see if the waiting room is now free:
+
+```bash
+curl --resolve app.domain.local:80:10.1.10.42 http://app.domain.local/getcount
+```
+
+You will see the following output, where total request number is now 0, maximum possible is 1, and waiting number is 0:
+
+```bash
+<html><body>Total: [0] Max: [1] Waiting: [0] RPMCount: [0]</body></html>
+```
+
+Now we will imitate two users at a time. Run one more request to the server:
+
+```bash
+curl --resolve app.domain.local:80:10.1.10.42 -X GET "http://app.domain.local/long-operation" -H "X-Connection: $(date +%s%3N)"
+```
+
+And run the same one in another Ubuntu window imitating the second user:
+
+```bash
+curl --resolve app.domain.local:80:10.1.10.42 -X GET "http://app.domain.local/long-operation" -H "X-Connection: $(date +%s%3N)"
+```
+
+As the second user, you will see the following output showing that you need to wait:
+
+![alt text](./assets/waitingroom-message.png)
+
+Let's see if waiting room status has changed:
+
+```bash
+curl --resolve app.domain.local:80:10.1.10.42 http://app.domain.local/getcount
+```
+
+You will see the following output showing 2 connections, with maximum 1 possible, and 1 waiting.
+
+```bash
+<html><body>Total: [2] Max: [1] Waiting: [1] RPMCount: [2]</body></html>
+```
+
+### Zoom In Application
+
+#### 1. Run Zoom In Pipeline
+
+As soon as the expected high load is over, we can zoom in the application. Back in Jenkins run the **Zoom In Pipeline**.
+
+![alt text](./assets/scale-in-pipeline.png)
+
+Click **Build Now** and enter the build.
+
+![alt text](./assets/build-zoom-in.png)
+
+In the **Console Output** tab see the pipeline progress. It will remove nodes and pools and go back to the original configuration.
+
+![alt text](./assets/zoom-in-progress.png)
+
+#### 2. Check Updated Server Configuration
+
+First, let's make sure we again have only two nodes. From your deployed Blueprint navigate to TMOS. Go to **Local Traffic** => **Nodes**. You will see two nodes.
+
+![alt text](./assets/nodes-before.png)
+
+We can check the operation pool and its members as well. Move on to **Pools** and enter the **app-operation pool**. You will see only one member.
+
+![alt text](./assets/pool-before.png)
