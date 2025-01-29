@@ -10,29 +10,11 @@
     end_ip: 60
 
   tasks:
-    - name: Fetch current rules for all virtual servers
+    - name: Remove the irules from the server
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
         name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
-      register: vs_details
-      loop: "{{ range(start_ip, end_ip + 1) }}"
-      loop_control:
-        loop_var: ip
-      async: 30
-      poll: 0
-
-    - name: Extract and remove the specified iRule from the list for each virtual server
-      set_fact:
-        updated_rules: "{{ item.virtual_server.irules | default([]) | difference([irule_name]) }}"
-      loop: "{{ vs_details.results }}"
-      loop_control:
-        loop_var: item
-
-    - name: Bind the updated rules to all virtual servers
-      f5networks.f5_modules.bigip_virtual_server:
-        provider: "{{ provider }}"
-        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
-        irules: "{{ updated_rules }}"
+        irules: []
       loop: "{{ range(start_ip, end_ip + 1) }}"
       loop_control:
         loop_var: ip

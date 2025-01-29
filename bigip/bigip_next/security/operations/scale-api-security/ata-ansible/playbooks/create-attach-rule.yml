@@ -14,29 +14,11 @@
         src: "../templates/irule.tcl"
         state: present
 
-    - name: Fetch current rules for the virtual servers
-      f5networks.f5_modules.bigip_virtual_server:
-        provider: "{{ provider }}"
-        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
-      register: vs_details
-      loop: "{{ range(start_ip, end_ip + 1) }}"
-      loop_control:
-        loop_var: ip
-      async: 30
-      poll: 0
-
-    - name: Add the new rule to the existing list for each virtual server
-      set_fact:
-        updated_rules: "{{ vs.virtual_server.irules | default([]) + [irule_name] }}"
-      loop: "{{ vs_details.results }}"
-      loop_control:
-        loop_var: vs
-
     - name: Bind the iRule to the virtual servers
       f5networks.f5_modules.bigip_virtual_server:
         provider: "{{ provider }}"
         name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
-        irules: "{{ updated_rules }}"
+        irules: "{{ [irule_name] }}"
       loop: "{{ range(start_ip, end_ip + 1) }}"
       loop_control:
         loop_var: ip
