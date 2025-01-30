@@ -86,29 +86,47 @@ Then, test the second `app-2.domain.local` site:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from both outputs, both sites are in **Performing Action**.
+As you can see from both outputs, both sites are in `Performing Action`.
 
 ### Create Policy and Maintenance Rule
 
-Go to TMOS, proceed to **Local Traffic** => **Policies** => **Create**.
+In the Blueprint you deployed go to the **Components** tab and find the **BIG-IP 15.1.x** component. Proceed to TMUI. Enter **admin** for both username and password.
+
+![alt text](./assets/open-tmui.png)
+
+Navigate to **Local Traffic** => **Policies** and click the **Create** button.
+
+![alt text](./assets/create-policy1.png)
 
 Give policy a name and click the **Create Policy** button.
 
-Add a maintenance rule. Click the **Create** button.
+![alt text](./assets/create-policy2.png)
 
-We will add requests from the first site to this rule. Specify all the required configuration for the rule: **HTTP Host**, **app.domain.local**, **request**. Select **forward traffic** to **pool** and choose the maintenance pool.
+Next we will add a maintenance rule. Click the **Create** button.
 
-Publish the created policy.
+![alt text](./assets/create-rule1.png)
+
+We will add requests from the first site to this rule. To start with, give rule a name. Then specify all the required configuration for the rule: **HTTP Host**, **app.domain.local**, at **request** time. Select **forward traffic** to **pool** and choose the maintenance pool.
+
+![alt text](./assets/create-rule2.png)
+
+Go back to policy list, select the policy we created and click **Publish**.
+
+![alt text](./assets/publish-policy.png)
 
 ### Add Policy to Virtual Server
 
 Navigate to **Local Traffic** => **Virtual Servers** => **Virtual Server List**. Enter the server and proceed to **Resources**. Click the **Manage** button for policies.
 
-Enable the policy we created earlier for this server.
+![alt text](./assets/add-policy1.png)
+
+Select the policy we created earlier for this server from the **Available** list and move it to the **Enabled** section. Complete the process by clicking **Finished**.
+
+![alt text](./assets/add-policy2.png)
 
 ### Test Maintenance Mode
 
-First, run the first site:
+First, run the request to the first site:
 
 ```bash
 curl --resolve app.domain.local:80:10.1.10.41 http://app.domain.local/action
@@ -120,11 +138,17 @@ Then, try the second one:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from the output, the first site has changed its status and is in **Maintenance mode** now, whereas the second one is still performing.
+As you can see from the outputs, the first site has changed its status and is in `Maintenance mode` now, whereas the second one is still performing `Performing Action`.
 
 ### Disable Maintenance Mode & Test
 
-Back in your TMOS, **Virtual Servers** => **Virtual Server List**, in the opened server configuration click the **Manage** button for policies. Remove the added maintenance policy.
+Back in your TMOS, **Virtual Servers** => **Virtual Server List**, in the opened server configuration proceed to **Resources** and click the **Manage** button for policies.
+
+![alt text](./assets/remove-policy1.png)
+
+Remove the added maintenance policy and click **Finished**.
+
+![alt text](./assets/remove-policy2.png)
 
 Finally, let's test the sites. First, run the following command:
 
@@ -138,7 +162,7 @@ Then, the second one:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from the output, both sites are in **Performing Action**.
+As you can see from the outputs, both sites are in `Performing Action`.
 
 ## Enable Server Maintenance Mode using iRule via TMOS
 
@@ -158,27 +182,66 @@ Then, test the second `app-2.domain.local` site:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from both outputs, both sites are in **Performing Action**.
+As you can see from both outputs, both sites are in `Performing Action`.
 
 ### Create Maintenance iRule
 
 Go to TMOS, proceed to **Local Traffic** => **iRules** => **iRule List**. Click the **Create** button.
 
+![alt text](./assets/create-irule1.png)
+
 Give iRule a name and paste the following definition:
 
-```bash
-===TODO====
+===TODO===
+
+```bashwhen HTTP_REQUEST {
+  set file ""
+  if {[regexp {filename=([^&]+)} [HTTP::uri] match value]} {
+      set file $value
+  }
+
+  if { ($file starts_with "/") or ($file starts_with "../") } {
+    log local0. "[IP::client_addr] requested $file"
+    HTTP::respond 403 content "I'm sorry, but your request for $file contains invalid characters. Please try your request again.\n"
+    return
+  }
+
+  if { [HTTP::method] equals "POST" } {
+    HTTP::collect 256
+  }
+}
+
+when HTTP_REQUEST_DATA {
+  set file ""
+  if {[regexp {filename=([^&]+)} [HTTP::payload] match value]} {
+      set file $value
+  }
+
+  if { ($file starts_with "/") or ($file starts_with "../") } {
+    log local0. "[IP::client_addr] requested $file"
+    HTTP::respond 403 content "I'm sorry, but your request for $file contains invalid characters. Please try your request again.\n"
+    return
+  }
+
+  HTTP::release
+}
 ```
+
+![alt text](./assets/create-irule2.png)
 
 ### Add iRule to Virtual Server
 
 Navigate to **Local Traffic** => **Virtual Servers** => **Virtual Server List**. Enter the server and proceed to **Resources**. Click the **Manage** button for iRules.
 
-Enable the maintenance iRule we created earlier for this server.
+![alt text](./assets/create-irule3.png)
+
+Select the iRule we created earlier for this server from the **Available** list and move it to the **Enabled** section. Complete the process by clicking **Finished**.
+
+![alt text](./assets/add-irule4.png)
 
 ### Test Maintenance Mode
 
-First, run the first site:
+First, run the request to the first site:
 
 ```bash
 curl --resolve app.domain.local:80:10.1.10.41 http://app.domain.local/action
@@ -190,11 +253,17 @@ Then, try the second one:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from the output, the first site has changed its status and is in **Maintenance mode** now, whereas the second one is still performing.
+As you can see from the outputs, the first site has changed its status and is in `Maintenance mode` now, whereas the second one is still performing.
 
 ### Disable Maintenance Mode & Test
 
-Back in your TMOS, **Virtual Servers** => **Virtual Server List**, in the opened server configuration click the **Manage** button under iRules. Remove the added maintenance iRule.
+Back in your TMOS, **Virtual Servers** => **Virtual Server List**, in the opened server configuration click the **Manage** button under iRules.
+
+![alt text](./assets/disable-irule1.png)
+
+Remove the added maintenance iRule and click **Finished**.
+
+![alt text](./assets/remove-irule2.png)
 
 Finally, let's test the sites. First, run the following command:
 
@@ -208,7 +277,7 @@ Then, the second one:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from the output, both sites are in **Performing Action**.
+As you can see from the outputs, both sites are back to `Performing Action`.
 
 # Automated Configuration
 
@@ -230,7 +299,7 @@ Then, test the second `app-2.domain.local` site:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from both outputs, both sites are in **Performing Action**.
+As you can see from both outputs, both sites are in `Performing Action`.
 
 ### Run Terraform with Maintenance Policy
 
@@ -256,7 +325,7 @@ terraform init
 
 #### 2. Import Server
 
-Since we already have infrastructure in TMOS, we cannot apply the configuration. First we will need to import server configuration to Terraform local state, and only after that we will apply Terraform scenario.
+Since we already have infrastructure in TMOS, we cannot apply the configuration. First, we will need to import server configuration to Terraform local state, and only after that we will apply Terraform scenario.
 
 Run the following command to import server configuration to Terraform:
 
@@ -278,11 +347,21 @@ And then apply:
 terraform apply
 ```
 
+Type in `yes` to perform the action.
+
 ### Test Maintenance Mode
 
-First, we will check the applied maintenance policy via TMOS. Navigate to **Local Traffic** => **Policies** => **Policy List**. You will see the published policy.
+First, we will check the applied maintenance policy via TMOS. Log in TMOS via the **BIG-IP 15.1.x** component. Enter **admin** for both username and password.
+
+![alt text](./assets/open-tmui.png)
+
+Navigate to **Local Traffic** => **Policies** => **Policy List**. You will see the published policy.
+
+![alt text](./assets/policy1.png)
 
 Next, proceed to **Virtual Servers** => **Virtual Server List**. Enter the server and proceed to **Resources**. You will see the applied maintenance policy.
+
+![alt text](./assets/applied-policy.png)
 
 Next, we will test the maintenance mode. First, run the first site:
 
@@ -296,11 +375,11 @@ Then, try the second one:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from the output, the first site has changed its status and is in **Maintenance mode** now, whereas the second one is still performing.
+As you can see from the outputs, the first site has changed its status and is in `Maintenance mode` now, whereas the second one is still performing.
 
 ### Disable Maintenance Mode
 
-Enter the following file again:
+Enter the following file:
 
 ```bash
 bigip/bigip_next/security/operations/scale-api-security/maintenance-terraform/main.tf
@@ -315,12 +394,22 @@ Remove the policy in the end of the file:
 Run the updated Terraform with removed policy:
 
 ```bash
-terraform apply -var-file=terraform.tfvars
+terraform plan
 ```
+
+And then apply:
+
+```bash
+terraform apply
+```
+
+Type in `yes` to perform the action.
 
 ### Check Policy & Test
 
-first, we will check the removed maintenance policy via TMOS. In **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see that that applied earlier maintenance policy is removed.
+First, we will check the removed maintenance policy via TMOS. In **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see that that applied earlier maintenance policy is removed.
+
+![alt text](./assets/removed-policy.png)
 
 After that, we will test sites availability.
 
@@ -336,7 +425,7 @@ Then, the second one:
 curl --resolve app-2.domain.local:80:10.1.10.41 http://app-2.domain.local/action
 ```
 
-As you can see from the output, both sites are in **Performing Action**.
+As you can see from the output, both sites are in `Performing Action`.
 
 ## Avoid Path Traversal using iRule via Ansible
 
@@ -366,25 +455,31 @@ First, we will take a look at the added iRule vie TMOS.
 
 In **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see the added iRule.
 
+![alt text](./assets/avoid-path-rule.png)
+
 Next, we will rerun the request to test the servers:
 
 ```bash
 for ip in $(seq 41 60); do echo "Requesting http://10.1.10.$ip"; curl -X GET "http://10.1.10.$ip/action?filename=../sensitive_file_$ip"; done
 ```
 
-As seen from the outputs, the request is not answered.
+As seen from the output, the requests for all servers are not answered.
 
-Finally, we will take a look at the server traffic via TMOS. You can also see the traffic via TMOS. Navigate to the **System** => **Logs** => **Local Traffic** to see the events and the applied iRule.
+Finally, we will take a look at the traffic of servers via TMOS. Navigate to the **System** => **Logs** => **Local Traffic** to see the events and the applied iRule.
+
+![alt text](./assets/traffic-logs.png)
 
 ### Detach iRule
 
-Finally, we can detach the added iRule. Run the following command:
+Finally, we can detach the added iRule. Run the following command to do that:
 
 ```bash
 ansible-playbook ./playbooks/detach-rule.yml
 ```
 
-Navigate to **Local Traffic** => **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see no resources attached.
+Go back to TMOS and navigate to **Local Traffic** => **Virtual Servers** proceed to **Virtual Server List**. Enter the server and proceed to **Resources**. You will see no resources attached.
+
+![alt text](./assets/detached-rule.png)
 
 Run the GET request:
 
@@ -392,13 +487,13 @@ Run the GET request:
 curl -X GET "http://10.1.10.41/action?filename=../sensitive_file"
 ```
 
-After that, run the POST request to send the data to the server:
+After that, run the POST request:
 
 ```bash
 curl -X POST -d "filename=../sensitive_file" "http://10.1.10.41/action"
 ```
 
-As you can see from the output, both are in **Performing Action**.
+As you can see from the outputs, both are in `Performing Action`.
 
 ## Update Application to Scale via GitOPS
 
