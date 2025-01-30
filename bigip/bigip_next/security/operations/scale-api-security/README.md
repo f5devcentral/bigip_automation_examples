@@ -547,7 +547,7 @@ Let's take a closer look at the iRule:
         }
 ```
 
-- **Line 15** shows `header` name responsible for connection ID. If header is not sent, ID will be `"default_connection"`.
+- **Line 15** shows `header` name responsible for connection ID. If header is not available, ID will be `"default_connection"`.
 
 ```bash
 if {[HTTP::header exists "X-Connection"] && ([HTTP::header "X-Connection"] ne "")} {
@@ -630,7 +630,7 @@ In the **Console Output** tab see the pipeline progress. It will remove nodes an
 
 #### 2. Check Updated Server Configuration
 
-First, let's make sure we again have only two nodes. From your deployed Blueprint navigate to TMOS. Go to **Local Traffic** => **Nodes**. You will see two nodes.
+First, let's make sure we have only two nodes. From your deployed Blueprint navigate to TMOS. Go to **Local Traffic** => **Nodes**. You will see two nodes.
 
 ![alt text](./assets/nodes-before.png)
 
