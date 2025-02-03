@@ -37,8 +37,9 @@
     - [Connect Jenkins to BIG-IP](#connect-jenkins-to-big-ip)
     - [Scale Application](#scale-application)
       - [1. Check Current Server Configuration](#1-check-current-server-configuration)
-      - [2. Run Zoom Out Pipeline](#2-run-zoom-out-pipeline)
-      - [3. Check Applied iRule](#3-check-applied-irule)
+      - [2. Overview iRule](#2-overview-irule)
+      - [3. Run Zoom Out Pipeline](#3-run-zoom-out-pipeline)
+      - [4. Check Applied iRule](#4-check-applied-irule)
     - [Test Waiting Room](#test-waiting-room)
     - [Zoom In Application](#zoom-in-application)
       - [1. Run Zoom In Pipeline](#1-run-zoom-in-pipeline)
@@ -192,38 +193,11 @@ Go to TMOS, proceed to **Local Traffic** => **iRules** => **iRule List**. Click 
 
 Give iRule a name and paste the following definition:
 
-===TODO===
-
-```bashwhen HTTP_REQUEST {
-  set file ""
-  if {[regexp {filename=([^&]+)} [HTTP::uri] match value]} {
-      set file $value
+```bash
+when HTTP_REQUEST {
+  if { [HTTP::host] eq "app.domain.local" } {
+    pool app-maintenance-pool
   }
-
-  if { ($file starts_with "/") or ($file starts_with "../") } {
-    log local0. "[IP::client_addr] requested $file"
-    HTTP::respond 403 content "I'm sorry, but your request for $file contains invalid characters. Please try your request again.\n"
-    return
-  }
-
-  if { [HTTP::method] equals "POST" } {
-    HTTP::collect 256
-  }
-}
-
-when HTTP_REQUEST_DATA {
-  set file ""
-  if {[regexp {filename=([^&]+)} [HTTP::payload] match value]} {
-      set file $value
-  }
-
-  if { ($file starts_with "/") or ($file starts_with "../") } {
-    log local0. "[IP::client_addr] requested $file"
-    HTTP::respond 403 content "I'm sorry, but your request for $file contains invalid characters. Please try your request again.\n"
-    return
-  }
-
-  HTTP::release
 }
 ```
 
@@ -435,7 +409,7 @@ Apply avoid path traversal attack rule at scale: to bunch of servers. To specify
 //TODO: Add the config file to update
 ```
 
-Then we can take a look at the iRule we are going to apply by navigating to:
+Then we can take a look at the iRule we are going to apply by opening this [link](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl) or navigating to:
 
 ```bash
 bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl
@@ -573,7 +547,11 @@ We can take a look at the operation pool and its members as well. Move on to **P
 
 ![alt text](./assets/pool-before.png)
 
-#### 2. Run Zoom Out Pipeline
+#### 2. Overview iRule
+
+Before running the `Zoom Out Pipeline` to apply iRule that will route traffic as well as put excessive requests to the waiting room, we can take a look at the iRule. It is available [here](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/scale-cicd/server-git/repo/app/automation/templates/scale-irule.tlc.j2).
+
+#### 3. Run Zoom Out Pipeline
 
 Go back to the Firefox with open Jenkins and start the **Scale Out Pipeline**.
 
@@ -591,7 +569,7 @@ You can see build progress. As soon as it is successfully completed, scroll it. 
 
 ![alt text](./assets/completed-zoom-out.png)
 
-#### 3. Check Applied iRule
+#### 4. Check Applied iRule
 
 Back in TMOS go to **Nodes** to see all the added nodes.
 
