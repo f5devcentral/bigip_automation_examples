@@ -403,10 +403,10 @@ As you can see from the output, both sites are in `Performing Action`.
 
 ## Avoid Path Traversal using iRule via Ansible
 
-Apply avoid path traversal attack rule at scale: to bunch of servers. To specify the servers list, open the config file and update the list.
+Apply avoid path traversal attack rule at scale: to a bunch of servers. To specify the servers list, open the config [file](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/ata-ansible/tmos_vars.yml) and update the list:
 
-```
-//TODO: Add the config file to update
+```bash
+bigip/bigip_next/security/operations/scale-api-security/ata-ansible/tmos_vars.yml
 ```
 
 Then we can take a look at the iRule we are going to apply by opening this [link](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl) or navigating to:
