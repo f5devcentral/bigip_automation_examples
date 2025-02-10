@@ -1,0 +1,13 @@
+provider: 
+  server: 10.1.1.12
+  server_port: 443
+  user: admin
+  password: admin
+  validate_certs: false
+  no_f5_teem: false
+
+virtual_server_name: app-scale-api-{{ip}}
+irule_name: ansible_avoid_path_traversal_attack_rule
+
+start_ip: 41
+end_ip: 60

@@ -1,0 +1,87 @@
+when HTTP_REQUEST {
+
+    ## Check if host name matches; otherwise, exit.
+    set host1 [string tolower [HTTP::host]]
+    if {$host1 contains "app.domain.local"} {
+
+        ## Set variables
+        set OWR {{shortcode}}
+        set max_visitors {{ max_visitors }}
+        set IdleTimeout {{ visitor_idle_timeout }}
+        set MonitorTimeout {{ monitor_timeout }}
+        set WaitingRoomTimeout {{ waiting_room_timeout }}
+
+        ## Determine the connection identifier from the X-Connection header
+        if {[HTTP::header exists "X-Connection"] && ([HTTP::header "X-Connection"] ne "")} {
+            set Connection_ID [HTTP::header "X-Connection"]
+        } else {
+            # Fallback if X-Connection is missing or empty
+            set Connection_ID "default_connection"
+        }
+
+        ## Defining Tables
+        set VisitorsTable VisitorsTable-$OWR-$max_visitors
+        set RPMTable RPMTable-$OWR
+        set WaitingRoomTable WaitingRoom-$OWR-$max_visitors
+
+        ## Generic
+        set unique_id [format "%08d" [expr { int(100000000000 * rand()) }]]
+        set request_uri [HTTP::host][HTTP::uri]
+        set VIP $OWR-vip-url-list
+
+        ## Counters
+        set VisitorCount [table keys -subtable $VisitorsTable -count]
+        set WaitingRoomCount [table keys -subtable $WaitingRoomTable -count]
+        set RPMCount [table keys -subtable $RPMTable -count]
+        set TotalVisitors [expr {$VisitorCount + $WaitingRoomCount}]
+
+        ## Monitoring
+        if {[HTTP::uri] equals "/getcount"} {
+            HTTP::respond 200 content "<html><body>Total: \[$TotalVisitors\] Max: \[$max_visitors\] Waiting: \[$WaitingRoomCount\] RPMCount: \[$RPMCount\]</body></html>\r\n"
+            TCP::close
+            return
+        }
+
+        ## Register RPM
+        table add -subtable $RPMTable $unique_id $Connection_ID\;$request_uri $MonitorTimeout
+
+        ## Start WaitingRoom
+        set VisitorSession [table lookup -subtable $VisitorsTable $Connection_ID]
+        if {$VisitorSession ne ""} {
+            # We have a valid session; no further action needed.
+        } else {
+            # No valid session; check if VIP URL
+            set vip_url [class match -value [HTTP::uri] contains $VIP]
+            if {not ($vip_url eq "")} {
+                # VIP, do nothing
+            } else {
+                # NOT VIP, check connection count for displaying Waiting Room Page
+                if {$VisitorCount < $max_visitors} {
+                    # Free slot available; allocate it
+                    table add -subtable $VisitorsTable $Connection_ID $unique_id $IdleTimeout
+                } else {
+                    # Max visitors limit reached, show Waiting Room
+                    table add -subtable $WaitingRoomTable $Connection_ID $unique_id $WaitingRoomTimeout
+                    HTTP::respond 503 content {
+                        <html>
+                        <head>
+                        <meta http-equiv="refresh" content="60">
+                        <title>Online Waiting Room</title>
+                        </head>
+                        <body>
+                        <center>
+                        <h1>Online Waiting Room</h1>
+                        <h2>We're Sorry</h2>
+                        <p>We currently have an exceptionally large number of visitors on the site, and you are in the queue.</p>
+                        <p>Please hold tight, it should only be a few minutes. Make sure you stay on this page as you will be automatically redirected.</p>
+                        </center>
+                        </body>
+                        </html>
+                    }
+                    TCP::close
+                }
+            }
+        }
+    }
+}
+

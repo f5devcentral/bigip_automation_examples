@@ -1,0 +1,15 @@
+[Unit]
+Description=The OpenResty Application Platform
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/openresty/bin/openresty -c /usr/local/openresty/nginx/conf/nginx.conf
+ExecReload=/usr/local/openresty/bin/openresty -s reload
+ExecStop=/usr/local/openresty/bin/openresty -s stop
+PIDFile=/usr/local/openresty/nginx/logs/nginx.pid
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+

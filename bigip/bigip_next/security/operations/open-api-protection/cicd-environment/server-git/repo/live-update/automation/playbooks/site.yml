@@ -1,0 +1,39 @@
+---
+- name: Live Update and Push Signatures 
+  hosts: localhost
+  gather_facts: false
+
+- name: Check Live Updates
+  import_playbook: check_live_update.yml
+
+- name: Push updates to next instances
+  import_playbook: push_updates.yml
+
+- name: Output Logs
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Polling Logs
+      debug:
+        var: file_content
+      vars: 
+        file_content: "{{ lookup('file', '../logs_live_update_polling.log') }}"
+      when: file_content.splitlines() | length > 0
+      run_once: true
+    
+    - name: Check Updates Report
+      debug:
+        var: file_content
+      vars: 
+        file_content: "{{ lookup('file', check_updates_report) }}"
+      when: file_content.splitlines() | length > 0
+      run_once: true
+    
+    - name: Push Updates Report
+      debug:
+        var: file_content
+      vars: 
+        file_content: "{{ lookup('file', push_updates_report) }}"
+      when: file_content.splitlines() | length > 0
+      run_once: true

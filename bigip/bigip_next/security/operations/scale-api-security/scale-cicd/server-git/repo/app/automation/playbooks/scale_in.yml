@@ -1,0 +1,40 @@
+---
+- name: Configure BIG-IP Nodes, Pools, and Virtual Servers
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    provider:
+      server: "{{ tmos.address }}"
+      server_port: 443
+      user: "{{ tmos_user }}"
+      password: "{{ tmos_password }}"
+      validate_certs: false
+      no_f5_teem: false
+
+  tasks:
+    - name: Remove nodes from the pool
+      f5networks.f5_modules.bigip_pool_member:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.name }}"
+        host: "{{ item.ip }}"
+        port: "{{ item.port }}"
+        pool: "{{ scale_pool_name }}"
+        ratio: 1
+        state: "absent"
+      delegate_to: localhost
+      with_items: "{{ nodes.large }}"
+
+    - name: Remove the node from the BIG-IP node list
+      f5networks.f5_modules.bigip_node:
+        provider: "{{  provider  }}"
+        state: absent
+        partition: Common
+        name: "{{ item.name }}"
+      delegate_to: localhost
+      with_items: "{{ nodes.large }}"

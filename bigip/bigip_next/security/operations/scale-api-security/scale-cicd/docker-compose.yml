@@ -1,0 +1,31 @@
+services:
+  jenkins:
+    build:
+      context: ./server-jenkins
+      dockerfile: jenkins.dockerfile
+    container_name: jenkins-server
+    ports:
+      - 9090:8080
+      - 50000:50000
+    volumes:
+      - ./shared:/shared_data
+      - ./jenkinshome:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_ADMIN_ID=admin
+      - JENKINS_ADMIN_PASSWORD=admin
+
+  gitserver:
+    depends_on:
+      - jenkins
+    build:
+      context: ./server-git
+      dockerfile: git-server.dockerfile
+    volumes:
+      - ./shared:/shared_data
+    container_name: git-server
+    ports:
+      - "8022:22"
+    restart: always

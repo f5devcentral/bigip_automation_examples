@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Scale Oot') {
+            steps {
+                dir('automation') {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'bigip-access', 
+                        usernameVariable: 'BIP_USER', 
+                        passwordVariable: 'BIP_PASSWORD'
+                    )]) {
+                        ansiblePlaybook(
+                            playbook: 'playbooks/scale_out.yml',
+                            extras: "--extra-vars 'tmos_user=${BIP_USER} tmos_password=${BIP_PASSWORD}'"
+                        )
+                    }
+                }
+            }
+        }        
+    }
+}

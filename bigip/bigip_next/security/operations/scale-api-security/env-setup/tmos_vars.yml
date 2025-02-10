@@ -1,0 +1,43 @@
+provider: 
+  server: 10.1.1.12
+  server_port: 443
+  user: admin
+  password: admin
+  validate_certs: false
+  no_f5_teem: false
+
+app:
+  operation:
+    node: app-operation-node
+    pool: app-operation-pool    
+    ip: 10.1.20.102
+    port: 80
+  maintenance:
+    node: app-maintenance-node
+    pool: app-maintenance-pool    
+    ip: 10.1.20.103
+    port: 80
+
+virtual_server: 
+    name: app-scale-api-{{ip}}
+    ip: 10.1.10.{{ip}}
+    port: 80
+
+vs_single:
+  name: app-scale-api
+  ip: 10.1.10.41
+  port: 80
+
+scale_out_broadcast: 10.1.20.255
+scale_interface: ens6
+scale_out:
+  - 10.1.20.104:4044
+  - 10.1.20.105:4044
+  - 10.1.20.106:4044
+  - 10.1.20.107:4044
+  - 10.1.20.108:4044
+  - 10.1.20.109:4044
+
+
+start_ip: 42
+end_ip: 60

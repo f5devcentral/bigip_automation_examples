@@ -1,0 +1,42 @@
+tmos:
+  address: 10.1.1.12
+
+irule_name: irule_waiting_room
+
+virtual_servers:
+  - app-scale-api-42
+  - app-scale-api-43
+  - app-scale-api-50
+
+vip_urls:
+  - key: sample_url
+    value: 10.1.1.10
+
+shortcode: APPLICATION
+max_visitors: 1
+visitor_idle_timeout: 35
+monitor_timeout: 25
+waiting_room_timeout: 35
+
+
+scale_pool_name: app-operation-pool
+nodes:
+  large:
+    - name: lg1
+      ip: 10.1.20.104
+      port: 4044
+    - name: lg2
+      ip: 10.1.20.105
+      port: 4044
+    - name: lg3
+      ip: 10.1.20.106
+      port: 4044
+    - name: lg4
+      ip: 10.1.20.107
+      port: 4044
+    - name: lg5
+      ip: 10.1.20.108
+      port: 4044
+    - name: lg6
+      ip: 10.1.20.109
+      port: 4044

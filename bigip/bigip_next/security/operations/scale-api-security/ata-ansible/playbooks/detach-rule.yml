@@ -1,0 +1,23 @@
+---
+- name: Detach iRule from all virtual servers
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    start_ip: 41
+    end_ip: 60
+
+  tasks:
+    - name: Remove the irules from the server
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
+        irules: []
+      loop: "{{ range(start_ip, end_ip + 1) }}"
+      loop_control:
+        loop_var: ip
+      async: 30
+      poll: 0
+

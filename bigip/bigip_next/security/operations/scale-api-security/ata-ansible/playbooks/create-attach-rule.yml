@@ -1,0 +1,26 @@
+---
+- name: Create and bind iRule to virtual server
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Create the iRule
+      f5networks.f5_modules.bigip_irule:
+        provider: "{{  provider  }}"
+        module: "ltm"
+        name: "{{ irule_name }}"
+        src: "../templates/irule.tcl"
+        state: present
+
+    - name: Bind the iRule to the virtual servers
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ virtual_server_name | replace('{{ ip }}', ip | string) }}"
+        irules: "{{ [irule_name] }}"
+      loop: "{{ range(start_ip, end_ip + 1) }}"
+      loop_control:
+        loop_var: ip
+      async: 30
+      poll: 0

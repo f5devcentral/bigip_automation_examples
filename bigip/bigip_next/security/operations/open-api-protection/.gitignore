@@ -1,0 +1,7 @@
+jenkinshome
+shared
+.tmp
+node_modules
+interface
+logs_next_polling.log
+package-lock.json
