@@ -1,0 +1,89 @@
+---
+- name: Build and configure OpenResty from source
+  hosts: app
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Extract IPs from scale_out
+      set_fact:
+        ip_list: "{{ scale_out | map('split', ':') | map('first') | list }}"
+
+    - name: Check if IP is already assigned and remove it
+      shell: |
+        if ip addr show dev ens6 | grep -q {{ item }}; then
+          ip addr del {{ item }}/24 dev ens6;
+        fi
+      with_items: "{{ ip_list }}"
+      ignore_errors: true
+
+    - name: Add secondary IPs to ens6 with broadcast address
+      shell: |
+        ip addr add {{ item }}/24 brd {{ scale_out_broadcast }} dev {{ scale_interface }}
+      with_items: "{{ ip_list }}"
+      register: add_ip_results
+      failed_when: add_ip_results.rc != 0
+
+    - name: Stop and disable default NGINX service if running
+      service:
+        name: nginx
+        state: stopped
+        enabled: false
+      ignore_errors: true
+
+    - name: Install dependencies for building OpenResty
+      apt:
+        name:
+          - build-essential
+          - libpcre3
+          - libpcre3-dev
+          - zlib1g
+          - zlib1g-dev
+          - libssl-dev
+          - curl
+          - gnupg
+        state: present
+        update_cache: true
+
+    - name: Download OpenResty source code
+      get_url:
+        url: https://openresty.org/download/openresty-1.21.4.1.tar.gz
+        dest: /usr/local/src/openresty.tar.gz
+
+    - name: Extract OpenResty source code
+      unarchive:
+        src: /usr/local/src/openresty.tar.gz
+        dest: /usr/local/src/
+        remote_src: true
+
+    - name: Build and install OpenResty
+      shell: |
+        cd /usr/local/src/openresty-1.21.4.1
+        ./configure --prefix=/usr/local/openresty
+        make
+        make install
+
+    - name: Configure OpenResty service
+      copy:
+        src: ../templates/openresty.service
+        dest: /etc/systemd/system/openresty.service
+        mode: "0644"
+
+    - name: Configure app in OpenResty
+      template:
+        src: ../templates/nginx.conf.j2
+        dest: /usr/local/openresty/nginx/conf/nginx.conf
+        mode: "0644"
+
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: Start and enable OpenResty service
+      service:
+        name: openresty
+        state: restarted
+        enabled: true

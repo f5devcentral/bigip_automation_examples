@@ -1,0 +1,106 @@
+---
+- name: Configure BIG-IP Nodes, Pools, and Virtual Servers
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    provider:
+      server: "{{ tmos.address }}"
+      server_port: 443
+      user: "{{ tmos_user }}"
+      password: "{{ tmos_password }}"
+      validate_certs: false
+      no_f5_teem: false
+
+  tasks:
+    - name: Render the iRule template
+      template:
+        src: "../templates/scale-irule.tlc.j2"
+        dest: "/tmp/{{ irule_name }}.tcl"
+
+    - name: Create the iRule
+      f5networks.f5_modules.bigip_irule:
+        provider: "{{  provider  }}"
+        module: "ltm"
+        name: "{{ irule_name }}"
+        src: "/tmp/{{ irule_name }}.tcl"
+        state: present
+
+    - name: Create or update the VIP URL data group
+      f5networks.f5_modules.bigip_data_group:
+        provider:
+          server: "{{ tmos.address }}"
+          user: "{{ tmos_user }}"
+          password: "{{ tmos_password }}"
+          server_port: 443
+          validate_certs: no
+        name: "{{ shortcode }}-vip-url-list"
+        type: string
+        internal: true
+        records: "{{ vip_urls }}"
+        state: present
+    
+    - name: Log in to TMOS
+      uri:
+        url: "https://{{ tmos.address }}/mgmt/shared/authn/login"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "username": "{{ tmos_user }}",
+            "password": "{{ tmos_password }}",
+            "loginProviderName": "tmos"
+          }
+        body_format: json
+        validate_certs: no
+      register: login_response
+
+    - name: Extract authentication token
+      set_fact:
+        auth_token: "{{ login_response.json.token }}"
+
+    - name: Fetch current rules for the virtual servers using API
+      uri:
+        url: "https://{{ tmos.address }}/mgmt/tm/ltm/virtual/{{ item }}"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+          X-F5-Auth-Token: "{{ auth_token.token }}"
+        validate_certs: no
+      register: vs_details
+      loop: "{{ virtual_servers }}"
+
+    - name: Add the new rule to the existing list for each virtual server
+      set_fact:
+        updated_rules: "{{ vs.virtual_server.irules | default([]) + [irule_name] }}"
+      loop: "{{ vs_details.results }}"
+      loop_control:
+        loop_var: vs
+
+    - name: Bind the iRule to the virtual servers
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ item }}"
+        irules: "{{ updated_rules }}"
+      loop: "{{ virtual_servers }}"
+      async: 30
+      poll: 0
+
+    - name: Add node to the pool
+      f5networks.f5_modules.bigip_pool_member:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ item.name }}"
+        host: "{{ item.ip }}"
+        port: "{{ item.port }}"
+        pool: "{{ scale_pool_name }}"
+        ratio: 1
+        state: "enabled"
+      delegate_to: localhost
+      with_items: "{{ nodes.large }}"
+

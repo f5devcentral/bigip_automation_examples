@@ -1,0 +1,46 @@
+central_manager:
+  address: 10.1.1.5
+  user: admin
+  password: Welcome1234567!
+  max_applications: 10000
+
+migrate_shared_object_prefix: "migrated_"
+migrate_app_prefix: "Common_"
+
+deploy_tree:
+  ltm-app-custom-monitor: 
+    - bigip_next: 10.1.1.10
+  ltm-app-routing-header:
+    - bigip_next: 10.1.1.10
+  ltm-app-routing-ssl:
+    - bigip_next: 10.1.1.10
+
+ip_map:
+  10.1.10.71: 10.1.10.171
+  10.1.10.72: 10.1.10.172
+  10.1.10.73: 10.1.10.173
+  10.1.10.74: 10.1.10.174
+
+report_file: ../report.csv
+
+monitor_settings:
+  - name: ltm-custom-monitor-migration
+    data:
+      class: Monitor
+      interval: 5
+      monitorType: http
+      receive: Healthy\\n
+      send: GET /health\n
+      timeout: 16
+
+pool_settings:
+  - name: "/Common/ltm-pool-staging"
+    monitors: 
+      - ltm-custom-monitor-migration
+    members:
+      - addressDiscovery: "static"
+        servicePort: 80
+        shareNodes: true
+        servers: 
+          - address: "10.1.20.103"
+            name: "staging-node"

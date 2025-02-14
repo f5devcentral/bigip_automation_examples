@@ -8,11 +8,11 @@
 - [Setup Diagram](#setup-diagram)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
 - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-  - [1. Deploy Blueprint](#1-deploy-blueprint)
-  - [2. Setup SSH Keys](#2-setup-ssh-keys)
-  - [3. Enter Blueprint](#3-enter-blueprint)
-  - [4. Clone Repository](#4-clone-repository)
-  - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
+    - [1. Deploy Blueprint](#1-deploy-blueprint)
+    - [2. Setup SSH Keys](#2-setup-ssh-keys)
+    - [3. Enter Blueprint](#3-enter-blueprint)
+    - [4. Clone Repository](#4-clone-repository)
+    - [5. Data Initialization for Docker](#5-data-initialization-for-docker)
   - [Docker Setup](#docker-setup)
   - [Infrastructure Configuration](#infrastructure-configuration)
     - [1. Install Dependencies](#1-install-dependencies)
@@ -61,11 +61,11 @@ Before starting application migration we will need to set up our environment. En
 
 # Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "Next WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "NEXT WAF-Automation (20.3.0)". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **Next WAF - Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **NEXT WAF-Automation (20.3.0)**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -87,7 +87,7 @@ Go to the **Access Methods** tab and copy the SSH external. Execute, to copied c
 
 ### 4. Clone Repository
 
-After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
+After that, clone the [repository](https://github.com/yoctoserge/bigip_automation_examples.git). Note that you don't need to specify keys in Blueprint since they are already specified.
 
 ### 5. Data Initialization for Docker
 
@@ -96,7 +96,7 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 Go to the following directory of the cloned repository:
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 Run the `init.sh` to create a local key folder:
@@ -111,10 +111,10 @@ You can verify that the folder with the SSH keys has been created. The folder is
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
 
-**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/yoctoserge/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 Next, we will build Docker. Note that executing this command can take some time.
@@ -136,7 +136,7 @@ sh ./run.sh
 Enter the directory:
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/init
+bigip/bigip_next/env-init/environment
 ```
 
 Run the command to install the collections and libraries required in Ansible playbook:
@@ -199,7 +199,7 @@ Click the **Start Adding Apps** button. This will open the creation form.
 
 ![alt text](./assets/start-adding-app.png)
 
-Before moving on to app configuration, give it a name, select the type of application service, and click the **Start Creating** button.
+Before moving on to app configuration, select the type of application service, give it a name, and click the **Start Creating** button.
 
 ![alt text](./assets/app-form.png)
 
@@ -239,7 +239,7 @@ The name should appear in WAF Policy name field. Click **Save** to move on.
 
 ![alt text](./assets/save-policy.png)
 
-Back on the app configuration page, take a look at the configured properties and click **Review and Deploy**.
+Back on the app configuration page, take a look at the configured properties and click **Review & Deploy**.
 
 ![alt text](./assets/deploy-app.png)
 
@@ -315,7 +315,7 @@ Congrats, you did it! You deployed a new app to BIG-IP Next and applied a WAF po
 
 ## 1. Prerequisites
 
-- Clone and install the repository https://github.com/f5devcentral/bigip_automation_examples.git if you haven't done so yet
+- Clone and install the repository https://github.com/yoctoserge/bigip_automation_examples.git if you haven't done so yet
 - Access to BIG-IP Central Manager
 - CLI in Jump Host or Docker to run commands
 - Setup Docker (_optional but recommended_)
@@ -415,4 +415,3 @@ Finally, we can drill down into the created policy details. Click on the policy 
 ![alt text](./assets/policy-details.png)
 
 Congrats! You just completed automated deployment and protection of a new app on BIG-IP Next.
-

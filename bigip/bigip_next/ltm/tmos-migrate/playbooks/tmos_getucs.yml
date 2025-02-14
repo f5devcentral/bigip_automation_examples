@@ -1,0 +1,20 @@
+---
+- name: Download UCS from TMOS
+  hosts: tmos
+  gather_facts: false
+  collections:
+    - f5networks.f5_modules
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  tasks:
+    - name: Create UCS archive
+      raw: tmsh save sys ucs "{{  tmos_ucs_name  }}"
+
+    - name: Fetch UCS archive
+      bigip_ucs_fetch:
+        src: "{{  tmos_ucs_name  }}.ucs"
+        dest: "/tmp/{{  tmos_ucs_name  }}_{{  inventory_hostname  }}.ucs"
+        provider: "{{  provider  }}"
+      delegate_to: localhost

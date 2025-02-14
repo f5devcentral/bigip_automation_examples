@@ -1,0 +1,25 @@
+---
+- name: Configure BIG-IP Nodes, Pools, and Virtual Servers
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    pool_node_mapping: "{{ pools | zip_pools_and_nodes(nodes) }}"
+
+  tasks:
+    - name: Create a virtual servers on the TMOS BIG-IP
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{  provider  }}"
+        state: present
+        name: "{{ virtual_server.name }}"
+        destination: "{{ virtual_server.ip }}:{{ virtual_server.port }}"
+        pool: "{{ default_pool_name }}"
+        snat: "Automap"
+        profiles:
+          - http
+          - websecurity
+      delegate_to: localhost

@@ -1,45 +1,32 @@
-# F5 BIG-IP / BIG-IP Next Automation Examples
+# F5 BIG-IP Automation Examples
 
 ## Overview
 
-This is a consolidated repo of Workflow Guides for `F5` products: `BigIP` and `BigIP Next`, covering select use-cases with automation and their manual step equivalents. Use the guides and associated automation scripts to become familiar with the use-cases outlined in the table below, and with the automation code provided for these use-cases (Ansible, Terraform, etc.) </br>
+This is a repo of Workflow Guides for `F5` product `BIG-IP`, mainly focused on BIG-IP TMOS. The guides cover select use-cases with automation and their manual step equivalents. Use the guides and associated automation scripts to become familiar with the use-cases outlined in the table below, and with the automation code provided for these use-cases (Ansible, Terraform, etc.) </br>
 </br>
 **NOTE: To learn about each use case check the DevCentral article link provided in the table below.** </br>
 </br>
 
-## BIG-IP Next Access
+## BIG-IP App Delivery
 
-**Note:** Next CM API specification can be found over this link [F5® BIG-IP® Next Central Manager API Specifications](https://clouddocs.f5.com/products/bigip-next/mgmt-api/latest/ApiReferences/bigip_public_api_ref/r_openapi-next.html). 
+| **Guide**           | **Manual**                                                                                                                                             | **Automation**                                                                                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Automation at scale | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-api-security/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-api-security/Readme.md#automated-workflow-guide) |
 
+## BIG-IP Security
 
-  | **DevCentral Overview Articles**     | **Use Case / Workflow Guides (SaaS Console, Automation)**                      |
-  | ------------------------------------ | ------------------------------------------------------------------------------ |
-  |[Introducing Next Access Alongside Our Trusted APM](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-introducing-next-access-alongside-our-trusted-apm/328828)                                      |            N/A                                                                    |
-  | [SAML Federation made easier](https://community.f5.com/kb/big-ip-next-academytkb-board/big-ip-next-access-saml-federation-made-easier/329007) | [Microsoft EntraID (SAML IdP) with Kerberos SSO](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/MicrosoftEntra%20ID-IdP-KerberosSSO) |
-  |   | [Integration with Okta (SAML IdP)](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP) |
-  |   | [Integration with Okta (SAML IdP) with HTTP Connector providing risk rating](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/saml-federation/okta-IdP-http-connector) |
-  |   | [Multiple IdPs based on matching criteria] |
-  | [VPN Use cases](https://community.f5.com/kb/BIG-IP-Next-Academytkb-board/big-ip-next-access-five-minutes-vpn-setup/330291)  | [Edge client with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/edgeclient-certauth) |
-  |   | [Machine Tunnel with Machine certificate](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/next_access/vpn/machinetunnel-certauth) |
-  
-  
-## BIG-IP Next WAF
+| **Guide**               | **Manual**                                                                                                                                              | **Automation**                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/Readme.md#automated-workflow-guide) |
 
-  | **DevCentral Overview Articles**     | **Use Case / Workflow Guides (SaaS Console, Automation)**                      |
-  | ------------------------------------ | ------------------------------------------------------------------------------ |
-  |Migrate Apps with WAF Policy from BIG-IP TMOS to BIG-IP Next (Coming Soon) | [Manual Steps and Automation (Ansible) for BIG-IP TMOS to Next Migration](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/migrate-from-tmos) |
-  |Deploy and Protect Apps on BIG-IP Next (Coming Soon) | [Manual Steps and Automation (Terraform) for Deploying a New App with WAF Policy](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/deploy-with-new-next-waf) |
-  |Next WAF Operations (Coming Soon) |  [Manual Steps and Automation (Ansible) for WAF Signature Updates & Operations](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/operations/Readme.md) |
-  
 ## Getting Started
 
-* Access the README for the target Workflow Guides use-case(s) from the tables above.
-* Follow the steps in the README and follow Manual and/or Automated workflows
-
+- Access the README for the target Workflow Guides use-case(s) from the tables above.
+- Follow the steps in the README and follow Manual and/or Automated workflows
 
 ## Support
 
-For support, please open a GitHub issue.  Note, the code in this repository is community supported and is not supported by F5, Inc.  
+For support, please open a GitHub issue. Note, the code in this repository is community supported and is not supported by F5, Inc.
 
 ## Community Code of Conduct
 

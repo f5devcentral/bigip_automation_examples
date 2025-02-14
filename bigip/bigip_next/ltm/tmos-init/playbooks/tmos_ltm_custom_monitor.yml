@@ -1,0 +1,38 @@
+---
+- name: Configure Custom Monitors
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - ../tmos_vars.yml
+
+  vars:
+    pool_with_monitor_names: >
+      {{
+        pools | map('combine', {
+          'monitors': health_monitors | map(attribute='name') | list
+        }) | list
+      }}
+
+  tasks:
+    - name: Create custom HTTP monitor for each pool and health monitor
+      f5networks.f5_modules.bigip_monitor_http:
+        name: "{{ item.name }}"
+        parent: "http" # Inherit from the default HTTP monitor
+        send: "GET {{ item.url }} \r\n"
+        receive: "{{ item.response }}"
+        interval: 5
+        timeout: 16
+        state: present
+        provider: "{{ provider }}"
+      delegate_to: localhost
+      with_items: "{{ health_monitors }}"
+
+    - name: Assign custom monitors to each pool
+      f5networks.f5_modules.bigip_pool:
+        name: "{{ item.name }}"
+        monitor_type: "and_list"
+        monitors: "{{ item.monitors }}"
+        provider: "{{ provider }}"
+      delegate_to: localhost
+      loop: "{{ pool_with_monitor_names }}"

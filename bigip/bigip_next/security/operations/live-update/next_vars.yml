@@ -1,7 +1,7 @@
 central_manager:
   address: 10.1.1.5
   user: admin
-  password: Welcome123!
+  password: Welcome1234567!
 
 check_updates_report: ../check-updates-report.txt
 push_updates_report: ../push-updates-report.txt

@@ -1,0 +1,10 @@
+---
+- name: Main Playbook
+  hosts: app
+  become: true
+
+- name: Setup TMOS virtual server routine
+  import_playbook: tmos_setup.yml
+
+- name: Create Custom Monitor
+  import_playbook: tmos_ltm_custom_monitor.yml

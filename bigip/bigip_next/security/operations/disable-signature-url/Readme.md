@@ -24,22 +24,22 @@
 
 # Overview
 
-This flow is one of three use-cases of the [Operations](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/bigip_next/security/operations/Readme.md) series focused on disabling signatures on specific URLs. In the course of this guide we will both update parameters with signature overrides and create new parameters with their own overrides. For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide. We will assume that our app stores scripts to be embedded in webpages. We have app's server that allows app to execute CRUD operations and has its APIs specified in the Swagger file.
+This flow is one of three use-cases of the [Operations](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/operations/Readme.md) series focused on disabling signatures on specific URLs. In the course of this guide we will both update parameters with signature overrides and create new parameters with their own overrides. For this guide we will use the app with a WAF policy setup and deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide. We will assume that our app stores scripts to be embedded in webpages. We have app's server that allows app to execute CRUD operations and has its APIs specified in the Swagger file.
 
 # Environment
 
-If you are an F5 employee or customer with access to UDF and you haven't done the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide yet, first you will need to complete it in order to setup the environment infrastructure and deploy the required app with WAF. Follow the steps below:
+If you are an F5 employee or customer with access to UDF and you haven't done the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide yet, first you will need to complete it in order to setup the environment infrastructure and deploy the required app with WAF. Follow the steps below:
 
-- [Blueprint Setup (for F5 employees or customers with access to UDF)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
-- [Docker Setup](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#docker-setup)
-- [Infrastructure Configuration - items 1 & 2](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#infrastructure-configuration)
-- [Automated Workflow Guide - items 1 - 5](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/operations-liveupdate/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#automated-workflow-guide) to deploy the app with the WAF policy
+- [Blueprint Setup (for F5 employees or customers with access to UDF)](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
+- [Docker Setup](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#docker-setup)
+- [Infrastructure Configuration - items 1 & 2](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#infrastructure-configuration)
+- [Automated Workflow Guide - items 1 - 5](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#automated-workflow-guide) to deploy the app with the WAF policy
 - Verify the Deployed App with its Policy:
 
   - (optional) If you want to view app's APIs, enter the Swagger file of app API by running the following command:
 
     ```bash
-    cat ~/bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/init/templates/code-crud-swagger.yaml
+    cat ~/bigip_automation_examples/bigip/bigip_next/env-init/environment/templates/code-crud-swagger.yaml
     ```
 
   - Run the following command to see the list of scripts:
@@ -132,7 +132,7 @@ If the script is updated, you will see the following output:
 
 # Automated Workflow Guide
 
-If you are following the Blueprint flow, you will use the app deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide, therefore you will need to follow the steps described in the [Environment](#environment) section if you have not done so yet in order to set up the environment and deploy app with WAF policy. You can skip the [Environment](#environment) section if you have already deployed the app with WAF.
+If you are following the Blueprint flow, you will use the app deployed in the [Deploy and Protect a New App on BIG-IP Next with Security Policy](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/bigip_next/security/deploy-with-new-next-waf/Readme.md#environment--pre-requisites) guide, therefore you will need to follow the steps described in the [Environment](#environment) section if you have not done so yet in order to set up the environment and deploy app with WAF policy. You can skip the [Environment](#environment) section if you have already deployed the app with WAF.
 
 ## 1. Configure Connectivity to Central Manager
 
@@ -150,7 +150,7 @@ First, specify Central Manager parameters: `address`, `user`, `password`. Second
 central_manager:
   address: 10.1.1.5
   user: admin
-  password: Welcome123!
+  password: Welcome1234567!
 
 override_signature:
   - name: waf_greenfield_demo_policy
@@ -176,7 +176,7 @@ override_report: ../signature-override-report.txt
 If the docker option is used, there is a possibility to see the logs of parameter update with signature overrides process. First, you need to establish one more SSH connection to jumphost. Second, connect to the running docker. To do that navigate to:
 
 ```bash
-bigip_automation_examples/bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 In this folder run the following command to connect to the running Docker:
@@ -232,8 +232,8 @@ You will see the following report as output showing policy name, time of deploy 
 | Policy Name                                   | Deploy Task Created              | Deploy Task Completed            | Paremeter                                     | Status       | Message                                    |
 |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
 | waf_greenfield_demo_policy                    | 2024-09-24T15:57:58.236981Z      | 2024-09-24T15:58:11.898553Z      |                                               | Successed    | Task completed                             |
-|                                               |                                  |                                  | code: Append                                  |              |                                            |
-|                                               |                                  |                                  | query: Append                                 |              |                                            |
+|                                               |                                  |                                  | code: Add                                     |              |                                            |
+|                                               |                                  |                                  | query: Add                                    |              |                                            |
 |-----------------------------------------------|----------------------------------|----------------------------------|-----------------------------------------------|--------------|--------------------------------------------|
 ```
 
@@ -254,7 +254,7 @@ Log in BIG-IP Next Central Manager via the GUI of the deployment we did earlier 
 
 ![alt text](./assets/navigate-to-policies-new.png)
 
-Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the [previous step](#2-deploy-updates), as well `query` parameter just created. Enter the `code` parameter.
+Navigate to the **Parameters** tab. You will see the `code` parameter created in the [Manual Workflow Guide](#manual-workflow-guide) and updated in the [previous step](#3-deploy-updates), as well as `query` parameter just created. Enter the `code` parameter.
 
 ![alt text](./assets/new-code-param.png)
 

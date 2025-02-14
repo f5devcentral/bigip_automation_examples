@@ -1,0 +1,63 @@
+worker_processes auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    server {
+        listen {{ app.operation.ip }}:{{ app.operation.port }};
+
+        location /action {
+            return 200 "Performing Action\n";
+            add_header Content-Type text/plain;
+        }
+
+        location /long-operation {
+            content_by_lua_block {
+                ngx.sleep(30)  -- Delay for 30 seconds
+                ngx.say("Long Operation Completed")
+            }
+        }
+
+        location / {
+            return 200 "Alive\n";
+            add_header Content-Type text/plain;
+        }
+    }
+
+    server {
+        listen {{ app.maintenance.ip }}:{{ app.maintenance.port }};
+
+        location / {
+            return 200 "Maintenance mode\n";
+            add_header Content-Type text/plain;
+        }
+    }
+
+    {% for server in scale_out %}
+    server {
+        listen {{ server }};
+
+        location /action {
+            add_header Content-Type text/plain;
+            return 200 "Performing action at: {{ server }}\n";
+        }
+
+        location /long-operation {
+            content_by_lua_block {
+                ngx.sleep(30)  -- Delay for 30 seconds
+                ngx.say("Long Operation Completed as {{ server }}")
+            }
+        }
+
+        location / {
+            add_header Content-Type text/plain;
+            return 200 "Alive\n";
+        }
+    }
+    {% endfor %}
+}

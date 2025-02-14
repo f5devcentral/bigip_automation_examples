@@ -25,12 +25,11 @@
   - [1. Get BIG-IP UCS Archive](#1-get-big-ip-ucs-archive)
   - [2. Migrate the App](#2-migrate-the-app)
     - [2.1 Upload UCS Archive into Central Manager](#21-upload-ucs-archive-into-central-manager)
-    - [2.2 Add Application for Migration](#22-add-application-for-migration)
-    - [2.3 Import Shared Objects](#23-import-shared-objects)
-    - [2.4 Deploy as Draft](#24-deploy-as-draft)
-    - [2.5 Update Application Virtual Address](#25-update-application-virtual-address)
-    - [2.6 Deploy the Application to Big-IP Next Instance](#26-deploy-the-application-to-big-ip-next-instance)
-    - [2.7 Check App Availability](#27-check-app-availability)
+    - [2.2 Migrate as Draft](#22-migrate-as-draft)
+    - [2.3 Update Application Virtual Address](#23-update-application-virtual-address)
+    - [2.4 Add Default Properties for Monitor](#24-add-default-properties-for-monitor)
+    - [2.5 Deploy the Application to Big-IP Next Instance](#25-deploy-the-application-to-big-ip-next-instance)
+    - [2.6 Check App Availability](#26-check-app-availability)
 - [Automated Workflow Guide](#automated-workflow-guide)
   - [1. Prerequisites](#1-prerequisites)
     - [1.1 Configure Connectivity to TMOS](#11-configure-connectivity-to-tmos)
@@ -83,11 +82,11 @@ Before starting application migration we will need to set up our environment. En
 
 ## Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "Next WAF - Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP Next blueprint flow as the foundation for your environment: "NEXT WAF-Automation (20.3.0)". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
 ### 1. Deploy Blueprint
 
-Navigate to the **Blueprints** and search for **Next WAF - Automation**. Deploy it.
+Navigate to the **Blueprints** and search for **NEXT WAF-Automation (20.3.0)**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
@@ -109,7 +108,7 @@ Go to the **Access Methods** tab and copy the SSH external. Execute copied comma
 
 ### 4. Clone Repository
 
-After that, clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git). Note that you don't need to specify the SSH keys in Blueprint since they are already specified.
+After that, clone the [repository](https://github.com/yoctoserge/bigip_automation_examples.git). Note that you don't need to specify the SSH keys in Blueprint since they are already specified.
 
 ### 5. Data Initialization for Docker
 
@@ -118,7 +117,7 @@ After that, clone the [repository](https://github.com/f5devcentral/bigip_automat
 Go to the following directory of the cloned repository:
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 Run the `init.sh` to create a local key folder:
@@ -133,10 +132,10 @@ You can verify that the folder with the SSH keys has been created. The folder is
 
 We recommend using a jump host (Linux machine) where you can configure the required services, such as Docker, which includes demo apps. If using UDF Blueprint Deployment, the Ubuntu jump host is already provided with the included SSH keys for the Blueprint environment. Docker setup is only used for initialization and/or [Automated Workflow](#automated-workflow-guide).
 
-**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/f5devcentral/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
+**NOTE: At this point if you're using your own (non-UDF) environment, make sure you Git clone clone the [repository](https://github.com/yoctoserge/bigip_automation_examples.git) and navigate to the following directory of the cloned repository:**
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/docker-env/
+bigip/bigip_next/env-init/docker
 ```
 
 ### 1. Build Docker
@@ -180,7 +179,7 @@ nano cm_key
 Navigate to
 
 ```bash
-bigip/bigip_next/security/migrate-from-tmos/init
+bigip/bigip_next/env-init/environment
 ```
 
 Run the command to install the collections and libraries required in Ansible playbook:
@@ -331,7 +330,7 @@ Log into your BIG-IP TMOS instance via the deployment we did earlier. Go to the 
 
 ![alt text](./assets/tmos-archive.png)
 
-and navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in the archive name and click **Finish**.
+Navigate to **System**. In **Archives** click the **Create** button. In the opened form, type in the archive name and click **Finish**.
 
 ![alt text](./assets/create-ucs.png)
 
@@ -361,11 +360,11 @@ Click the **New Migration** button. This will open a new application migration c
 
 ![alt text](./assets/new-migration.png)
 
-First, we will configure general properties: give it a name and add a description.
+First, we will give session a name.
 
 ![alt text](./assets/migration-name.png)
 
-Next, we will drag and drop the UCS archive file downloaded [earlier](#1-get-big-ip-ucs-archive). Enter the BIG-IP TMOS master key. In case of **Blueprint** usage, the master key is:
+Next, we will drag and drop the UCS archive file downloaded [earlier](#1-get-big-ip-ucs-archive), and enter the BIG-IP TMOS master key. In case of **Blueprint** usage, the master key is:
 
 ```
 cgGaYTNid4Gvqdelf/85cw==
@@ -375,53 +374,58 @@ Select grouping application services by IP addresses for this demo flow and clic
 
 ![alt text](./assets/upload-ucs.png)
 
-### 2.2 Add Application for Migration
+### 2.2 Migrate as Draft
 
-After uploading the UCS archive we will add the application to migrate by clicking the **Add Application** button.
-
-![alt text](./assets/add-application.png)
-
-You will see a list of application services from your TMOS. Note that you can select green or yellow status application services, but not red ones. If you want to see if your app is eligible for migration to BIG-IP Next, you can select the application and then proceed to the **Analyze** button in the upper right corner. If the application is eligible, proceed by clicking **Add**. To migrate a preconfigured app, select the **Common_manual_ans_vs1** and click the **Add** button
+After uploading the UCS archive you will see a list of application services. Select an application and click **Migrate as Draft**.
 
 ![alt text](./assets/add-apps-to-migration.png)
 
-Next, you will see **Application Migration** page displaying the app to be migrated.
+Confirm the migration including the shared objects.
 
-![alt text](./assets/app-mig-list.png)
+![alt text](./assets/include-shared-objects.png)
 
-### 2.3 Import Shared Objects
+The readiness status of the selected application will change to **Migrated**. Complete by clicking the **Save & Exit** button.
 
-In the **Pre Deployment** step we will import shared objects into Central Manager. Click **Import** button:
+![alt text](./assets/save-exit.png)
 
-![alt text](./assets/import-shared-objects.png)
+### 2.3 Update Application Virtual Address
 
-### 2.4 Deploy as Draft
+If we deploy the application now, there will be an IP address conflict. So, in order to preserve the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the application migrated as draft:
 
-And finally, click the **Deploy** button. Note that we haven't yet selected the deploy location, so just leave **Save as Draft**.
-
-![alt text](./assets/deploy.png)
-
-The **Deployments** page will show the deployment result. Take a look and **Finish** it.
-
-![alt text](./assets/finished-deployment.png)
-
-### 2.5 Update Application Virtual Address
-
-If we deploy the application now, there will be an IP address conflict. So, in order to preserve the old routes and create the new ones, the IP address of the migrated app is necessary to be updated. To update, click on the **Common_manual_ans_vs1** application in the list of applications:
 ![alt text](./assets/migrated-app-list.png)
 
-In the window the appears, find the **virtualAddress** key and replace **10.1.10.95** IP address with **10.1.10.195** and click the **Review & Deploy** button.
+In the opened window of AS3 Declaration, find the **virtualAddresses** key and replace **10.1.10.95** IP address with **10.1.10.195**.
+
 ![alt text](./assets/migrated-app-ip-update.png)
 
-### 2.6 Deploy the Application to Big-IP Next Instance
+### 2.4 Add Default Properties for Monitor
 
-In the apperaared window, click the **Start Adding** button and select the **big-ip-next-03-example.com** instance. Then click **Add to list**
+In the same opened window of AS3 Declaration scroll down to find `"monitor_http_default***"` configuration. Paste the following settings for the monitor:
+
+```
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http",
+        "receive": "",
+        "send": "GET /\\r\\n",
+        "timeout": 16
+```
+
+Complete by clicking the **Review & Deploy** button.
+
+![alt text](./assets/default-monitor.png)
+
+### 2.5 Deploy the Application to Big-IP Next Instance
+
+In the opened window, click the **Start Adding** button and select the **big-ip-next-03-example.com** instance.
+
 ![alt text](./assets/migrated-app-deploy-next-instance.png)
 
-The deploy-to location will be added. Click the **Deploy** button:
+The deploy instance will be added. Click the **Deploy** button:
+
 ![alt text](./assets/migrated-app-deploy-next-instance-location.png)
 
-### 2.7 Check App Availability
+### 2.6 Check App Availability
 
 Congrats! Your app along with the corresponding security WAF policy is migrated to BIG-IP Next with the help of BIG-IP Next Central Manager which streamlines the entire migration process.
 
@@ -469,7 +473,7 @@ Now, switch to the **WAF Dashboards**, select **Last 5 Minutes** and see that th
 
 In this part of the guide, we will automatically migrate the application with two virtual servers to BIG-IP Next with a shared WAF policy and then verify it using Central Manager UI as well as CLI.
 
-Before proceeding, you need to enter Docker if you chose [Docker setup](#1-docker-setup-optional) option or the environment in Jump Host. Go to the following folder where we will update config files:
+Before proceeding, you need to enter Docker if you chose [Docker setup](#docker-setup) option or the environment in Jump Host. Go to the following folder where we will update config files:
 
 ```bash
 bigip/bigip_next/security/migrate-from-tmos/migrate
@@ -514,7 +518,7 @@ In the `site.yml` file you can see the migration steps that will be performed:
 - Backup TMOS BIG-IP as UCS
 - Migration of supported apps to BIG-IP Next that includes both creating and deploying them
 
-Please note that only certificates and WAF policies are migrated.  **NOTE: For migration of iRules and Monitors look at the LTM migration workflow guide in this repository.** 
+Please note that only certificates and WAF policies are migrated. **NOTE: For migration of iRules and Monitors look at the LTM migration workflow guide in this repository.**
 
 Start the deployment by running the following command:
 
@@ -603,6 +607,7 @@ Verify that WAF was migrated too:
 ```bash
 curl 'http://10.1.10.191/endpoint1?query=<script>alert(1)</script>'
 ```
+
 The expected output should look like this:
 
 ```
@@ -620,5 +625,3 @@ curl http://10.1.10.91/endpoint1
 ```
 
 Congrats! You just completed the automated migration of the application to BIG-IP Next with its WAF Policy and certificates.
-
-

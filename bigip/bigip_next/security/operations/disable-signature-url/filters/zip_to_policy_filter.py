@@ -75,7 +75,7 @@ class FilterModule(object):
                             log[policyName].append({"name": parameter["name"], "operation": "Update"})
                     if found == False:
                         policy_parameters.append(parameter_info)
-                        log[policyName].append({"name": parameter["name"], "operation": "Append"})
+                        log[policyName].append({"name": parameter["name"], "operation": "Add"})
 
                     signature_overrides = parameter_info.get('signatureOverrides', [])
                     for signature in parameter["signatures"]:
