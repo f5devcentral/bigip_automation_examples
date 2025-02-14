@@ -1,8 +1,8 @@
-# DRAFT: Scale API Security Session demo
+# Optimize and scale BIG-IP LTM automation with GitOps and Infrastructure as Code (IaC)
 
 # Table of Contents
 
-- [DRAFT: Scale API Security Session demo](#draft-scale-api-security-session-demo)
+- [Optimize and Scale BIG-IP LTM automation](#scale-api-security-session-demo)
 - [Table of Contents](#table-of-contents)
 - [Environment Setup](#environment-setup)
 - [Manual Configuration](#manual-configuration)
@@ -44,6 +44,18 @@
     - [Zoom In Application](#zoom-in-application)
       - [1. Run Zoom In Pipeline](#1-run-zoom-in-pipeline)
       - [2. Check Updated Server Configuration](#2-check-updated-server-configuration)
+
+# Overview
+
+This guide explores how organizations can leverage GitOps and Infrastructure as Code (IaC) tools like Terraform and Ansible to dynamically manage BIG-IP LTM configurations. You will learn about the following approaches to scaling LTM configuration in BIG-IP: 
+
+- LTM Policies (BIG-IP Service Portal)
+- iRules (BIG-IP Service Portal)
+- Terraform Automation (LTM & iRules)
+- Ansible Automation (LTM & iRules)
+- GitOps approaches with Jenkins CI/CD
+
+This helps compare and contrast approaches to automating and managing LTM policies, updating iRules, and implementing CI/CD pipelines for streamlined automation at scale.
 
 # Environment Setup
 
