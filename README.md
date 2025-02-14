@@ -11,13 +11,13 @@ This is a repo of Workflow Guides for `F5` product `BIG-IP`, mainly focused on B
 
 | **Guide**           | **Manual**                                                                                                                                             | **Automation**                                                                                                                                               |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Automation at scale | [Manual flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/scale-api-security/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/scale-api-security/Readme.md#automated-workflow-guide) |
+| Automation at scale | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-api-security/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-api-security/Readme.md#automated-workflow-guide) |
 
 ## BIG-IP Security
 
 | **Guide**               | **Manual**                                                                                                                                              | **Automation**                                                                                                                                                |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| API Endpoint Protection | [Manual flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/open-api-protection/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/merge-all/bigip/open-api-protection/Readme.md#automated-workflow-guide) |
+| API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/Readme.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/Readme.md#automated-workflow-guide) |
 
 ## Getting Started
 
