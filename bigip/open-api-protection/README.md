@@ -1,4 +1,4 @@
-# API Endpoint Protection
+# Open API Schema Validation with BIG-IP
 
 # Table of Contents
 
@@ -30,7 +30,10 @@
 
 # Overview
 
-==TODO OVERVIEW==
+The guide demonstrates how BIG-IP application security can be used to validate calls made to application APIs. API schema validation is critical for many traditional and modern apps. Using the **Manual** or **Automated** step, you will configure API schema validation. 
+
+**BIG-IP Service Portal**: the manual UX/UI walk-through done through the BIG-IP service portal
+**BIG-IP Automation with Jenkins & Ansible**: following the manual steps, you can extend this scenario with a more advanced updating of API schema scenario when the app itself gets updated.
 
 # Environment & Pre-requisites
 
