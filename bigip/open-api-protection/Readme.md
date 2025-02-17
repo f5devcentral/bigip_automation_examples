@@ -4,7 +4,6 @@
 
 - [API Endpoint Protection](#api-endpoint-protection)
 - [Table of Contents](#table-of-contents)
-- [Overview](#overview)
 - [Environment \& Pre-requisites](#environment--pre-requisites)
   - [Blueprint Setup _(for F5 employees or customers with access to UDF)_](#blueprint-setup-for-f5-employees-or-customers-with-access-to-udf)
     - [1. Deploy Blueprint](#1-deploy-blueprint)
@@ -28,27 +27,19 @@
     - [3.3 Push Updates](#33-push-updates)
     - [3.4 Review Updates](#34-review-updates)
 
-# Overview
-
-==TODO OVERVIEW==
-
 # Environment & Pre-requisites
 
 ## Blueprint Setup _(for F5 employees or customers with access to UDF)_
 
 ### 1. Deploy Blueprint
 
-**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP blueprint flow as the foundation for your environment: "BigIp Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
+**If you are an F5 employee or customer with access to UDF, you can use the following BIG-IP blueprint flow as the foundation for your environment: "BigIP Automation". Search for this name and utilize the latest version of the blueprint. This GitHub repo is already optimized to work with this UDF blueprint.**
 
-Navigate to the **Blueprints** and search for **BigIp Automation**. Deploy it.
-
-=====TODO SCREEN=====
+Navigate to the **Blueprints** and search for **BigIP Automation**. Deploy it.
 
 ![alt text](./assets/deploy-blueprint.png)
 
 After it has been deployed, navigate to your **Deployments** and start it:
-
-=====TODO SCREEN=====
 
 ![alt text](./assets/start-depl.png)
 
@@ -59,8 +50,6 @@ To enter the Blueprint VM (jumphost), the SSH tool will be used. In order to set
 ### 3. Enter Blueprint
 
 After the Blueprint has been deployed and SSH keys are setup, navigate to the **Deployments** section and proceed to the **Details** of your deployment. Select the **Components** tab and proceed to the **Ubuntu Jump Host**.
-
-=====TODO SCREEN=====
 
 ![alt text](./assets/ubuntu-jump-host.png)
 

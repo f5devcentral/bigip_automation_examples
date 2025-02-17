@@ -50,7 +50,8 @@
 Proceed to the following directory:
 
 ```bash
-bigip/bigip_next/security/operations/scale-api-security/env-setup/playbooks
+bigip_automation_examples/bigip/scale-api-security/env-setup
+/playbooks/
 ```
 
 First, install the app:
@@ -280,13 +281,14 @@ As you can see from both outputs, both sites are in `Performing Action`.
 Go to the following directory:
 
 ```bash
-cd ~/bigip_automation_examples/bigip/bigip_next/security/operations/scale-api-security/maintenance-terraform
+cd ~/bigip_automation_examples/bigip/scale-api-security
+/maintenance-terraform
 ```
 
 Take a look at the maintenance policy we are going to use:
 
 ```bash
-bigip/bigip_next/security/operations/scale-api-security/maintenance-terraform/main.tf
+bigip/scale-api-security/maintenance-terraform/main.tf
 ```
 
 #### 1. Initialize Terraform
@@ -356,7 +358,7 @@ As you can see from the outputs, the first site has changed its status and is in
 Enter the following file:
 
 ```bash
-bigip/bigip_next/security/operations/scale-api-security/maintenance-terraform/main.tf
+bigip/scale-api-security/maintenance-terraform/main.tf
 ```
 
 Remove the policy in the end of the file:
@@ -403,16 +405,16 @@ As you can see from the output, both sites are in `Performing Action`.
 
 ## Avoid Path Traversal using iRule via Ansible
 
-Apply avoid path traversal attack rule at scale: to a bunch of servers. To specify the servers list, open the config [file](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/ata-ansible/tmos_vars.yml) and update the list:
+Apply avoid path traversal attack rule at scale: to a bunch of servers. To specify the servers list, open the config [file](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-api-security/ata-ansible/tmos_vars.yml) and update the list:
 
 ```bash
-bigip/bigip_next/security/operations/scale-api-security/ata-ansible/tmos_vars.yml
+bigip/scale-api-security/ata-ansible/tmos_vars.yml
 ```
 
-Then we can take a look at the iRule we are going to apply by opening this [link](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl) or navigating to:
+Then we can take a look at the iRule we are going to apply by opening this [link](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-api-security/ata-ansible/templates/irule.tcl) or navigating to:
 
 ```bash
-bigip/bigip_next/security/operations/scale-api-security/ata-ansible/templates/irule.tcl
+bigip/scale-api-security/ata-ansible/templates/irule.tcl
 ```
 
 ### Add iRule
@@ -480,7 +482,8 @@ Run Git and Jenkins environment to apply Ansible scaling script to the TMOS inst
 To do that, navigate to the following directory:
 
 ```bash
-cd ~/bigip_automation_examples/bigip/bigip_next/security/operations/scale-api-security/scale-cicd
+cd ~/bigip_automation_examples/bigip/scale-api-security
+/scale-cicd
 ```
 
 If you have not initialized the environment in the previous steps of this lab and this is the first step you are taking, run the following command to do that (or skip if you have already done it earlier):
@@ -549,7 +552,7 @@ We can take a look at the operation pool and its members as well. Move on to **P
 
 #### 2. Overview iRule
 
-Before running the `Zoom Out Pipeline` to apply iRule that will route traffic as well as put excessive requests to the waiting room, we can take a look at the iRule. It is available [here](https://github.com/yoctoserge/bigip_automation_examples/blob/feature/scale-api-security/bigip/bigip_next/security/operations/scale-api-security/scale-cicd/server-git/repo/app/automation/templates/scale-irule.tlc.j2).
+Before running the `Zoom Out Pipeline` to apply iRule that will route traffic as well as put excessive requests to the waiting room, we can take a look at the iRule. It is available [here](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-api-security/scale-cicd/server-git/repo/app/automation/templates/scale-irule.tlc.j2).
 
 #### 3. Run Zoom Out Pipeline
 
