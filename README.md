@@ -9,14 +9,14 @@ This is a repo of Workflow Guides for `F5` product `BIG-IP`, mainly focused on B
 
 ## BIG-IP App Delivery
 
-| **Guide**           | **Manual**                                                                                                                                             | **Automation**                                                                                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Automation at scale | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-api-security/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-api-security/README.md#automated-workflow-guide) |
+| **Guide**           | **Manual**                                                                                                                            | **Automation**                                                                                                                              |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Automation at scale | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-config/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-config/README.md#automated-workflow-guide) |
 
 ## BIG-IP Security
 
-| **Guide**               | **Manual**                                                                                                                                              | **Automation**                                                                                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Guide**               | **Manual**                                                                                                                                   | **Automation**                                                                                                                                     |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#automated-workflow-guide) |
 
 ## Getting Started
