@@ -2,7 +2,7 @@
 
 # Table of Contents
 
-- [Optimize and Scale BIG-IP LTM automation](#scale-api-security-session-demo)
+- [Optimize and Scale BIG-IP LTM automation](#scale-config-session-demo)
 - [Table of Contents](#table-of-contents)
 - [Environment Setup](#environment-setup)
 - [Manual Configuration](#manual-configuration)
@@ -47,7 +47,7 @@
 
 # Overview
 
-This guide explores how organizations can leverage GitOps and Infrastructure as Code (IaC) tools like Terraform and Ansible to dynamically manage BIG-IP LTM configurations. You will learn about the following approaches to scaling LTM configuration in BIG-IP: 
+This guide explores how organizations can leverage GitOps and Infrastructure as Code (IaC) tools like Terraform and Ansible to dynamically manage BIG-IP LTM configurations. You will learn about the following approaches to scaling LTM configuration in BIG-IP:
 
 - LTM Policies (BIG-IP Service Portal)
 - iRules (BIG-IP Service Portal)
@@ -62,7 +62,7 @@ This helps compare and contrast approaches to automating and managing LTM polici
 Proceed to the following directory:
 
 ```bash
-bigip_automation_examples/bigip/scale-api-security/env-setup
+bigip_automation_examples/bigip/scale-config/env-setup
 /playbooks/
 ```
 
@@ -293,14 +293,14 @@ As you can see from both outputs, both sites are in `Performing Action`.
 Go to the following directory:
 
 ```bash
-cd ~/bigip_automation_examples/bigip/scale-api-security
+cd ~/bigip_automation_examples/bigip/scale-config
 /maintenance-terraform
 ```
 
 Take a look at the maintenance policy we are going to use:
 
 ```bash
-bigip/scale-api-security/maintenance-terraform/main.tf
+bigip/scale-config/maintenance-terraform/main.tf
 ```
 
 #### 1. Initialize Terraform
@@ -370,7 +370,7 @@ As you can see from the outputs, the first site has changed its status and is in
 Enter the following file:
 
 ```bash
-bigip/scale-api-security/maintenance-terraform/main.tf
+bigip/scale-config/maintenance-terraform/main.tf
 ```
 
 Remove the policy in the end of the file:
@@ -417,16 +417,16 @@ As you can see from the output, both sites are in `Performing Action`.
 
 ## Avoid Path Traversal using iRule via Ansible
 
-Apply avoid path traversal attack rule at scale: to a bunch of servers. To specify the servers list, open the config [file](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-api-security/ata-ansible/tmos_vars.yml) and update the list:
+Apply avoid path traversal attack rule at scale: to a bunch of servers. To specify the servers list, open the config [file](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-config/ata-ansible/tmos_vars.yml) and update the list:
 
 ```bash
-bigip/scale-api-security/ata-ansible/tmos_vars.yml
+bigip/scale-config/ata-ansible/tmos_vars.yml
 ```
 
-Then we can take a look at the iRule we are going to apply by opening this [link](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-api-security/ata-ansible/templates/irule.tcl) or navigating to:
+Then we can take a look at the iRule we are going to apply by opening this [link](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-config/ata-ansible/templates/irule.tcl) or navigating to:
 
 ```bash
-bigip/scale-api-security/ata-ansible/templates/irule.tcl
+bigip/scale-config/ata-ansible/templates/irule.tcl
 ```
 
 ### Add iRule
@@ -494,7 +494,7 @@ Run Git and Jenkins environment to apply Ansible scaling script to the TMOS inst
 To do that, navigate to the following directory:
 
 ```bash
-cd ~/bigip_automation_examples/bigip/scale-api-security
+cd ~/bigip_automation_examples/bigip/scale-config
 /scale-cicd
 ```
 
@@ -564,7 +564,7 @@ We can take a look at the operation pool and its members as well. Move on to **P
 
 #### 2. Overview iRule
 
-Before running the `Zoom Out Pipeline` to apply iRule that will route traffic as well as put excessive requests to the waiting room, we can take a look at the iRule. It is available [here](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-api-security/scale-cicd/server-git/repo/app/automation/templates/scale-irule.tlc.j2).
+Before running the `Zoom Out Pipeline` to apply iRule that will route traffic as well as put excessive requests to the waiting room, we can take a look at the iRule. It is available [here](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/scale-config/scale-cicd/server-git/repo/app/automation/templates/scale-irule.tlc.j2).
 
 #### 3. Run Zoom Out Pipeline
 
