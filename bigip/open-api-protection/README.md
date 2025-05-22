@@ -334,3 +334,57 @@ Finally, we can verify if Swagger definition is updated via TMOS.
 Go back to your deployment and proceed to TMOS. Navigate to **Application Security** => **URLs**. You will see the added `delete` URL.
 
 ![alt text](./assets/updated-definition.png)
+
+## 4. Add RateLimiting Feature 
+
+### 4.1 Add the code to the respective folders
+
+First, go to following directory:
+
+```
+cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server-git/repo/app/automation/playbooks
+```
+
+Rename the file as follows
+
+```bash
+mv ratelimit.yml_old ratelimit.yml
+```
+
+Also, rename the Jenkins file too
+
+```bash
+cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server-git/repo/app/
+mv Jenkinsfile.old Jenkinsfile
+```
+### 4.2 Push the Code
+
+Now that we have a new feature, as well as setup CI/CD, we can push these updates to Git SCM:
+
+```bash
+git add .
+```
+
+Next, describe the commit:
+
+```bash
+git commit -m "Added Rate Limiting Feature"
+```
+
+and
+
+```bash
+git push
+```
+
+### 3.4 Review Updates
+
+First, go to Jenkins to see the run pipeline. Enter it and proceed to the **Pipeline Console** showing the job progress.
+
+![alt text](./assets/rate-limit-pp.png)
+
+Finally, we can verify if Swagger definition is updated via TMOS.
+
+Go back to your deployment and proceed to TMOS. Navigate to **Application Security** => **Policies**. You will see the added `Policy` here.
+
+![alt text](./assets/ratelimit-policy.png)
