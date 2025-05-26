@@ -387,6 +387,9 @@ Finally, we can verify that the configuration is reflected and updated through T
 
 Go back to your deployment and proceed to TMOS. Navigate to **Local Traffic** => **iRules**. You will see the added `rate limiting iRule` here.
 
+<img src="./assets/rate-limit-tmos.png" width="200" height="200"/>
+
+
 ![alt text](./assets/rate-limit-tmos.png)
 
 ### 3.4 Test the Usecase
