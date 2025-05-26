@@ -345,21 +345,22 @@ First, go to following directory:
 cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server-git/repo/app/automation/playbooks
 ```
 
-Rename the file as follows
+Change the file name to the following format:
 
 ```bash
 mv ratelimit.yml_old ratelimit.yml
 ```
 
-Also, rename the Jenkins file too
+Also, modify the Jenkinsfile to align with the new usecase changes.
 
 ```bash
 cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server-git/repo/app/
-mv Jenkinsfile.old Jenkinsfile
+mv Jenkinsfile.newusecase Jenkinsfile
+
 ```
 ### 4.2 Push the Code
 
-Now that we have a new feature, as well as setup CI/CD, we can push these updates to Git SCM:
+Now that the new feature is in place and CI/CD is set up, it's time to commit and push the changes to Git SCM.
 
 ```bash
 git add .
@@ -379,12 +380,18 @@ git push
 
 ### 3.4 Review Updates
 
-First, go to Jenkins to see the run pipeline. Enter it and proceed to the **Pipeline Console** showing the job progress.
+Go to Jenkins and open the latest pipeline run. From there, proceed to the Pipeline Console to view the job execution details.
 
 ![alt text](./assets/rate-limit-pp.png)
 
-Finally, we can verify if Swagger definition is updated via TMOS.
+Finally, we can verify that the configuration is reflected and updated through TMOS.
 
-Go back to your deployment and proceed to TMOS. Navigate to **Application Security** => **Policies**. You will see the added `Policy` here.
+Go back to your deployment and proceed to TMOS. Navigate to **Local Traffic** => **iRules**. You will see the added `rate limiting iRule` here.
 
-![alt text](./assets/ratelimit-policy.png)
+![alt text](./assets/rate-limit-tmos.png)
+
+### 3.4 Test the Usecase
+
+Now, try accessing the endpoint below more than three times to observe how BIG-IP enforces rate limiting to protect it.
+
+![alt text](./assets/rate-limit-test.png)
