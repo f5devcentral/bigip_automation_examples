@@ -335,7 +335,7 @@ Go back to your deployment and proceed to TMOS. Navigate to **Application Securi
 
 ![alt text](./assets/updated-definition.png)
 
-## 4. Add RateLimiting Feature 
+## 4. Add RateLimiting Feature (New Usecase)
 
 ### 4.1 Add the code to the respective folders
 
@@ -348,13 +348,12 @@ cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server
 Change the file name to the following format:
 
 ```bash
-mv ratelimit.yml_old ratelimit.yml
+mv ratelimit.yml_add ratelimit.yml
 ```
 
 Also, modify the Jenkinsfile to align with the new usecase changes.
 
 ```bash
-cd ~/bigip_automation_examples/bigip/open-api-protection/cicd-environment/server-git/repo/app/
 mv Jenkinsfile.newusecase Jenkinsfile
 
 ```
