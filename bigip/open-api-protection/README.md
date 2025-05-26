@@ -396,7 +396,5 @@ Go back to your deployment and proceed to TMOS. Navigate to **Local Traffic** =>
 
 Now, try accessing the endpoint below more than three times to observe how BIG-IP enforces rate limiting to protect it.
 
-<img src="./assets/rate-limit-test.png" width="400" height="200"/>
+<img src="./assets/rate-limit-test.png" width="500" height="500"/>
 
-
-![alt text](./assets/rate-limit-test.png)
