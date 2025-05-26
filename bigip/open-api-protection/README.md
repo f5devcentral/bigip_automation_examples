@@ -377,7 +377,7 @@ and
 git push
 ```
 
-### 3.4 Review Updates
+### 4.3 Review Updates
 
 Go to Jenkins and open the latest pipeline run. From there, proceed to the Pipeline Console to view the job execution details.
 
@@ -389,7 +389,7 @@ Go back to your deployment and proceed to TMOS. Navigate to **Local Traffic** =>
 
 ![alt text](./assets/rate-limit-tmos.png)
 
-### 3.4 Test the Usecase
+### 4.4 Test the Usecase
 
 Now, try accessing the endpoint below more than three times to observe how BIG-IP enforces rate limiting to protect it.
 
