@@ -1,28 +1,23 @@
-# F5 BIG-IP Automation Examples
+# F5 BIG-IP Automation Guides Training
 
-## Overview
+This repository contains resources, examples, and scripts supporting the **F5 BIG-IP Automation** guide series. The structure aligns with the modules showcasing different approaches for scaling operations, infrastructure provisioning, and automation techniques using Terraform, Ansible, AS3, and GitOps methodologies.
 
-This is a repo of Workflow Guides for `F5` product `BIG-IP`, mainly focused on BIG-IP TMOS. The guides cover select use-cases with automation and their manual step equivalents. Use the guides and associated automation scripts to become familiar with the use-cases outlined in the table below, and with the automation code provided for these use-cases (Ansible, Terraform, etc.) </br>
-</br>
-**NOTE: To learn about each use case check the DevCentral article link provided in the table below.** </br>
-</br>
+## Modules Overview
 
-## BIG-IP App Delivery
+- **[Module 1: Automation Foundations](./module_1/README.md)**  
+  Explore core automation concepts, including BIG-IP LTM Policies, iRules, API calls, and AS3.
 
-| **Guide**           | **Manual**                                                                                                                            | **Automation**                                                                                                                              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Automation at scale | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-config/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/scale-config/README.md#automated-workflow-guide) |
+- **[Module 2: Automation with Terraform and Ansible](./module_2/README.md)**  
+  Provision, onboard, and configure BIG-IP infrastructure using Terraform and Ansible, streamlining deployment pipelines and network management.
 
-## BIG-IP Security
+- **[Module 3: GitOps & Infrastructure as Code](./module_3/README.md)**  
+  Integrate BIG-IP with GitOps principles, enabling version-controlled automation, secure deployments, and collaborative workflows.
 
-| **Guide**               | **Manual**                                                                                                                                   | **Automation**                                                                                                                                     |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#automated-workflow-guide) |
+- **Module 4: Automation Lifecycle Management** *(No GitHub assets included)*  
+  Operationalize automation practices, manage lifecycle processes, observability, logging, and troubleshooting. This module does not currently contain GitHub assets but is thoroughly covered in the course materials.
 
-## Getting Started
-
-- Access the README for the target Workflow Guides use-case(s) from the tables above.
-- Follow the steps in the README and follow Manual and/or Automated workflows
+---
+Please open an issue if you have any challenges or improvements. 
 
 ## Support
 
