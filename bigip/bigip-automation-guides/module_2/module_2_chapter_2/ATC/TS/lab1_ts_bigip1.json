@@ -1,0 +1,24 @@
+{
+    "class": "Telemetry",
+    "My_System": {
+        "class": "Telemetry_System",
+        "systemPoller": {
+            "interval": 60
+        }
+    },
+    "My_Listener": {
+        "class": "Telemetry_Listener",
+        "port": 6514
+    },
+    "My_Consumer": {
+        "class": "Telemetry_Consumer",
+        "type": "AWS_CloudWatch",
+        "region": "us-west-2",
+        "logGroup": "studentf5labdev",
+        "logStream": "log-stream",
+        "username": "{{AWS_ACCESS_KEY_ID}}",
+        "passphrase": {
+            "cipherText": "{{AWS_SECRET_ACCESS_KEY}}"
+        }
+    }
+}

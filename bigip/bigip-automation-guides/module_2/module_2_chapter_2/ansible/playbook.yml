@@ -1,0 +1,57 @@
+- name: Deploy virtual server to F5 BIG-IP
+  hosts: bigip
+  connection: local
+
+  vars:
+    vip_name: "demo_vs"                # Name of the virtual server
+    vip_address: "203.0.113.110"       # Virtual server IP address
+    vip_port: "80"                     # Port for the virtual server
+    pool_name: "demo_pool"             # Name of the load balancing pool
+
+    # Define pool members
+    pool_members:
+      - { host: "10.200.100.100", port: 80 }
+      - { host: "10.200.100.101", port: 80 }
+
+  tasks:
+
+    - name: Set provider details (connection credentials for F5 BIG-IP)
+      no_log: true
+      set_fact:
+        provider:
+          server: "{{ bigip_host }}"
+          user: "{{ bigip_user }}"
+          password: "{{ bigip_password }}"
+          server_port: 443
+          validate_certs: false
+          no_f5_teem: true
+
+    - name: Create pool (load balancing group)
+      f5networks.f5_modules.bigip_pool:
+        provider: "{{ provider }}"
+        name: "{{ pool_name }}"
+        lb_method: "round-robin"
+        monitors: "/Common/http"
+        state: "present"
+
+    - name: Add pool members to the pool
+      f5networks.f5_modules.bigip_pool_member:
+        provider: "{{ provider }}"
+        pool: "{{ pool_name }}"
+        host: "{{ item.host }}"
+        port: "{{ item.port }}"
+        state: "present"
+      loop: "{{ pool_members }}"
+
+    - name: Create virtual server (VIP)
+      f5networks.f5_modules.bigip_virtual_server:
+        provider: "{{ provider }}"
+        name: "{{ vip_name }}"
+        destination: "{{ vip_address }}"
+        port: "{{ vip_port }}"
+        pool: "{{ pool_name }}"
+        profiles:
+          - http
+          - tcp
+        snat: "Automap"
+        state: "present"

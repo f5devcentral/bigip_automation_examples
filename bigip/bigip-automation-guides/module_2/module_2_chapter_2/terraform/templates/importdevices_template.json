@@ -1,0 +1,10 @@
+[
+    {
+        "device": "admin@${BIGIP1_MGMT_IP_ADDRESS}",
+        "password": "${BIGIP_ADMIN_PASSWORD}"
+    },
+    {
+        "device": "admin@${BIGIP2_MGMT_IP_ADDRESS}",
+        "password": "${BIGIP_ADMIN_PASSWORD}"
+    }
+]
