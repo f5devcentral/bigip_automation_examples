@@ -1,0 +1,84 @@
+################################################################################
+###                            EXAMPLE TFVARS FILE                           ###
+################################################################################
+### Copy this file to 'terraform.tfvars' and modify as required.             ###
+### *.tfvars will be ignored in git commits.                                 ###
+###                                                                          ###
+### Note: Some of these tfvars are declared here with the same values as     ###
+### their defaults (variables.tf) for clarity.                               ###
+################################################################################
+
+
+# Prefix
+prefix = "f5lab"
+
+# ID
+emailid = "student@f5lab.dev"
+
+# AWS Region
+aws_region = "us-west-2"
+
+# VPC subnets
+vpc_cidrs = {
+  hub = {
+    vpc             = "10.0.0.0/16"
+    bigip1_mgmt     = "10.0.101.0/24"
+    bigip1_internal = "10.0.10.0/24"
+    bigip1_external = "10.0.1.0/24"
+    bigip2_mgmt     = "10.0.102.0/24"
+    bigip2_internal = "10.0.20.0/24"
+    bigip2_external = "10.0.2.0/24"
+  }
+  app = {
+    vpc     = "10.1.0.0/16"
+    appsvr1 = "10.1.200.0/24"
+    appsvr2 = "10.1.201.0/24"
+  }
+}
+
+# BIG-IP Variables
+f5_ami_search_name  = "F5 BIGIP-17.1.*PAYG-Adv WAF Plus 25Mbps*"
+bigip_instance_type = "m5.xlarge"
+
+bigip_netcfg = {
+  bigip1 = {
+    az                 = "1"
+    hostname           = "bigip1.f5lab.dev"
+    tag                = "bigip1_3nic"
+    mgmt               = "10.0.101.11/24"
+    internal           = "10.0.10.11/24"
+    external           = "10.0.1.11/24"
+    external_secondary = "10.0.1.12/24"
+    app_vips           = ["10.0.1.101", "10.0.1.102", "10.0.1.103", "10.0.1.104"]
+  }
+  bigip2 = {
+    az                 = "2"
+    hostname           = "bigip2.f5lab.dev"
+    tag                = "bigip2_3nic"
+    mgmt               = "10.0.102.11/24"
+    internal           = "10.0.20.11/24"
+    external           = "10.0.2.11/24"
+    external_secondary = "10.0.2.12/24"
+    app_vips           = ["10.0.2.101", "10.0.2.102", "10.0.2.103", "10.0.2.104"]
+  }
+}
+
+# App server variables
+linux_ami_search_name = "amzn2-ami-minimal-hvm*2023*x86*"
+linux_instance_type   = "t2.micro"
+
+appsvr_netcfg = {
+  appsvr1 = {
+    eth0 = "10.1.200.80"
+  }
+  appsvr2 = {
+    eth0 = "10.1.201.80"
+  }
+}
+
+# AS3 declaration file paths (for module 5)
+as3_configs = [
+  { as3file = "../ATC/AS3/Step1_as3_AWS_Autodiscovery.json" },
+  { as3file = "../ATC/AS3/Step2_as3_HTTPS_ModernProtocols_Autodiscovery.json" },
+  { as3file = "../ATC/AS3/Step3_as3_ecdsaCerts_Autodiscovery.json" }
+]

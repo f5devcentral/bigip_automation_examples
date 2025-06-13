@@ -1,0 +1,45 @@
+# Ignore Terraform state files
+terraform/*.tfstate
+terraform/*.tfstate.*
+
+# Ignore crash logs
+terraform/crash.log
+
+# Ignore Terraform variable files
+terraform/*.tfvars
+
+# Ignore override files
+terraform/*_override.tf
+terraform/*_override.tf.json
+
+# Ignore .terraform directory
+terraform/.terraform/
+
+# Ignore plan output
+terraform/*.tfplan
+
+# Ignore backup files
+terraform/*.backup
+
+# Ignore sensitive files
+terraform/.terraformrc
+terraform/terraform.rc
+
+# Ignore Ansible related files
+ansible/*.retry
+ansible/.ansible/
+ansible/host_vars/
+ansible/group_vars/
+ansible/.vault_pass.txt
+ansible/.env
+ansible/.pytest_cache/
+ansible/.molecule/
+ansible/.tox/
+ansible/.cache/
+ansible/__pycache__/
+ansible/*.log
+ansible/*.tmp
+ansible/.vagrant/
+
+# Ignore VSCode settings
+.vscode/

@@ -1,0 +1,47 @@
+#!/bin/bash
+
+echo "**************************************************************"
+echo "* Note: The first launch of this startup script may be slow. *"
+echo "**************************************************************"
+echo ""
+cd ~
+
+curl -s 10.1.1.254/cloudAccounts > cloudAccounts.json
+export AWS_ACCESS_KEY_ID=$(jq -r '.cloudAccounts[].apiKey' < ./cloudAccounts.json)
+export AWS_SECRET_ACCESS_KEY=$(jq -r '.cloudAccounts[].apiSecret' < ./cloudAccounts.json)
+
+printf "Terraform environment variables:\n"
+export TF_VAR_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+export TF_VAR_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+export TF_VAR_AWS_ACCCOUNT_ID=$(jq -r '.cloudAccounts[].accountId' < ./cloudAccounts.json)
+export TF_VAR_AWS_CONSOLE_LINK=$(printf https://${TF_VAR_AWS_ACCCOUNT_ID}.signin.aws.amazon.com/console)
+export TF_VAR_AWS_USER=$( jq -r '.cloudAccounts[].consoleUsername' < ./cloudAccounts.json)
+export TF_VAR_AWS_PASSWORD="$(jq -r '.cloudAccounts[].consolePassword' < ./cloudAccounts.json)"
+export | grep TF_VAR | sed 's/declare -x /   /'
+
+printf "\nAWS Credentials:\n"
+printf "   AWS Console URL:      %s\n" ${TF_VAR_AWS_CONSOLE_LINK}
+printf "   AWS Console Username: %s\n" ${TF_VAR_AWS_USER}
+printf "   AWS Console Password: %s\n\n" ${TF_VAR_AWS_PASSWORD}
+
+printf "Jumphost public IP Address: %s\n\n" $(curl ifconfig.me 2>/dev/null)
+printf "Creating desktop shortcut for AWS console...\n\n"
+envsubst < ./credentials.template > ~/.aws/credentials
+rm -rf /mnt/c/Users/user/Desktop/*.url
+envsubst < ./aws-console.template > /mnt/c/Users/user/Desktop/"${TF_VAR_AWS_ACCCOUNT_ID} AWS Sign-In.url"
+
+aws --version
+echo ""
+terraform --version
+echo "*** If you see a warning about Terraform being out of date, please do not try to update ***"
+echo "*** Terraform. The currently installed version is what was tested for this lab.         ***"
+echo ""
+#ansible --version
+#echo ""
+
+if [ $? -eq 0 ]
+then
+          echo "Done"
+  else
+            echo "The script failed" >&2
+fi

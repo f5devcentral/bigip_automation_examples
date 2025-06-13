@@ -1,0 +1,38 @@
+- name: Deploy virtual server to F5 BIG-IP
+  hosts: bigip
+  connection: local
+  
+  tasks:
+    - name: Get iRule file list
+      find:
+        paths: irules
+        patterns: "*.tcl"
+      register: found_irules
+
+    - name: Initialize iRule dictionary
+      set_fact:
+        irule_objects: {}
+
+    - name: Load iRule content into dictionary
+      set_fact:
+        irule_objects: "{{ irule_objects | combine({ item.path | basename | regex_replace('\\.tcl$', ''): lookup('file', item.path) }) }}"
+      loop: "{{ found_irules.files }}"
+
+    - name: Render AS3 JSON from template
+      template:
+        src: templates/as3_template.json.j2
+        dest: "{{ playbook_dir }}/rendered_as3.json"
+      check_mode: no
+
+    - name: POST AS3 declaration to BIG-IP
+      delegate_to: localhost
+      uri:
+        url: "https://{{ bigip_host }}/mgmt/shared/appsvcs/declare"
+        method: POST
+        user: "{{ bigip_user }}"
+        password: "{{ bigip_password }}"
+        force_basic_auth: yes
+        body_format: json
+        body: "{{ lookup('file', playbook_dir + '/rendered_as3.json') | from_json }}"
+        validate_certs: no
+        status_code: [200, 202]
