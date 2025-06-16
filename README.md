@@ -16,6 +16,11 @@ This repository contains resources, examples, and scripts supporting the **F5 BI
 - **Module 4: Automation Lifecycle Management** *(No GitHub assets included)*  
   Operationalize automation practices, manage lifecycle processes, observability, logging, and troubleshooting. This module does not currently contain GitHub assets but is thoroughly covered in the course materials.
 
+# BIG-IP Security Automation 
+| **Guide**               | **Manual**                                                                                                                                   | **Automation**                                                                                                                                     |Add commentMore actions
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |Add commentMore actions
+| API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#automated-workflow-guide) |
+
 ---
 Please open an issue if you have any challenges or improvements. 
 
