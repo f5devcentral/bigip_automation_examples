@@ -7,10 +7,10 @@ This repository contains resources, examples, and scripts supporting the **F5 BI
 - **[Module 1: Automation Foundations](./bigip/bigip-automation-guides/module_1/README.md)**  
   Explore core automation concepts, including BIG-IP LTM Policies, iRules, API calls, and AS3.
 
-- **[Module 2: Automation with Terraform and Ansible](./bigip/bigip-automation-guides//module_2/README.md)**  
+- **[Module 2: Automation with Terraform and Ansible](./bigip/bigip-automation-guides/module_2/README.md)**  
   Provision, onboard, and configure BIG-IP infrastructure using Terraform and Ansible, streamlining deployment pipelines and network management.
 
-- **[Module 3: GitOps & Infrastructure as Code](./bigip/bigip-automation-guides//module_3/README.md)**  
+- **[Module 3: GitOps & Infrastructure as Code](./bigip/bigip-automation-guides/module_3/README.md)**  
   Integrate BIG-IP with GitOps principles, enabling version-controlled automation, secure deployments, and collaborative workflows.
 
 - **Module 4: Automation Lifecycle Management** *(No GitHub assets included)*  
