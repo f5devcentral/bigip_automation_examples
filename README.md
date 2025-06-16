@@ -18,7 +18,7 @@ This repository contains resources, examples, and scripts supporting the **F5 BI
 
 # BIG-IP Security Automation 
 | **Guide**               | **Manual**                                                                                                                                   | **Automation**                                                                                                                                     |Add commentMore actions
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |Add commentMore actions
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#automated-workflow-guide) |
 
 ---
