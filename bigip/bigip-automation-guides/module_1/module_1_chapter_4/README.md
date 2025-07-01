@@ -1,217 +1,194 @@
-# DRAFT. Work In Progress
-## Introduction to Observability and Monitoring in F5 BIG-IP
-### module 1 chapter 4
+## BIG-IP Logging and Monitoring
+### module 1 Chapter 4
 
-When automating BIG-IP, you need to see what’s happening in real-time. If something breaks, you can’t rely on manual checks. Observability helps track system health, detect issues early, and keep automation running smoothly. In this chapter, we’ll explore the basics of observability in BIG-IP and how it helps with automation and troubleshooting.
+In this lab, you will explore basic logging and monitoring techniques in F5 BIG-IP. You will learn how to access system logs, capture network traffic, and implement custom logging using iRules and iCall. This is useful for troubleshooting and monitoring the health of your BIG-IP system.
 
-#### Key Components of Observability
-  * **Telemetry** collects real-time data like traffic flow, CPU usage, and memory. BIG-IP can send this to tools like Splunk or Grafana for analysis.
-  * **Performance monitoring** tracks how well the system is handling workloads. If CPU spikes or a pool member fails, you’ll know instantly.
-  * **Logging** can record every connection and request,can capture details and even trigger alerts.
+## 1. System Logs
 
+Similar to other Linux systems, BIG-IP uses a variety of log files to record system events, errors, and informational messages. These logs are crucial for troubleshooting and monitoring the health of your BIG-IP system. You can access these logs via the command line. Some logs are also available through the BIG-IP GUI under **System > Logs**.
 
-### BIG-IQ
+### Step 1: Connect to BIG-IP
 
-https://community.f5.com/kb/technicalarticles/what-is-big-iq/279463 
+SSH into your BIG-IP device using your admin credentials.
 
-BIG-IQ is a platform that provides a central point of control for managing F5 devices. It simplifies the management of BIG-IP devices, making it easier to deploy, monitor, and troubleshoot applications. It is recommended for organizations with multiple BIG-IP devices or complex application environments. While BIG-IP devices are used for traffic management, BIG-IQ is used for managing and monitoring these devices.
+```bash
+ssh admin@<BIG-IP-IP-address>
+```
 
-When you have multiple BIG-IP devices, managing them individually can be complex and time-consuming. BIG-IQ simplifies this by providing a single pane of glass to manage all your devices. It helps you automate tasks, monitor performance, and troubleshoot issues across your application infrastructure.
+### Step 2: Navigate to Log Directory
 
+Like most Linux systems, BIG-IP stores its logs in the `/var/log` directory. You can list the contents of this directory to see available log files.
 
-### BIG-IP
+```bash
+cd /var/log
+ls -lh
+```
 
-#### Monitoring Tools
+### Step 3: Review Key Logs
 
-**-------------TODO----------------**
-1. BIG-IP iHealth
-2. BIG-IP iStats
-3. BIG-IP iQuery
-4. External Monitoring Tools
+Here is a quick reference for the most important logs you will encounter in BIG-IP:
 
-#### Logging in BIG-IP
+| Type          | Description                                          | Log file                           |
+| ------------- | ---------------------------------------------------- | ---------------------------------- |
+| audit         | Logs configuration changes.                          | /var/log/audit                     |
+| boot          | Messages from the system boot process.               | /var/log/boot.log                  |
+| cron          | Logs scheduled job activity.                         | /var/log/cron                      |
+| daemon        | Logs from background daemons.                        | /var/log/daemon.log                |
+| dmesg         | Kernel ring buffer logs for hardware detection.      | /var/log/dmesg                     |
+| GSLB          | Global traffic management logs.                      | /var/log/gtm                       |
+| httpd         | Apache Web server error log.                         | /var/log/httpd/httpd\_errors       |
+| kernel        | Linux kernel logs.                                   | /var/log/kern.log                  |
+| local traffic | Local traffic management events.                     | /var/log/ltm                       |
+| mail          | Mail server logs.                                    | /var/log/maillog                   |
+| monitor       | Health monitor logs (also see /var/log/monitors/).   | /var/log/ltm, /var/log/monitors/\* |
+| sync          | Configuration sync messages and events.              | /var/log/nsyncd.log                |
+| packet filter | Logs from packet filter rules.                       | /var/log/pktfilter                 |
+| security      | Authentication and access control logs.              | /var/log/secure                    |
+| system        | General Linux system events.                         | /var/log/messages                  |
+| TMM           | Traffic Management Microkernel events.               | /var/log/tmm                       |
+| user          | Logs related to user-level activity.                 | /var/log/user.log                  |
+| webui         | Logs from the Configuration utility's web interface. | /var/log/webui.log                 |
 
-**-------------TODO----------------**
-1. Reviewing BIG-IP system logs
-2. Audit
-3. Rest API
-4. Security
+### Step 4: View Logs
 
-#### External Monitoring: Logging in BIG-IP
+To view a specific log file, you can use the `cat`, `less`, or `tail` commands. For example, to view the local traffic management log:
 
-**-------------TODO----------------**
-1. Reviewing BIG-IP log files related to automation and troubleshooting
+```bash
+tail -f /var/log/ltm
+```
 
+## 2. TCP Dump
 
-### Logging usage with iRules
+TCP Dump is a powerful command-line tool for capturing and analyzing network traffic. It allows you to see the packets being sent and received by your BIG-IP system, which is useful for troubleshooting network issues.
 
-F5 BIG-IP iRules let you control how traffic flows through your system, and adding logging helps you see what’s happening in real time. Whether you’re troubleshooting issues or just want better visibility, logging with iRules is a simple but powerful tool.
+### Step 1: Run a TCP Dump
 
-Here’s an example iRule that logs client connections and HTTP requests:
+Capture traffic on the external VLAN:
+
+```bash
+tcpdump -i external -w /var/tmp/tcpdump.pcap
+```
+
+Stop capture with `Ctrl+C`. 
+
+### Step 2: Analyze the Capture
+
+You can analyze the captured packets using tcpdump itself or by transferring file to your local machine and using Wireshark.
+
+![wireshark](./assets/wireshark.png)
+
+## 3. iRules Logging
+
+iRules are a powerful feature in F5 BIG-IP that allow you to customize the behavior of your traffic management system. iRules support logging, which can be used to capture specific events or data points in your traffic flow. This is particularly useful for debugging and monitoring purposes.
+
+### Step 1: Create an iRule
+
+In the BIG-IP GUI:
+
+1. Navigate to **Local Traffic > iRules > Create**
+2. Name it `logging_irule`
+3. Paste:
 
 ```tcl
-  when RULE_INIT {
-      # Enable logging
-      set static::debug 1
-  }
+when RULE_INIT {
+    set static::debug 1
+}
 
-  when CLIENT_ACCEPTED {
-      if { $static::debug } {
-          log local0. "Connection accepted from [IP::client_addr]"
-      }
-  }
+when CLIENT_ACCEPTED {
+    if { $static::debug } {
+        log local0. "Connection accepted from [IP::client_addr]"
+    }
+}
 
-  when HTTP_REQUEST {
-      if { $static::debug } {
-          log local0. "HTTP request for host: [HTTP::host]"
-      }
-  }
+when HTTP_REQUEST {
+    if { $static::debug } {
+        log local0. "HTTP request for host: [HTTP::host]"
+    }
+}
 ```
 
-How It Works
-  * RULE_INIT: This sets a debug flag. If it's 1, logging is enabled.
-  * CLIENT_ACCEPTED: Logs the client’s IP when they connect.
-  * HTTP_REQUEST: Logs the hostname when an HTTP request is received.
+4. Click **Finished**
 
+### Step 2: Attach to Virtual Server
 
-Applying the iRule to a Virtual Server
+1. Navigate to **Local Traffic > Virtual Servers > \[Your VS]**
+2. Under **Resources**, click **iRules > Manage**
+3. Enable `logging_irule`
 
-For this iRule to work, you need to attach it to a virtual server. Here’s how you can do it.
+### Step 3: Check Logs
 
-  1. Go to Local Traffic > iRules > Create.
-  2. Enter a name (e.g., logging_irule).
-  3. Paste the iRule code into the Definition field and click Finished.
-  4. Now, go to Local Traffic > Virtual Servers and select your virtual server.
-  5. Under the Resources tab, click Manage in the iRules section.
-  6. Select logging_irule and move it to the Enabled list.
-  7. Click Finished to apply it.
-
-Where to Find iRule Logs in TMUI (BIG-IP Web Interface):
-
-1. Navigate to System > Logs > Local Traffic.
-2. In the Log Files section, select LTM Log (/var/log/ltm).
-
-You'll see real-time logs, including entries from your iRule. If needed, use the Filter field to search for specific messages, like "logging_irule".
-
-```
-Mon Feb 20 18:25:46 PST 2025	info	f5bigip.internal	tmm[11001]	 	Rule /Common/logging_irule <CLIENT_ACCEPTED>: Connection accepted from 192.168.1.59
-Mon Feb 20 18:25:46 PST 2025	info	f5bigip.internal	tmm[11001]	 	Rule /Common/logging_irule <HTTP_REQUEST>: HTTP request for host: 192.168.1.84:8080
-```
-
-Now BIG-IP will log every client connection and HTTP request, making it much easier to monitor traffic and troubleshoot issues. You can also tweak this iRule to add more details or trigger alerts when needed.
-
-### Monitoring and Alerting
-
-#### iCall 
-
-F5 BIG-IP has a built-in automation tool called iCall that helps with observability and logging. It lets the system react to specific events without needing external scripts or monitoring tools. This is useful for keeping things running smoothly without manual intervention.
-
-A good example is monitoring CPU usage. If the CPU gets too high, we want BIG-IP to log a warning. Here’s how we can do it with iCall.
-
-##### Step 1: Create the Monitoring Script
-
-This script, `cpu_monitor_script`, checks the system’s CPU usage and compares it to a threshold (80%). If the usage goes over, it logs a message.
+Navigate to **System > Logs > Local Traffic**, or run:
 
 ```bash
-tmsh
-create /sys icall script cpu_monitor_script
-modify /sys icall script cpu_monitor_script
-definition {
-  set cpu_threshold 80
-  set output [exec tmsh show sys performance system]
-  foreach line [split $output "\n"] {
+tail -f /var/log/ltm
+```
+
+This will show you the log entries generated by your iRule. 
+
+![irules](./assets/irules.png)
+
+## 4. iCall Logging
+
+Next, we will use iCall to automate logging and alerting based on system performance metrics. iCall allows you to create scripts that can run periodically or in response to specific events.
+
+### Step 1: Create the iCall Script
+
+In this example, we will create a script that checks CPU usage and logs an alert if it exceeds a threshold.
+Execute the following commands in the BIG-IP CLI:
+
+```bash
+tmsh create /sys icall script cpu_monitor_script
+
+{
+  app-service none
+  definition {
+    set cpu_threshold 80
+    set output [exec tmsh show sys performance system]
+    foreach line [split $output "\n"] {
       if {[regexp {Utilization\s+(\d+)\s+(\d+)} $line -> current avg]} {
-          if {$avg > $cpu_threshold} {
-              exec logger -p local0.alert "iCall: High CPU usage detected: ${avg}% (Threshold: ${cpu_threshold}%)"
-          } else {
-              exec logger -p local0.info "iCall: CPU usage is normal: ${avg}%"
-          }
-          break
+        if {$avg > $cpu_threshold} {
+          exec logger -p local0.alert "iCall: High CPU usage detected: ${avg}% (Threshold: ${cpu_threshold}%)"
+        } else {
+          exec logger -p local0.info "iCall: CPU usage is normal: ${avg}%"
+        }
+        break
       }
+    }
   }
-}
-
-
-show /sys log ltm
-
-create /sys icall handler periodic cpu_monitor_handler interval 60 script cpu_monitor_script
-start /sys icall handler periodic cpu_monitor_handler
-stop /sys icall handler periodic cpu_monitor_handler
-
-delete /sys icall handler periodic cpu_monitor_handler
-delete /sys icall script cpu_monitor_script
-```
-
-if {$cpu_rate > $cpu_perf_threshold} {
-             if {$DEBUG} {puts "tmsh show sys performance->${cpu_num}: ${cpu_rate}%. Exceeded threshold ${cpu_perf_threshold}%."}
-             exec logger -p local0.alert "\"tmsh show sys performance\"->${cpu_num}: ${cpu_rate}%. Exceeded threshold ${cpu_perf_threshold}%."
-         }
-```
-
-##### Step 2: Run the Script Automatically
-
-Now, we create a handler that runs this script every 60 seconds. This way, the system keeps an eye on CPU load without manual checks.
-create sys icall handler periodic cpu_monitor_handler
-```bash
-  tmsh create sys icall handler periodic cpu_monitor_handler {
-      interval 60
-      script cpu_monitor_script
-  }
-```
-
-create /sys icall handler periodic cpu_monitor_handler interval 60 script cpu_monitor_script
-start /sys icall handler periodic cpu_monitor_handler
-
-##### Step 3: Check the Logs
-
-Once the script is running, you can check the logs to see if any warnings have been triggered. Logs are stored in `/var/log/ltm`. To view them, run:
-
-```bash
-  tail -f /var/log/ltm
-```
-
-This will show real-time log updates. If CPU usage crosses 80%, you’ll see an entry like:
-
-```
-  Feb 20 12:34:56 bigip notice High CPU usage detected: 85%
-```
-
-With this setup, BIG-IP automatically monitors CPU usage and logs a warning if it goes above 80%. No need for external monitoring tools—BIG-IP takes care of it. You can also extend this by adding actions like sending alerts or adjusting system settings when needed.
-
-#### Alerting
-
-F5 BIG-IP can send alerts based on logs or system events. This is useful for monitoring critical services and reacting quickly to issues. Here’s how you can set up alerts in BIG-IP.
-
-To make alerts work, you need to configure an [SMTP server in BIG-IP](https://my.f5.com/manage/s/article/K30371285#config). This is used to send emails when alerts are triggered.
-
-From TMSH, you can create an alert for a specific event. For example, let’s create an alert for config changes.
-
-```bash
-alert config_create "object (.*) - create" {
-  email toaddress="bigadmin@example.com"
-  fromaddress="info@example.com"
-  body="A config change has occurred"
-}
-
-alert config_delete "object (.*) - obj_delete" {
-  email toaddress="bigadmin@example.com"
-  fromaddress="info@example.com"
-  body="A config change has occurred"
-}
-
-alert config_modify "object (.*) - modify" {
-  email toaddress="bigadmins@example.com"
-  fromaddress="info@example.com"
-  body="A config change has occurred"
+  description none
+  events none
 }
 ```
 
-This alert watches for config changes and sends an email to BIG-IP admins when it happens.
+### Step 2: Schedule the Script
 
-To trigger this alert, you can run a command like:
+Now, we will create a periodic iCall handler to run this script every minute.
 
 ```bash
-logger -p local0.notice "object 0 - modify"
+tmsh create /sys icall handler periodic cpu_monitor_handler interval 60 script cpu_monitor_script
+
+tmsh start /sys icall handler periodic cpu_monitor_handler
 ```
 
-The same way, you can create alerts for other events like high memory usage, failed connections, or security threats. Alerts help you stay on top of system health and respond quickly to issues.
+### Step 3: Verify Logs
+
+You can check the logs to see if the iCall script is running and logging alerts based on CPU usage.
+
+```bash
+tail -f /var/log/ltm
+```
+
+![icall](./assets/icall_log.png)
+
+## 5. Summary
+
+In this lab, we learned how to access and analyze system logs in F5 BIG-IP, capture network traffic using TCP Dump, and implement custom logging with iRules and iCall. These skills are useful for troubleshooting and monitoring the health of your BIG-IP system.
+
+Quickly recap the key tools and techniques covered:
+
+* `/var/log` to explore logs
+* `tcpdump` for packet captures
+* iRules to add custom logging
+* iCall to automate alerts based on system performance
+
+Use these techniques to enhance your BIG-IP monitoring and troubleshooting capabilities.
