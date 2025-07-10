@@ -8,15 +8,24 @@ This repository contains resources, examples, and scripts supporting the **F5 BI
 
 - **[Module 1: Automation Foundations](./bigip/bigip-automation-guides/module_1/README.md)**  
   Explore core automation concepts, including BIG-IP LTM Policies, iRules, API calls, and AS3.
+ 
+[![Watch Module 1](https://img.youtube.com/vi/QaDYnSpIU6c/0.jpg)](https://youtu.be/QaDYnSpIU6c)
 
 - **[Module 2: Automation with Terraform and Ansible](./bigip/bigip-automation-guides/module_2/README.md)**  
   Provision, onboard, and configure BIG-IP infrastructure using Terraform and Ansible, streamlining deployment pipelines and network management.
 
+[![Watch Module 2](https://img.youtube.com/vi/yIuNAIEqe_U/0.jpg)](https://youtu.be/yIuNAIEqe_U)
+
 - **[Module 3: GitOps & Infrastructure as Code](./bigip/bigip-automation-guides/module_3/README.md)**  
   Integrate BIG-IP with GitOps principles, enabling version-controlled automation, secure deployments, and collaborative workflows.
 
+[![Watch Module 3](https://img.youtube.com/vi/A7d8yajJtCI/0.jpg)](https://youtu.be/A7d8yajJtCI)
+
 - **Module 4: Automation Lifecycle Management** *(No GitHub assets included)*  
   Operationalize automation practices, manage lifecycle processes, observability, logging, and troubleshooting. This module does not currently contain GitHub assets but is thoroughly covered in the course materials.
+
+[![Watch Module 4](https://img.youtube.com/vi/JY3S_FBDuCg/0.jpg)](https://youtu.be/JY3S_FBDuCg)
+
 
 ## BIG-IP Security Automation 
 | **Guide**               | **Console**                                                                                                                                   | **Automation**                                                                                                                                     |
