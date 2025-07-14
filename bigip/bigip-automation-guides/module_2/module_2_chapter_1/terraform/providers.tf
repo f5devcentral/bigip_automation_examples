@@ -16,13 +16,6 @@ terraform {
       source  = "ansible/ansible"
     }
   }
-
-  backend "s3" {
-    bucket       = "learn-f5-terraform-state"
-    key          = "jenkins.tfstate"
-    region       = var.aws_region
-    use_lockfile = true
-  }
 }
 
 provider "aws" {
