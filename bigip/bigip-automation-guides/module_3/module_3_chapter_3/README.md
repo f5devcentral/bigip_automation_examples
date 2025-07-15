@@ -1,6 +1,12 @@
 ## Infrastructure Configuration using Terraform, Ansible, AS3, and iRules
 ### module 3 chapter 3
 
+### Prerequisites
+
+- Access to an AWS account with permissions to create resources
+- Git repository (GitLab, GitHub, or Bitbucket) to host the code
+- Jenkins server with access to the Git repository
+- Jenkins Runner configured to execute the pipeline
 
 ### Overview
 
@@ -16,14 +22,7 @@ The Jenkinsfile defines a pipeline that automates:
 
 #### 1. Push to Your Own Git Repository
 
-Copy this repository and push it to your own GitLab/GitHub/Bitbucket project:
-
-```bash
-git clone https://your-clone-url.git
-cd your-project
-git remote add origin https://your.git.server/your-username/your-repo.git
-git push -u origin main
-```
+Clone or download this repository, then push the contents of the `module_3_chapter3` directory to your Git repository. Ensure you have a `Jenkinsfile` in the root of your repository.
 
 #### 2. Configure Multibranch Pipeline in Jenkins
 
@@ -57,10 +56,16 @@ http://<your-jenkins-url>/github-webhook/
    - **BIG-IP Password**: `bigip_password`
    - **GitHub Token**: `github_token`
 
-#### 4. Run the Pipeline
+#### 5. Run the Pipeline
 
 Once a branch with a `Jenkinsfile` is pushed:
 
 * Jenkins will automatically discover the branch.
 * It will execute the defined stages in the Jenkinsfile.
 * You can monitor the job in the **Multibranch Pipeline dashboard**.
+
+After the pipeline runs successfully, it will provision the infrastructure, configure the BIG-IP instance, and apply the necessary iRules with Ansible.
+
+The output will include details about the created resources, such as the IP address of the BIG-IP instance. Credentials for accessing the BIG-IP device are stored in the Jenkins credentials store.
+
+To verify the setup, log in to the BIG-IP web interface and check that the iRules have been applied correctly.

@@ -5,12 +5,18 @@
 
 ### Prerequisites
 
-- [Terraform](https://developer.hashicorp.com/terraform)
+- [Terraform](https://developer.hashicorp.com/terraform) installed
 - AWS CLI configured with appropriate credentials
 - Access to an AWS account with permissions to create resources
+
+
 ### Setup Instructions
 
 1. **Initialize Terraform**
+
+Note: The Terraform scripts do not support ARM64 architecture. Make sure you're using an Intel-based machine to run Terraform.
+
+To initialize Terraform and set up the required providers, run the following commands:
 
   ```sh
   cd terraform
@@ -19,21 +25,29 @@
 
 2. **Review and Edit Variables**
 
-  - Edit `terraform.tfvars` or the variables in `variables.tf` as needed for your environment.
+Create a `terraform.tfvars` file or update the variables directly in `variables.tf` to match your environment. 
+You can use the `terraform.tfvars.example` file as a reference.
+By default, Terraform uses the `default` AWS CLI profile. If you want to use a different profile, set the `main.tf` file.
 
-3. **Apply the Configuration**
+1. **Apply the Configuration**
+
+Run the following command to create the resources defined in the Terraform configuration:
 
   ```sh
   terraform apply
   ```
 
-  - Confirm the action when prompted.
+Terraform will output details about the created resources, including the IP address of the BIG-IP instance and the credentials needed to access it.
 
-5. **Destroy the Deployment (Optional)**
+4. **Destroy the Deployment (Optional)**
 
   ```sh
   terraform destroy
   ```
+
+5. **Review the Lab Guide**
+
+Review the [Lab Guide](https://clouddocs.f5.com/training/community/public-cloud/html/class13/class13.html) for detailed instructions and architecture overview.
 
 ## Ansible
 
@@ -41,56 +55,43 @@
 - [Ansible](https://www.ansible.com/)
 - AWS CLI configured with appropriate credentials
 - Access to an AWS account with permissions to create resources
+- BIG-IP instance
 
 ### Setup Instructions
 
 1. **Initialize Ansible**
 
-  ```sh
-  cd ansible
-  ansible-galaxy install -r requirements.yml
-  ```
+Before running the Ansible playbook, make sure the required dependencies are installed.
+
+Navigate to the Ansible directory and run:
+
+```sh
+cd ansible
+ansible-galaxy install -r requirements.yml
+```
 
 2. **Review and Edit Variables**
-- Edit `./invevntory/group_vars/all/common.yml` and set the variables as needed for your environment.
+
+Edit `./inventory/group_vars/all/common.yml` to set your BIG-IP username and password.
+Edit `./inventory/bigip_hosts.yml` to set the BIG-IP IP address. You can also specify the Python interpreter if needed.
+
+In the `playbook.yml`, you can customize the `pool_members` variable to define the backend servers that the BIG-IP will manage.
 
 3. **Run the Playbook**
 
-  ```sh
-  ansible-playbook -i ./inventory/bigip_hosts.yml playbook.yml
-  ```
+To run the Ansible playbook, execute the following command:
 
+```sh
+ansible-playbook -i ./inventory/bigip_hosts.yml playbook.yml
+```
 
-# Notes
+This will configure the BIG-IP instance based on the tasks defined in the playbook.
 
-- Ensure your AWS credentials are set in your environment or via the AWS CLI.
-- Review the [Lab Guide](https://clouddocs.f5.com/training/community/public-cloud/html/class13/class13.html) for detailed instructions and architecture overview.
-- This module will deploy a BIG-IP HA pair in your AWS account. Charges may apply for AWS resources.
-____________________________________________
-# This module is based on the Agility Lab and contains the Terraform code to deploy a BIG-IP HA pair in a public cloud environment
+To verify the results, review the playbook output or log in to the BIG-IP web interface and check the applied configuration.
 
-## File package for Agility Lab: A&amp;O BIG-IP HA in Public Cloud with Terraform
+--------------
+## Additional Information
+### This module is based on the Agility Lab and contains the Terraform code to deploy a BIG-IP HA pair in a public cloud environment
 
 - Lab Guide: https://clouddocs.f5.com/training/community/public-cloud/html/class13/class13.html
 
-
-## Previous Versions
-
-- Agility 2022: https://github.com/tmarfil/f5agility2022-pc201
-
-
-## Contributors
-
-- Jason Chiu  - Updated and expanded for Agility 2023
-- Tony Marfil - Updated for Agility 2022
-- Tony Marfil - Original creation for Agility 2021
-
-
-# Tested Versions
-- hashicorp/aws v4.62.0
-- hashicorp/tls v4.0.4
-- hashicorp/random v3.4.3
-- hashicorp/http v3.2.1
-- hashicorp/null v3.2.1
-- hashicorp/template v2.2.0
-- hashicorp/local v1.4.0

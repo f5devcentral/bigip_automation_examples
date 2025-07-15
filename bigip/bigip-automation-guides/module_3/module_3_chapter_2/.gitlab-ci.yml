@@ -9,7 +9,6 @@ ansible_deploy:
   before_script:
     - pip install ansible
   script: |
-    ansible-playbook ansible/playbook.yml \
-      --extra-vars "ansible_user=$ANSIBLE_USER ansible_password=$ANSIBLE_PASSWORD"
+    ansible-playbook ansible/playbook.yml
   only:
     - main
