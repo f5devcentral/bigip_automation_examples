@@ -1,4 +1,4 @@
-# F5 BIG-IP Automation Guides Training
+# F5 BIG-IP Automation Workflow Guides
 
 This repository contains resources, examples, and scripts supporting the **F5 BIG-IP Automation** guide series. The structure aligns with the modules showcasing different approaches for scaling operations, infrastructure provisioning, and automation techniques using Terraform, Ansible, AS3, and GitOps methodologies.
 
