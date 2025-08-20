@@ -253,12 +253,8 @@ Now let's take a look at the structure. In the `routes` you can see two files - 
 │   ├── filters
 │   │   └── make_filename_unique.py
 │   ├── inventory.ini
-│   ├── library
-│   │   └── next_polling_deploy_module.py
-│   ├── next_vars.yml
 │   ├── playbooks
 │   │   ├── app-restart-deploy.yml
-│   │   ├── swagger-next.yml
 │   │   ├── swagger-tmos.yml
 │   │   └── tmos_setup.yml
 │   └── tmos_vars.yml
