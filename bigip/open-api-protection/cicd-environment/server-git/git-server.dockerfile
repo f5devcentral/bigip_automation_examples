@@ -46,28 +46,6 @@ COPY post-receive /home/git/script-crud-service.git/hooks/post-receive
 RUN chmod +x /home/git/script-crud-service.git/hooks/post-receive && \
     chown git:git /home/git/script-crud-service.git/hooks/post-receive
 
-# Create a bare Git repository
-RUN mkdir -p /home/git/live-update.git && \
-    cd /home/git/live-update.git && \
-    git init --bare
-
-# Directly interact with the bare repository (no need to clone)
-RUN mkdir /tmp/live-update && \
-    cd /tmp/live-update && \
-    git init --initial-branch main && \
-    git remote add origin /home/git/live-update.git
-
-# Copy the automation scripts
-COPY repo/live-update/. /tmp/live-update
-
-# Commit the automation scripts to the repository 
-RUN cd /tmp/live-update && \
-    git add . && \
-    git commit -m "Initial commit of live-update scripts" && \
-    git push origin main
-
-RUN chown -R git:git /home/git/live-update.git
-
 # Generate SSH key for the git user
 RUN mkdir -p /root/.ssh && \
     ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -N "" && \    
