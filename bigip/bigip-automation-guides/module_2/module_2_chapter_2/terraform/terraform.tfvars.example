@@ -64,7 +64,7 @@ bigip_netcfg = {
 }
 
 # App server variables
-linux_ami_search_name = "amzn2-ami-minimal-hvm*2023*x86*"
+linux_ami_search_name = "amzn2-ami-minimal-hvm*x86*"
 linux_instance_type   = "t2.micro"
 
 appsvr_netcfg = {
