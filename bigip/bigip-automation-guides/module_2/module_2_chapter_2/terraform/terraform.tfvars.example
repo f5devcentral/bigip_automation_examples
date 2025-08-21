@@ -37,7 +37,7 @@ vpc_cidrs = {
 }
 
 # BIG-IP Variables
-f5_ami_search_name  = "F5 BIGIP-17.1.*PAYG-Adv WAF Plus 25Mbps*"
+f5_ami_search_name  = "F5 BIGIP-17.5.1*PAYG-Better 1Gbps*"
 bigip_instance_type = "m5.xlarge"
 
 bigip_netcfg = {
