@@ -15,6 +15,7 @@ data "aws_ami" "linux" {
     name   = "name"
     values = [var.linux_ami_search_name]
   }
+  owners = ["amazon"]
 }
 
 output "f5_ami_name" {
