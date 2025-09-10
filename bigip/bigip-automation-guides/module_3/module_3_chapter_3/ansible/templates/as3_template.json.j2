@@ -1,0 +1,45 @@
+{
+  "class": "AS3",
+  "action": "deploy",
+  "persist": true,
+  "declaration": {
+    "class": "ADC",
+    "schemaVersion": "3.0.0",
+    "id": "auto-irules",
+    "DemoTenant": {
+      "class": "Tenant",
+      "App1": {
+        "class": "Application",
+
+        {% for irule_name, irule_content in irule_objects.items() %}
+        "{{ irule_name }}": {
+          "class": "iRule",
+          "iRule": {{ irule_content | to_json }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %},
+
+        "myPool": {
+          "class": "Pool",
+          "monitors": ["http"],
+          "members": [
+            {
+              "servicePort": 80,
+              "serverAddresses": ["10.0.11.101"]
+            }
+          ]
+        },
+
+        "service": {
+          "class": "Service_HTTP",
+          "virtualAddresses": ["10.0.11.10"],
+          "pool": "myPool",
+          "iRules": [
+            {% for irule_name in irule_objects.keys() %}
+              "{{ irule_name }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }
+      }
+    }
+  }
+}

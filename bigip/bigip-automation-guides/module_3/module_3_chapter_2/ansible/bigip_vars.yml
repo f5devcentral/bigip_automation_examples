@@ -1,0 +1,22 @@
+tmos:
+  address: 192.168.1.84
+
+bigip_user: admin
+bigip_password: password
+
+policies_to_update: 
+  - partition: Common
+    name: demo_api_sec
+
+swagger_file_path: "swagger.json"
+
+node_name: app_node
+node_ip: 10.1.20.103
+
+pool_port: 8082
+pool_name: app_pool
+
+virtual_server:
+  name: demo_vs
+  partition: Common
+  port: 80

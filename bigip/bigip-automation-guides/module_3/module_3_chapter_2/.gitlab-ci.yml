@@ -1,0 +1,14 @@
+stages:
+  - deploy
+
+ansible_deploy:
+  stage: deploy
+  image: python:3.10
+  variables:
+    ANSIBLE_CONFIG: ansible/ansible.cfg
+  before_script:
+    - pip install ansible
+  script: |
+    ansible-playbook ansible/playbook.yml
+  only:
+    - main
