@@ -23,43 +23,35 @@
 
   - **BIG-IP Virtual Edition** and Select the version you want (e.g.,
     16.x, 17.x) 
-.. note::
-
-   16.x is stable and recommended
+    *note:16.x is stable and recommended*
 
   - Choose Platform as KVM (since AHV supports QCOW2 images, same as
     KVM).
 
-- Download the **QCOW2** image file (typically ends in .qcow2.zip or
+  - Download the **QCOW2** image file (typically ends in .qcow2.zip or
   .qcow2.gz) and extract it.
 
-**Upload Image to Nutanix CE**
 
+**Upload Image to Nutanix**
 
-- In Prism Element, go to:
+ - In Prism Element, go to:
 
-  - Settings > Image Configuration (or just click on "Images" under the
+   - Settings > Image Configuration (or just click on "Images" under the
     settings gear icon).
 
-- Click and Add Image.
+ - Click and Add Image.
 
-- | Provide the values for name, storage container and Image source and
-    then click on save button.
-  | |A screenshot of a computer AI-generated content may be incorrect.|
+ - Provide the values for name, storage container and Image source and then click on save button.
+
+     .. image:: ./assets/image4_1.png
 
 **Create the BIG-IP Virtual Machine**
 
-
 - Go to VM from dropdown list and click on Create VM.
 
-- | Provide the VM name, set CPU and Memory and Add the Disk:
+- Provide the VM name, set CPU and Memory and Add the Disk:
   
-  .. image:: ./assets/image4_1.png
-
   .. image:: ./assets/image4_2.png
-
-- Add a Network Interface (NIC) and provide the required details and
-  then click on **Save.**
 
   .. image:: ./assets/image4_3.png
 
@@ -67,6 +59,11 @@
   then click on **Save.**
 
   .. image:: ./assets/image4_4.png
+
+- Add a Network Interface (NIC) and provide the required details and
+  then click on **Save.**
+
+  .. image:: ./assets/image4_5.png
 
 - Finally click on Save button.
 
@@ -99,24 +96,6 @@
 
 - Click Submit and allow the system to provision the selected modules.
 
-- | Verify that the required modules have been provisioned correctly.
-  |   .. image:: ./assets/image4_5.png
+- Verify that the required modules have been provisioned correctly.
 
-.. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image1.png
-   :width: 6.26806in
-   :height: 3.30278in
-.. |image1| image:: media/image2.png
-   :width: 5.06748in
-   :height: 6.24705in
-.. |image2| image:: media/image3.png
-   :width: 3.2026in
-   :height: 3.7398in
-.. |image3| image:: media/image4.png
-   :width: 2.57737in
-   :height: 2.74699in
-.. |image4| image:: media/image4.png
-   :width: 2.57737in
-   :height: 2.74699in
-.. |image5| image:: media/image5.png
-   :width: 6.26806in
-   :height: 3.55347in
+   .. image:: ./assets/image4_6.png
