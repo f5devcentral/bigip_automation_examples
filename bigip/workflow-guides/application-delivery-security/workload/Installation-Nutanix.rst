@@ -58,8 +58,7 @@ with Intel NIC with following specs,  
 
 - Imaging Software: Nutanix ISO booted using Rufus to USB 3.0 drive 
 
-|A computer hardware components diagram AI-generated content may be
-incorrect.| 
+  .. image:: ./assets/image3_1.png
 
 Above screenshot shows the Dell PowerEdge R430 HW that I brought up to
 install Nutanix CE. After connecting necessary USB drives such as
@@ -114,7 +113,7 @@ configs were set to default, click on start button to image. Once the
 process is done, eject the USB drive and insert it to selected Bare
 Metal HW. 
 
-|A screenshot of a computer AI-generated content may be incorrect.| 
+.. image:: ./assets/image3_2.png
 
 Before proceeding installing Nutanix CE, gather the following
 information that is required during installation process, 
@@ -146,43 +145,35 @@ Login to Dell iDRAC and click on **Power/Thermal** > **Power
 Configuration.** Select **Reset System (warm boot)** and click on
 **Apply** button to boot the bare metal. 
 
- 
-
-|image1| 
+.. image:: ./assets/image3_3.png
 
 Device starts to bootup and navigate to boot settings to initiate the
 boot from the USB drive imaged with CE. 
 
-|image2| 
+.. image:: ./assets/image3_4.png
 
 Click on F11 bootup process to modify the boot sequence. 
 
-|image3| 
+.. image:: ./assets/image3_5.png
 
 From the boot sequence, set the boot device to the imaged installation
 device. 
 
-|image4| 
+.. image:: ./assets/image3_6.png
 
 Save the configuration changes and initiate the bootup. 
 
-|A screenshot of a system setting AI-generated content may be
-incorrect.| 
+.. image:: ./assets/image3_7.png
 
 Boot process starts by booting USB drive. 
 
 It will take a couple of minutes to get to installer screen. 
 
-|A screenshot of a computer screen AI-generated content may be
-incorrect.| 
+.. image:: ./assets/image3_8.png
 
 When the boot sequence finishes, the CE installer dialog appears. 
 
- 
-
- 
-
-|image5| 
+.. image:: ./assets/image3_9.png
 
 As you can be able to see, Hypervisor selection is AHV, and Hard disks
 were selected as one of the SSD for CVM boot disk and others as Data
@@ -207,7 +198,7 @@ Read the end-user license agreement (EULA). Use the up arrow and down
 arrow keys to scroll. Press Tab to navigate to the **I accept the end
 user license agreement** checkbox. 
 
-|image6| 
+.. image:: ./assets/image3_10.png 
 
 Press the spacebar to select the checkbox. Use the arrow keys to
 navigate to Start and press Enter to start the installation process.  
@@ -216,41 +207,29 @@ Now Nutanix is a Hyperconverged Platform, it is not only installation
 AHV Hypervisor but also management plane and storage controller as well.
 Installation process as follows, 
 
- 
-
-|image7| 
+.. image:: ./assets/image3_12.png
 
  
-
-|image8| 
+.. image:: ./assets/image3_13.png
 
 A prompt appears to remove CE installation media, Remove the CE
 installation media depending on your Bare Metal HW (to make sure device
 does not boot again with installer image). Enter the **y** key and press
 Enter. 
 
- 
-
-|image9| 
+ .. image:: ./assets/image3_14.png
 
 Since my Bare Metal setup consists of 2 USB drives, once the bootup
 process started, I need to change the boot sequence from boot manager,
 so that device boots with AHV hypervisor installed. 
 
-|image10| 
+.. image:: ./assets/image3_15.png
 
-|image11| 
-
- 
+.. image:: ./assets/image3_16.png
 
 Now the device will be booted into AHV. 
 
  
-
- 
-
- 
-
 **Step 3: Creating and configuring a cluster** 
 
 Once you are at the AHV, you can see the login prompt, you can login
@@ -342,49 +321,3 @@ process helps in installing Nutanix CE on any Bare Metal. 
 **Additional Links:** 
 
 *https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Community-Edition-Getting-Started:top-sysreqs-ce-r.html* 
-
-.. |A computer hardware components diagram AI-generated content may be incorrect.| image:: media/image1.png
-   :width: 6.26667in
-   :height: 3.85833in
-.. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image2.png
-   :width: 2.41667in
-   :height: 3.95833in
-.. |image1| image:: media/image3.png
-   :width: 6.26667in
-   :height: 3.36667in
-.. |image2| image:: media/image4.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image3| image:: media/image5.png
-   :width: 3.075in
-   :height: 1.71667in
-.. |image4| image:: media/image6.png
-   :width: 4.25833in
-   :height: 3.2in
-.. |A screenshot of a system setting AI-generated content may be incorrect.| image:: media/image7.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |A screenshot of a computer screen AI-generated content may be incorrect.| image:: media/image8.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image5| image:: media/image9.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image6| image:: media/image10.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image7| image:: media/image11.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image8| image:: media/image12.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image9| image:: media/image13.png
-   :width: 6.26667in
-   :height: 4.7in
-.. |image10| image:: media/image14.png
-   :width: 4.25833in
-   :height: 3.2in
-.. |image11| image:: media/image15.png
-   :width: 5.91667in
-   :height: 4.44167in
