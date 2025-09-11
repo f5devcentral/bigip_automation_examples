@@ -22,7 +22,10 @@
 - Login and Navigate to:
 
   - **BIG-IP Virtual Edition** and Select the version you want (e.g.,
-    16.x, 17.x) :mark:`Note: 16.x is stable and recommended`
+    16.x, 17.x) 
+.. note::
+
+   16.x is stable and recommended
 
   - Choose Platform as KVM (since AHV supports QCOW2 images, same as
     KVM).
@@ -50,16 +53,20 @@
 - Go to VM from dropdown list and click on Create VM.
 
 - | Provide the VM name, set CPU and Memory and Add the Disk:
-  | |image1|
-  | |image2|
+  
+  .. image:: ./assets/image4_1.png
+
+  .. image:: ./assets/image4_2.png
 
 - Add a Network Interface (NIC) and provide the required details and
-  then click on **Save.
-  **\ |image3|
+  then click on **Save.**
+
+  .. image:: ./assets/image4_3.png
 
 - Add a Network Interface (NIC) and provide the required details and
-  then click on **Save.
-  **\ |image4|
+  then click on **Save.**
+
+  .. image:: ./assets/image4_4.png
 
 - Finally click on Save button.
 
@@ -93,7 +100,7 @@
 - Click Submit and allow the system to provision the selected modules.
 
 - | Verify that the required modules have been provisioned correctly.
-  | |image5|
+  |   .. image:: ./assets/image4_5.png
 
 .. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image1.png
    :width: 6.26806in
