@@ -147,12 +147,12 @@ Step-by-Step Guide to BIG-IP Workload Deployment on OCP (Coming Soon)
 
 ………..
 
-**Adding additional workloads:**
+**Adding Aditional Workloads:**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To demonstrate BIG-IP’s ability to support evolving enterprise demands, we will introduce new workloads across all environments. This will validate its seamless integration, consistent security enforcement, and support for continuous delivery across hybrid infrastructures.
 
-.. image:: ./assets/additional workload.png
+.. image:: ./assets/additional_workload.png
 
 **VMware:**
 ~~~~~~~
@@ -218,6 +218,12 @@ This demonstration clearly illustrates that BIG-IP’s Application Delivery and 
 
 This unified approach allows businesses to seamlessly scale infrastructure and address evolving user demands without sacrificing performance, availability, or security. With BIG-IP, enterprises can confidently deliver applications with resilience and speed, while maintaining centralized control and policy enforcement across heterogeneous environments.
 Ultimately, BIG-IP empowers organizations to simplify operations, standardize security, and accelerate digital transformation across any environment.
+
+**References:**
+----------
+`F5 Application Delivery and Security Platform <https://www.f5.com/products/f5-application-delivery-and-security-platform>`__
+`BIG-IP Data Sheet <https://www.f5.com/pdf/data-sheet/big-ip-advanced-waf-datasheet.pdf>`__
+
 
 
 
