@@ -1,9 +1,11 @@
 **Steps to** **Deploy a VM in ESXi Using Ubuntu ISO:**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. **Log in to VMware ESXi Web Client:**
 
-   - | Open a browser and enter the ESXi host IP.
-     | |image1|
+   - Open a browser and enter the ESXi host IP.
+
+      .. image:: ./assets/image1_1.png
 
    - Log in with your credentials.
 
@@ -13,20 +15,19 @@
 
    - Select **“Create a new virtual machine”** and click **Next**.
 
-..
+      .. image:: ./assets/image1_2.png
+   
+   - Enter a name for your VM (e.g., Ubuntu-VM).
 
-   |image2|
+   - Choose the compatibility (default is fine).
 
-- Enter a name for your VM (e.g., Ubuntu-VM).
+   - Select the guest OS family as **Linux**.
 
-- Choose the compatibility (default is fine).
+   - Choose the guest OS version as **Ubuntu Linux (64-bit)**.
 
-- Select the guest OS family as **Linux**.
+   - | Click **Next**.
 
-- Choose the guest OS version as **Ubuntu Linux (64-bit)**.
-
-- | Click **Next**.
-  | |image3|
+      .. image:: ./assets/image1_3.png
 
 3. **Configure VM Storage:**
 
@@ -50,8 +51,9 @@
    - Configure disk size (e.g., 20GB) and storage type (thin or thick
      provisioning).
 
-   - | Click **Next**.
-     | |image4|
+   - Click **Next**.
+
+      .. image:: ./assets/image1_4.png
 
 5. **Review and Finish:**
 
@@ -59,11 +61,7 @@
 
    - Click **Finish** to create the VM.
 
-..
-
-   |image5|
-
-   |image6|
+      .. image:: ./assets/image1_5.png
 
 6. **Power On and Install Ubuntu:**
 
@@ -74,22 +72,3 @@
    - Open the console to the VM.
 
    - Follow the Ubuntu installation wizard to install the OS.
-
-.. |image1| image:: /media/image.png
-   :width: 5.51042in
-   :height: 3.125in
-.. |image2| image:: /media/image2.png
-   :width: 6.26042in
-   :height: 3.94792in
-.. |image3| image:: /media/image3.png
-   :width: 5.51042in
-   :height: 3.3125in
-.. |image4| image:: /media/image4.png
-   :width: 5.51042in
-   :height: 3.32292in
-.. |image5| image:: /media/image5.png
-   :width: 6.26042in
-   :height: 3.61458in
-.. |image6| image:: /media/image6.png
-   :width: 6.26042in
-   :height: 1.21875in
