@@ -212,7 +212,7 @@ Deploy multiple applications and associate them with BIG-IP virtual servers. Cre
 
 
 **Conclusion:**
-~~~~~~~~~~~~~~~
+--------------
 
 This demonstration clearly illustrates that BIG-IP’s Application Delivery and Security capabilities offer a robust, scalable, and consistent solution across both multi-cloud and on-premises environments. By deploying BIG-IP across diverse platforms, organizations can achieve uniform application security, while maintaining reliable connectivity, strong encryption, and comprehensive protection for both modern and legacy workloads.
 
