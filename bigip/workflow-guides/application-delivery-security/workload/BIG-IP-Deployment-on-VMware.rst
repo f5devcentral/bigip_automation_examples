@@ -3,7 +3,7 @@
 
 Here is the topology diagram for this scenario.
 
-|A diagram of a big-ip ve AI-generated content may be incorrect.|
+.. image:: ./assets/image2_1.png
 
 - Create a virtual machine (VM) on VMware ESXi hosted on a Dell
   PowerEdge R640 bare-metal server and ensure the VM is booted using the
@@ -48,7 +48,8 @@ Here is the topology diagram for this scenario.
 - In the left-hand navigation pane, select **Virtual Machines**.
 
 - | Click on the **Create / Register VM** button at the top.
-  | |A screenshot of a computer AI-generated content may be incorrect.|
+
+  .. image:: ./assets/image2_2.png
 
 3. **Select Deployment Type**
 
@@ -56,14 +57,15 @@ Here is the topology diagram for this scenario.
   file**.
 
 - | Click **Next** to proceed.
-  | |image1|
+
+  .. image:: ./assets/image2_3.png
 
 4. **Specify VM Name and Upload OVA**
 
 - Enter a descriptive and unique name for your BIG-IP virtual machine.
 
 - Upload the BIG-IP OVA file by dragging and dropping it into the
-  designated area or by browsing your local files. <need to check>
+  designated area or by browsing your local files. 
 
   - Steps to download BIG-IP OVA file:
 
@@ -83,7 +85,8 @@ Here is the topology diagram for this scenario.
     - Click **Download** to get the OVA file to your local machine.
 
 - | Once the OVA file is selected, click **Next**.
-  | |image2|
+
+  |.. image:: ./assets/image2_4.png
 
 5. **Choose Datastore**
 
@@ -113,7 +116,8 @@ Here is the topology diagram for this scenario.
   storage-efficient disks.
 
 - | Confirm your selections and click **Next**.
-  | |image3|
+
+  .. image:: ./assets/image2_5.png
 
 8. **Review and Confirm**
 
@@ -122,7 +126,7 @@ Here is the topology diagram for this scenario.
 
 - | If everything looks correct, click **Finish** to start the
     deployment.
-  | |image4|
+  .. image:: ./assets/image2_6.png
 
 9. **Power On and Initial Configuration**
 
@@ -138,7 +142,8 @@ Here is the topology diagram for this scenario.
 
 - | Use the VM console in VMware ESXi or check your DHCP server to find
     the management IP assigned to the BIG-IP virtual machine.
-  | |image5|
+
+  .. image:: ./assets/image2_7.png
 
 - Alternatively, if you configured a static IP during deployment, use
   that address.
@@ -179,31 +184,7 @@ Here is the topology diagram for this scenario.
 - | Once license is uploaded successfully go back to the BIG-IP GUI >
     System > License and cross verify the required modules are
     provisioned or not.
-  | |image6|
+
+  .. image:: ./assets/image2_8.png
 
 - Finally, set the hostname, DNS server, and NTP settings if required.
-
-.. |A diagram of a big-ip ve AI-generated content may be incorrect.| image:: media/image1.png
-   :width: 6.26806in
-   :height: 3.47153in
-.. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image2.png
-   :width: 6.26806in
-   :height: 1.66667in
-.. |image1| image:: media/image3.png
-   :width: 6.26806in
-   :height: 3.91597in
-.. |image2| image:: media/image4.png
-   :width: 6.26806in
-   :height: 3.94375in
-.. |image3| image:: media/image5.png
-   :width: 6.26806in
-   :height: 3.99375in
-.. |image4| image:: media/image6.png
-   :width: 6.26806in
-   :height: 3.9625in
-.. |image5| image:: media/image7.png
-   :width: 6.26806in
-   :height: 2.41667in
-.. |image6| image:: media/image8.png
-   :width: 6.26806in
-   :height: 3.36042in
