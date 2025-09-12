@@ -20,8 +20,9 @@
 - Search for “F5 Advanced WAF with LTM, IPI, Threat Campaigns (PAYG,
   200Mbps)”
 
-- | Select the correct image from **F5 Networks**.
-.. image:: ./assets/image5_1.png
+- Select the correct image from **F5 Networks**.
+
+  .. image:: ./assets/image5_1.png
 
 2. **Launch the Image and Configure the Deployment**
 
@@ -42,12 +43,13 @@
 
 - Do ssh with default credentials (root/default)
 
-- | Modify the admin password for web UI using the below command
+- Modify the admin password for web UI using the below command
   | <<tmsh modify auth password admin>>
 
 - Now try to access the Instance using https://<external-ip>
 
 - Since this is a **PAYG image**, the license is automatically applied.
 
-- | Go to **System > License** and verify the same.
-.. image:: ./assets/image5_2.png
+- Go to **System > License** and verify the same.
+
+  .. image:: ./assets/image5_2.png
