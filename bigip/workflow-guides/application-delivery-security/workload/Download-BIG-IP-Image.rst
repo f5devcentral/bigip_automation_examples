@@ -1,7 +1,7 @@
 **Steps to Download BIG-IP Latest VM Image for ESXi**
 -------------------------
 
-1. Access MyF5 — F5's Official Download Portal
+- Access MyF5 — F5's Official Download Portal
 
   - Navigate to the F5 Downloads portal (also known as MyF5).
 
@@ -17,7 +17,7 @@
 
   .. image:: ./assets/image6_1_3.png
 
-2. Locate the Virtual Edition 17.x (which is currently the latest available release)
+- Locate the Virtual Edition 17.x (which is currently the latest available release)
 
   - Choose the product line BIG-IP v17.x / Virtual Edition, then select the desired 17.x release.
 
