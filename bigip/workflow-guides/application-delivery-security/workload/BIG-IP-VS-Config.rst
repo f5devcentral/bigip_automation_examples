@@ -1,4 +1,5 @@
 **BIG-IP Virtual Server Configuration:**
+--------------------
 
 Below is a step-by-step process to create a Virtual Server and validate
 the effectiveness of the Web Application Firewall (WAF) by simulating
@@ -16,9 +17,7 @@ malicious attacks on application endpoints.
   Vulnerable Web Application), Mutillidae, and others on an Ubuntu
   server. 
 
-`Application Installation via Docker on Ubuntu  Step-by-Step Guide <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Download-BIG-IP-Image.rst>`__ 
-
-Ensure each application is running on different custom HTTP ports (e.g., 8080, 8081, etc.) to avoid conflicts. 
+  Ensure each application is running on different custom HTTP ports (e.g., 8080, 8081, etc.) to avoid conflicts. 
 
 - Now, on the BIG-IP system, create a virtual server configured with the appropriate node details pointing to the Ubuntu machine hosting the vulnerable apps. 
 
