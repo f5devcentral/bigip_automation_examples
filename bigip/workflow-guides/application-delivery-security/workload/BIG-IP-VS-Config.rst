@@ -8,6 +8,7 @@ malicious attacks on application endpoints.
 - Before creating the virtual server (VS), let’s configure required
   network settings, VLANs, self IPs, and other required BIG-IP features
   via CLI or web interface. 
+
   .. image:: ./assets/image6_1.png
 
   .. image:: ./assets/image6_2.png
