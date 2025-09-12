@@ -8,21 +8,16 @@ malicious attacks on application endpoints.
   network settings, VLANs, self IPs, and other required BIG-IP features
   via CLI or web interface. 
 
-..
+.. image:: ./assets/image6_1.png
 
-   | |A screenshot of a computer AI-generated content may be incorrect.|
-   |  
-   | |image1| 
+.. image:: ./assets/image6_2.png
 
 - Install and configure various vulnerable web applications such as
   Juice Shop, DVWA (Damn Vulnerable Web Application), XVWA (Xtreme
   Vulnerable Web Application), Mutillidae, and others on an Ubuntu
   server. 
 
-..
-
-   `Application Installation via Docker on Ubuntu – Step-by-Step
-   Guide <https://f5-my.sharepoint.com/:w:/r/personal/sh_shaik_f5_com/Documents/Download%20BIG-IP%20Image.docx?d=wece5152f4ccb4a81a3693823e7a280df&csf=1&web=1&e=EVbaun>`__ 
+  `Application Installation via Docker on Ubuntu  Step-by-Step Guide <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Download-BIG-IP-Image.rst>`__ 
 
    Ensure each application is running on different custom HTTP ports
    (e.g., 8080, 8081, etc.) to avoid conflicts. 
@@ -30,8 +25,6 @@ malicious attacks on application endpoints.
 - Now, on the BIG-IP system, create a virtual server configured with the
   appropriate node details pointing to the Ubuntu machine hosting the
   vulnerable apps. 
-
-..
 
    *Node and Pool Details:
    *\ |image2|\ *
