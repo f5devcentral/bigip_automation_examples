@@ -1,6 +1,8 @@
 **Installation of Nutanix Community Edition 2.1 on Bare Metal** 
+------------------------
 
 **Introduction:** 
+
 
 Nutanix Community Edition (CE) 2.1 is a community supported version of
 Nutanix’s hyperconverged software. It allows to deploy and testing new
