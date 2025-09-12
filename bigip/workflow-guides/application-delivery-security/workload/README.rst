@@ -64,7 +64,7 @@ Enterprise applications are deployed smoothly across multiple environments to ad
 
 F5 provides a unified and secure application experience across cloud, on-premises, and virtualized environments. 
 
-**Workload Distribution Across Environments **
+**Workload Distribution Across Environments**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Workloads are distributed across the following environments: 
