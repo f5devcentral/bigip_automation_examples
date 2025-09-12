@@ -30,7 +30,7 @@ Here is the topology diagram for this scenario.
     Downloads.
 
   - `Steps to download the latest BIG-IP
-    image <https://f5-my.sharepoint.com/:w:/r/personal/sh_shaik_f5_com/Documents/Download%20BIG-IP%20Image.docx?d=wece5152f4ccb4a81a3693823e7a280df&csf=1&web=1&e=EVbaun>`__
+    image <https://https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Download-BIG-IP-Image.rst>`__
 
 - Licensing info for BIG-IP if applicable.
 
