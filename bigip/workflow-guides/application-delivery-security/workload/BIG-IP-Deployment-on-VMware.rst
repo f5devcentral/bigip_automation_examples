@@ -29,8 +29,7 @@ Here is the topology diagram for this scenario.
   - The VM is booted using the OVA image of BIG-IP downloaded from myf5
     Downloads.
 
-  - `Steps to download the latest BIG-IP
-    image <https://https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Download-BIG-IP-Image.rst>`__
+  - `Steps to download the latest BIG-IP Image <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Download-BIG-IP-Image.rst>`__
 
 - Licensing info for BIG-IP if applicable.
 
