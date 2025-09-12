@@ -8,14 +8,15 @@
 
 - Accept the End User License Agreement (EULA) when prompted.
 
-- | Now, go to My Products & Plans → Trials or select Find a Download
-    under Downloads Overview
-  | |A screenshot of a computer AI-generated content may be incorrect.|
-  | |image1|
-  | |image2|
+- Now, go to My Products & Plans → Trials or select Find a Download under Downloads Overview
 
-2. Locate the Virtual Edition 17.x (which is currently the latest
-available release)
+  .. image:: ./assets/image6_1_1.png
+
+  .. image:: ./assets/image6_1_2.png
+
+  .. image:: ./assets/image6_1_3.png
+
+2. Locate the Virtual Edition 17.x (which is currently the latest available release)
 
 - Choose the product line BIG-IP v17.x / Virtual Edition, then select
   the desired 17.x release.
@@ -23,19 +24,6 @@ available release)
 - The download options include installer .iso files and Virtual Edition
   (VE) images, such as .ova for VMware.
 
-- | Select .ova version and click on Download button to get the
-    VMware-compatible OVA image suitable for ESXi deployment.
-  | |image3|
+- Select .ova version and click on Download button to get the VMware-compatible OVA image suitable for ESXi deployment.
 
-.. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image1.png
-   :width: 6.26806in
-   :height: 3.40347in
-.. |image1| image:: media/image2.png
-   :width: 6.26806in
-   :height: 3.02639in
-.. |image2| image:: media/image3.png
-   :width: 6.26806in
-   :height: 4.16806in
-.. |image3| image:: media/image4.png
-   :width: 6.26806in
-   :height: 2.72778in
+  .. image:: ./assets/image6_1_4.png
