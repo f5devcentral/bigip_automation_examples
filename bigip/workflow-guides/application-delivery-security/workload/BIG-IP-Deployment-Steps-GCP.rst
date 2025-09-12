@@ -21,7 +21,7 @@
   200Mbps)”
 
 - | Select the correct image from **F5 Networks**.
-  | |A screenshot of a computer AI-generated content may be incorrect.|
+.. image:: ./assets/image5_1.png
 
 2. **Launch the Image and Configure the Deployment**
 
@@ -50,11 +50,4 @@
 - Since this is a **PAYG image**, the license is automatically applied.
 
 - | Go to **System > License** and verify the same.
-  | |image1|
-
-.. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image1.png
-   :width: 6.26806in
-   :height: 3.56875in
-.. |image1| image:: /media/image7.png
-   :width: 5.76042in
-   :height: 2.97917in
+.. image:: ./assets/image5_2.png
