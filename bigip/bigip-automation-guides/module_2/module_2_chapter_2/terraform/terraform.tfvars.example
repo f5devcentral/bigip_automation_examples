@@ -37,7 +37,7 @@ vpc_cidrs = {
 }
 
 # BIG-IP Variables
-f5_ami_search_name  = "F5 BIGIP-17.1.*PAYG-Adv WAF Plus 25Mbps*"
+f5_ami_search_name  = "F5 BIGIP-17.5.1*PAYG-Better 1Gbps*"
 bigip_instance_type = "m5.xlarge"
 
 bigip_netcfg = {
@@ -64,7 +64,7 @@ bigip_netcfg = {
 }
 
 # App server variables
-linux_ami_search_name = "amzn2-ami-minimal-hvm*2023*x86*"
+linux_ami_search_name = "amzn2-ami-minimal-hvm*x86*"
 linux_instance_type   = "t2.micro"
 
 appsvr_netcfg = {
