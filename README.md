@@ -33,14 +33,16 @@ This repository contains resources, examples, and scripts supporting the **F5 BI
 | API Endpoint Protection | [Manual flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#manual-workflow-guide) | [Automated flow](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/open-api-protection/README.md#automated-workflow-guide) |
 
 ---
-Please open an issue if you have any challenges or improvements. 
 
----
 ## **BIG-IP Application Delivery and Security**
-
   | **DevCentral Overview Articles**                                                                                           | **Use Case / Workflow Guides**                                                                                                                                                |
   |----------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments]([https://community.f5.com/kb/technicalarticles/f5-scalable-app-delivery--security-for-hybrid-environments/343182](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst)) | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments (SaaS Console)]([https://github.com/f5devcentral/f5-xc-terraform-examples/blob/main/workflow-guides/application-delivery-security/workload/README.rst](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst))               |
+  | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst) | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments (SaaS Console)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst)                        |
+  
+---
+
+Please open an issue if you have any challenges or improvements. 
+
 ---
 
 ## Support
