@@ -38,23 +38,31 @@
 
 - | Provide the values for name, storage container and Image source and
     then click on save button. 
-  | |A screenshot of a computer AI-generated content may be incorrect.| 
+
+  .. image:: ./assets/nutanix-vmware/1.png
 
 3. **Create the BIG-IP Virtual Machine** 
 
 - Go to VM from dropdown list and click on  Create VM. 
 
 - | Provide the VM name, set CPU and Memory and Add the Disk.
-  | |image1| 
-  | |image2| 
+
+  .. image:: ./assets/nutanix-vmware/2.png
+     :width: 400px
+     :height: 400px
+
+  .. image:: ./assets/nutanix-vmware/3.png
+     :width: 400px
+     :height: 400px
 
 - Add a Network Interface (NIC) and provide the required details and
   then click on **Save.** 
 
 ..
 
-   | |image3| 
-   |  
+  .. image:: ./assets/nutanix-vmware/4.png
+     :width: 500px
+     :height: 500px
 
 - Finally click on Save button. 
 
@@ -104,31 +112,14 @@
 - | Ensure that all virtual servers and nodes show **green (available)**
     status. 
   |  
-  | |image4| 
+  .. image:: ./assets/nutanix-vmware/5.png
+
   |  
 
 - | Navigate to each app using the BIG-IP virtual server IP and its
     custom port and confirm that each application loads correctly and
     traffic is being passed through the BIG-IP. 
-  | |image5|   
 
- 
+  .. image:: ./assets/nutanix-vmware/6.png
+     :height: 500px
 
-.. |A screenshot of a computer AI-generated content may be incorrect.| image:: media/image1.png
-   :width: 6.26181in
-   :height: 3.3in
-.. |image1| image:: media/image2.png
-   :width: 4.68472in
-   :height: 5.76181in
-.. |image2| image:: media/image3.png
-   :width: 5.39236in
-   :height: 5.76181in
-.. |image3| image:: media/image4.png
-   :width: 4.03056in
-   :height: 3.85417in
-.. |image4| image:: media/image5.png
-   :width: 6.26806in
-   :height: 2.19167in
-.. |image5| image:: media/image6.png
-   :width: 6.26806in
-   :height: 2.96042in
