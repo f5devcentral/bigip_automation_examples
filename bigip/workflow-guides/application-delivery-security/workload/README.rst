@@ -17,13 +17,12 @@ In this use case, we focus on a representative enterprise scenario that includes
 - VMware – On-Premises 
 - Nutanix – On-Premises 
 - Google Cloud Platform (GCP) 
-- Red Hat OpenShift (OCP) – On-Premises 
 
 Architecture Overview
 ---------------------
 The architecture for this use case demonstrates how F5 BIG-IP Application Delivery and Security is deployed to provide a centralized control plane with distributed enforcement points across cloud and on-premises platforms. 
 
-.. image:: ./assets/Highlevel_arch1_3.png
+.. image:: ./assets/bigip_architecture.png
 
 **VMware:** 
 Two virtual machines are provisioned using Ubuntu ISO images—one designated as the client and the other as the server. On the server VM, multiple intentionally vulnerable web applications such as Juice Shop, DVWA, and Mutillidae are deployed using Docker containers with custom port configurations. These applications are used for testing and security assessment purposes and can be accessed from the client VM over the configured ports. 
@@ -47,15 +46,6 @@ A virtual machine (VM) is provisioned and booted using the QCOW2 image of the BI
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
 
 `Steps to deploy BIG-IP on GCP <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Steps-GCP.rst>`__
-
-**OCP (OpenShift Container Platform):**
-A 3-node OpenShift Container Platform (OCP) cluster is deployed on a VMware-based infrastructure, providing a robust foundation for containerized workloads. Within the OCP virtualization environment, a virtual machine (VM) is provisioned using a QCOW2 image, enabling flexible and efficient resource utilization. 
-
-In parallel, application workloads are hosted on a separate Ubuntu-based VM, where they are deployed using Docker. These workloads are integrated with an F5 BIG-IP virtual server, which acts as a centralized and secure entry point for external traffic. 
-
-Steps to Deploy BIG-IP on OCP <Coming soon> 
-
-……….. 
 
 **Scenario-1: Scalable Enterprise Workload Deployment Across Hybrid Environments**
 ------------------------------------------------------------------------------
@@ -137,16 +127,6 @@ You can find the corresponding logs under BIG-IP > Security > Event Logs.
 
 .. image:: ./assets/image11.png
 
-**OCP**
-~~~~~~~
-A 3-node OpenShift Container Platform (OCP) cluster has been created on VMware. Within this OCP cluster virtualization, a VM running the BIG-IP image is deployed. Additionally, a VM hosting application workloads is deployed and linked to a virtual server configured with custom ports, ensuring the applications are not directly exposed.
-
-`OCP Infra setup on VMware <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/OCP-Setup-VMware.rst>`__
-
-Step-by-Step Guide to BIG-IP Workload Deployment on OCP (Coming Soon)
-
-………..
-
 **Adding Aditional Workloads:**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -195,13 +175,6 @@ Verify the Web Application Firewall’s (WAF) effectiveness against SQL Injectio
 The corresponding logs can be found here.
 
 .. image:: ./assets/image21.png
-
-**OCP:**
-~~~~~~~~~
-
-Add two additional applications Juice Shop and Mutillidae to the BIG-IP virtual server configuration. Apply the existing WAF policy to ensure consistent security enforcement. Once configured, access both applications through the BIG-IP virtual server to verify proper routing and policy enforcement.
-
-Step by step deployment guide <coming soon>
 
 **GCP:**
 ~~~~~~~~
