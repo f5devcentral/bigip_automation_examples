@@ -22,7 +22,7 @@ Architecture Overview
 ---------------------
 The architecture for this use case demonstrates how F5 BIG-IP Application Delivery and Security is deployed to provide a centralized control plane with distributed enforcement points across cloud and on-premises platforms. 
 
-.. image:: ./assets/bigiparchitecture.png
+.. image:: ./assets/bigip_architecture.png
 
 **VMware:** 
 Two virtual machines are provisioned using Ubuntu ISO images—one designated as the client and the other as the server. On the server VM, multiple intentionally vulnerable web applications such as Juice Shop, DVWA, and Mutillidae are deployed using Docker containers with custom port configurations. These applications are used for testing and security assessment purposes and can be accessed from the client VM over the configured ports. 
