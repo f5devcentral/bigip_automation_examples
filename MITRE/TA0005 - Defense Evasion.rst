@@ -630,44 +630,23 @@ Adversaries may manipulate cloud compute infrastructure to evade security contro
      quotas, to conceal malicious activity, avoid alerts, and maintain
      stealthy operations.
 
-| **T1666 – Modify Cloud Resource Hierarchy**
-| Adversaries may manipulate the structure of cloud resource hierarchies
-  including projects, subscriptions, resource groups, or organizational
-  units to gain elevated control over environments and expand access to
-  sensitive assets. By modifying these hierarchies, attackers can
-  reassign ownership, alter trust boundaries, or restructure permissions
-  in ways that enable persistence, privilege escalation, and long term
-  access across the cloud environment.
+**T1666 – Modify Cloud Resource Hierarchy**
 
-| **T1112 – Modify Registry**
-| Adversaries may modify the Windows Registry to evade detection,
-  maintain persistence, or manipulate system behaviour in a stealthy
-  manner. By altering keys or values used by operating systems and
-  applications, attackers can disable security controls, implant
-  malicious configurations, or ensure their actions blend into
-  legitimate system activity. Registry modifications are difficult to
-  detect because changes often mimic normal administrative or
-  application operations.
+Adversaries may manipulate the structure of cloud resource hierarchies including projects, subscriptions, resource groups, or organizational units to gain elevated control over environments and expand access to sensitive assets. By modifying these hierarchies, attackers can reassign ownership, alter trust boundaries, or restructure permissions in ways that enable persistence, privilege escalation, and long term access across the cloud environment.
+
+**T1112 – Modify Registry**
+
+Adversaries may modify the Windows Registry to evade detection, maintain persistence, or manipulate system behaviour in a stealthy manner. By altering keys or values used by operating systems and applications, attackers can disable security controls, implant malicious configurations, or ensure their actions blend into legitimate system activity. Registry modifications are difficult to detect because changes often mimic normal administrative or application operations.
 
 **T1601 – Modify System Image**
 
 Adversaries may modify system images used for OS deployment or recovery to evade detection and maintain stealthy persistence. By tampering with trusted system images, attackers can implant malicious components or weaken security configurations, ensuring that newly deployed or restored systems inherit the compromised state. This makes detection difficult, as changes occur outside normal runtime monitoring and appear as legitimate system configurations.
 
--  **T1601.001 – Patch System Image**
+- | **T1601.001 – Patch System Image**
+  | Adversaries modify system images by embedding malicious code, scripts,or configuration changes designed to evade security monitoring. When these images are deployed, the malicious components execute as part of the system’s normal startup, bypassing security controls and blending into legitimate processes.
 
-Adversaries modify system images by embedding malicious code, scripts,
-or configuration changes designed to evade security monitoring. When
-these images are deployed, the malicious components execute as part of
-the system’s normal startup, bypassing security controls and blending
-into legitimate processes.
-
--  **T1601.002 – Downgrade System Image**
-
-Adversaries revert system images to older versions that lack modern
-security features or patches. This allows malware or unauthorized
-configurations to operate undetected, bypassing defenses that rely on
-current security baselines, and creating opportunities for further
-stealthy compromise.
+- | **T1601.002 – Downgrade System Image**
+  | Adversaries revert system images to older versions that lack modern security features or patches. This allows malware or unauthorized configurations to operate undetected, bypassing defenses that rely on current security baselines, and creating opportunities for further stealthy compromise.
 
 **T1599 – Network Boundary Bridging**
 
