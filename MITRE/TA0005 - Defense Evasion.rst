@@ -19,6 +19,7 @@ Techniques and Sub Techniques:
 ----------------------------------
 
 **T1548 – Abuse Elevation Control Mechanism**
+----------------------------------
 
 Abuse of elevation control mechanisms allows adversaries to execute code
 or perform actions with privileges beyond those normally granted to
@@ -48,6 +49,7 @@ stealthy manner.
   | On macOS, the Transparency, Consent, and Control (TCC) system manages access to protected resources, such as the camera, microphone, and contacts. Adversaries manipulate TCC settings or databases to bypass consent prompts, gaining unauthorized access to sensitive system resources without alerting the user.
 
 **T1134 Access Token Manipulation**
+----------------------------------
 
 Adversaries manipulate access tokens to execute actions with the
 privileges of another account. By exploiting token-based authentication,
@@ -72,6 +74,7 @@ security controls and maintain stealthy access.
   | Adversaries inject Security Identifier (SID) history entries into an account’s token to inherit privileges from other accounts or groups. This enables unauthorized access to resources and privileges that the account would not normally possess.
 
 **T1197 – BITS Jobs**
+----------------------------------
 
 Background Intelligent Transfer Service (BITS) is a Windows service used
 to transfer files asynchronously between systems and applications,
@@ -83,6 +86,7 @@ blends in with legitimate system operations, reducing the chance of
 detection.
 
 **T1612 – Build Image on Host**
+----------------------------------
 
 Adversaries may attempt to build malicious container images directly on
 a compromised host. By leveraging local build tools such as Docker,
@@ -92,6 +96,7 @@ prepare tailored environments for execution while blending in with
 normal container operations.
 
 **T1622 – Debugger Evasion**
+----------------------------------
 
 Adversaries may employ techniques to detect or evade the presence of a
 debugger during execution. Debuggers are commonly used by security
@@ -102,6 +107,7 @@ engineering, and ensure their malicious code executes as intended
 without interruption.
 
 **T1140 – Deobfuscate/Decode Files or Information**
+----------------------------------
 
 Adversaries may deobfuscate or decode files, scripts, or other forms of
 information to reveal and execute malicious functionality. Obfuscation
@@ -110,6 +116,7 @@ while deobfuscation restores the original, usable payload or command
 sequence.
 
 **T1610 – Deploy Container**
+----------------------------------
 
 Adversaries may deploy containers within compromised environments to
 execute malicious payloads or maintain persistence. By running workloads
@@ -120,6 +127,7 @@ portable nature of containers to blend in with legitimate infrastructure
 operations.
 
 **T1006 – Direct Volume Access**
+----------------------------------
 
 Adversaries may attempt to directly access disk volumes or raw disk
 sectors to bypass file system level protections. By operating at this
@@ -129,6 +137,7 @@ information, modifying files, or concealing their activity from
 monitoring tools.
 
 **T1484 – Domain or Tenant Policy Modification**
+----------------------------------
 
 Adversaries may modify domain or tenant level policies within enterprise
 environments to gain elevated access, weaken security configurations, or
@@ -145,6 +154,7 @@ continued access across multiple systems and users.
   | Domain and tenant trust relationships define how authentication and authorization are handled between different environments. Adversaries may alter trust policies to extend access, bypass restrictions, or impersonate identities across domains or tenants. By modifying these relationships, attackers can move laterally into otherwise restricted environments while maintaining a high level of stealth.
 
 **T1672 – Email Spoofing**
+----------------------------------
 
 Adversaries may forge or manipulate email headers and sender information
 to make a message appear as though it originates from a trusted source.
@@ -153,6 +163,7 @@ attachments, or links, with the intent of deceiving recipients into
 taking actions beneficial to the attacker.
 
 **T1480 – Execution Guardrails**
+----------------------------------
 
 Adversaries may implement guardrails within their malware or tools to
 ensure that execution only occurs under specific conditions. These
@@ -168,6 +179,7 @@ likelihood that their payloads run only on intended targets.
   | Malware may employ mutual exclusion techniques, such as lock files or mutex objects, to ensure only a single instance of the payload executes on a system. This prevents conflicts, avoids redundancy, and can serve as an additional safeguard to maintain operational stability and stealth.
 
 **T1211 – Exploitation for Defense Evasion**
+----------------------------------
 
 Adversaries may exploit software vulnerabilities to bypass security
 mechanisms and avoid detection. By targeting flaws in operating systems,
@@ -175,6 +187,7 @@ applications, or drivers, attackers can disable protections, escalate
 privileges, or execute malicious code stealthily.
 
 **T1222 – File and Directory Permissions Modification**
+----------------------------------
 
 Attackers may alter file or directory permissions to gain unauthorized
 access or evade detection. Modifying access control settings allows
@@ -197,6 +210,7 @@ operations.
      concealment of malicious content, or bypassing system protections.
 
 **T1564 – Hide Artifacts**
+----------------------------------
 
 Adversaries may hide files, processes, accounts, or other system
 artifacts to avoid detection and complicate forensic analysis. These
@@ -282,6 +296,7 @@ defenders to identify, investigate, or respond effectively.
      or configuration data in less monitored metadata fields.
 
 **T1574 – Hijack Execution Flow**
+----------------------------------
 
 Adversaries may hijack legitimate execution flows to run malicious code
 within trusted processes. By manipulating how applications load
@@ -356,6 +371,7 @@ stealth, bypass security mechanisms, and execute privileged operations.
      initialized, maintaining stealth and persistence.
 
 **T1562 – Impair Defenses**
+----------------------------------
 
 Adversaries may deliberately weaken or disable security controls to reduce detection capabilities and evade response. By targeting system level protections, logging mechanisms, or network defenses, attackers can maintain stealth, escalate privileges, and operate without interference. These activities increase the attacker’s operational persistence and complicate post incident analysis.
 
@@ -424,10 +440,12 @@ Adversaries may deliberately weaken or disable security controls to reduce detec
      operations like privilege escalations or file modifications.
 
 **T1656 – Impersonation**
+----------------------------------
 
 Adversaries may impersonate users, accounts, or processes to gain unauthorized access, bypass authentication, or evade detection. By masking them as trusted entities, attackers can execute malicious actions while blending with legitimate activity.
 
 **T1070 – Indicator Removal**
+----------------------------------
 
 Adversaries remove or tamper with system and application artifacts that could reveal malicious activity. This includes files, logs, history, network traces, or persistence mechanisms. Effective indicator removal makes detection, attribution, and post incident investigation significantly more difficult.
 
@@ -480,10 +498,12 @@ Adversaries remove or tamper with system and application artifacts that could re
      partitions to evade signature-based detection or manual analysis.
 
 **T1202 – Indirect Command Execution**
+----------------------------------
 
 Attackers may use intermediaries or indirect mechanisms to execute commands on a target system. This can include leveraging built in system utilities, scripts, or scheduled tasks to perform operations while minimizing direct interaction and reducing detection likelihood.
 
 **T1036 – Masquerading**
+----------------------------------
 
 Masquerading involves making files, processes, accounts, or other system artifacts appear legitimate to evade detection. By imitating trusted system resources, software, or users, attackers can blend malicious actions into normal system operations, avoid triggering alerts, and complicate forensic investigation.
 
@@ -552,6 +572,7 @@ Masquerading involves making files, processes, accounts, or other system artifac
      the process.
 
 **T1556 – Modify Authentication Process**
+----------------------------------
 
 Adversaries may manipulate authentication processes to bypass security controls, evade detection, and maintain undetected access. By tampering with login modules, credential providers, or authentication flows across operating systems, applications, and cloud services, attackers can impersonate legitimate users or create stealthy backdoors. Such actions allow adversaries to avoid triggering alerts while sustaining persistence in the environment.
 
@@ -604,6 +625,7 @@ Adversaries may manipulate authentication processes to bypass security controls,
      enabling stealthy access to resources.
 
 **T1578 – Modify Cloud Compute Infrastructure**
+----------------------------------
 
 Adversaries may manipulate cloud compute infrastructure to evade security controls, remove forensic evidence, or maintain undetected persistence. By altering virtual machines, snapshots, or configuration settings, attackers can operate stealthily while blending malicious activity into legitimate cloud operations.
 
@@ -633,14 +655,17 @@ Adversaries may manipulate cloud compute infrastructure to evade security contro
      stealthy operations.
 
 **T1666 – Modify Cloud Resource Hierarchy**
+----------------------------------
 
 Adversaries may manipulate the structure of cloud resource hierarchies including projects, subscriptions, resource groups, or organizational units to gain elevated control over environments and expand access to sensitive assets. By modifying these hierarchies, attackers can reassign ownership, alter trust boundaries, or restructure permissions in ways that enable persistence, privilege escalation, and long term access across the cloud environment.
 
 **T1112 – Modify Registry**
+----------------------------------
 
 Adversaries may modify the Windows Registry to evade detection, maintain persistence, or manipulate system behaviour in a stealthy manner. By altering keys or values used by operating systems and applications, attackers can disable security controls, implant malicious configurations, or ensure their actions blend into legitimate system activity. Registry modifications are difficult to detect because changes often mimic normal administrative or application operations.
 
 **T1601 – Modify System Image**
+----------------------------------
 
 Adversaries may modify system images used for OS deployment or recovery to evade detection and maintain stealthy persistence. By tampering with trusted system images, attackers can implant malicious components or weaken security configurations, ensuring that newly deployed or restored systems inherit the compromised state. This makes detection difficult, as changes occur outside normal runtime monitoring and appear as legitimate system configurations.
 
@@ -651,6 +676,7 @@ Adversaries may modify system images used for OS deployment or recovery to evade
   | Adversaries revert system images to older versions that lack modern security features or patches. This allows malware or unauthorized configurations to operate undetected, bypassing defenses that rely on current security baselines, and creating opportunities for further stealthy compromise.
 
 **T1599 – Network Boundary Bridging**
+----------------------------------
 
 Adversaries may bypass network segmentation, firewalls, or other boundary controls to move laterally, exfiltrate data, or maintain persistence while avoiding detection. By bridging network boundaries, attackers can operate in less monitored network segments or directly access sensitive systems without triggering alerts, effectively evading perimeter based defenses.
 
@@ -663,6 +689,7 @@ Adversaries may bypass network segmentation, firewalls, or other boundary contro
      movement without raising suspicion.
 
 **T1027 – Obfuscated Files or Information**
+----------------------------------
 
 Adversaries may obfuscate, encode, or manipulate files and information to evade detection, bypass signature based security systems, or hide malicious activity. By transforming data or code, attackers make it more difficult for automated defenses and analysts to identify malicious behaviour, allowing malware or commands to operate stealthily within the environment. Obfuscation techniques are frequently used to evade antivirus, endpoint detection, intrusion detection systems, and forensic analysis.
 
@@ -758,10 +785,12 @@ Adversaries may obfuscate, encode, or manipulate files and information to evade 
      defenses.
 
 **T1647 – Plist File Modification**
+----------------------------------
 
 Adversaries on macOS may modify property list (plist) files to persist malware, alter system behaviour, or evade detection. Plist files store configuration data for applications and system processes. By tampering with these files, attackers can ensure that malicious components are executed at startup or modify settings to bypass security controls without triggering alerts.
 
 **T1542 – Pre OS Boot**
+----------------------------------
 
 Adversaries may compromise firmware or pre boot environments to maintain persistent and stealthy control over a system before the operating system loads. Modifications at this stage allow malware to bypass OS level defenses and detection mechanisms, providing attackers with the ability to persist undetected and manipulate security features.
 
@@ -793,6 +822,7 @@ Adversaries may compromise firmware or pre boot environments to maintain persist
      level defenses are active, evading detection.
 
 **T1055 – Process Injection**
+----------------------------------
 
 Adversaries inject malicious code into legitimate processes to evade detection, bypass security controls, and maintain stealthy execution. By running code within trusted processes, attackers can avoid monitoring mechanisms, blend activity with legitimate behaviour, and execute payloads without triggering alerts.
 
@@ -857,18 +887,22 @@ Adversaries inject malicious code into legitimate processes to evade detection, 
      to avoid detection.
 
 **T1620 – Reflective Code Loading**
+----------------------------------
 
 Adversaries load executable code directly into memory without writing it to disk. This avoids detection by file based antivirus and endpoint detection solutions, enabling stealthy execution and evasion of forensic analysis.
 
 **T1207 – Rogue Domain Controller**
+----------------------------------
 
 Adversaries may deploy a rogue domain controller to impersonate or replace legitimate authentication services. This allows attackers to issue unauthorized credentials, capture logins, and manipulate authentication without triggering standard security alerts, maintaining persistence and privilege escalation capabilities.
 
 **T1014 – Rootkit**
+----------------------------------
 
 Adversaries deploy rootkits to hide malware, processes, or system modifications from security tools and monitoring utilities. Rootkits operate at the kernel or system level, intercepting system calls and modifying data structures to maintain stealth, persistence, and the ability to execute privileged operations undetected.
 
 **T1553 – Subvert Trust Controls**
+----------------------------------
 
 Adversaries manipulate trust mechanisms, certificates, or code signing systems to bypass security policies and evade detection. By undermining trust based protections, malicious code can execute undetected while appearing legitimate.
 
@@ -903,6 +937,7 @@ Adversaries manipulate trust mechanisms, certificates, or code signing systems t
      mechanisms.
 
 **T1218 – System Binary Proxy Execution**
+----------------------------------
 
 Adversaries exploit trusted system binaries to proxy execution of malicious code, leveraging legitimate processes to bypass security controls. By using binaries that are already whitelisted or trusted by endpoint protection systems, attackers can execute code, scripts, or assemblies without triggering alerts. This method allows malware to blend seamlessly with normal system activity, evade application whitelisting, and avoid detection by traditional security mechanisms.
 
@@ -982,6 +1017,7 @@ Adversaries exploit trusted system binaries to proxy execution of malicious code
      security monitoring.
 
 **T1216 – System Script Proxy Execution**
+----------------------------------
 
 Adversaries leverage trusted system scripting utilities to execute malicious scripts while bypassing application control policies and security monitoring. By using legitimate scripting hosts, attackers can blend malicious activity with normal system operations, avoid detection, and maintain persistence.
 
@@ -998,6 +1034,7 @@ Adversaries leverage trusted system scripting utilities to execute malicious scr
      normally block unauthorized script execution.
 
 **T1221 – Template Injection**
+----------------------------------
 
 Adversaries inject malicious content, scripts, or macros into
 templates used by applications. Execution occurs when the template is
@@ -1007,6 +1044,7 @@ evading endpoint monitoring, triggering payloads conditionally, or
 spreading malware across users.
 
 **T1205 – Traffic Signaling**
+----------------------------------
 
 Adversaries manipulate network communication patterns to signal or trigger actions on compromised systems while avoiding detection. By using unusual or covert traffic patterns, attackers can control malware, initiate secondary stages, or exfiltrate data without triggering alerts in conventional network monitoring systems.
 
@@ -1023,6 +1061,7 @@ Adversaries manipulate network communication patterns to signal or trigger actio
      tools and limiting detection risk.
 
 **T1127 – Trusted Developer Utilities Proxy Execution**
+----------------------------------
 
 Adversaries exploit trusted developer tools to execute malicious codeindirectly. Using these utilities allows malware to bypass execution restrictions, blend with legitimate processes, and evade security monitoring. Trusted utilities such as MSBuild, InstallUtil, and others are leveraged because they are already whitelisted on most systems.
 
@@ -1042,10 +1081,12 @@ Adversaries exploit trusted developer tools to execute malicious codeindirectly.
      trusted processes and evading monitoring.
 
 **T1535 – Unused/Unsupported Cloud Regions**
+----------------------------------
 
 Adversaries exploit cloud regions that are deprecated, unused, or not actively monitored. These regions often have misconfigurations, weaker security controls, or limited logging, allowing attackers to operate stealthily. By leveraging these environments, attackers can maintain persistence, perform administrative actions, or exfiltrate data with minimal risk of detection.
 
 **T1550 – Use Alternate Authentication Material**
+----------------------------------
 
 Attackers use alternate authentication materials to bypass standard authentication mechanisms. This allows unauthorized access while minimizing detection risk. By reusing valid tokens, hashes, or session cookies, attackers can impersonate users or services and perform actions normally restricted to legitimate accounts.
 
@@ -1074,6 +1115,7 @@ Attackers use alternate authentication materials to bypass standard authenticati
      triggering authentication alerts.
 
 **T1078 – Valid Accounts**
+----------------------------------
 
 Adversaries exploit legitimate accounts to gain access, maintain persistence, and evade detection. Using trusted credentials blends malicious activity with normal user behaviour, making it difficult for security monitoring systems to differentiate between legitimate and malicious operations.
 
@@ -1097,6 +1139,7 @@ Adversaries exploit legitimate accounts to gain access, maintain persistence, an
      remaining under the guise of legitimate user activity.
 
 **T1497 – Virtualization/Sandbox Evasion**
+----------------------------------
 
 Adversaries detect virtualized or sandboxed environments to avoid executing malicious code in analysis systems. Evasion ensures malware remains undetected by automated security solutions, delaying investigation and response.
 
@@ -1118,6 +1161,7 @@ Adversaries detect virtualized or sandboxed environments to avoid executing mali
      short periods.
 
 **T1600 – Weaken Encryption**
+----------------------------------
 
 Attackers weaken cryptographic mechanisms to simplify attacks or bypass protection controls. By reducing key strength, disabling hardware crypto, or modifying configurations, attackers can access encrypted data or communications while evading detection.
 
@@ -1132,6 +1176,7 @@ Attackers weaken cryptographic mechanisms to simplify attacks or bypass protecti
      without triggering security alerts.
 
 **T1220 – XSL Script Processing**
+----------------------------------
 
 Adversaries leverage XSL (Extensible Stylesheet Language) scripts to process or transform XML data maliciously. By embedding scripts or commands into XSL templates, attackers can execute arbitrary code during document processing, bypass security controls, and exfiltrate or manipulate data without detection.
 
