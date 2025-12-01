@@ -1,4 +1,4 @@
-**Overview of MITRE ATT&CK Tactic 5:** **Defense Evasion (TA0005)**
+**Overview of MITRE ATT&CK Tactic :** **TA0005 - Defense Evasion**
 -------------------
 
 **Introduction:**
