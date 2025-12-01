@@ -1,7 +1,8 @@
 **Overview of MITRE ATT&CK Tactic :** **TA0005 - Defense Evasion**
--------------------
+##################################################################
 
-**Introduction:**
+Introduction:
+-----------------
 
 In cybersecurity, attackers know that simply gaining access to a system
 is not enough, they must also avoid being detected if they want to
@@ -14,7 +15,8 @@ used for Defense Evasion, helping us better understand how attackers
 operate and how organizations can strengthen their defense using F5
 solutions.
 
-**Techniques and Sub Techniques:**
+Techniques and Sub Techniques:
+----------------------------------
 
 **T1548 – Abuse Elevation Control Mechanism**
 
