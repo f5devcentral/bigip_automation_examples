@@ -27,20 +27,29 @@ The architecture for this use case demonstrates how F5 BIG-IP Application Delive
 **VMware:** 
 Two virtual machines are provisioned using Ubuntu ISO images—one designated as the client and the other as the server. On the server VM, multiple intentionally vulnerable web applications such as Juice Shop, DVWA, and Mutillidae are deployed using Docker containers with custom port configurations. These applications are used for testing and security assessment purposes and can be accessed from the client VM over the configured ports. 
 
-`Installing Client Server Machines in ESXi <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Ubuntu-deployment-ESXi.rst>`__ 
+`Installing Client Server Machines in ESXi <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Ubuntu-deployment-ESXi.rst>`__ 
 
 A virtual machine (VM) is provisioned on VMware ESXi, which is deployed on a Dell PowerEdge R640 bare-metal server. The VM is booted using the BIG-IP OVA image obtained from the official F5 Downloads portal. Once the BIG-IP instance is operational, application workloads hosted on another VM which are deployed within the same ESXi environment and are integrated through a virtual server configured on the BIG-IP. This setup ensures secure access by routing traffic through the virtual server, effectively preventing direct exposure of the applications to external networks.  
 
-`Deploying BIG-IP on VMware <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`__
+`Deploying BIG-IP on VMware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`__
 
 **Nutanix on bare metal:**
 Nutanix Community Edition is used as the hypervisor, deployed on a Dell PowerEdge R430 bare-metal server. 
 
-`Steps to install Nutanix on bare metal <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
+`Steps to install Nutanix on bare metal <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
 
 A virtual machine (VM) is provisioned and booted using the QCOW2 image of the BIG-IP Virtual Edition (VE), downloaded from the official F5 Downloads portal. Once the VM is operational, application workloads are deployed and accessed through a virtual server configured on the BIG-IP VE. This ensures that the applications are securely exposed via the virtual server, preventing direct access and enabling centralized traffic management and security.  
 
-`Steps to Deploy BIG-IP on Nutanix <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
+`Steps to Deploy BIG-IP on Nutanix bare metal <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
+
+**Nutanix on VMware:**
+Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its console provides the management interface for creating and operating workloads inside the Nutanix environment. Within this Nutanix-managed infrastructure, a new VM is provisioned using a BIG-IP Virtual Edition (VE) image. This BIG-IP VE instance is then configured with the necessary Virtual Servers, Pools, and policies to front-end and manage traffic for multiple applications hosted within Nutanix. BIG-IP delivers comprehensive application protection for these Nutanix-hosted workloads by leveraging its advanced security capabilities, including Web Application Firewall (WAF), Bot Defense and other L4–L7 security services. This ensures that applications running inside the Nutanix ecosystem remain secure, resilient, and optimized for performance.
+
+`Steps to install Nutanix on VMware <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
+
+A virtual machine (VM) is provisioned and booted using the QCOW2 image of the BIG-IP Virtual Edition (VE), downloaded from the official F5 Downloads portal. Once the VM is operational, application workloads are deployed and accessed through a virtual server configured on the BIG-IP VE. This ensures that the applications are securely exposed via the virtual server, preventing direct access and enabling centralized traffic management and security.  
+
+`Steps to Deploy BIG-IP on Nutanix Vmware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
 **GCP (Google Cloud Platform):** 
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
@@ -181,7 +190,7 @@ The corresponding logs can be found here.
 
 Deploy multiple applications and associate them with BIG-IP virtual servers. Create a WAF policy and apply it to the configured virtual servers. Once setup is complete, access the applications and simulate malicious attacks to verify that the WAF effectively detects and mitigates the threats.
 
-`Steps to configure VS in GCP <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
+`Steps to configure VS in GCP <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
 
 
 **Conclusion:**
