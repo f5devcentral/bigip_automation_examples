@@ -47,8 +47,6 @@ Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its c
 
 `Steps to install Nutanix on VMware <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
 
-A virtual machine (VM) is provisioned and booted using the QCOW2 image of the BIG-IP Virtual Edition (VE), downloaded from the official F5 Downloads portal. Once the VM is operational, application workloads are deployed and accessed through a virtual server configured on the BIG-IP VE. This ensures that the applications are securely exposed via the virtual server, preventing direct access and enabling centralized traffic management and security.  
-
 `Steps to Deploy BIG-IP on Nutanix Vmware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
 **GCP (Google Cloud Platform):** 
