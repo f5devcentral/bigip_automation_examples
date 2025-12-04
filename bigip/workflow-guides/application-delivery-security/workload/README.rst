@@ -86,7 +86,7 @@ Applications being used:
 
 This approach ensures flexible, scalable deployment of applications across VMware, OpenShift, and Nutanix environments which indeed maximizes the workload distribution and operational efficiency. 
 
-.. image:: ./assets/initial_infra.png
+.. image:: ./assets/initial_infra_mod.png
 
 **VMware**
 ~~~~~~~~~~
@@ -141,7 +141,7 @@ You can find the corresponding logs under BIG-IP > Security > Event Logs.
 
 To demonstrate BIG-IP’s ability to support evolving enterprise demands, we will introduce new workloads across all environments. This will validate its seamless integration, consistent security enforcement, and support for continuous delivery across hybrid infrastructures.
 
-.. image:: ./assets/additional_workload.png
+.. image:: ./assets/additional_workload_mod.png
 
 **VMware:**
 ~~~~~~~
