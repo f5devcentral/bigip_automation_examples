@@ -45,14 +45,14 @@ A virtual machine (VM) is provisioned and booted using the QCOW2 image of the BI
 **Nutanix on VMware:**
 Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its console provides the management interface for creating and operating workloads inside the Nutanix environment. Within this Nutanix-managed infrastructure, a new VM is provisioned using a BIG-IP Virtual Edition (VE) image. This BIG-IP VE instance is then configured with the necessary Virtual Servers, Pools, and policies to front-end and manage traffic for multiple applications hosted within Nutanix. BIG-IP delivers comprehensive application protection for these Nutanix-hosted workloads by leveraging its advanced security capabilities, including Web Application Firewall (WAF), Bot Defense and other L4–L7 security services. This ensures that applications running inside the Nutanix ecosystem remain secure, resilient, and optimized for performance.
 
-`Steps to install Nutanix on VMware <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
+`Steps to install Nutanix on VMware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
 
 `Steps to Deploy BIG-IP on Nutanix Vmware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
 **GCP (Google Cloud Platform):** 
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
 
-`Steps to deploy BIG-IP on GCP <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Steps-GCP.rst>`__
+`Steps to deploy BIG-IP on GCP <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Steps-GCP.rst>`__
 
 **Scenario-1: Scalable Enterprise Workload Deployment Across Hybrid Environments**
 ------------------------------------------------------------------------------
@@ -84,14 +84,14 @@ Applications being used:
 
 This approach ensures flexible, scalable deployment of applications across VMware, OpenShift, and Nutanix environments which indeed maximizes the workload distribution and operational efficiency. 
 
-.. image:: ./assets/initial_infra.png
+.. image:: ./assets/initial_infra_mod.png
 
 **VMware**
 ~~~~~~~~~~
 In the VMware on-premises environment, navigate to the virtual machine where the BIG-IP image with Web Application Firewall (WAF) has been successfully deployed. Within this instance, configure two virtual servers, each associated with one of the deployed applications: Juice Shop and DVWA. These virtual servers integrate seamlessly into the existing infrastructure, allowing the applications to actively serve user traffic. Application delivery and security are efficiently managed by BIG-IP, ensuring high availability, performance, and protection against web-based threats. 
 
 
-`Steps to configure virtual server <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-VS-Config.rst>`__
+`Steps to configure virtual server <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-VS-Config.rst>`__
 
 Next, configure a Web Application Firewall (WAF) policy within the BIG-IP system and associate it with both virtual servers hosting the Juice Shop and DVWA applications. Once the policy is applied, simulate common web-based attacks such as SQL injection or cross-site scripting (XSS) to test the effectiveness of the WAF. Verify that the BIG-IP WAF successfully detects and mitigates the attacks, ensuring that the applications remain protected and the malicious traffic is blocked or logged appropriately. 
 
@@ -120,7 +120,7 @@ The corresponding logs can be found under BIGIP > Security > Event Logs
 
 In the Nutanix on-premises environment, go to the virtual machine where the BIG-IP instance with Web Application Firewall (WAF) is successfully deployed. Inside this instance, set up two virtual servers one for each deployed application: DVWA and Mutillidae. These virtual servers integrate smoothly with the existing infrastructure, allowing the applications to serve user traffic effectively. BIG-IP handles both application delivery and security, ensuring strong protection against web threats, high availability, and reliable performance. 
 
-`BIG-IP virtual server configuration steps in nutanix <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
+`BIG-IP virtual server configuration steps in nutanix <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
 Next, configure a Web Application Firewall (WAF) policy within the BIG-IP system and apply it to both virtual servers hosting the Mutillidae and DVWA applications. After applying the policy, simulate common web-based attacks to verify that the BIG-IP WAF effectively detects and mitigates the threats.
 
@@ -139,7 +139,7 @@ You can find the corresponding logs under BIG-IP > Security > Event Logs.
 
 To demonstrate BIG-IP’s ability to support evolving enterprise demands, we will introduce new workloads across all environments. This will validate its seamless integration, consistent security enforcement, and support for continuous delivery across hybrid infrastructures.
 
-.. image:: ./assets/additional_workload.png
+.. image:: ./assets/additional_workload_mod.png
 
 **VMware:**
 ~~~~~~~
