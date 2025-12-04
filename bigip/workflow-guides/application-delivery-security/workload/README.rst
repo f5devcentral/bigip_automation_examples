@@ -45,7 +45,7 @@ A virtual machine (VM) is provisioned and booted using the QCOW2 image of the BI
 **Nutanix on VMware:**
 Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its console provides the management interface for creating and operating workloads inside the Nutanix environment. Within this Nutanix-managed infrastructure, a new VM is provisioned using a BIG-IP Virtual Edition (VE) image. This BIG-IP VE instance is then configured with the necessary Virtual Servers, Pools, and policies to front-end and manage traffic for multiple applications hosted within Nutanix. BIG-IP delivers comprehensive application protection for these Nutanix-hosted workloads by leveraging its advanced security capabilities, including Web Application Firewall (WAF), Bot Defense and other L4–L7 security services. This ensures that applications running inside the Nutanix ecosystem remain secure, resilient, and optimized for performance.
 
-`Steps to install Nutanix on VMware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Installation-Nutanix.rst>`__
+`Steps to install Nutanix on VMware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Nutanix_CE_2.1_installation_on_VMware.rst>`__
 
 `Steps to Deploy BIG-IP on Nutanix Vmware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
