@@ -34,13 +34,13 @@ At first, we need to download the image from `Community Edition Discussion Form 
 
 Once the download is successful, Login to VMware ESXi host with credentials and navigate to Storage > Datastores, select the target datastore, open the Datastore browser, click Upload, and then select the ISO file from your local machine to begin the transfer.
 
-.. figure:: workload/assets/nutanix_vmware/vmware_login_page.jpg
+.. figure:: assets/nutanix_vmware/vmware_login_page.jpg
 
-.. figure:: workload/assets/nutanix_vmware/image_upload.jpg  
+.. figure:: assets/nutanix_vmware/image_upload.jpg  
 
 Once the upload is complete, refresh the Datastore Browser to see the uploaded ISO file. 
 
-.. figure:: workload/assets/nutanix_vmware/ce_image_upload_success.jpg  
+.. figure:: assets/nutanix_vmware/ce_image_upload_success.jpg  
 
 
 **Step 2: Creating a virtual machine**
@@ -49,73 +49,73 @@ Below are the steps to create a virtual machine with Nutanix CE ISO uploaded to 
 
 * From the ESXi login, click the Create/Register VM button.
 
-.. figure:: workload/assets/nutanix_vmware/create-register-vm.jpg  
+.. figure:: assets/nutanix_vmware/create-register-vm.jpg  
 
 * Click on **Create a new virtual machine** and click next.
 
-.. figure:: workload/assets/nutanix_vmware/create-vm.jpg  
+.. figure:: assets/nutanix_vmware/create-vm.jpg  
 
 * Enter a valid name for your virtual machine. 
 * Select the appropriate compatibility for your environment, I have selected **ESXi 6.7 virtual machine**. 
 * Choose Guest OS family as **Linux**. 
 * Select guest OS version as Centos 7 (64-bit) or above. I have selected Centos 8 (64-bit). Click on Next. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-guest-os.jpg  
+.. figure:: assets/nutanix_vmware/vm-creation-guest-os.jpg  
 
 * From the Select Storage, choose the datastore where the virtual machine’s configuration and disk files will be stored. Click on Next. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-storage-selection.jpg  
+.. figure:: assets/nutanix_vmware/vm-creation-storage-selection.jpg  
 
 * On the following screen of customize settings, CPU, Memory, hard disks as mentioned in Recommended Resource section above. Click on “Add hard disk” button to add additional Hard disk for CVM and data.
 * I have selected CPU as 4, Memory is 32, 3 hard disk with 64 GB, 200 GB, 500 GB each. 
 * Select the Network Adapter 1 as Network that has internet connectivity. In my case, my network is “VM Network”.
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-customize-settings-1.jpg  
+.. figure:: assets/nutanix_vmware/vm-creation-customize-settings-1.jpg  
 
 * Scroll down a bit and hover over to **CD/DVD Drive 1** and select **Datastore ISO file** from the dropdown menu. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-cd-dvd-selection.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-cd-dvd-selection.jpg
 
 * Select the ISO file that was uploaded at step 1. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-image-selection.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-image-selection.jpg
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-image-uploaded.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-image-uploaded.jpg
 
 * Click on **VM options** to add **disk.EnableUUID=TRUE** in the VMX file manually. This is needed to get the disk serials populated during Nutanix bootup process. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-customize-settings-vmoptions.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-customize-settings-vmoptions.jpg
 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-vm-edit-configs.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-vm-edit-configs.jpg
 
 * Under the Advanced section, Click on Edit Configuration.
 * Scroll down to the bottom and Click on Add Parameter, you can be able to see **Click to edit key** and **click to edit value**. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-vm-option-app-parameters-2.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-vm-option-app-parameters-2.jpg
 
 * Enter the key as **disk.EnableUUID** and value as **TRUE**. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-vm-option-app-parameters-key-value.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-vm-option-app-parameters-key-value.jpg
 
 * Click on **OK**.
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-save-configs.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-save-configs.jpg
 
 * Click on Save.  
 * Click on **Power on** to switch on the virtual machine. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-power-on.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-power-on.jpg
 
 Once instance is powered on, click on console to access the instance for CE installation. 
 
-.. figure:: workload/assets/nutanix_vmware/vm-creation-console-access.jpg
+.. figure:: assets/nutanix_vmware/vm-creation-console-access.jpg
 
 Logs show the installation of Nutanix CE and take couple of minutes to get to installer screen. 
 
 **Note:** Make sure you set Promiscuous mode, MAC address changes, Forged transmit to Accept in virtual switch settings, 
 
-.. figure:: workload/assets/nutanix_vmware/virtual_switch_config_promiscuous_mode.jpg
+.. figure:: assets/nutanix_vmware/virtual_switch_config_promiscuous_mode.jpg
 
 
 **Step 3: Installing Nutanix CE on VMware**
@@ -138,11 +138,11 @@ Logs show the installation of Nutanix CE and take couple of minutes to get to in
 
     Installer screen logs shown as below, 
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install.jpg
+    .. figure:: assets/nutanix_vmware/ce-install.jpg
     
     When the boot sequence finishes, the CE installer dialog appears,
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install-dialog.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-dialog.jpg
 
     In the screenshot mentioned above, Hypervisor selection is AHV, and Hard disks were selected for CVM boot disk and others as Data disk. Use Tab to navigate to the Disk Selection field.  
     
@@ -154,37 +154,37 @@ Logs show the installation of Nutanix CE and take couple of minutes to get to in
 
     Read the end-user license agreement (EULA). Use the up arrow and down arrow keys to scroll. Press Tab to navigate to the **I accept the end user license agreement** checkbox.
 
-    .. figure:: workload/assets/nutanix_vmware/eula-license-aggrement.jpg
+    .. figure:: assets/nutanix_vmware/eula-license-aggrement.jpg
 
     Press the spacebar to select the checkbox. Use the arrow keys to navigate to Start and press Enter to start the installation process. 
 
     Installation process as follows, 
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install-process-1.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-process-1.jpg
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install-process-2.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-process-2.jpg
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install-process-3.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-process-3.jpg
     
     Before proceeding to the bootup, need to initiate the boot sequence from AHV virtual disk, to get it done, we are going to disable the CD/DVD drive 1 from which initial boot sequence was initiated. 
 
     * Disabled Connect at power on checkbox. 
     
-    .. figure:: workload/assets/nutanix_vmware/ce-install-disable-power-on.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-disable-power-on.jpg
     
     * A pop up shows, ejecting the CD-ROM to initiate the bootup process, 
 
     * Click on Yes and click on Answer. 
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install-dialog-answer.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-dialog-answer.jpg
 
     * Enter the Y key and press Enter. 
 
-    .. figure:: workload/assets/nutanix_vmware/ce-install-enable-y.jpg
+    .. figure:: assets/nutanix_vmware/ce-install-enable-y.jpg
     
     Now the VM will be booted with AHV. 
 
-    .. figure:: workload/assets/nutanix_vmware/nutanix_ce_install.jpg
+    .. figure:: assets/nutanix_vmware/nutanix_ce_install.jpg
 
     **Step 3.2: Creating and configuring single node cluster**
 
@@ -192,15 +192,15 @@ Logs show the installation of Nutanix CE and take couple of minutes to get to in
 
     It takes sometimes to come up for creating of cluster. 
 
-    .. figure:: workload/assets/nutanix_vmware/cluster-creation-login.jpg
+    .. figure:: assets/nutanix_vmware/cluster-creation-login.jpg
 
     Now, ssh to CVM with the CVM IP address (you can also use CVM internal IP 192.168.5.2) with username: **nutanix** and password as **nutanix/4u**
 
-    .. figure:: workload/assets/nutanix_vmware/cluster-creation-process-1.jpg
+    .. figure:: assets/nutanix_vmware/cluster-creation-process-1.jpg
     
     * Execute “watch -d genesis status” command to check if genesis is running. 
     
-    .. figure:: workload/assets/nutanix_vmware/cluster-creation-genesis-status.jpg
+    .. figure:: assets/nutanix_vmware/cluster-creation-genesis-status.jpg
 
     This confirms genesis is running (there are pids behind the service name). Press CTRL + C to quit watch. 
 
@@ -210,15 +210,15 @@ Logs show the installation of Nutanix CE and take couple of minutes to get to in
 
     It may take a while as the cluster is created, and all services are started on the CVM.
 
-    .. figure:: workload/assets/nutanix_vmware/cluster-creation-cluster-cmd.jpg
+    .. figure:: assets/nutanix_vmware/cluster-creation-cluster-cmd.jpg
 
-    .. figure:: workload/assets/nutanix_vmware/cluster-creation-cluster-success.jpg
+    .. figure:: assets/nutanix_vmware/cluster-creation-cluster-success.jpg
 
     This confirms cluster is successfully created as shown in above screenshot. 
 
         * Execute the ncli cluster cmd to add name server to the cluster: **ncli cluster add-to-name-servers servers=<name_server_ip>**
 
-    .. figure:: workload/assets/nutanix_vmware/cluster-creation-name-server.jpg
+    .. figure:: assets/nutanix_vmware/cluster-creation-name-server.jpg
 
     Cluster is created successfully and ready to be accessed.
 
@@ -226,7 +226,7 @@ Logs show the installation of Nutanix CE and take couple of minutes to get to in
 
 We can be able to access the Nutanix console with https:// <External_IP> or <CVM_IP> with port number 9440 provided during cluster creation. 
 
-.. figure:: workload/assets/nutanix_vmware/cluster-access.jpg
+.. figure:: assets/nutanix_vmware/cluster-access.jpg
 
 Sign in with default admin account username and password. 
     * Username: admin 
@@ -238,7 +238,7 @@ Signin with the admin account username and the new password.
 
 After login with the new password, you will see the page details as below, 
 
-.. figure:: workload/assets/nutanix_vmware/cluster-access-next-credentials.jpg
+.. figure:: assets/nutanix_vmware/cluster-access-next-credentials.jpg
 
 You need to login with your Nutanix Community account.  
 
@@ -248,9 +248,9 @@ If you have already registered to the Nutanix community, Click on **Activate** b
 
 Now, login to above prompt with Nutanix credentials and page takes you to Nutanix dashboard.
 
-.. figure:: workload/assets/nutanix_vmware/nutanix_on_vmware_dashboard.jpg
+.. figure:: assets/nutanix_vmware/nutanix_on_vmware_dashboard.jpg
 
-.. figure:: workload/assets/nutanix_vmware/nutanix_console_login.jpg
+.. figure:: assets/nutanix_vmware/nutanix_console_login.jpg
 
 Now, VM instance can be created from the console. 
 
@@ -276,13 +276,3 @@ https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Community-Edi
 
 https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Community-Edition-Getting-Started-v2_1:top-cluster-creating-ce-c.html 
 
-    
-
-    
-
-
-
-
-
-
-    
