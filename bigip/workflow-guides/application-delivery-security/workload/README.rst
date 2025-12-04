@@ -49,6 +49,15 @@ Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its c
 
 `Steps to Deploy BIG-IP on Nutanix Vmware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
+**Nutanix on VMware:**
+Nutanix is deployed on a VMware platform, with BIG-IP running as a virtual machine on top of the Nutanix infrastructure.  
+
+Steps to install Nutanix on VMware <Link to be added> 
+
+A virtual machine (VM) is provisioned and launched using the BIG-IP Virtual Edition (VE) QCOW2 image, obtained from the official F5 Downloads  portal. Once the VM is up and running, application workloads are deployed and accessed through a virtual server configured on the BIG-IP VE. This setup securely exposes the applications via the virtual server, preventing direct access and enabling centralized traffic management and enhanced security. 
+
+`Steps to Deploy BIG-IP on Nutanix VMware <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Deploy-BIG-IP-Nutanix-VMware.rst>`__
+
 **GCP (Google Cloud Platform):** 
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
 
