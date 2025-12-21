@@ -220,7 +220,7 @@ The corresponding logs can be found here.
 
 .. image:: ./assets/image21.png
 
-**Nutanix:**
+**OCP:**
 ~~~~~~~~~~~
 
 Let’s deploy an additional applications Application-1,3 (Juice-shop & Mutillidae) by creating the virtuall servers and associate the WAF policy to them.
@@ -258,8 +258,6 @@ Attack generation and mitigation
 Verification
 
 `Steps to configure VS in GCP <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
-
-
 
 
 **Conclusion:**
