@@ -159,17 +159,13 @@ Next, configure a Web Application Firewall (WAF) policy within the BIG-IP system
 
 Now, perform a cross-site scripting (XSS) test on the application to check if the WAF can detect and block the attack. Make sure the WAF stops the threat without affecting normal user activity.  
 
-.. image:: ./assets/image3.png
-
-.. image:: ./assets/image4.png
-
 .. image:: ./assets/image5.png
 
 .. image:: ./assets/image6.png
 
 The corresponding logs can be found under BIGIP > Security > Event Logs
 
-.. image:: ./assets/image6.png
+.. image:: ./assets/image4.png
 
 **Adding Aditional Workloads:**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
