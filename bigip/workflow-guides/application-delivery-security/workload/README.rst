@@ -51,13 +51,9 @@ Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its c
 `Steps to Deploy BIG-IP on Nutanix Vmware <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`__
 
 **OCP (OpenShift Container Platform):**
-A 3-node OpenShift Container Platform (OCP) cluster is deployed on a VMware-based infrastructure, providing a robust foundation for containerized workloads. 
+A 3-node OpenShift Container Platform (OCP) cluster is deployed on a VMware-based infrastructure, providing a robust foundation for containerized workloads.Within the OCP virtualization environment, a virtual machine (VM) is provisioned using a QCOW2 image, enabling flexible and efficient resource utilization. In parallel, application workloads are hosted on a separate Ubuntu-based VM, where they are deployed using Docker. These workloads are integrated with an F5 BIG-IP virtual server, which acts as a centralized and secure entry point for external traffic. 
 
-Steps to Install OCP Infra setup on VMware <Need to be added AC:Chaithanya>
-
-Within the OCP virtualization environment, a virtual machine (VM) is provisioned using a QCOW2 image, enabling flexible and efficient resource utilization. In parallel, application workloads are hosted on a separate Ubuntu-based VM, where they are deployed using Docker. These workloads are integrated with an F5 BIG-IP virtual server, which acts as a centralized and secure entry point for external traffic. 
-
-Steps to Deploy BIG-IP on OCP <Need to be added AC:Chaithanya>
+Steps to Install OCP Infra setup and Deploy BIG-IP <Coming soon>
 
 **GCP (Google Cloud Platform):** 
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
