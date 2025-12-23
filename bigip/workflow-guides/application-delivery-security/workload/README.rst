@@ -55,8 +55,10 @@ A 3-node OpenShift Container Platform (OCP) cluster is deployed on a VMware-base
 
 Steps to Install OCP Infra setup and Deploy BIG-IP <Coming soon>
 
-**GCP (Google Cloud Platform):** 
+**Cloud Env:**
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
+
+Note: Similarly, this deployment can be achieved in Azure and AWS.
 
 `Steps to deploy BIG-IP on GCP <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Steps-GCP.rst>`__
 
@@ -237,7 +239,7 @@ The corresponding logs can be found here.
 ~~~~~~~~
 Deploy multiple applications and associate them with BIG-IP virtual servers. Create a WAF policy and apply it to the configured virtual servers. Once setup is complete, access the applications and simulate malicious attacks to verify that the WAF effectively detects and mitigates the threats.
 
-`Steps to configure VS in GCP <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
+`Steps to configure Workloads and verify BIG-IP WAF in GCP <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
 
 **Conclusion:**
 --------------
