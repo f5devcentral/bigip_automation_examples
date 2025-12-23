@@ -147,25 +147,23 @@ You can find the corresponding logs under BIG-IP > Security > Event Logs.
 ~~~~~~~
 Configure a virtual server which is associated with one of the deployed applications: DVWA. This virtual server integrate seamlessly into the existing infrastructure, allowing the applications to actively serve user traffic.
 
-Steps to Configure VS on OCP BIG-IP <Need to be added AC:shajiya>
+`Steps to Configure VS on OCP BIG-IP https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-OCP-VS-Config.rst`__
 
 Next, configure a Web Application Firewall (WAF) policy within the BIG-IP system and associate it with both virtual servers hosting the  DVWA application. Once the policy is applied, simulate common web-based attacks such as cross-site scripting (XSS) to test the effectiveness of the WAF. Verify that the BIG-IP WAF successfully detects and mitigates the attacks, ensuring that the applications remain protected and the malicious traffic is blocked or logged appropriately. 
 
-.. image:: ./assets/image1.png
+.. image:: ./assets/ocp_waf.png
 
-.. image:: ./assets/image2.png
+.. image:: ./assets/ocp_vs_waf.png
 
 **WAF Validation Against Cross-Site Scripting Attack:**
 
 Now, perform a cross-site scripting (XSS) test on the application to check if the WAF can detect and block the attack. Make sure the WAF stops the threat without affecting normal user activity.  
 
-.. image:: ./assets/image5.png
-
-.. image:: ./assets/image6.png
+.. image:: ./assets/ocp_waf_xss.png
 
 The corresponding logs can be found under BIGIP > Security > Event Logs
 
-.. image:: ./assets/image4.png
+.. image:: ./assets/ocp_waf_block.png
 
 **Adding Aditional Workloads:**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -221,40 +219,28 @@ The corresponding logs can be found here.
 
 Let’s deploy an additional applications Application-1,3 (Juice-shop & Mutillidae) by creating the virtuall servers and associate the WAF policy to them.
 
-.. image:: ./assets/image17.png
+.. image:: ./assets/ocp_vs3.png
 
-.. image:: ./assets/image18.png
+.. image:: ./assets/ocp_waf_js.png
 
 Now, access the Juice Shop application through the BIG-IP virtual server.
 
-.. image:: ./assets/image19.png
+.. image:: ./assets/ocp_js.png
 
 Verify the Web Application Firewall’s (WAF) effectiveness against cross-site scripting attack.
 
-.. image:: ./assets/image20.png
+.. image:: ./assets/ocp_waf_js_block.png
 
 The corresponding logs can be found here.
 
-.. image:: ./assets/image21.png
+.. image:: ./assets/ocp_waf_block_js.png
 
 
 **GCP:**
 ~~~~~~~~
-
 Deploy multiple applications and associate them with BIG-IP virtual servers. Create a WAF policy and apply it to the configured virtual servers. Once setup is complete, access the applications and simulate malicious attacks to verify that the WAF effectively detects and mitigates the threats.
 
-
-Adding multiple applications
-
-Adding WAF policy
-
-Attack generation and mitigation
-
-
-Verification
-
-`Steps to configure VS in GCP <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
-
+`Steps to configure VS in GCP <https://github.com/sshajiya/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/VS-Config-BIGIP-GCP.rst>`__
 
 **Conclusion:**
 --------------
