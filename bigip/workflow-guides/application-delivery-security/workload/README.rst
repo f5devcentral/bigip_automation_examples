@@ -147,7 +147,8 @@ You can find the corresponding logs under BIG-IP > Security > Event Logs.
 ~~~~~~~
 Configure a virtual server which is associated with one of the deployed applications: DVWA. This virtual server integrate seamlessly into the existing infrastructure, allowing the applications to actively serve user traffic.
 
-`Steps to Configure VS on OCP BIG-IP https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-OCP-VS-Config.rst`__
+`Steps to Configure VS on OCP BIG-IP
+<https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-OCP-VS-Config.rst>`__
 
 Next, configure a Web Application Firewall (WAF) policy within the BIG-IP system and associate it with both virtual servers hosting the  DVWA application. Once the policy is applied, simulate common web-based attacks such as cross-site scripting (XSS) to test the effectiveness of the WAF. Verify that the BIG-IP WAF successfully detects and mitigates the attacks, ensuring that the applications remain protected and the malicious traffic is blocked or logged appropriately. 
 
