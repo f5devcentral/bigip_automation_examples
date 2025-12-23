@@ -28,26 +28,11 @@ malicious attacks on application endpoints.
 
   .. image:: ./assets/image_ocp4.png
 
+- Create a virtual server and associate the created dvwa pool to it. 
+
   .. image:: ./assets/image_ocp5.png
-
-  .. image:: ./assets/image_ocp6.png
-   
-  .. image:: ./assets/image_ocp7.png
-
-  .. image:: ./assets/image_ocp8.png
-
-  .. image:: ./assets/image_ocp9.png
-
-- Associate the virtual server with a pool that includes these nodes and their respective custom HTTP ports. Confirm that the virtual server is up and operational on the BIG-IP platform. Also, Apply the WAF policy to the created virtual servers.
-
-  .. image:: ./assets/image_ocp10.png
-
-  .. image:: ./assets/image_ocp11.png
-
-  .. image:: ./assets/image_ocp12.png
 
 - Access the vulnerable applications through the BIG-IP virtual server’s IP and verify connectivity and functionality by navigating to the respective HTTP ports. 
 
-  .. image:: ./assets/image_ocp13.png
+  .. image:: ./assets/image_ocp6.png
 
-  .. image:: ./assets/image_ocp14.png
