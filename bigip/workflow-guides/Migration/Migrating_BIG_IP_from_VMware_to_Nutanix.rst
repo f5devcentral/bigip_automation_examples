@@ -24,4 +24,4 @@ Step 1.1: Deploying BIG-IP in HA pair
 
 BIG-IP is deployed as HA pair in VMware.
 
-.. figure:: /Assets/device_details_active.jpg
+.. image:: ./Assets/device_details_active.jpg
