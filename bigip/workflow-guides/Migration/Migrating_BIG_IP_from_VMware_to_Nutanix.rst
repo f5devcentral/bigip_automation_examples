@@ -30,7 +30,11 @@ BIG-IP is deployed as HA pair in VMware.
 
 You can able to see both the BIG-IPs are in HA pair.
 
-Node Pool and Virtual Server is configured and associated web application is accessible using Virtual Server IP.
+Node Pool and Virtual Server is configured as shown below, 
+
+.. image:: ./Assets/juice_shop_vs.jpg
+
+Its associated web application is accessible using Virtual Server IP.
 
 .. image:: ./Assets/stage_1_verification.jpg
 
