@@ -45,8 +45,57 @@ Now, before proceeding to Stage 2, couple of BIG-IPs are deployed and no configs
 From the Nutanix console, you can able to see two BIG-IPs are deployed.
 
 **Step 2**: Migrating Standby BIG-IP VE to Nutanix
+1. Place VMware BIGIP-2 (Standby) into **Forced Offline** mode and save a backup of its configuration.
+2. Copy the license file located at ``/config/bigip.license``.
+3. Store the configuration and license files in a secure location for later use.
+4. Revoke the license on VMware BIGIP-2.
 
-Step 2.1: Enable BIG-IP in Nutanix
+   .. note::
+      If the license was assigned via BIG-IQ, follow the applicable BIG-IQ procedures.
+
+5. Disconnect all network interfaces on VMware BIGIP-2.
+
+   .. note::
+      Disconnecting interfaces allows faster rollback compared to powering off the VM.
+
+6. Power on Nutanix BIGIP-2 and assign it the same management IP address previously
+   used by VMware BIGIP-2.
+7. Apply the saved license to Nutanix BIGIP-2.
+
+   .. note::
+      Refer to K91841023 if the VE is operating in FIPS mode.
+
+8. Set Nutanix BIGIP-2 to **Forced Offline**.
+9. Upload the saved UCS file to Nutanix BIGIP-2 and load it using the
+   **no-license** option.
+
+   .. note::
+      Refer to K9420 if the UCS contains encrypted credentials.
+
+10. Monitor the logs and wait until the message
+    ``Configuration load completed, device ready for online`` appears.
+11. Bring Nutanix BIGIP-2 **Online**.
+
+    .. note::
+       Ensure the NIC count and interface-to-VLAN mappings exactly match those of
+       VMware BIGIP-2.
+
+12. Verify that Nutanix BIGIP-2 is **In Sync**. If configuration changes are pending,
+    initiate a config sync using::
+
+        run cm config-sync from-group <device-group-name>
+
+13. The Standby BIG-IP VE has now been successfully migrated to Nutanix.
+
+.. note::
+   Because the BIG-IP VEs are running on different hypervisors during this phase,
+   connection or persistence mirroring will not function. Messages such as
+   ``DAG hash mismatch; discarding mirrored state`` may appear and are expected.
+
+**Current BIG-IP Status:**
+
+- VMware BIGIP-1: Active
+- Nutanix BIGIP-2: Standby
 
 
 
