@@ -70,7 +70,8 @@ From the Nutanix console, you can able to see two BIG-IPs are deployed.
 
 11. Bring Nutanix BIGIP-2 **Online**.
 
-    .. note::
+    Note::
+
        Ensure the NIC count and interface-to-VLAN mappings exactly match those of
        VMware BIGIP-2.
 
