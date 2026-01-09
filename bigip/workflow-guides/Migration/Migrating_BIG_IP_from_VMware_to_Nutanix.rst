@@ -126,7 +126,27 @@ Stage 3 – Fail Over the Active BIG-IP VE to Nutanix
 Stage 4 – Migrate Application Workloads from VMware to Nutanix
 --------------------------------------------------------------
 
-1. Use **Nutanix Move** to migrate application virtual machines from VMware to Nutanix.
+1. The recommended and preferred method for migrating application workloads from
+   VMware to Nutanix is to use **Nutanix Move**, as it provides an automated and
+   consistent migration workflow.
+
+2. For the purpose of this testing and validation exercise, application workloads
+   were **manually deployed** on Nutanix AHV instead of using Nutanix Move.
+
+3. Manual deployment included provisioning new ubuntu virtual machines and restoring 
+   application data to match the existing VMware environment.
+
+.. image:: ./Assets/vms_in_nutanix.jpg
+
+4. Application configurations were updated and validated to ensure proper
+   integration with the Active BIG-IP VE running on Nutanix, including pool member
+   configuration, health monitors, and traffic flow validation.
+
+.. image:: ./Assets/virtual_server_configs.jpg
+
+.. image:: ./Assets/pool_status_bigip_in_nutanix.jpg
+
+.. image:: ./Assets/accessing_application.jpg
 
 .. note::
    To minimize service interruption, it is recommended to migrate applications in
