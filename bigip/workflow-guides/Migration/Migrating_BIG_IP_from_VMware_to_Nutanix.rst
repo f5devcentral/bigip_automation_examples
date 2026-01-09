@@ -44,7 +44,8 @@ Now, before proceeding to Stage 2, couple of BIG-IPs are deployed and no configs
 
 From the Nutanix console, you can able to see two BIG-IPs are deployed.
 
-**Step 2**: **Migrating Standby BIG-IP VE to Nutanix**
+Stage 2: Migrating Standby BIG-IP VE to Nutanix
+--------------------------------------------------
 
 1. Place VMware BIGIP-2 (Standby) into **Forced Offline** mode and save a backup of its configuration.
 
@@ -107,6 +108,83 @@ From the Nutanix console, you can able to see two BIG-IPs are deployed.
 
 - VMware BIGIP-1: Active
 - Nutanix BIGIP-2: Standby
+
+Stage 3 – Fail Over the Active BIG-IP VE to Nutanix
+--------------------------------------------------
+
+1. Initiate a failover, transitioning VMware BIGIP-1 from Active to Standby.
+
+2. Nutanix BIGIP-2 becomes the Active BIG-IP VE.
+
+.. image:: ./Assets/switchover_from_vmware_to_nutanix.jpg
+
+**Current BIG-IP Status:**
+
+- VMware BIGIP-1: Standby
+- Nutanix BIGIP-2: Active
+
+Stage 4 – Migrate Application Workloads from VMware to Nutanix
+--------------------------------------------------------------
+
+1. Use **Nutanix Move** to migrate application virtual machines from VMware to Nutanix.
+
+.. note::
+   To minimize service interruption, it is recommended to migrate applications in
+   smaller batches rather than all at once. Nutanix Move requires briefly shutting
+   down the source VM to complete the final data synchronization before starting it
+   on Nutanix.
+
+**Current BIG-IP Status:**
+
+- VMware BIGIP-1: Standby
+- Nutanix BIGIP-2: Active
+
+Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
+------------------------------------------------------------
+
+1. Place VMware BIGIP-1 (Standby) into **Forced Offline** mode and back up its
+   configuration.
+2. Save the license file from ``/config/bigip.license``.
+3. Store both files securely for later restoration.
+4. Revoke the license from VMware BIGIP-1.
+
+   .. note::
+      Follow BIG-IQ procedures if the license was managed centrally.
+
+5. Disconnect all interfaces on VMware BIGIP-1.
+6. Power on Nutanix BIGIP-1 and configure it with the same management IP as
+   VMware BIGIP-1.
+7. Apply the saved license to Nutanix BIGIP-1.
+
+   .. note::
+      Refer to K91841023 for FIPS-enabled deployments.
+
+8. Set Nutanix BIGIP-1 to **Forced Offline**.
+9. Upload and restore the saved UCS file using the **no-license** option.
+
+   .. note::
+      Refer to K9420 if encrypted credentials are present.
+
+10. Monitor logs until the message
+    ``Configuration load completed, device ready for online`` is displayed.
+11. Bring Nutanix BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
+    the original VMware configuration.
+12. Confirm that the device is **In Sync** and perform a configuration sync if needed.
+13. VMware BIGIP-1 has now been fully migrated to Nutanix.
+
+**Migration Status:**
+
+- Nutanix BIGIP-1: Standby
+- Nutanix BIGIP-2: Active
+
+Summary
+-------
+
+This document presents a structured and recommended method for migrating F5 BIG-IP
+Virtual Edition instances and application workloads from VMware vSphere to Nutanix AHV.
+By following this phased approach within a planned maintenance window, organizations
+can achieve a smooth transition with minimal impact to application services, ensuring
+continuity both during and after the migration.
 
 
 
