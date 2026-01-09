@@ -48,22 +48,36 @@ From the Nutanix console, you can able to see two BIG-IPs are deployed.
 
 1. Place VMware BIGIP-2 (Standby) into **Forced Offline** mode and save a backup of its configuration.
 
+.. image:: ./Assets/ucs_license_file_copies.jpg
+
 2. Copy the license file located at ``/config/bigip.license``.
 
 3. Store the configuration and license files in a secure location for later use.
 
 4. Revoke the license on VMware BIGIP-2.
 
+.. image:: ./Assets/revoke_sys_license.jpg
+
 5. Disconnect all network interfaces on VMware BIGIP-2.
+
+.. image:: ./Assets/connection_disconnected.jpg
 
 6. Power on Nutanix BIGIP-2 and assign it the same management IP address previously
    used by VMware BIGIP-2.
 
+.. image:: ./Assets/nutanix_big_ip_login_2.jpg
+
 7. Apply the saved license to Nutanix BIGIP-2.
+
+.. image:: ./Assets/license_install.jpg
 
 8. Set Nutanix BIGIP-2 to **Forced Offline**.
 
+.. image:: ./Assets/license_install.jpg
+
 9. Upload the saved UCS file to Nutanix BIGIP-2 and load it using the
+
+.. image:: ./Assets/uploading_license.jpg
 
 10. Monitor the logs and wait until the message
     ``Configuration load completed, device ready for online`` appears.
@@ -81,6 +95,8 @@ From the Nutanix console, you can able to see two BIG-IPs are deployed.
         run cm config-sync from-group <device-group-name>
 
 13. The Standby BIG-IP VE has now been successfully migrated to Nutanix.
+
+.. image:: ./Assets/nutanix_big_ip_in_standby.jpg
 
 .. note::
    Because the BIG-IP VEs are running on different hypervisors during this phase,
