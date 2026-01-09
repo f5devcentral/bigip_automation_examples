@@ -131,7 +131,7 @@ Stage 4 – Migrate Application Workloads from VMware to Nutanix
    consistent migration workflow.
 
 2. For the purpose of this testing and validation exercise, application workloads
-   were **manually deployed** on Nutanix AHV instead of using Nutanix Move.
+   were **manually deployed** on Nutanix instead of using Nutanix Move.
 
 3. Manual deployment included provisioning new ubuntu virtual machines and restoring 
    application data to match the existing VMware environment.
