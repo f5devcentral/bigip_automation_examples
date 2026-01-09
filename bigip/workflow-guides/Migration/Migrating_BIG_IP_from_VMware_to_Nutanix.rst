@@ -184,6 +184,8 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
 
 .. image:: ./Assets/ip_assign_1.png
 
+.. image:: ./Assets/ip_assign_8.png
+
 7. Apply the saved license to Nutanix BIGIP-1.
 
 .. image:: ./Assets/install_license_bigip_1.jpg
