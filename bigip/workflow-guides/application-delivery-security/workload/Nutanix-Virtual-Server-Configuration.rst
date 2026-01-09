@@ -13,8 +13,7 @@
      .. image:: ./assets/image12_2.png
 
 - | Add appropriate health monitors and ensure that all virtual servers and nodes show **green (available)**
-    status. Then go to Local Traffic > Virtual Servers > Virtual Server List and
-    create a virtual server for each application.
+    status.
 
      .. image:: ./assets/image12_3.png
 
