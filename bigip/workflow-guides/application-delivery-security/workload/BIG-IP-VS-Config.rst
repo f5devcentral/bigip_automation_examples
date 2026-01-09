@@ -28,21 +28,9 @@ malicious attacks on application endpoints.
 
   .. image:: ./assets/image6_5.png
 
-  .. image:: ./assets/image6_6.png
-
-  .. image:: ./assets/image6_7.png
-   
-  .. image:: ./assets/image6_8.png
-
-  .. image:: ./assets/image6_9.png
-
-  .. image:: ./assets/image6_10.png
-
-- Associate the virtual server with a pool that includes these nodes and their respective custom HTTP ports. Confirm that the virtual server is up and operational on the BIG-IP platform. Also, Apply the WAF policy to the created virtual servers.
+- Confirm that the virtual server is up and operational on the BIG-IP platform. 
 
   .. image:: ./assets/image6_11.png
-
-  .. image:: ./assets/image6_12.png
 
   .. image:: ./assets/image6_13.png
 
