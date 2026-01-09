@@ -112,15 +112,9 @@ Now, perform a SQL injection test on the application to check if the WAF can det
 
 .. image:: ./assets/image3.png
 
-.. image:: ./assets/image4.png
-
-.. image:: ./assets/image5.png
-
-.. image:: ./assets/image6.png
-
 The corresponding logs can be found under BIGIP > Security > Event Logs
 
-.. image:: ./assets/image7.png
+.. image:: ./assets/image4.png
 
 **Nutanix**
 ~~~~~~~~~~
@@ -132,8 +126,6 @@ In the Nutanix on-premises environment, go to the virtual machine where the BIG-
 Next, configure a Web Application Firewall (WAF) policy within the BIG-IP system and apply it to both virtual servers hosting the Mutillidae and DVWA applications. After applying the policy, simulate common web-based attacks to verify that the BIG-IP WAF effectively detects and mitigates the threats.
 
 .. image:: ./assets/image8.png
-
-.. image:: ./assets/image9.png
 
 .. image:: ./assets/image10.png
 
