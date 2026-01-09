@@ -12,19 +12,11 @@
 
      .. image:: ./assets/image12_2.png
 
-- | Add appropriate health monitors (Note: for DVWA add the custom
-    monitor GET /login.php\\r\\n with default login credentials
-    (admin/password)
+- | Add appropriate health monitors and ensure that all virtual servers and nodes show **green (available)**
+    status. Then go to Local Traffic > Virtual Servers > Virtual Server List and
+    create a virtual server for each application.
 
      .. image:: ./assets/image12_3.png
-
-- Then go to Local Traffic > Virtual Servers > Virtual Server List and
-  create a virtual server for each application.
-
-- | Ensure that all virtual servers and nodes show **green (available)**
-    status.
-
-     .. image:: ./assets/image12_4.png
 
 - | Navigate to each app using the BIG-IP virtual server IP and its
     custom port and confirm that each application loads correctly and
