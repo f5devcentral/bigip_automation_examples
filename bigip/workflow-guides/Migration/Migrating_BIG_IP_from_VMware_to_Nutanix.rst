@@ -1,16 +1,41 @@
-BIG-IP VE and Application workload migraiton from VMware to Nutanix
+Application Migration across Heterogeneous Environments using F5 BIG-IP VE
 #########################################################
-In this article, the detailed description of migrating BIG-IP VE from VMware to Nutanix Platform,
 
-Below are the details steps that are followed to perform migration from VMware to Nutanix,
+Scope
+-----
 
-Installation of BIG-IP on VMware is mentioned in doc here.
+As organizations deploy applications across multiple infrastructure platforms to
+meet scalability, cost, and flexibility requirements, the need to migrate
+applications and traffic between environments becomes unavoidable. Such migrations
+introduce challenges related to availability, security, and network consistency.
 
-Simillary, Installation of BIG-IP on Nutanix is mentioned in the doc here.
+This document focuses on the use of F5 BIG-IP to support application traffic
+migration across heterogeneous platforms, ensuring consistent traffic management
+and policy enforcement with minimal impact to application services.
 
-Steps to migrate BIG-IP from VMware to Nutanix
---------------
-The migraiton is breakdown into 5 detailed steps for better understanding,
+Introduction
+------------
+
+This article highlights how F5 BIG-IP enables seamless application traffic
+migration across mixed infrastructure environments commonly found in enterprise
+deployments. As organizations move applications between platforms such as VMware,
+Nutanix and public clouds, maintaining consistent traffic management,
+availability and security becomes critical.
+
+Common migration scenarios include moving applications from VMware to alternative
+platforms based on business needs, extending on-premises applications to Nutanix
+and public cloud environments, and deploying applications across multiple
+platforms for resiliency and continuity. BIG-IP plays a central role in these
+transitions by ensuring consistent application delivery and policy enforcement
+throughout the migration process.
+
+
+Scenario 1 :
+-----------
+
+Migration from VMware to Nutanix
+-------------------------------
+The migration is breakdown into 5 detailed steps for better understanding,
 
 1) Deploy BIG-IP in HA pair in VMware
 2) Migrate Standby BIG_IP VE to Nutanix
