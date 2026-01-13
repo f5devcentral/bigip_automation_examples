@@ -37,11 +37,11 @@ Stage 1: Deploying BIG-IP in HA pair in Nutanix
 
 .. image:: ./Assets/juice_shop_vs.jpg
 
-Its associated web application is accessible using Virtual Server IP.
+3. Its associated web application is accessible using Virtual Server IP.
 
 .. image:: ./Assets/stage_1_verification.jpg
 
-3. Now we need to deploy couple of BIG-IPs in Nutanix with no configs. 
+4. Similarly we need to deploy couple of BIG-IPs in Nutanix with no configs. 
 
 Refer to
 `BIG-IP Deployment on Nutanix
@@ -50,7 +50,7 @@ for Deployment Steps
 
 .. image:: ./Assets/big_ip_vms_nutanix.jpg
 
-4. From the above screenshot , you can able to see couple of BIG-IPs are deployed successfully in Nutanix platform.
+5. From the above screenshot , you can able to see couple of BIG-IPs are deployed successfully in Nutanix platform.
 
 Stage 2: Migrating Standby BIG-IP VE to Nutanix
 --------------------------------------------------
