@@ -1,64 +1,39 @@
-Application Migration across Heterogeneous Environments using F5 BIG-IP VE
+Application workload migration from VMware to Nutanix using BIG-IP
 #########################################################
 
-Scope
------
+This guide consists of detailed steps for migrating application workloads from Vmware to Nutanix platform
 
-As organizations deploy applications across multiple infrastructure platforms to
-meet scalability, cost, and flexibility requirements, the need to migrate
-applications and traffic between environments becomes unavoidable. Such migrations
-introduce challenges related to availability, security, and network consistency.
+Pre-requesites
+-------------------------------
 
-This document focuses on the use of F5 BIG-IP to support application traffic
-migration across heterogeneous platforms, ensuring consistent traffic management
-and policy enforcement with minimal impact to application services.
+BIG-IP HA pair deployed in Vmware platform
 
-Introduction
-------------
-
-This article highlights how F5 BIG-IP enables seamless application traffic
-migration across mixed infrastructure environments commonly found in enterprise
-deployments. As organizations move applications between platforms such as VMware,
-Nutanix and public clouds, maintaining consistent traffic management,
-availability and security becomes critical.
-
-Common migration scenarios include moving applications from VMware to alternative
-platforms based on business needs, extending on-premises applications to Nutanix
-and public cloud environments, and deploying applications across multiple
-platforms for resiliency and continuity. BIG-IP plays a central role in these
-transitions by ensuring consistent application delivery and policy enforcement
-throughout the migration process.
-
-
-Scenario 1 :
------------
+Refer to 
+`BIG-IP HA Deployment on VMware
+<../application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`_
+for Deployment Steps
 
 Migration from VMware to Nutanix
 -------------------------------
-The migration is breakdown into 5 detailed steps for better understanding,
 
-1) Deploy BIG-IP in HA pair in VMware
+The migration is breakdown into 5 detailed stages for better understanding,
+
+1) Deploying BIG-IP HA pair in Nutanix
 2) Migrate Standby BIG_IP VE to Nutanix
 3) Failover the Active BIG-IP
 4) Migration of application workloads
 5) Migratate VMware BIG-IP to Nutanix
 
-**Step 1**: Deploying BIG-IP in HA pair in VMware
+Stage 1: Deploying BIG-IP in HA pair in Nutanix
+--------------------------------------------------
 
-Step 1.1: Refer to 
-`BIG-IP HA Deployment on VMware
-<../application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`_
-for Deployment Steps
-
-BIG-IP is deployed as HA pair in VMware.
+1. BIG-IP is already deployed as HA pair in VMware.
 
 .. image:: ./Assets/device_details_active.jpg
 
 .. image:: ./Assets/device_details_stby.jpg
 
-You can able to see both the BIG-IPs are in HA pair.
-
-Node Pool and Virtual Server is configured as shown below, 
+2. Node Pool and Virtual Server is configured as shown below, 
 
 .. image:: ./Assets/juice_shop_vs.jpg
 
@@ -66,7 +41,7 @@ Its associated web application is accessible using Virtual Server IP.
 
 .. image:: ./Assets/stage_1_verification.jpg
 
-Now, before proceeding to Stage 2, couple of BIG-IPs are deployed in Nutanix and no configs were done to it. 
+3. Now we need to deploy couple of BIG-IPs in Nutanix with no configs. 
 
 Refer to
 `BIG-IP Deployment on Nutanix
@@ -75,7 +50,7 @@ for Deployment Steps
 
 .. image:: ./Assets/big_ip_vms_nutanix.jpg
 
-From the Nutanix console, you can able to see two BIG-IPs are deployed.
+4. From the above screenshot , you can able to see couple of BIG-IPs are deployed successfully in Nutanix platform.
 
 Stage 2: Migrating Standby BIG-IP VE to Nutanix
 --------------------------------------------------
