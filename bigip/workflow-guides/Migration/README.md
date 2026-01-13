@@ -21,31 +21,31 @@ This scenario demonstrates the migration of application traffic and workloads fr
 ### Stage 1 – Have BIG-IP VE HA pair deployed on Vmware and Nutanix
 At this stage BIG-IP Virtual Edition instances are deployed on Vmware and Nutanix .
 
-![ ](./Migration/Assets/device_details_active.jpg)
+![ ](./Assets/device_details_active.jpg)
 
-![ ](./Migration/Assets/device_details_stby.jpg)
+![ ](./Assets/device_details_stby.jpg)
 
-![ ](./Migration/Assets/big_ip_vms_nutanix.jpg)
+![ ](./Assets/big_ip_vms_nutanix.jpg)
 
 ### Stage 2 – Migrate Standby BIG-IP VE from VMware to Nutanix
 The Standby BIG-IP VE is migrated first from the VMware source environment to the Nutanix target platform. Configuration and licensing are preserved, allowing the migrated instance to rejoin the high-availability configuration without affecting active application traffic.
 
-![ ](./Migration/Assets/nutanix_big_ip_in_standby.jpg)
+![ ](./Assets/nutanix_big_ip_in_standby.jpg)
 
 ### Stage 3 – Failover Active BIG-IP VE to Nutanix
 Application traffic is failed over from the Active BIG-IP VE running on VMware to the BIG-IP VE running on Nutanix. At this stage, Nutanix becomes the active traffic-handling platform while VMware remains in standby.
 
-![ ](./Migration/Assets/switchover_from_vmware_to_nutanix.jpg)
+![ ](./Assets/switchover_from_vmware_to_nutanix.jpg)
 
 ### Stage 4 – Migrate Application Workloads from VMware to Nutanix
 Application workloads are transitioned from the VMware platform to the Nutanix platform. While automated tools such as Nutanix Move are recommended for production migrations, manual deployment may be used for testing and validation purposes. BIG-IP continues to provide consistent traffic steering and availability during this phase.
 
-![ ](./Migration/Assets/accessing_application.jpg)
+![ ](./Assets/accessing_application.jpg)
 
 ### Stage 5 – Migrate Remaining BIG-IP VE from VMware to Nutanix
 The remaining BIG-IP VE is migrated from VMware to Nutanix and added back into the high-availability configuration. Upon completion, both BIG-IP instances operate entirely from the Nutanix platform.
 
-![ ](./Migration/Assets/final_big_ips_state_verification.jpg)
+![ ](./Assets/final_big_ips_state_verification.jpg)
 
 For a detailed, step-by-step migration procedure, refer to the following document:
 
