@@ -47,7 +47,7 @@ The migration is breakdown into 5 detailed steps for better understanding,
 
 Step 1.1: Refer to 
 `BIG-IP HA Deployment on VMware
-<./././workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`_
+<bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`_
 for Deployment Steps
 
 BIG-IP is deployed as HA pair in VMware.
