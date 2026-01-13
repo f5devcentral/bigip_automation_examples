@@ -70,7 +70,7 @@ Now, before proceeding to Stage 2, couple of BIG-IPs are deployed in Nutanix and
 
 Refer to
 `BIG-IP Deployment on Nutanix
-<././application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`_
+<.../application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`_
 for Deployment Steps
 
 .. image:: ./Assets/big_ip_vms_nutanix.jpg
