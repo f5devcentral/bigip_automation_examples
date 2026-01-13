@@ -120,11 +120,15 @@ Stage 2: Migrating Standby BIG-IP VE to Nutanix
 Stage 3 – Fail Over the Active BIG-IP VE to Nutanix
 --------------------------------------------------
 
-1. Initiate a failover, transitioning VMware BIGIP-1 from Active to Standby.
+1. Initiate a failover, transitioning VMware BIGIP-1 from Active to Standby using::
+
+        run sys failover standby
 
 2. Nutanix BIGIP-2 becomes the Active BIG-IP VE.
 
 .. image:: ./Assets/switchover_from_vmware_to_nutanix.jpg
+
+3. As observed after executing the failover standby command, the BIG-IP instance on VMware transitions from Active to Standby, while the BIG-IP instance running on Nutanix becomes Active. This behavior confirms that the traffic switchover was completed successfully
 
 **Current BIG-IP Status:**
 
