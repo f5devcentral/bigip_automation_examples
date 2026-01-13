@@ -187,3 +187,244 @@ Here is the topology diagram for this scenario.
   .. image:: ./assets/image2_8.png
 
 - Finally, set the hostname, DNS server, and NTP settings if required.
+
+=========================================
+F5 BIG-IP High Availability (HA) Setup
+=========================================
+
+This guide explains how to configure **High Availability (HA)** on **F5 BIG-IP** using
+**tmsh CLI**, following a **manual, command-driven approach**.
+
+The configuration results in a **Sync-Failover (Active–Standby)** HA pair.
+
+-------------------------------------------------
+Topology Overview
+-------------------------------------------------
+.. list-table::
+   :header-rows: 1
+   :widths: 20 40 40
+
+   * - Component
+     - BIG-IP 1
+     - BIG-IP 2
+   * - Hostname
+     - resp1-bigip1.local.net
+     - resp2-bigip1.local.net
+   * - ConfigSync IP
+     - 10.3.3.5
+     - 10.3.3.6
+   * - Management IP
+     - 10.218.139.1
+     - 10.218.134.250
+
+-------------------------------------------------
+Prerequisites
+-------------------------------------------------
+
+- Pair of BIG-IPs with same version
+- Same provisioned modules
+- Management connectivity between devices
+
+-------------------------------------------------
+Step 1: Configure NTP (Both Devices)
+-------------------------------------------------
+
+Time synchronization is mandatory for HA stability.
+
+.. code-block:: bash
+
+   tmsh modify sys ntp servers add { 172.23.241.134 }
+
+-------------------------------------------------
+Step 2: Configure Hostname
+-------------------------------------------------
+
+Each BIG-IP must have a **unique hostname**.
+
+**BIG-IP 1**
+
+.. code-block:: bash
+
+   tmsh modify sys global-settings hostname resp1-bigip1.local.net
+
+**BIG-IP 2**
+
+.. code-block:: bash
+
+   tmsh modify sys global-settings hostname resp2-bigip1.local.net
+
+-------------------------------------------------
+Step 3: Rename BIG-IP Device Object
+-------------------------------------------------
+
+Rename the default device name to match the hostname.
+
+**BIG-IP 1**
+
+.. code-block:: bash
+
+   tmsh mv cm device bigip1 resp1-bigip1.local.net
+
+**BIG-IP 2**
+
+.. code-block:: bash
+
+   tmsh mv cm device bigip1 resp2-bigip1.local.net
+
+-------------------------------------------------
+Step 4: Configure ConfigSync, Failover & Mirror IPs
+-------------------------------------------------
+
+These IPs are used for:
+- Configuration synchronization
+- Failover heartbeat
+- Connection mirroring
+
+**BIG-IP 1**
+
+.. code-block:: bash
+
+   tmsh modify cm device resp1-bigip1.local.net \
+   configsync-ip 10.3.3.5 \
+   unicast-address {
+     { effective-ip 10.3.3.5 effective-port cap ip 10.3.3.5 }
+     { effective-ip 10.218.139.1 effective-port cap ip 10.218.139.1 }
+   } \
+   mirror-ip 10.3.3.5
+
+**BIG-IP 2**
+
+.. code-block:: bash
+
+   tmsh modify cm device resp2-bigip1.local.net \
+   configsync-ip 10.3.3.6 \
+   unicast-address {
+     { effective-ip 10.3.3.6 effective-port cap ip 10.3.3.6 }
+     { effective-ip 10.218.134.250 effective-port cap ip 10.218.134.250 }
+   } \
+   mirror-ip 10.3.3.6
+
+-------------------------------------------------
+Step 5: Set Admin Password (Both Devices)
+-------------------------------------------------
+
+Ensure the **admin credentials match** on both devices.
+
+.. code-block:: bash
+
+   tmsh modify auth user admin password f5root02
+
+-------------------------------------------------
+Step 6: Reset Existing Trust (BIG-IP 1)
+-------------------------------------------------
+
+Remove any existing trust configuration.
+
+.. code-block:: bash
+
+   tmsh delete cm trust-domain Root
+
+-------------------------------------------------
+Step 7: Establish Device Trust (BIG-IP 1)
+-------------------------------------------------
+
+Add BIG-IP 2 as a trusted device.
+
+.. code-block:: bash
+
+   tmsh modify cm trust-domain Root {
+     add-device {
+       device-ip 10.218.134.250
+       device-name resp2-bigip1.local.net
+       username admin
+       password f5root02
+       ca-device true
+     }
+   }
+
+-------------------------------------------------
+Step 8: Recreate Sync-Failover Device Group
+-------------------------------------------------
+
+Delete any existing HA group and create a fresh one.
+
+**BIG-IP 1**
+
+.. code-block:: bash
+
+   tmsh modify cm device-group ha devices delete { all }
+   tmsh delete cm device-group ha
+
+.. code-block:: bash
+
+   tmsh create cm device-group ha {
+     devices add {
+       resp1-bigip1.local.net { }
+       resp2-bigip1.local.net { }
+     }
+     type sync-failover
+     auto-sync enabled
+   }
+
+-------------------------------------------------
+Step 9: Perform Initial Configuration Sync
+-------------------------------------------------
+
+Push configuration to the HA group.
+
+.. code-block:: bash
+
+   tmsh run cm config-sync to-group ha
+
+-------------------------------------------------
+Step 10: Force Standby on BIG-IP 2
+-------------------------------------------------
+
+Ensure proper **Active–Standby** role assignment.
+
+**BIG-IP 2**
+
+.. code-block:: bash
+
+   tmsh run sys failover standby
+
+-------------------------------------------------
+Optional Fix: HA Sync / Load Balancing Issues
+-------------------------------------------------
+
+If HA sync or traffic handling is unstable, disable
+TCP offloading features (known issue in some environments).
+
+.. code-block:: bash
+
+   tmsh modify /sys db tm.tcplargereceiveoffload value disable
+   tmsh modify /sys db tm.tcpsegmentationoffload value disable
+
+-------------------------------------------------
+Verification Commands
+-------------------------------------------------
+
+Check device status:
+
+.. code-block:: bash
+
+   tmsh show cm device
+   tmsh show cm failover-status
+   tmsh show cm device-group
+
+-------------------------------------------------
+Result
+-------------------------------------------------
+
+- Devices operate in **Sync-Failover (HA) mode**
+- Configuration is automatically synchronized
+- Traffic fails over seamlessly using floating objects
+
+-------------------------------------------------
+Notes & Best Practices
+-------------------------------------------------
+
+- Always use **floating IPs** for Virtual Servers
+- Keep NTP enabled and synchronized
+- Avoid manual config changes on Standby
+- Monitor failover events regularly

@@ -1,48 +1,56 @@
-BIG-IP VE and Application workload migraiton from VMware to Nutanix
+Application workload migration from VMware to Nutanix using BIG-IP
 #########################################################
-In this article, the detailed description of migrating BIG-IP VE from VMware to Nutanix Platform,
 
-Below are the details steps that are followed to perform migration from VMware to Nutanix,
+This guide consists of detailed steps for migrating application workloads from Vmware to Nutanix platform
 
-Installation of BIG-IP on VMware is mentioned in doc here.
+Pre-requesites
+-------------------------------
 
-Simillary, Installation of BIG-IP on Nutanix is mentioned in the doc here.
+BIG-IP HA pair deployed in Vmware platform
 
-Steps to migrate BIG-IP from VMware to Nutanix
---------------
-The migraiton is breakdown into 5 detailed steps for better understanding,
+Refer to 
+`BIG-IP HA Deployment on VMware
+<../application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`_
+for Deployment Steps
 
-1) Deploy BIG-IP in HA pair in VMware
+Migration from VMware to Nutanix
+-------------------------------
+
+The migration is breakdown into 5 detailed stages for better understanding,
+
+1) Deploying BIG-IP HA pair in Nutanix
 2) Migrate Standby BIG_IP VE to Nutanix
 3) Failover the Active BIG-IP
 4) Migration of application workloads
 5) Migratate VMware BIG-IP to Nutanix
 
-**Step 1**: Deploying BIG-IP in HA pair in VMware
+Stage 1: Deploying BIG-IP in HA pair in Nutanix
+--------------------------------------------------
 
-Step 1.1: Deploying BIG-IP in HA pair
-
-BIG-IP is deployed as HA pair in VMware.
+1. BIG-IP is already deployed as HA pair in VMware.
 
 .. image:: ./Assets/device_details_active.jpg
 
 .. image:: ./Assets/device_details_stby.jpg
 
-You can able to see both the BIG-IPs are in HA pair.
-
-Node Pool and Virtual Server is configured as shown below, 
+2. Node Pool and Virtual Server is configured as shown below, 
 
 .. image:: ./Assets/juice_shop_vs.jpg
 
-Its associated web application is accessible using Virtual Server IP.
+3. Its associated web application is accessible using Virtual Server IP.
 
 .. image:: ./Assets/stage_1_verification.jpg
 
-Now, before proceeding to Stage 2, couple of BIG-IPs are deployed and no configs were done to it.
+4. Similarly we need to deploy couple of BIG-IPs in Nutanix with no configs. 
+
+Refer to
+`BIG-IP Deployment on Nutanix
+<../application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst>`_
+for Deployment Steps
 
 .. image:: ./Assets/big_ip_vms_nutanix.jpg
 
-From the Nutanix console, you can able to see two BIG-IPs are deployed.
+5. From the above screenshot , you can able to see couple of BIG-IPs are deployed successfully in Nutanix platform.
 
 Stage 2: Migrating Standby BIG-IP VE to Nutanix
 --------------------------------------------------
@@ -179,10 +187,28 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
 
 .. image:: ./Assets/disconnecting_interfaces_vmware_big_ip1.jpg
 
-6. Power on Nutanix BIGIP-1 and configure it with the same management IP as
+6. Power on Nutanix BIGIP-1 and configure it with as shown in below screenshots
    VMware BIGIP-1.
 
 .. image:: ./Assets/ip_assign_1.png
+
+7. Select the option as ipv4
+
+.. image:: ./Assets/ip_assign_2.png
+
+8. Select “No”  for auto configutration 
+
+.. image:: ./Assets/ip_assign_3.png
+
+9. Assing same management ip , subnet mask and default route as of Vmware BIG-IP
+
+.. image:: ./Assets/ip_assign_4.png
+
+.. image:: ./Assets/ip_assign_5.png
+
+.. image:: ./Assets/ip_assign_6.png
+
+.. image:: ./Assets/ip_assign_7.png
 
 .. image:: ./Assets/ip_assign_8.png
 
