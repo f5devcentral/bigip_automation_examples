@@ -45,7 +45,10 @@ The migration is breakdown into 5 detailed steps for better understanding,
 
 **Step 1**: Deploying BIG-IP in HA pair in VMware
 
-Step 1.1: Deploying BIG-IP in HA pair
+Step 1.1: Refer to
+`BIG-IP HA Deployment on VMware
+<bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst>`_
+
 
 BIG-IP is deployed as HA pair in VMware.
 
