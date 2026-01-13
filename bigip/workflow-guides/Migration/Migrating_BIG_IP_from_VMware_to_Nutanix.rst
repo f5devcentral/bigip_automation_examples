@@ -187,10 +187,28 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
 
 .. image:: ./Assets/disconnecting_interfaces_vmware_big_ip1.jpg
 
-6. Power on Nutanix BIGIP-1 and configure it with the same management IP as
+6. Power on Nutanix BIGIP-1 and configure it with as shown in below screenshots
    VMware BIGIP-1.
 
 .. image:: ./Assets/ip_assign_1.png
+
+7. Select the option as ipv4
+
+.. image:: ./Assets/ip_assign_2.png
+
+8. Select “No”  for auto configutration 
+
+.. image:: ./Assets/ip_assign_3.png
+
+9. Assing same management ip , subnet mask and default route as of Vmware BIG-IP
+
+.. image:: ./Assets/ip_assign_4.png
+
+.. image:: ./Assets/ip_assign_5.png
+
+.. image:: ./Assets/ip_assign_6.png
+
+.. image:: ./Assets/ip_assign_7.png
 
 .. image:: ./Assets/ip_assign_8.png
 
