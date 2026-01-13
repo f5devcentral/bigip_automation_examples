@@ -428,8 +428,3 @@ Notes & Best Practices
 - Keep NTP enabled and synchronized
 - Avoid manual config changes on Standby
 - Monitor failover events regularly
-
--------------------------------------------------
-End of Document
--------------------------------------------------
-
