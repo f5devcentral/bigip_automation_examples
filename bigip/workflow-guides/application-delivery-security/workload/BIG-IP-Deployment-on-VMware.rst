@@ -224,8 +224,6 @@ Prerequisites
 - Pair of BIG-IPs with same version
 - Same provisioned modules
 - Management connectivity between devices
-- Time synchronization (NTP)
-- Admin credentials available on both devices
 
 -------------------------------------------------
 Step 1: Configure NTP (Both Devices)
