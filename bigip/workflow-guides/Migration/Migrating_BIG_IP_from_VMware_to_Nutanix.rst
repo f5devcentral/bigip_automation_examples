@@ -243,9 +243,9 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
 - Nutanix BIGIP-1: Standby
 - Nutanix BIGIP-2: Active
 
-Summary
--------
 
+Conclusion
+----------
 This document demonstrates the detailed process for migrating F5 BIG-IP
 Virtual Edition instances and application workloads from VMware to Nutanix AHV.
 By following this phased approach within a planned maintenance window, organizations
