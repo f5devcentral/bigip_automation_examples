@@ -166,6 +166,10 @@ Stage 4 – Migrate Application Workloads from VMware to Nutanix
    down the source VM to complete the final data synchronization before starting it
    on Nutanix.
 
+5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
+
+.. image:: ./Assets/nutanix_big_ip_stats_after_traffic_test.jpg
+
 **Current BIG-IP Status:**
 
 - VMware BIGIP-1: Standby
@@ -237,6 +241,12 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
 .. image:: ./Assets/final_big_ips_state_verification.jpg
 
 13. VMware BIGIP-1 has now been fully migrated to Nutanix.
+
+14. Application is accesible through Nutanix Active BIG-IP and the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP. This also indicates that migration is succesfull 
+
+.. image:: ./Assets/accessing_application.jpg
+
+.. image:: ./Assets/traffic_stats_nutanix_big_ip_active.jpg
 
 **Migration Status:**
 
