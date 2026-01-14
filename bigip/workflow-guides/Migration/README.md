@@ -14,6 +14,8 @@ Common migration scenarios include moving applications from VMware to alternativ
 
 ## Architecture Overview
 
+![ ](./Assets/arch_overview.png)
+
 The architecture demonstrates how F5 BIG-IP VE provides consistent application delivery across heterogeneous infrastructure platforms.
 
 In the source environment, application workloads run on VMware and are front-ended by BIG-IP VE instances responsible for traffic management, availability, and security enforcement. As part of the migration, equivalent BIG-IP VE instances are deployed on Nutanix, allowing both environments to operate in parallel during the transition.
@@ -24,6 +26,8 @@ The architecture also highlights BIG-IP’s ability to extend the same traffic m
 
 
 ## Scenario 1: Migration from VMware to Nutanix
+
+![ ](./Assets/migration_overview.png)
 
 This scenario demonstrates the migration of application traffic and workloads from a VMware-based environment to Nutanix AHV using F5 BIG-IP Virtual Edition. BIG-IP enables a phased migration approach by maintaining consistent traffic management, availability, and security policies while applications and infrastructure components transition between platforms.
 
