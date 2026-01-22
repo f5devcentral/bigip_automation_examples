@@ -73,39 +73,39 @@ Stage 2: Migrating Standby BIG-IP VE to Openshift
 6. Power on Openshift BIGIP-2 and assign it the same management IP address previously
    used by VMware BIGIP-2.
 
-.. image:: ./Assets/config-page-1.png
+.. image:: ./Assets/config-page-1.jpg
 
 7. Select the option as ipv4
 
-.. image:: ./Assets/config-page-2.png
+.. image:: ./Assets/config-page-2.jpg
 
 8. Select “No”  for auto configutration 
 
-.. image:: ./Assets/config-page-3.png
+.. image:: ./Assets/config-page-3.jpg
 
 9. Assing same management ip , subnet mask and default route as of Vmware BIG-IP
 
-.. image:: ./Assets/config-page-4.png
+.. image:: ./Assets/config-page-4.jpg
 
-.. image:: ./Assets/config-page-5.png
+.. image:: ./Assets/config-page-5.jpg
 
-.. image:: ./Assets/config-page-6.png
+.. image:: ./Assets/config-page-6.jpg
 
-.. image:: ./Assets/config-page-7.png
+.. image:: ./Assets/config-page-7.jpg
 
-.. image:: ./Assets/config-page-8.png
+.. image:: ./Assets/config-page-8.jpg
 
 10. Apply the saved license to Openshift BIGIP-2.
 
-.. image:: ./Assets/license-installation-2.png
+.. image:: ./Assets/license-installation-2.jpg
 
 11. Set Openshift BIGIP-2 to **Forced Offline**.
 
-.. image:: ./Assets/standby-offline-vmware.png
+.. image:: ./Assets/standby-offline-vmware.jpg
 
 12. Upload the saved UCS file to Openshift BIGIP-2 and load it using the **no-license** option.
 
-.. image:: ./Assets/boot-ucs-file.png
+.. image:: ./Assets/boot-ucs-file.jpg
 
 13. Monitor the logs and wait until the message
     ``Configuration load completed, device ready for online`` appears.
@@ -124,7 +124,7 @@ Stage 2: Migrating Standby BIG-IP VE to Openshift
 
 16. The Standby BIG-IP VE has now been successfully migrated to Openshift.
 
-.. image:: ./Assets/stby-big-ip-in-ocp-GUI.png
+.. image:: ./Assets/stby-big-ip-in-ocp-GUI.jpg
 
 .. note::
    Because the BIG-IP VEs are running on different hypervisors during this phase,
