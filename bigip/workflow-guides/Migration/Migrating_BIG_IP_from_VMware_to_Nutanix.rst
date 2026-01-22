@@ -84,7 +84,7 @@ Stage 2: Migrating Standby BIG-IP VE to Nutanix
 
 .. image:: ./Assets/license_install.jpg
 
-9. Upload the saved UCS file to Nutanix BIGIP-2 and load it using the
+9. Upload the saved UCS file to Nutanix BIGIP-2 and load it using the **no-license** option.
 
 .. image:: ./Assets/uploading_license.jpg
 
