@@ -75,6 +75,8 @@ This scenario demonstrates the migraiton of applicaiton traffic and workloads fr
 ### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
 At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
 
+![ ](./Assets/device_details_active.jpg)
+
 .. image:: ./Assets/device_details_active.jpg
 
 .. image:: ./Assets/device_details_stby.jpg
