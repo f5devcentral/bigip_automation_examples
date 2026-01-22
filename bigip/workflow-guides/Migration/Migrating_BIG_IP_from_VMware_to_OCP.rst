@@ -168,12 +168,10 @@ Stage 4 – Migrate Application Workloads from VMware to Openshift
 3. Manual deployment included provisioning new ubuntu virtual machines and restoring 
    application data to match the existing VMware environment.
 
-.. image:: ./Assets/vms_in_Openshift.jpg
 
 4. Application configurations were updated and validated to ensure proper
    integration with the Active BIG-IP VE running on Openshift, including pool member
    configuration, health monitors, and traffic flow validation.
-
 
 
 .. note::
