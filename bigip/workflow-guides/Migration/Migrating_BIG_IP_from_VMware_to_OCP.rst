@@ -39,7 +39,7 @@ Stage 1: Deploying BIG-IP in HA pair in Openshift
 
 3. Its associated web application is accessible using Virtual Server IP.
 
-.. image:: ./Assets/stage_1_verification.jpg
+.. image:: ./Assets/application-access-before-testing.jpg
 
 4. Similarly we need to deploy couple of BIG-IPs in Openshift with no configs. 
 
