@@ -84,7 +84,7 @@ Stage 2: Migrating Standby BIG-IP VE to Nutanix
 
 .. image:: ./Assets/license_install.jpg
 
-9. Upload the saved UCS file to Nutanix BIGIP-2 and load it using the
+9. Upload the saved UCS file to Nutanix BIGIP-2 and load it using the **no-license** option.
 
 .. image:: ./Assets/uploading_license.jpg
 
@@ -220,27 +220,27 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Nutanix
 
 .. image:: ./Assets/ip_assign_8.png
 
-7. Apply the saved license to Nutanix BIGIP-1.
+10. Apply the saved license to Nutanix BIGIP-1.
 
 .. image:: ./Assets/install_license_bigip_1.jpg
 
-8. Set Nutanix BIGIP-1 to **Forced Offline**.
+11. Set Nutanix BIGIP-1 to **Forced Offline**.
 
-9. Upload and restore the saved UCS file using the **no-license** option.
+12. Upload and restore the saved UCS file using the **no-license** option.
 
 .. image:: ./Assets/loading_ucs_file_to_nutanix_big_ip1.jpg
 
-10. Monitor logs until the message
+13. Monitor logs until the message
     ``Configuration load completed, device ready for online`` is displayed.
 
-11. Bring Nutanix BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
+14. Bring Nutanix BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
     the original VMware configuration.
 
-12. Confirm that the device is **In Sync** and perform a configuration sync if needed.
+15. Confirm that the device is **In Sync** and perform a configuration sync if needed.
 
 .. image:: ./Assets/final_big_ips_state_verification.jpg
 
-13. VMware BIGIP-1 has now been fully migrated to Nutanix.
+16. VMware BIGIP-1 has now been fully migrated to Nutanix.
 
 14. Application is accesible through Nutanix Active BIG-IP and the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP. This also indicates that migration is succesfull 
 
