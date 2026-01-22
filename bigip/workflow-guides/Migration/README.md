@@ -77,9 +77,15 @@ At this stage BIG-IP Virtual Edition instances are already present on Vmware and
 
 ![ ](./Assets_VMware_to_OCP/active-big-ip-mac-details.jpg)
 
-.. image:: ./Assets/device_details_active.jpg
+![ ](./Assets_VMware_to_OCP/standby-ip-mac-details.jpg)
 
-.. image:: ./Assets/device_details_stby.jpg
+![ ](./Assets_VMware_to_OCP/application-access-before-testing.jpg)
+
+### Stage 2 – Migrate Standby BIG-IP VE from VMware to OCP
+
+The Standby BIG-IP VE is migratd from VMware to OCP. Configuration and licensing are preserved, allowing the migrated instance to rejoin the high-availability configuration without affecting active application traffic.
+
+![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
 
 
 ### Conclusion
