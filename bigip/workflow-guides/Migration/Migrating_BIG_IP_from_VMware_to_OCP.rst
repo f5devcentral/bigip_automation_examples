@@ -56,6 +56,7 @@ Stage 2: Migrating Standby BIG-IP VE to Openshift
 
 1. Place VMware BIGIP-2 (Standby) into **Forced Offline** mode and save a backup of its configuration.
 
+.. image:: ./Assets/standby-offline-vmware.jpg
 
 2. Copy the license file located at ``/config/bigip.license``.
 
@@ -63,40 +64,67 @@ Stage 2: Migrating Standby BIG-IP VE to Openshift
 
 4. Revoke the license on VMware BIGIP-2.
 
+.. image:: ./Assets/system-revoke-license.jpg
 
 5. Disconnect all network interfaces on VMware BIGIP-2.
 
+.. image:: ./Assets/disconnecting-big-ip-standby-interfaces.jpg
 
 6. Power on Openshift BIGIP-2 and assign it the same management IP address previously
    used by VMware BIGIP-2.
 
+.. image:: ./Assets/config-page-1.png
 
-7. Apply the saved license to Openshift BIGIP-2.
+7. Select the option as ipv4
 
+.. image:: ./Assets/config-page-2.png
 
-8. Set Openshift BIGIP-2 to **Forced Offline**.
+8. Select “No”  for auto configutration 
 
+.. image:: ./Assets/config-page-3.png
 
-9. Upload the saved UCS file to Openshift BIGIP-2 and load it using the
+9. Assing same management ip , subnet mask and default route as of Vmware BIG-IP
 
+.. image:: ./Assets/config-page-4.png
 
-10. Monitor the logs and wait until the message
+.. image:: ./Assets/config-page-5.png
+
+.. image:: ./Assets/config-page-6.png
+
+.. image:: ./Assets/config-page-7.png
+
+.. image:: ./Assets/config-page-8.png
+
+10. Apply the saved license to Openshift BIGIP-2.
+
+.. image:: ./Assets/license-installation-2.png
+
+11. Set Openshift BIGIP-2 to **Forced Offline**.
+
+.. image:: ./Assets/standby-offline-vmware.png
+
+12. Upload the saved UCS file to Openshift BIGIP-2 and load it using the **no-license** option.
+
+.. image:: ./Assets/boot-ucs-file.png
+
+13. Monitor the logs and wait until the message
     ``Configuration load completed, device ready for online`` appears.
 
-11. Bring Openshift BIGIP-2 **Online**.
+14. Bring Openshift BIGIP-2 **Online**.
 
     Note::
 
        Ensure the NIC count and interface-to-VLAN mappings exactly match those of
        VMware BIGIP-2.
 
-12. Verify that Openshift BIGIP-2 is **In Sync**. If configuration changes are pending,
+15. Verify that Openshift BIGIP-2 is **In Sync**. If configuration changes are pending,
     initiate a config sync using::
 
         run cm config-sync from-group <device-group-name>
 
-13. The Standby BIG-IP VE has now been successfully migrated to Openshift.
+16. The Standby BIG-IP VE has now been successfully migrated to Openshift.
 
+.. image:: ./Assets/stby-big-ip-in-ocp-GUI.png
 
 .. note::
    Because the BIG-IP VEs are running on different hypervisors during this phase,
