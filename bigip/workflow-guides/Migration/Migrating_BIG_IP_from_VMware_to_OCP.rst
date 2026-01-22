@@ -48,6 +48,8 @@ Refer to
 <../application-delivery-security/workload/BIG-IP-Deployment-Openshift.rst>`_
 for Deployment Steps
 
+.. image:: ./Assets/network-configs-stby-big-ip.jpg
+
 
 5. From the above screenshot , you can able to see couple of BIG-IPs are deployed successfully in Openshift platform.
 
