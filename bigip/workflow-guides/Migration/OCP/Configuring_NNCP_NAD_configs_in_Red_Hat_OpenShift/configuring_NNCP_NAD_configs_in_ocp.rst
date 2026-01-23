@@ -196,3 +196,11 @@ Apply NAD configurations using below command, and results shown as created
 
 Conclusion:
 ----------
+With this, Virtual Machines deployed in OCP can be associated with these Networks based on the requirement.
+
+Referrence Links:
+----------
+`Red Hat OpenShift Virtualization: Configuring virtual machines to use external network `<https://www.redhat.com/en/blog/access-external-networks-with-openshift-virtualization#:~:text=Option%20%233%20below.-,Option%20%231%3A,-Using%20an%20external>_
+
+`Red Hat OpenShift Secondary Network Configuration `<https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/multiple_networks/index#nw-multus-whereabouts-fast-ipam_configuring-additional-network>_
+
