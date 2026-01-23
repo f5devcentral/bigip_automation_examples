@@ -19,11 +19,11 @@ At first, Let's login to the VMware ESXi Machine where 3 Node cluster is install
 
 .. image:: ./Assets/3_node_cluster.jpg
 
-Select the Node to which Network should be attached to. In this case, I choose *ocp-node-1*. Click on Edit button to add the Network to this Node.
+Select the Node to which Network should be attached to. In this case, I choose **ocp-node-1**. Click on Edit button to add the Network to this Node.
 
 .. image:: ./Assets/adding_interface_to_nodes.jpg
 
-Click on *Add network adapter* button and select the interface from the dropdown. Once you add the interface, click on Save. It is better to add Interface individually and then carry the NNCP and NAD configurations associated to it.
+Click on **Add network adapter** button and select the interface from the dropdown. Once you add the interface, click on Save. It is better to add Interface individually and then carry the NNCP and NAD configurations associated to it.
 
 
 
