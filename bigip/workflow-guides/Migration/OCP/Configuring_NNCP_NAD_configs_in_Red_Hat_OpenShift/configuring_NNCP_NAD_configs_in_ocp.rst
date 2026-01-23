@@ -35,7 +35,7 @@ This confirms interface is attached successfully and can move to configuring net
 
 **Step 1.2: External network with an OVS bridge on a dedicated NIC**
 
-In this step, we will create an NNCP that creates a new OVS bridge called on the node, using an unused NIC ens224.
+In this step, we will create an NNCP that creates a new OVS bridge <mark>br1</mark> called on the node, using an unused NIC ens224.
 
 
 .. code-block:: python
@@ -59,12 +59,15 @@ In this step, we will create an NNCP that creates a new OVS bridge called on the
             options:
             stp: false      <<<< Disable Spanning Tree
             port:
-            - name: ens224  <<<< Name of the Network
+            - name: ens224  <<<< Name of the Network interface
         ovn:
         bridge-mappings:
         - localnet: net-mgmt
             bridge: br1
             state: present
+
+> [!IMPORTANT]
+> Make stp as false, this will not send the BPDU packets to the Switch connected to it.
 
 
 
