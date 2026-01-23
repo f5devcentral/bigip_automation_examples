@@ -25,6 +25,48 @@ Select the Node to which Network should be attached to. In this case, I choose *
 
 Click on **Add network adapter** button and select the interface from the dropdown. Once you add the interface, click on Save. It is better to add Interface individually and then carry the NNCP and NAD configurations associated to it.
 
+**Step 1.1: Ensure Attached interface is showing in OCP console**
+
+Login to OCP console, and navigate to Networking > Node network configuraitons to confirm the Network attachment status.
+
+.. image:: ./Assets/interface_in_ocp_new.jpg
+
+This confirms interface is attached successfully and can move to configuring network interfaces on OpenShift nodes.
+
+**Step 1.2: External network with an OVS bridge on a dedicated NIC**
+
+In this step, we will create an NNCP that creates a new OVS bridge called on the node, using an unused NIC ens224.
+
+```
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: br1-net-mgmt
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
+  desiredState:
+    interfaces:
+    - name: br1
+      description: |-
+        A dedicated OVS bridge with ens224 as a port
+        allowing traffic from 10.144.126.0/24 Network
+      type: ovs-bridge
+      state: up
+      bridge:
+        options:
+          stp: false
+        port:
+        - name: ens224
+    ovn:
+      bridge-mappings:
+      - localnet: net-mgmt
+        bridge: br1
+        state: present
+```
+
+
+
 
 
 
