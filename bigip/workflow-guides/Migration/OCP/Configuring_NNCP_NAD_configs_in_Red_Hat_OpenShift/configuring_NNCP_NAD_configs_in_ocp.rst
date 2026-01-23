@@ -46,7 +46,7 @@ In this step, we will create an NNCP that creates a new OVS bridge called on the
     name: br1-net-mgmt
     spec:
     nodeSelector:
-        kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
+        kubernetes.io/hostname: aa-bb-cc-dd-ee-f7  <<<<Adjust Role
     desiredState:
         interfaces:
         - name: br1
@@ -57,9 +57,9 @@ In this step, we will create an NNCP that creates a new OVS bridge called on the
         state: up
         bridge:
             options:
-            stp: false
+            stp: false      <<<< Disable Spanning Tree
             port:
-            - name: ens224
+            - name: ens224  <<<< Name of the Network
         ovn:
         bridge-mappings:
         - localnet: net-mgmt
