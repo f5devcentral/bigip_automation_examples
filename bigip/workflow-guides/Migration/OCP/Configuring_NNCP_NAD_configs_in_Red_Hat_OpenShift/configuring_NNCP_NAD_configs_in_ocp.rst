@@ -72,6 +72,7 @@ Note: Make stp as false, this will not send the BPDU packets to the Switch conne
 Now appl the NNCP, by executing oc apply cmd, and results shown as created
 
     oc apply -f br1-net-mgmt-ovs-bridge.yaml
+    
     nodenetworkconfigurationpolicy.nmstate.io/br1-net-mgmt created
 
 **Step 1.2: NetworkAttachemnteDefinition Configuration**
@@ -157,6 +158,7 @@ We create associated NAD configuraitons for above NNCP.
 Apply NAD configurations using below command, and results shown as created
 
     oc apply -f br-ex-ha-node-nad.yaml
+    
     networkattachmentdefinition.k8s.cni.cncf.io/br-ex-node-net created
 
 **Section 3: Configuring Internet Network**
