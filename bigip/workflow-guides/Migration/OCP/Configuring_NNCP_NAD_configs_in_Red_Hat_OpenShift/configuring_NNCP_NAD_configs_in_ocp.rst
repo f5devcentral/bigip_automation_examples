@@ -109,7 +109,7 @@ Section 2: Connect OpenShift node by reusing Cluster Node Network
 -------------------------------
 In this scenario, we connect virtual machine to the external network by resuing the **br-ex** bridge that is the defualt on all nodes running in an OVN-Kubernetes cluster. We provide necessary NNCP configurations to get it done.
 
-.. image:: ./Assets/interface_in_ocp_new.jpg
+.. image:: ./Assets/interface_in_ocp_br_ex.jpg
 
 
 **Step 2.1: NNCP configurations**
