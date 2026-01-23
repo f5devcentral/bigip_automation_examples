@@ -98,6 +98,7 @@ In this step, we create a Network Attachment Definiton (NAD) for an OVS bridge c
 Apply the NAD configurations using below command, and results shown as created
 
     oc apply -f br1-10-144-ex-network-nad.yaml
+    
     networkattachmentdefinition.k8s.cni.cncf.io/net-mgmt created
 
 **step 1.3: Virtual Machine NIC configuration**
@@ -133,6 +134,7 @@ In this scenario, we connect virtual machine to the external network by resuing 
 Now apply the NNCP, by executing oc apply cmd, and results shown as created
 
     oc apply -f br-ex-ha-bridge-node.yaml
+    
     nodenetworkconfigurationpolicy.nmstate.io/br-ex-network-test created
 
 **Step 2.2: NetworkAttachemnteDefinition Configuration**
@@ -191,6 +193,7 @@ We require Internal network to communicate between two VMs in the OCP, and this 
 Apply NAD configurations using below command, and results shown as created
 
     oc apply -f br-int-whrebout-20.yaml
+    
     networkattachmentdefinition.k8s.cni.cncf.io/br-internal-net created
 
 
