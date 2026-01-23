@@ -7,9 +7,9 @@ There are series of steps that has to be followed along with configuration of Re
 
 Pre-requesites
 -------------------------------
-OCP 3 Node Cluster should be available. Installation of OCP 3 Node cluster is mentioned in the doc here.
-
-Network configurations such as Port Group and Virtual Switch should be configured in VMware ESXi Machine.
+1) OCP 3 Node Cluster should be available. Installation of OCP 3 Node cluster is mentioned in the doc here.
+2) NMState Operator must be installed in OCP cluster.
+3) Network configurations such as Port Group and Virtual Switch should be configured in VMware ESXi Machine.
 
 Now, with the above conditions satisfied, we proceed with the introducing Network to the 3 Node cluster first and then to the VMs in that cluster.
 
@@ -35,7 +35,7 @@ This confirms interface is attached successfully and can move to configuring net
 
 **Step 1.2: External network with an OVS bridge on a dedicated NIC**
 
-In this step, we will create an NNCP that creates a new OVS bridge **br1** called on the node, using an unused NIC ens224.
+In this step, we will create an Node Network Configuration Policies (NNCP) that creates a new OVS bridge **br1** called on the node, using an unused NIC ens224.
 
 
 .. code-block:: python
@@ -69,9 +69,128 @@ In this step, we will create an NNCP that creates a new OVS bridge **br1** calle
 
 Note: Make stp as false, this will not send the BPDU packets to the Switch connected to it.
 
+Now appl the NNCP, by executing oc apply cmd, and results shown as created
+
+    oc apply -f br1-net-mgmt-ovs-bridge.yaml
+    nodenetworkconfigurationpolicy.nmstate.io/br1-net-mgmt created
+
+**Step 1.2: NetworkAttachemnteDefinition Configuration**
+
+In this step, we create a Network Attachment Definiton (NAD) for an OVS bridge created above, we use localnet that we created above.
+
+.. code-block:: python
+
+    apiVersion: k8s.cni.cncf.io/v1
+    kind: NetworkAttachmentDefinition
+    metadata:
+    name: net-mgmt
+    namespace: default
+    spec:
+    config: '{
+                "name":"net-mgmt",
+                "type":"ovn-k8s-cni-overlay",
+                "cniVersion":"0.4.0",
+                "topology":"localnet",
+                "netAttachDefName":"default/net-mgmt"
+            }'
+
+Apply the NAD configurations using below command, and results shown as created
+
+    oc apply -f br1-10-144-ex-network-nad.yaml
+    networkattachmentdefinition.k8s.cni.cncf.io/net-mgmt created
+
+**step 1.3: Virtual Machine NIC configuration**
+
+To use the new external network with a virtual machine, modify the Network Interfaces section of the virtual machine and select the new default/net-mgmt as the Network type.
 
 
+Section 2: Connect OpenShift node by reusing Cluster Node Network
+-------------------------------
+In this scenario, we connect virtual machine to the external network by resuing the **br-ex** bridge that is the defualt on all nodes running in an OVN-Kubernetes cluster. We provide necessary NNCP configurations to get it done.
+
+.. image:: ./Assets/interface_in_ocp_new.jpg
 
 
+**Step 2.1: NNCP configurations**
+
+.. code-block:: python
+
+    apiVersion: nmstate.io/v1
+    kind: NodeNetworkConfigurationPolicy
+    metadata:
+    name: br-ex-network-test
+    spec:
+    nodeSelector:
+        kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
+    desiredState:
+        ovn:
+        bridge-mappings:
+        - localnet: br-ex-node-net
+            bridge: br-ex
+            state: present
+
+Now apply the NNCP, by executing oc apply cmd, and results shown as created
+
+    oc apply -f br-ex-ha-bridge-node.yaml
+    nodenetworkconfigurationpolicy.nmstate.io/br-ex-network-test created
+
+**Step 2.2: NetworkAttachemnteDefinition Configuration**
+
+We create associated NAD configuraitons for above NNCP.
+
+.. code-block:: python
+
+    apiVersion: k8s.cni.cncf.io/v1
+    kind: NetworkAttachmentDefinition
+    metadata:
+    name: br-ex-node-net
+    namespace: default
+    spec:
+    config: '{
+                "name":"br-ex-node-net",
+                "type":"ovn-k8s-cni-overlay",
+                "cniVersion":"0.4.0",
+                "topology":"localnet",
+                "netAttachDefName":"default/br-ex-node-net"
+            }'
+
+Apply NAD configurations using below command, and results shown as created
+
+    oc apply -f br-ex-ha-node-nad.yaml
+    networkattachmentdefinition.k8s.cni.cncf.io/br-ex-node-net created
+
+**Section 3: Configuring Internet Network**
+
+We require Internal network to communicate between two VMs in the OCP, and this network will be within the OCP but cannot be accessed from the outside. We do not need to configure NNCP in this case, but only require NAD configurations.
+
+**Step 3.1: NAD Configurations**
+
+.. code-block:: python
+
+    apiVersion: "k8s.cni.cncf.io/v1"
+    kind: NetworkAttachmentDefinition
+    metadata:
+    name: br-internal-net
+    namespace: default
+    spec:
+    config: '{
+        "cniVersion": "0.3.1",
+        "type": "bridge",
+        "bridge": "br-internal",
+        "ipam": {
+    "type": "whereabouts",
+    "range": "20.20.2.0/24",
+    "gateway": "20.20.2.254"
+    }
+    }'
+
+20.20.20.0/24 is the Internal network being created.
+
+Apply NAD configurations using below command, and results shown as created
+
+    oc apply -f br-int-whrebout-20.yaml
+    networkattachmentdefinition.k8s.cni.cncf.io/br-internal-net created
 
 
+Conclusion:
+----------
