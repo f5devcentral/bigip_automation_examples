@@ -37,7 +37,8 @@ This confirms interface is attached successfully and can move to configuring net
 
 In this step, we will create an NNCP that creates a new OVS bridge called on the node, using an unused NIC ens224.
 
-```
+.. code-block:: python
+
 apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
@@ -63,7 +64,7 @@ spec:
       - localnet: net-mgmt
         bridge: br1
         state: present
-```
+
 
 
 
