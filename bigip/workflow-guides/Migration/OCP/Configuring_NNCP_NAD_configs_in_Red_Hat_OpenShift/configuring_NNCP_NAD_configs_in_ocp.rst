@@ -36,7 +36,6 @@ This confirms interface is attached successfully and can move to configuring net
 **Step 1.2: External network with an OVS bridge on a dedicated NIC**
 
 In this step, we will create an NNCP that creates a new OVS bridge called on the node, using an unused NIC ens224.
-
 .. code-block:: python
 
 apiVersion: nmstate.io/v1
