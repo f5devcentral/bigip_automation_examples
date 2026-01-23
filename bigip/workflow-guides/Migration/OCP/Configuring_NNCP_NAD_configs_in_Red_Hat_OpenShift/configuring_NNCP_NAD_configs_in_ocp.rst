@@ -38,35 +38,34 @@ This confirms interface is attached successfully and can move to configuring net
 In this step, we will create an NNCP that creates a new OVS bridge called on the node, using an unused NIC ens224.
 
 
-```python
+.. code-block:: python
 
-apiVersion: nmstate.io/v1
-kind: NodeNetworkConfigurationPolicy
-metadata:
-  name: br1-net-mgmt
-spec:
-  nodeSelector:
-    kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
-  desiredState:
-    interfaces:
-    - name: br1
-      description: |-
-        A dedicated OVS bridge with ens224 as a port
-        allowing traffic from 10.144.126.0/24 Network
-      type: ovs-bridge
-      state: up
-      bridge:
-        options:
-          stp: false
-        port:
-        - name: ens224
-    ovn:
-      bridge-mappings:
-      - localnet: net-mgmt
-        bridge: br1
-        state: present
+    apiVersion: nmstate.io/v1
+    kind: NodeNetworkConfigurationPolicy
+    metadata:
+    name: br1-net-mgmt
+    spec:
+    nodeSelector:
+        kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
+    desiredState:
+        interfaces:
+        - name: br1
+        description: |-
+            A dedicated OVS bridge with ens224 as a port
+            allowing traffic from 10.144.126.0/24 Network
+        type: ovs-bridge
+        state: up
+        bridge:
+            options:
+            stp: false
+            port:
+            - name: ens224
+        ovn:
+        bridge-mappings:
+        - localnet: net-mgmt
+            bridge: br1
+            state: present
 
-```
 
 
 
