@@ -67,7 +67,7 @@ In this step, we will create an NNCP that creates a new OVS bridge **br1** calle
             state: present
 
 
-    Note: Make stp as false, this will not send the BPDU packets to the Switch connected to it.
+Note: Make stp as false, this will not send the BPDU packets to the Switch connected to it.
 
 
 
