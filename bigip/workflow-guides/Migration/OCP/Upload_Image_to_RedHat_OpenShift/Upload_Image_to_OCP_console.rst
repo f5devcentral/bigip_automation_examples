@@ -5,15 +5,21 @@ In this article, we discuss about how to upload any image to RedHat OpenShift Pl
 
 Pre-requesites
 -------------------------------
+
 1) OCP Cluster Installation
+
 2) Storage Class Availability
-2) BIG-IP VE with which VM should be booted with
+
+2) Have access to the software downloads on `my.f5.com<https://my.f5.com/manage/s/>`__
 
 OCP Installation cluster is mentioned `here<Yet to Update>`__ which also includes Storage Class creation in OCP Cluster.
 
 **Step 1: Download the BIG-IP Image**
 
-At first, we need to download the BIG-IP VE Image from `here <https://my.f5.com/manage/s/downloads>`__. If you do not have an account, do sign up.
+1. Log in to your F5 account on `my.f5.com<https://my.f5.com/manage/s/>`__ and navigate to the software downloads page.
+2. Select the product, version, image type and location that you want to download.
+3. Select "Copy Download Link". The copied link will include authentication token that will be valid for a limited time.
+4. Open your terminal and navigate to the directory where you want to save the qcow2 file.
 
 **Step 2: Upload Image to OCP cluster**
 
@@ -40,4 +46,8 @@ With the volume shows available, Now can go ahead and upload the Image.
 From the OCP Console, 
 
 .. image:: ./Assets/add_volume.jpg
+
+Additional Links:
+--------------------
+https://my.f5.com/manage/s/article/K000138258
 
