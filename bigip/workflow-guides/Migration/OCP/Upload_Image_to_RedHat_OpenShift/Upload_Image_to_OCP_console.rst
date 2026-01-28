@@ -10,13 +10,13 @@ Pre-requesites
 
 2. Storage Class Availability
 
-3. Have access to the software downloads on `my.f5.com<https://my.f5.com/manage/s/>`__
+3. Have access to the software downloads on `my.f5.com <https://my.f5.com/manage/s/>`__
 
-OCP Installation cluster is mentioned `here<Yet to Update>`__ which also includes Storage Class creation in OCP Cluster.
+OCP Installation cluster is mentioned `here <Yet to Update>`__ which also includes Storage Class creation in OCP Cluster.
 
 **Step 1: Download the BIG-IP Image**
 
-1. Log in to your F5 account on `my.f5.com<https://my.f5.com/manage/s/>`__ and navigate to the software downloads page.
+1. Log in to your F5 account on `my.f5.com <https://my.f5.com/manage/s/>`__ and navigate to the software downloads page.
 2. Select the product, version, image type and location that you want to download.
 3. Select "Copy Download Link". The copied link will include authentication token that will be valid for a limited time.
 4. Open your terminal and navigate to the directory where you want to save the qcow2 file.
