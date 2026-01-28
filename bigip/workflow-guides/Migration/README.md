@@ -34,7 +34,7 @@ This scenario demonstrates the migration of application traffic and workloads fr
 ## Migration Stages Overview
 
 ### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
-At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well .
+At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
 
 ![ ](./Assets/device_details_active.jpg)
 
@@ -65,6 +65,28 @@ The remaining BIG-IP VE is migrated from VMware to Nutanix and added back into t
 For a detailed, step-by-step migration procedure, refer to the following document:
 
 - [`BIG-IP-Migration-Vmware-To-Nutanix.rst`](Migrating_BIG_IP_from_VMware_to_Nutanix.rst)
+
+## Scenario 2: Migration from VMware to Red Hat OpenShift
+
+This scenario demonstrates the migraiton of applicaiton traffic and workloads from a VMware to RedHat Openshift Container Platform using F5 BIG-IP Virtual Edition. With BIG-IP, we follow series of steps to migration from VMware along with application workloads to OCP.
+
+## Migration Stages Overview
+
+### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
+At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
+
+![ ](./Assets_VMware_to_OCP/active-big-ip-mac-details.jpg)
+
+![ ](./Assets_VMware_to_OCP/standby-ip-mac-details.jpg)
+
+![ ](./Assets_VMware_to_OCP/application-access-before-testing.jpg)
+
+### Stage 2 – Migrate Standby BIG-IP VE from VMware to OCP
+
+The Standby BIG-IP VE is migratd from VMware to OCP. Configuration and licensing are preserved, allowing the migrated instance to rejoin the high-availability configuration without affecting active application traffic.
+
+![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
+
 
 ### Conclusion
 
