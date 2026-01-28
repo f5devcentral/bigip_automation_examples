@@ -1,4 +1,4 @@
-Uploading Image to RedHat OpenShift Platform Cluster
+Uploading Image to RedHat OpenShift Platform
 #########################################################
 
 In this article, we discuss about how to upload any image to RedHat OpenShift Platform (OCP) cluster, which is required to bring up a VM using it.
@@ -6,11 +6,11 @@ In this article, we discuss about how to upload any image to RedHat OpenShift Pl
 Pre-requesites
 -------------------------------
 
-1) OCP Cluster Installation
+1. OCP Cluster Installation
 
-2) Storage Class Availability
+2. Storage Class Availability
 
-2) Have access to the software downloads on `my.f5.com<https://my.f5.com/manage/s/>`__
+3. Have access to the software downloads on `my.f5.com<https://my.f5.com/manage/s/>`__
 
 OCP Installation cluster is mentioned `here<Yet to Update>`__ which also includes Storage Class creation in OCP Cluster.
 
