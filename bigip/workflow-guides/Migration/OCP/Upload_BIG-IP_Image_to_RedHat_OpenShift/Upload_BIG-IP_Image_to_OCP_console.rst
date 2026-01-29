@@ -125,7 +125,7 @@ Once the image upload is successful, we can able to verify the availability of i
 
 .. image:: ./Assets/oc_get_dv.jpg
 
-As you can able to see, by executing "oc get pv" cmd, we can able to see **big-ip** image is uploaded successfully and ready to be deployed.
+As you can able to see, by executing "oc get dv" cmd, we can able to see **big-ip** image is uploaded successfully and ready to be deployed.
 
 Conclusion:
 --------------------
@@ -144,4 +144,4 @@ Additional Links:
 
 `Configuring Persistent Storage using Local Volume <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#install-config-persistent-storage-persistent-storage-local>`__
 
-`Configuring persistent storage using host path <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#using_hostpath>`__
+`Configuring Persistent Storage using hostPath <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#using_hostpath>`__
