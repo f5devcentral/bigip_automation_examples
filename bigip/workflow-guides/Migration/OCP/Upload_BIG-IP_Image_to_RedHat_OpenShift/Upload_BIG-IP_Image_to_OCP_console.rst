@@ -21,7 +21,7 @@ OCP Installation cluster is mentioned `here <Yet to Update>`__ which also includ
 3. Select "Copy Download Link". The copied link will include authentication token that will be valid for a limited time.
 4. Open your terminal and navigate to the directory where you want to save the qcow2 file.
 
-**Step 2: Persistent Storage Using Local Volume**
+**Step 2: Creating Persistent Storage Using Local Volume**
 
 OCP cluster can be provisioned with the persistent storage by using local volumes. 
 
