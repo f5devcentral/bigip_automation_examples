@@ -1,7 +1,7 @@
 Uploading BIG-IP VE Image to RedHat OpenShift Platform
 #########################################################
 
-In this article, we discuss about how to upload BIG-IP (same follwed for Ubuntu Linux) image to RedHat OpenShift Platform (OCP) cluster, which is required to bring up a VM using it.
+In this article, we discuss about how to upload BIG-IP (same followed for Ubuntu Linux) image to RedHat OpenShift Platform (OCP) cluster, which is required to bring up a VM using it.
 
 Pre-requesites
 -------------------------------
