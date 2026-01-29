@@ -125,7 +125,7 @@ Once the image upload is successful, we can able to verify the availability of i
 
 .. image:: ./Assets/oc_get_dv.jpg
 
-As you can able to see, by executing "oc get dv" cmd, we can able to see **big-ip** image is uploaded successfully and ready to be deployed.
+As you can able to see, by executing "oc get dv" cmd, we can able to see **big-ip** image is uploaded successfully and ready to be deployed as a VM or pod.
 
 Conclusion:
 --------------------
