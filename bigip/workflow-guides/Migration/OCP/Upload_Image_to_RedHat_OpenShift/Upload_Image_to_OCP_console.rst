@@ -37,11 +37,11 @@ In a 3 Node cluster, select the Node in which Image has to deployed and booted. 
 
 As you can able to see from the above screenshot, directory named **v12** is created in the path /mnt/data.
 
-**Step 2.2: Creating Local Persistent Volume (PV) **
+**Step 2.2: Creating Local Persistent Volume (PV)**
 
 Local Persistent volume allows to access local storage devices such as disk, partition.
 
-Below is the yaml to create PV,
+Below is the yaml to create PV, we create 2 PVs, one for Image volume and other for scratch,
 
 .. code-block:: python
 
@@ -93,28 +93,55 @@ Below is the yaml to create PV,
                     - aa-bb-cc-dd-ee-f1 
     volumeMode: Filesystem
 
+Save the file and create the PV:
+
+    $ oc apply -f big-ip-pv.yaml
+
+    persistentvolume/big-ip-image-17.5-pv1 created
+
+    persistentvolume/big-ip-image-17.5-pv2 created
+
+On successful creation of PV, execute "oc get pv" to know its status,
+
 .. image:: ./Assets/persistent_volume.jpg
 
-With the volume shows available, Now can go ahead and upload the Image.
+As you can able to see, the volume status shows available, and it is good to proceed further on uploading BIG-IP Image to OCP Cluster.
 
 **Step 2.3: Upload Image to OCP cluster**
 
-From the OCP Console, 
+From the OCP Console, Navigate to Virtualization > Bootable Volumes. From the "Add volume" button click on "with form".
+
+.. image:: ./Assets/bootable_volume_page.jpg
+
+A window opens to select the Image location, Click on Upload button to upload the image.
+
+Select the StorageClass as "tme-storage", Select the Disk size around 90 GiB. This is due to when the image uploads it expands to around 83 GiB.
+
+Click on Save button to start uploading the image.
 
 .. image:: ./Assets/add_volume.jpg
 
+Once the image upload is successful, we can able to verify the availability of image either using CLI or OpenShift Web console.
+
+.. image:: ./Assets/oc_get_dv.jpg
+
+As you can able to see, by executing "oc get pv" cmd, we can able to see **big-ip** image is uploaded successfully and ready to be deployed.
+
+Conclusion:
+--------------------
+With the detailed steps mentioned above, uploading of any image to the OCP cluster can be achieved.
+
+
 Additional Links:
 --------------------
-https://my.f5.com/manage/s/article/K000138258
+`Downloading BIG-IP ISO file from my.f5.com <https://my.f5.com/manage/s/article/K000138258>`__
 
-https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/install-config-configuring-local
+`Configuring Local Volumes in RedHat OpenShift Platform <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/install-config-configuring-local>`__
 
-https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+`Persistent Volumes | Kubernetes <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>`__
 
-https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#using_hostpath
+`Configuring Persistent Storage Overview <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#install-config-persistent-storage-index>`__
 
-https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#install-config-persistent-storage-index
+`Configuring Persistent Storage using Local Volume <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#install-config-persistent-storage-persistent-storage-local>`__
 
-https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#install-config-persistent-storage-persistent-storage-local
-
-
+`Configuring persistent storage using host path <https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html/configuring_clusters/configuring-persistent-storage#using_hostpath>`__
