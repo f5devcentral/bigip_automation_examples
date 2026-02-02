@@ -12,7 +12,7 @@ Pre-requesites
 
 3. Have access to the software downloads on `my.f5.com <https://my.f5.com/manage/s/>`__
 
-OCP Installation cluster is mentioned `here <Yet to Update>`__ which also includes Storage Class creation in OCP Cluster.
+OCP Installation cluster is mentioned `here <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/OCP-Setup-VMware.rst>`__ which also includes Storage Class creation in OCP Cluster.
 
 **Step 1: Download the BIG-IP Image**
 
