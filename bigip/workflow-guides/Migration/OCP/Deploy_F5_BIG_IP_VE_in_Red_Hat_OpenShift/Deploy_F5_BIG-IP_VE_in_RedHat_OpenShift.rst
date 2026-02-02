@@ -74,7 +74,7 @@ Initally, console shows the logs as below,
 
 After sometime, we can able to login to the console as below,
 
-.. image:: ./Assets/BIG-IP_first_login.jpg
+.. image:: ./Assets/change-creds-stby-big-ip-ocp.jpg
 
 Update the password once you login. Install the license and good to go for next step of configurations.
 
