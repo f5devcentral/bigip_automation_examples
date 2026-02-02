@@ -113,6 +113,24 @@ The Standby BIG-IP VE is migratd from VMware to OCP. Configuration and licensing
 
 ![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
 
+### Stage 3 – Failover Active BIG-IP VE to OCP
+
+Application traffic is failed over from the Active BIG-IP VE running on VMware to the BIG-IP VE running on OCP. At this stage, OCP becomes the active traffic-handling platform while VMware remains in standby.
+
+![ ](./Assets/stage-3-switchover.jpg)
+
+### Stage 4 – Migrate Application Workloads from VMware to OCP
+
+Workload applications are migrated from VMware to OCP and made to run to same IP and Port as in previous VMware platform.
+
+![ ](./Assets_VMware_to_OCP/application-access-before-testing.jpg)
+
+### Stage 5 – Migrate Remaining BIG-IP VE from VMware to OCP
+
+The remaining BIG-IP VE is migrated from VMware to OCP and added back into the high-availability configuration. Upon completion, both BIG-IP instances operate entirely from the OCP platform. 
+
+![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
+
 ### Conclusion
 
 This workflow demonstrates how F5 BIG-IP Virtual Edition enables a controlled and low-risk migration of application traffic from VMware to Nutanix and OCP. By leveraging BIG-IP high availability and consistent traffic management capabilities, organizations can transition applications across heterogeneous infrastructure platforms while preserving availability, security, and operational consistency.
