@@ -1,7 +1,7 @@
 Uploading BIG-IP VE Image to RedHat OpenShift Platform
 #########################################################
 
-In this article, we discuss about how to upload BIG-IP (same follwed for Ubuntu Linux) image to RedHat OpenShift Platform (OCP) cluster, which is required to bring up a VM using it.
+In this article, we discuss about how to upload BIG-IP (same followed for Ubuntu Linux) image to RedHat OpenShift Platform (OCP) cluster, which is required to bring up a VM using it.
 
 Pre-requesites
 -------------------------------
@@ -12,7 +12,7 @@ Pre-requesites
 
 3. Have access to the software downloads on `my.f5.com <https://my.f5.com/manage/s/>`__
 
-OCP Installation cluster is mentioned `here <Yet to Update>`__ which also includes Storage Class creation in OCP Cluster.
+OCP Installation cluster is mentioned `here <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/OCP-Setup-VMware.rst>`__ which also includes Storage Class creation in OCP Cluster.
 
 **Step 1: Download the BIG-IP Image**
 
