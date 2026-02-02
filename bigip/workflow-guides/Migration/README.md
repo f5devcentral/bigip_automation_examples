@@ -15,7 +15,6 @@ Common migration scenarios include moving applications from VMware to alternativ
 ## Architecture Overview
 
 ![ ](./Assets/arch_overview.png)
-
 The architecture demonstrates how F5 BIG-IP VE provides consistent application delivery across heterogeneous infrastructure platforms.
 
 In the source environment, application workloads run on VMware and are front-ended by BIG-IP VE instances responsible for traffic management, availability, and security enforcement. As part of the migration, equivalent BIG-IP VE instances are deployed on Nutanix, allowing both environments to operate in parallel during the transition.
@@ -24,12 +23,43 @@ BIG-IP serves as a centralized traffic control layer, ensuring that application 
 
 The architecture also highlights BIG-IP’s ability to extend the same traffic management and policy framework across multiple platforms, including VMware, Nutanix, and container platforms such as Red Hat OpenShift, supporting hybrid and multi-platform deployment models.
 
+**VMware:** 
+Two virtual machines are provisioned using Ubuntu ISO images—one designated as the client and the other as the server. On the server VM, multiple intentionally vulnerable web applications deployed such as Juice Shop using Docker containers with custom port configurations. These applications are used for testing and security assessment purposes and can be accessed from the client VM over the configured ports.
+
+[Installing Client Server Machines in ESXi | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Ubuntu-deployment-ESXi.rst)
+
+A virtual machine (VM) is provisioned on VMware ESXi, which is deployed on a Dell PowerEdge R640 bare-metal server. The VM is booted using the BIG-IP OVA image obtained from the official F5 Downloads portal. Once the BIG-IP instance is operational, application workloads hosted on another VM which are deployed within the same ESXi environment and are integrated through a virtual server configured on the BIG-IP. This setup ensures secure access by routing traffic through the virtual server, effectively preventing direct exposure of the applications to external networks.  
+
+[Deploying BIG-IP on VMware | F5 BIG-IP Solutions](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-on-VMware.rst)
+
+**Nutanix on VMware:**
+Nutanix Community Edition (CE) 2.1 is deployed as a VM on VMware ESXi, and its console provides the management interface for creating and operating workloads inside the Nutanix environment. Within this Nutanix-managed infrastructure, a new VM is provisioned using a BIG-IP Virtual Edition (VE) image. This BIG-IP VE instance is then configured with the necessary Virtual Servers, Pools, and policies to front-end and manage traffic for multiple applications hosted within Nutanix. BIG-IP delivers comprehensive application protection for these Nutanix-hosted workloads by leveraging its advanced security capabilities, including Web Application Firewall (WAF), Bot Defense and other L4–L7 security services. This ensures that applications running inside the Nutanix ecosystem remain secure, resilient, and optimized for performance.
+
+[Steps to install Nutanix on VMware | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/Nutanix_CE_2.1_installation_on_VMware.rst)
+
+[Steps to Deploy BIG-IP on Nutanix Vmware | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-Deployment-Nutanix.rst)
+
+**OCP (OpenShift Container Platform):**
+A 3-node OpenShift Container Platform (OCP) cluster is deployed on a VMware-based infrastructure, providing a robust foundation for containerized workloads.Within the OCP virtualization environment, a virtual machine (VM) is provisioned using a QCOW2 image, enabling flexible and efficient resource utilization. In parallel, application workloads are hosted on a separate Ubuntu-based VM, where they are deployed using Docker. These workloads are integrated with an F5 BIG-IP virtual server, which acts as a centralized and secure entry point for external traffic. 
+
+Please refer to the links below for detailed instructions on setting up the OCP infrastructure—including OCP nodes, cluster creation, and VM deployment as well as deploying BIG-IP on the respective cluster nodes.
+
+[OCP Infra setup & Cluster Creation | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/OCP-Setup-VMware.rst)
+
+[Configure NNCP & NAD on OCP Cluster | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Configuring_NNCP_NAD_configs_in_Red_Hat_OpenShift/configuring_NNCP_NAD_configs_in_ocp.rst)
+
+[Deploy BIG-IP on OCP Cluster | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_F5_BIG_IP_VE_in_Red_Hat_OpenShift/deploy_big_ip.rst)
+
+[Deploy Ubuntu Server Machine on OCP Cluster | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_Ubuntu_Linux_server_machine_in_Red_Hat_OpenShift/ubuntu_deploy.rst)
 
 ## Scenario 1: Migration from VMware to Nutanix
 
 ![ ](./Assets/migration_overview.png)
 
 This scenario demonstrates the migration of application traffic and workloads from a VMware-based environment to Nutanix AHV using F5 BIG-IP Virtual Edition. BIG-IP enables a phased migration approach by maintaining consistent traffic management, availability, and security policies while applications and infrastructure components transition between platforms.
+
+For complete, step-by-step migration instructions, refer to [Migration In-Detailed](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/Migrating_BIG_IP_from_VMware_to_Nutanix.rst).
+A high-level overview of the process is outlined below.
 
 ## Migration Stages Overview
 
@@ -62,10 +92,6 @@ The remaining BIG-IP VE is migrated from VMware to Nutanix and added back into t
 
 ![ ](./Assets/final_big_ips_state_verification.jpg)
 
-For a detailed, step-by-step migration procedure, refer to the following document:
-
-- [`BIG-IP-Migration-Vmware-To-Nutanix.rst`](Migrating_BIG_IP_from_VMware_to_Nutanix.rst)
-
 ## Scenario 2: Migration from VMware to Red Hat OpenShift
 
 This scenario demonstrates the migraiton of applicaiton traffic and workloads from a VMware to RedHat Openshift Container Platform using F5 BIG-IP Virtual Edition. With BIG-IP, we follow series of steps to migration from VMware along with application workloads to OCP.
@@ -87,12 +113,11 @@ The Standby BIG-IP VE is migratd from VMware to OCP. Configuration and licensing
 
 ![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
 
-
 ### Conclusion
 
-This workflow demonstrates how F5 BIG-IP Virtual Edition enables a controlled and low-risk migration of application traffic from VMware to Nutanix. By leveraging BIG-IP high availability and consistent traffic management capabilities, organizations can transition applications across heterogeneous infrastructure platforms while preserving availability, security, and operational consistency.
+This workflow demonstrates how F5 BIG-IP Virtual Edition enables a controlled and low-risk migration of application traffic from VMware to Nutanix and OCP. By leveraging BIG-IP high availability and consistent traffic management capabilities, organizations can transition applications across heterogeneous infrastructure platforms while preserving availability, security, and operational consistency.
 
-The phased migration approach allows infrastructure and application components to be migrated independently, reducing service disruption and providing clear validation points at each stage. This ensures that application traffic continues to be handled reliably throughout the migration and after the transition to the target platform.
+The phased migration approach enables infrastructure and application components to be migrated independently from VMware to Nutanix and VMware to OCP minimizing service disruption and providing clear validation checkpoints at each stage. This approach ensures application traffic is handled reliably throughout the migration process and continues seamlessly after transitioning to the target platforms.
 
 ### References
 
