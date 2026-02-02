@@ -15,12 +15,12 @@ The following deployment defintion creates a BIG-IP pod:
     apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
-    name: bigip-chthonda-new
+    name: bigip-stby
     namespace: default
     labels:
         f5type: bigip-ve
     annotations:
-        k8s.v1.cni.cncf.io/networks: "default/net-mgmt,default/br0-10-network,default/local-net-20-x"
+        k8s.v1.cni.cncf.io/networks: "default/net-mgmt"
     spec:
     runStrategy: Always
     template:
@@ -32,60 +32,33 @@ The following deployment defintion creates a BIG-IP pod:
         domain:
             cpu:
             sockets: 1
-            # Adjust cores to the desired number of vCPUs
             cores: 4
             threads: 2
             resources:
-            # memory must be 2Gi per core at least
             requests:
-            # schedulear will see whether 16 GB is available or not oc describe node/<>
-                memory: 16Gi
+                memory: 8Gi
             limits:
-                memory: 32Gi
+                memory: 16Gi
             devices:
             networkInterfaceMultiqueue: true
             disks:
-            - name: bigip-new-datavolume
+            - name: bigip1-datavolume-chthonda
                 disk:
                 bus: virtio
             interfaces:
             - name: mgmt
                 bridge: {}
-            - name: data-ext-ovn
-                bridge: {}
-            - name: data-int-ovn
-                bridge: {}
         volumes:
-        - cloudInitNoCloud:
-            networkData: |
-            version: 2
-            ethernets:
-                mgmt :
-                addresses:
-                - 10.144.126.48/24
-                data-ext-ovn:
-                addresses:
-                - 20.20.2.35/24
-                data-int-ovn:
-                - 10.10.0.95/24      
-        - name: bigip1-datavolume
+        - name: bigip1-datavolume-chthonda
             dataVolume:
-            name: "big-ip-17.5.1"
+            name: "big-ip-17.5"
         networks:
         - name: mgmt
             multus:
-            # Name of the NAD Network associating to Mgmt network
             networkName: default/net-mgmt
-        - name: data-ext-ovn
-            multus:
-            # Name of the NAD Network associating to External Network
-            networkName: default/br0-10-network
-        - name: data-int-ovn
-            multus:
-            # Name of the NAD Network associating to Internal Network
-            networkName: default/local-net-20-x
         nodeSelector:
-            kubernetes.io/hostname: aa-bb-cc-dd-ee-f1
+            kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
+
 
 Save the file and create the BIG-IP Pod:
 
@@ -101,14 +74,13 @@ Initally, console shows the logs as below,
 
 After sometime, we can able to login to the console as below,
 
-<Login PIC>
+.. image:: ./Assets/big-ip_first_login.jpg
 
-Update the password once you login,
-
+Update the password once you login. Install the license and good to go for next step of configurations.
 
 Conclusion
 -------------------------------
-With the follow of above steps, BIG-IP can be successfully deployed in OCP Cluster.
+With the follow of above steps, BIG-IP can be successfully deployed in OCP Cluster and good to be configured for Pool and Virtual Server configurations.
 
 Additional Links
 -------------------------------
