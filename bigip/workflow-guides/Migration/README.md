@@ -127,7 +127,8 @@ Workload applications are migrated from VMware to OCP and made to run to same IP
 
 ### Stage 5 – Migrate Remaining BIG-IP VE from VMware to OCP
 
-The remaining BIG-IP VE is migrated from VMware to OCP and added back into the high-availability configuration. Upon completion, both BIG-IP instances operate entirely from the OCP platform.
+
+The remaining BIG-IP VE is migrated from VMware to OCP and added back into the high-availability configuration. Upon completion, both BIG-IP instances operate entirely from the OCP platform. 
 
 ![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
 
