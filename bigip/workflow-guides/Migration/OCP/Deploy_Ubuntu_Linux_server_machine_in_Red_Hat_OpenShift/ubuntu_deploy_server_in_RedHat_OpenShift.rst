@@ -1,6 +1,6 @@
 Deploy Ubuntu Server Machine in RedHat OpenShift Platform
 #########################################################
-This documents contains step by step procedure to deploy Ubuntu Server in RedHat OpenShift Platform (OCP). This is needed to deploy web based demo applications within them, which acts as a web server.
+This documents contains step by step procedure to deploy Ubuntu Server in RedHat OpenShift Platform (OCP). This is needed to deploy web based demo applications within it, which acts as a web server.
 
 Pre-requesites
 -------------------------------
