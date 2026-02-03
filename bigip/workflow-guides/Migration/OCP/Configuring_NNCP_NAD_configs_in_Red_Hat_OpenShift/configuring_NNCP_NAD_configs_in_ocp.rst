@@ -214,3 +214,5 @@ Referrence Links:
 
 `Red Hat OpenShift Secondary Network Configuration <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/multiple_networks/index#nw-multus-whereabouts-fast-ipam_configuring-additional-network>`__
 
+`Red Hat OpenShift Whereabout configs for Internal Network <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/multiple_networks/index#nw-multus-whereabouts-fast-ipam_configuring-additional-network>`__
+
