@@ -22,7 +22,7 @@ Below are the detailed steps to bring up Ubuntu Server machine in OCP
 
 For creating a Ubuntu machine, as a pre-requisite, we create Persistent Volume Claim (PVC) that is used as Storage/Harddisk for Ubuntu Machine, followed by having a Ubuntu Server defintion file ready,
 
-**Step 1.1: configuring Local Volumes**
+**Step 1.1: Configuring Local Volumes**
 
 At first, Login to the Node and create a directory of a valid name. This creates a volume in the Node and this volume is being used as storage for Ubuntu machine.
 
@@ -30,7 +30,7 @@ At first, Login to the Node and create a directory of a valid name. This creates
 
 **Step 1.2: Creating a PVC for Ubuntu Machine**
 
-To create a PVC, Persistent Volume (PV) should be created. Below is the definition file to create a PV.
+To create a PVC, Persistent Volume (PV) should be created first. Below is the definition file to create a PV.
 
 .. code-block:: python
 
