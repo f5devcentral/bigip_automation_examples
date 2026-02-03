@@ -8,7 +8,7 @@ This document focuses on the use of F5 BIG-IP to support application traffic mig
 
 ## Introduction
 
-This article highlights how F5 BIG-IP enables seamless application traffic migration across mixed infrastructure environments commonly found in enterprise deployments. As organizations move applications between platforms such as VMware, Nutanix and platforms like OCP maintaining consistent traffic management, availability, and security becomes critical.
+This article highlights how F5 BIG-IP is seamlessly migrated and resume application traffic across mixed infrastructure environments commonly found in enterprise deployments. As organizations move applications between platforms such as VMware, Nutanix and platforms like OCP maintaining consistent traffic management, availability, and security becomes critical.
 
 Common migration scenarios include moving applications from VMware to alternative platforms based on business needs, extending on-premises applications to Nutanix, OCP and deploying applications across multiple platforms for resiliency and continuity. BIG-IP plays a central role in these transitions by ensuring consistent application delivery and policy enforcement throughout the migration process.
 
