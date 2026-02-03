@@ -76,7 +76,11 @@ After sometime, we can able to login to the console as below,
 
 .. image:: ./Assets/change-creds-stby-big-ip-ocp.jpg
 
-Update the password once you login. Install the license and good to go for next step of configurations.
+Update the password once you login. 
+
+Next step is to Install the license and it is done by following this document `here <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-License-Activatioln.rst>`__.
+
+Once done, now it is good to go for next step of configurations.
 
 Conclusion
 -------------------------------
