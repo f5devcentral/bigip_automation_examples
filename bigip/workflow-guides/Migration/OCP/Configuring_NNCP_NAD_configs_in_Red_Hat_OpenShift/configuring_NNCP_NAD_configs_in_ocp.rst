@@ -19,7 +19,7 @@ In scenario 2, defines the reuse of Node Network Cluster NIC by extending the re
 
 In scenario 3, Network is created for Internal communication within the OCP cluster and this is not accessible from the outside the cluster, whereabouts NAD configs were used to achieve it.
 
-Section 1: Connect OpenShift node to a Network with different Physical NICs 
+Scenario 1: Connect OpenShift node to a Network with different Physical NICs 
 -------------------------------
 At first, Let's login to the VMware ESXi Machine where 3 Node cluster is installed.
 
@@ -112,7 +112,7 @@ Apply the NAD configurations using below command, and results shown as created
 To use the new external network with a virtual machine, modify the Network Interfaces section of the virtual machine and select the new default/net-mgmt as the Network type.
 
 
-Section 2: Connect OpenShift node by reusing Cluster Node Network
+Scenario 2: Connect OpenShift node by reusing Cluster Node Network
 -------------------------------
 In this scenario, we connect virtual machine to the external network by resuing the **br-ex** bridge that is the defualt on all nodes running in an OVN-Kubernetes cluster. We provide necessary NNCP configurations to get it done.
 
@@ -169,7 +169,8 @@ Apply NAD configurations using below command, and results shown as created
     
     networkattachmentdefinition.k8s.cni.cncf.io/br-ex-node-net created
 
-**Section 3: Configuring Internet Network**
+Scenario 3: Configuring Internet Network
+-------------------------------
 
 We require Internal network to communicate between two VMs in the OCP, and this network will be within the OCP but cannot be accessed from the outside. We do not need to configure NNCP in this case, but only require NAD configurations.
 
