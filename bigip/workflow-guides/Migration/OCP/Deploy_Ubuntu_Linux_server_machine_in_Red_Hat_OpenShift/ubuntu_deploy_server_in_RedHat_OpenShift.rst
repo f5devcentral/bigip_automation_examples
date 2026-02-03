@@ -6,7 +6,7 @@ Pre-requesites
 -------------------------------
 Availability of Ubunut Server Image in OCP Cluster. For more details on downloading Ubuntu Image, refer to this `link <https://ubuntu.com/download>`__.
 
-Steps to deploy Ubuntu Server:
+Steps to deploy Ubuntu Server
 -------------------------------
 Below are the detailed steps to bring up Ubuntu Server machine in OCP
 
