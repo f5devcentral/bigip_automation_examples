@@ -20,7 +20,7 @@ Below are the detailed steps to bring up Ubuntu Server machine in OCP
 
 **Step 1: Creating PV and PVC for Ubuntu Storage**
 
-In this step, we discuss about creating a Ubuntu Server. As a pre-requisite, we create Persistent Volume Claim (PVC) that is used as Storage/Harddisk for Ubuntu Machine, followed by we having a Ubuntu Server defintion file ready,
+For creating a Ubuntu machine, as a pre-requisite, we create Persistent Volume Claim (PVC) that is used as Storage/Harddisk for Ubuntu Machine, followed by having a Ubuntu Server defintion file ready,
 
 **Step 1.1: configuring Local Volumes**
 
