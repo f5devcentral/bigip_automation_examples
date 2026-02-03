@@ -8,7 +8,7 @@ This document focuses on the use of F5 BIG-IP to support application traffic mig
 
 ## Introduction
 
-This article highlights how F5 BIG-IP is seamlessly migrated and resume application traffic across mixed infrastructure environments commonly found in enterprise deployments. As organizations move applications between platforms such as VMware, Nutanix and platforms like OCP maintaining consistent traffic management, availability, and security becomes critical.
+This article highlights how F5 BIG-IP is seamlessly migrated and resume application traffic across mixed infrastructure environments which are commonly found in enterprise deployments. As organizations move applications between platforms such as VMware, Nutanix and platforms like OCP maintaining consistent traffic management, availability, and security becomes critical.
 
 Common migration scenarios include moving applications from VMware to alternative platforms based on business needs, extending on-premises applications to Nutanix, OCP and deploying applications across multiple platforms for resiliency and continuity. BIG-IP plays a central role in these transitions by ensuring consistent application delivery and policy enforcement throughout the migration process.
 
@@ -17,7 +17,7 @@ Common migration scenarios include moving applications from VMware to alternativ
 ![ ](./Assets/arch_overview.png)
 The architecture demonstrates how F5 BIG-IP VE provides consistent application delivery across heterogeneous infrastructure platforms.
 
-In the source environment, application workloads run on VMware and are front-ended by BIG-IP VE instances responsible for traffic management, availability, and security enforcement. As part of the migration, equivalent BIG-IP VE instances are deployed on VMware, Nutanix and OCP, allowing all the environments to operate in parallel during the transition.
+In the source environment, application workloads run on VMware and are front-ended by BIG-IP VE instances responsible for traffic management, availability, and security enforcement. As part of the migration, equivalent BIG-IP VE instances are deployed on Nutanix and OCP, allowing all the environments to operate in parallel during the transition.
 
 BIG-IP serves as a centralized traffic control layer, ensuring that application delivery and security policies remain consistent while workloads migrate from VMware to Nutanix and OCP. This approach enables controlled traffic redirection and seamless failover with minimal impact to application availability.
 
