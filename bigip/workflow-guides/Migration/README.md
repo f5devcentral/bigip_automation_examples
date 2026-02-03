@@ -139,11 +139,10 @@ The phased migration approach enables infrastructure and application components 
 
 ### References
 
-https://community.f5.com/kb/technicalarticles/f5-big-ip-ve-and-application-workloads-migration-from-vmware-to-nutanix/340465
+`F5 BIG-IP VE & App Workload Migration from VMware to Nutanix <https://community.f5.com/kb/technicalarticles/f5-big-ip-ve-and-application-workloads-migration-from-vmware-to-nutanix/340465>`__
 
-https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ve-setup-vmware-esxi-11-5-0/2.html
+`F5 BIG-IP Virtual Edition Deployment <https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ve-setup-vmware-esxi-11-5-0/2.html>`__
 
-https://clouddocs.f5.com/cloud/public/v1/nutanix/nutanix_setup.html
-
+`Nutanix AHV: BIG-IP Virtual Edition Setup <https://clouddocs.f5.com/cloud/public/v1/nutanix/nutanix_setup.html>`__
 
 
