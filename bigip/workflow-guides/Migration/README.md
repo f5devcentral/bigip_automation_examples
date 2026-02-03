@@ -139,6 +139,8 @@ The phased migration approach enables infrastructure and application components 
 
 ### References
 
+`Using tmsh to modify BIG-IP Password <https://my.f5.com/manage/s/article/K13121>`__
+
 `F5 BIG-IP VE & App Workload Migration from VMware to Nutanix <https://community.f5.com/kb/technicalarticles/f5-big-ip-ve-and-application-workloads-migration-from-vmware-to-nutanix/340465>`__
 
 `F5 BIG-IP Virtual Edition Deployment <https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ve-setup-vmware-esxi-11-5-0/2.html>`__
