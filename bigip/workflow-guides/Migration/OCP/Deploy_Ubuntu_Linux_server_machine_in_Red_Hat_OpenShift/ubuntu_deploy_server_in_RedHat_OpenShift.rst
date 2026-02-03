@@ -184,11 +184,11 @@ Set up a profile. Ubuntu server needs to hvae at least one known user for the sy
 
 .. image:: ./Assets/ubuntu_profile_details.jpg
 
-After entering the required information, the screen will now show the progress of the installer. Once installation completes, do not press the **Reboot Now** button at the botton. OCP re initiate the installation process once again, to avoid this follow the process mentioned below,
+After entering the required information, the screen will now show the progress of the installer. Once installation completes, do not press the **Reboot Now** button at the botton. OCP reinitiates the installation process once again, to avoid this follow the process mentioned below,
 
 .. image:: ./Assets/ubuntu_new_install_complete.jpg
 
-**Step 3.2: Update Yaml configs before reboot**
+**Step 3.2: Update Yaml configs before Reboot**
 
 Update the Yaml file in the OCP console, to effectivelty boot from Ubuntu Harddisk PVC but not Ubuntu ISO file. To get it achieved, follow the steps mentioned below,
 
