@@ -13,6 +13,12 @@ Pre-requesites
 
 Now, with the above conditions satisfied, we proceed with the introducing Network to the 3 Node cluster first and then to the VMs in that cluster.
 
+Below scenario 1 defines the introducing a new network to the OCP Cluster by attaching to Node(s), and extending it to the VMs.
+
+In scenario 2, defines the reuse of Node Network Cluster NIC by extending the reuse of **br-ex** to connect to Virtual Machines.
+
+In scenario 3, Network is created for Internal communication within the OCP cluster, whereabouts NAD configs were used to achieve it.
+
 Section 1: Connect OpenShift node to a Network with different Physical NICs 
 -------------------------------
 At first, Let's login to the VMware ESXi Machine where 3 Node cluster is installed.
