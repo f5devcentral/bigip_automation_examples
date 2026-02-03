@@ -8,20 +8,20 @@ This document focuses on the use of F5 BIG-IP to support application traffic mig
 
 ## Introduction
 
-This article highlights how F5 BIG-IP enables seamless application traffic migration across mixed infrastructure environments commonly found in enterprise deployments. As organizations move applications between platforms such as VMware, Nutanix, and public clouds, maintaining consistent traffic management, availability, and security becomes critical.
+This article highlights how F5 BIG-IP enables seamless application traffic migration across mixed infrastructure environments commonly found in enterprise deployments. As organizations move applications between platforms such as VMware, Nutanix and platforms like OCP maintaining consistent traffic management, availability, and security becomes critical.
 
-Common migration scenarios include moving applications from VMware to alternative platforms based on business needs, extending on-premises applications to Nutanix and public cloud environments, and deploying applications across multiple platforms for resiliency and continuity. BIG-IP plays a central role in these transitions by ensuring consistent application delivery and policy enforcement throughout the migration process.
+Common migration scenarios include moving applications from VMware to alternative platforms based on business needs, extending on-premises applications to Nutanix, OCP and deploying applications across multiple platforms for resiliency and continuity. BIG-IP plays a central role in these transitions by ensuring consistent application delivery and policy enforcement throughout the migration process.
 
 ## Architecture Overview
 
 ![ ](./Assets/arch_overview.png)
 The architecture demonstrates how F5 BIG-IP VE provides consistent application delivery across heterogeneous infrastructure platforms.
 
-In the source environment, application workloads run on VMware and are front-ended by BIG-IP VE instances responsible for traffic management, availability, and security enforcement. As part of the migration, equivalent BIG-IP VE instances are deployed on Nutanix, allowing both environments to operate in parallel during the transition.
+In the source environment, application workloads run on VMware and are front-ended by BIG-IP VE instances responsible for traffic management, availability, and security enforcement. As part of the migration, equivalent BIG-IP VE instances are deployed on VMware, Nutanix and OCP, allowing all the environments to operate in parallel during the transition.
 
-BIG-IP serves as a centralized traffic control layer, ensuring that application delivery and security policies remain consistent while workloads migrate from VMware to Nutanix. This approach enables controlled traffic redirection and seamless failover with minimal impact to application availability.
+BIG-IP serves as a centralized traffic control layer, ensuring that application delivery and security policies remain consistent while workloads migrate from VMware to Nutanix and OCP. This approach enables controlled traffic redirection and seamless failover with minimal impact to application availability.
 
-The architecture also highlights BIG-IP’s ability to extend the same traffic management and policy framework across multiple platforms, including VMware, Nutanix, and container platforms such as Red Hat OpenShift, supporting hybrid and multi-platform deployment models.
+The architecture also highlights BIG-IP’s ability to extend the same traffic management and policy framework across multiple platforms, including VMware, Nutanix and container platforms such as Red Hat OpenShift, supporting hybrid and multi-platform deployment models.
 
 **VMware:** 
 Two virtual machines are provisioned using Ubuntu ISO images—one designated as the client and the other as the server. On the server VM, multiple intentionally vulnerable web applications deployed such as Juice Shop using Docker containers with custom port configurations. These applications are used for testing and security assessment purposes and can be accessed from the client VM over the configured ports.
