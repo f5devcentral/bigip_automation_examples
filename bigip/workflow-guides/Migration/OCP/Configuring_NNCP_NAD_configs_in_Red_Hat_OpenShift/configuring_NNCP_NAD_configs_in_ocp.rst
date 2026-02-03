@@ -1,4 +1,4 @@
-Connecting OpenShift to External Network
+Connecting Virtual Machines in OpenShift to External Network
 #########################################################
 
 VMs in the OpenShift requires to access the External Network to connect to VMs or services residing outside the OCP Cluster. This is needed to enhance the connectivity and utilize the resources well. This is achieved by using NNCP and NAD configurations in OCP Web Console. This is to achieved by assigning the Lab Network VLANs to the OCP Nodes in the cluster and there by extending the network to the pods in OCP.
