@@ -4,7 +4,7 @@ This documents contains step by step procedure to deploy Ubuntu Server in RedHat
 
 Pre-requesites
 -------------------------------
-Availablitiy of Ubunut Server Image in OCP Cluster. For more details on Image Upload, refer to this `link <https://ubuntu.com/download>`__.
+Availability of Ubunut Server Image in OCP Cluster. For more details on downloading Ubuntu Image, refer to this `link <https://ubuntu.com/download>`__.
 
 Steps to deploy Ubuntu Server:
 -------------------------------
