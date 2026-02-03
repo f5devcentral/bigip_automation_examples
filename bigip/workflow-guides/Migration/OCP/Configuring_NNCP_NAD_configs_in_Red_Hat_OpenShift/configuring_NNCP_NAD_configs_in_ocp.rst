@@ -194,7 +194,7 @@ We require Internal network to communicate between two VMs in the OCP, and this 
     }
     }'
 
-20.20.20.0/24 is the Internal network being created.
+20.20.2.0/24 is the Internal network being created.
 
 Apply NAD configurations using below command, and results shown as created
 
