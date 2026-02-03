@@ -1,7 +1,7 @@
 Connecting OpenShift to External Network
 #########################################################
 
-OpenShift can be configured to access external network in additoin to the internal pod network. This is to assign the Lab Network VLANs to be assigned to the VMs created in RedHat OpenShift.
+VMs in the OpenShift requires to access the External Network to connect to VMs or services residing outside the OCP Cluster. This is needed to enhance the connectivity and utilize the resources well. This is achieved by using NNCP and NAD configurations in OCP Web Console. This is to achieved by assigning the Lab Network VLANs to the OCP Nodes in the cluster and there by extending the network to the pods in OCP.
 
 There are series of steps that has to be followed along with configuration of RedHat OpenShift (OCP) associated to it need to be carried out.
 
