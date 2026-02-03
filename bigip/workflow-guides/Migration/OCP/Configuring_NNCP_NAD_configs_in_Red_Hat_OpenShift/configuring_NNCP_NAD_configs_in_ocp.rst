@@ -17,7 +17,7 @@ Below scenario 1 defines the introducing a new network to the OCP Cluster by att
 
 In scenario 2, defines the reuse of Node Network Cluster NIC by extending the reuse of **br-ex** to connect to Virtual Machines.
 
-In scenario 3, Network is created for Internal communication within the OCP cluster, whereabouts NAD configs were used to achieve it.
+In scenario 3, Network is created for Internal communication within the OCP cluster and this is not accessible from the outside the cluster, whereabouts NAD configs were used to achieve it.
 
 Section 1: Connect OpenShift node to a Network with different Physical NICs 
 -------------------------------
