@@ -19,7 +19,7 @@ Migration from VMware to Openshift
 The migration is breakdown into 5 detailed stages for better understanding,
 
 1) Deploying BIG-IP HA pair in Openshift
-2) Migrate Standby BIG_IP VE to Openshift
+2) Migrate Standby BIG-IP VE to Openshift
 3) Failover the Active BIG-IP
 4) Migration of application workloads
 5) Migratate VMware BIG-IP to Openshift

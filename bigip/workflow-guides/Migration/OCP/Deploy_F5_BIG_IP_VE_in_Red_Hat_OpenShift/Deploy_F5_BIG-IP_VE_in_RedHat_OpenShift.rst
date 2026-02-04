@@ -4,23 +4,23 @@ This documents contains step by step procedure to deploy F5 BIG-IP in RedHat Ope
 
 Pre-requesites
 -------------------------------
-Availablitiy of BIG-IP Image in OCP Cluster. For more details on Image Upload, refer to this `link <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Upload_BIG-IP_Image_to_RedHat_OpenShift/Upload_BIG-IP_Image_to_OCP_console.rst>`__.
+Availablitiy of BIG-IP Image in OCP Cluster. For more details to upload BIG-IP Image to OCP cluster for booting, refer to this `link <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Upload_BIG-IP_Image_to_RedHat_OpenShift/Upload_BIG-IP_Image_to_OCP_console.rst>`__.
 
 BIG-IP Deployment Defintion
 -------------------------------
-The following deployment defintion creates a BIG-IP pod:
+The following deployment defintion creates a BIG-IP virtual machine:
 
 .. code-block:: python
 
     apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
-    name: bigip-stby
+    name: bigip-stby                                        <<<< Name of the Virtual machine
     namespace: default
     labels:
         f5type: bigip-ve
     annotations:
-        k8s.v1.cni.cncf.io/networks: "default/net-mgmt"
+        k8s.v1.cni.cncf.io/networks: "default/net-mgmt"     <<<< NAD Network
     spec:
     runStrategy: Always
     template:
@@ -36,13 +36,13 @@ The following deployment defintion creates a BIG-IP pod:
             threads: 2
             resources:
             requests:
-                memory: 8Gi
+                memory: 8Gi                                 <<<< Memory needed for this Instance
             limits:
                 memory: 16Gi
             devices:
             networkInterfaceMultiqueue: true
             disks:
-            - name: bigip1-datavolume-chthonda
+            - name: bigip1-datavolume-chthonda              <<<< Name of the disk of BIG-IP image
                 disk:
                 bus: virtio
             interfaces:
@@ -51,13 +51,13 @@ The following deployment defintion creates a BIG-IP pod:
         volumes:
         - name: bigip1-datavolume-chthonda
             dataVolume:
-            name: "big-ip-17.5"
+            name: "big-ip-17.5"                             <<<< Name of the BIG-IP image
         networks:
         - name: mgmt
             multus:
-            networkName: default/net-mgmt
+            networkName: default/net-mgmt                   <<<< Name of the NAD Network
         nodeSelector:
-            kubernetes.io/hostname: aa-bb-cc-dd-ee-f7
+            kubernetes.io/hostname: aa-bb-cc-dd-ee-f7       <<<< VM should be deployed to Node Hostname
 
 
 Save the file and create the BIG-IP Pod:
@@ -76,7 +76,11 @@ After sometime, we can able to login to the console as below,
 
 .. image:: ./Assets/change-creds-stby-big-ip-ocp.jpg
 
-Update the password once you login. Install the license and good to go for next step of configurations.
+Update the password once you login. 
+
+Next step is to Install the license and it is done by following this document `here <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP-License-Activatioln.rst>`__.
+
+Once done, now it is good to go for next step of configurations.
 
 Conclusion
 -------------------------------

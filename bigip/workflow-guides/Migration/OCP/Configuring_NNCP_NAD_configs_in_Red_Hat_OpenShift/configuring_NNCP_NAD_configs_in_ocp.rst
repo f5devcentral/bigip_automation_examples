@@ -1,7 +1,7 @@
-Connecting OpenShift to External Network
+Connecting Virtual Machines in OpenShift to External Network
 #########################################################
 
-OpenShift can be configured to access external network in additoin to the internal pod network. This is to assign the Lab Network VLANs to be assigned to the VMs created in RedHat OpenShift.
+VMs in the OpenShift requires to access the External Network to connect to VMs or services residing outside the OCP Cluster. This is needed to enhance the connectivity and utilize the resources well. This is achieved by using NNCP and NAD configurations in OCP Web Console. This is to achieved by assigning the Lab Network VLANs to the OCP Nodes in the cluster and there by extending the network to the pods in OCP.
 
 There are series of steps that has to be followed along with configuration of RedHat OpenShift (OCP) associated to it need to be carried out.
 
@@ -13,7 +13,13 @@ Pre-requesites
 
 Now, with the above conditions satisfied, we proceed with the introducing Network to the 3 Node cluster first and then to the VMs in that cluster.
 
-Section 1: Connect OpenShift node to a Network with different Physical NICs 
+Below scenario 1 defines the introducing a new network to the OCP Cluster by attaching to Node(s), and extending it to the VMs.
+
+In scenario 2, defines the reuse of Node Network Cluster NIC by extending the reuse of **br-ex** to connect to Virtual Machines.
+
+In scenario 3, Network is created for Internal communication within the OCP cluster and this is not accessible from the outside the cluster, whereabouts NAD configs were used to achieve it.
+
+Scenario 1: Connect OpenShift node to a Network with different Physical NICs 
 -------------------------------
 At first, Let's login to the VMware ESXi Machine where 3 Node cluster is installed.
 
@@ -106,7 +112,7 @@ Apply the NAD configurations using below command, and results shown as created
 To use the new external network with a virtual machine, modify the Network Interfaces section of the virtual machine and select the new default/net-mgmt as the Network type.
 
 
-Section 2: Connect OpenShift node by reusing Cluster Node Network
+Scenario 2: Connect OpenShift node by reusing Cluster Node Network
 -------------------------------
 In this scenario, we connect virtual machine to the external network by resuing the **br-ex** bridge that is the defualt on all nodes running in an OVN-Kubernetes cluster. We provide necessary NNCP configurations to get it done.
 
@@ -163,7 +169,8 @@ Apply NAD configurations using below command, and results shown as created
     
     networkattachmentdefinition.k8s.cni.cncf.io/br-ex-node-net created
 
-**Section 3: Configuring Internet Network**
+Scenario 3: Configuring Internet Network
+-------------------------------
 
 We require Internal network to communicate between two VMs in the OCP, and this network will be within the OCP but cannot be accessed from the outside. We do not need to configure NNCP in this case, but only require NAD configurations.
 
@@ -188,7 +195,7 @@ We require Internal network to communicate between two VMs in the OCP, and this 
     }
     }'
 
-20.20.20.0/24 is the Internal network being created.
+20.20.2.0/24 is the Internal network being created.
 
 Apply NAD configurations using below command, and results shown as created
 
@@ -206,4 +213,6 @@ Referrence Links:
 `Red Hat OpenShift Virtualization: Configuring virtual machines to use external network <https://www.redhat.com/en/blog/access-external-networks-with-openshift-virtualization#:~:text=Option%20%233%20below.-,Option%20%231%3A,-Using%20an%20external>`__
 
 `Red Hat OpenShift Secondary Network Configuration <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/multiple_networks/index#nw-multus-whereabouts-fast-ipam_configuring-additional-network>`__
+
+`Red Hat OpenShift Whereabout configs for Internal Network <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/multiple_networks/index#nw-multus-whereabouts-fast-ipam_configuring-additional-network>`__
 
