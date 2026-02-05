@@ -120,6 +120,8 @@ Stage 2: Migrating Standby BIG-IP VE to Nutanix
 Stage 3 – Fail Over the Active BIG-IP VE to Nutanix
 --------------------------------------------------
 
+   Note: In production environment, usually there will be a multiple origins per applications available on both the infrastructure before switchover.
+
 1. Initiate a failover, transitioning VMware BIGIP-1 from Active to Standby using::
 
         run sys failover standby

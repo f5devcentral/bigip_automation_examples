@@ -1,4 +1,4 @@
-# Application Migration across Heterogeneous Environments using F5 BIG-IP VE
+# BIG-IP and Application Migration across Heterogeneous Environments
 
 ## Scope
 
