@@ -149,6 +149,7 @@ Note: In production environment, usually there will be a multiple origins per ap
 
 2. Openshift BIGIP-2 becomes the Active BIG-IP VE.
 
+![ ](./Assets_VMware_to_OCP/switchover_from_active_to_stby_marked.jpg)
 
 3. As observed after executing the failover standby command, the BIG-IP instance on VMware transitions from Active to Standby, while the BIG-IP instance running on Openshift becomes Active. This behavior confirms that the traffic switchover was completed successfully
 
@@ -160,29 +161,21 @@ Note: In production environment, usually there will be a multiple origins per ap
 Stage 4 – Migrate Application Workloads from VMware to Openshift
 --------------------------------------------------------------
 
-1. The recommended and preferred method for migrating application workloads from
-   VMware to Openshift is to use **Openshift Move**, as it provides an automated and
-   consistent migration workflow.
-
-2. For the purpose of this testing and validation exercise, application workloads
+1. For the purpose of this testing and validation exercise, application workloads
    were **manually deployed** on Openshift instead of using Openshift Move.
 
-3. Manual deployment included provisioning new ubuntu virtual machines and restoring 
+2. Manual deployment included provisioning new ubuntu virtual machines and restoring 
    application data to match the existing VMware environment.
 
+![ ](./Assets_VMware_to_OCP/juice-shop-in-ocp.jpg)
 
-4. Application configurations were updated and validated to ensure proper
+3. Application configurations were updated and validated to ensure proper
    integration with the Active BIG-IP VE running on Openshift, including pool member
    configuration, health monitors, and traffic flow validation.
 
+4. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
 
-.. note::
-   To minimize service interruption, it is recommended to migrate applications in
-   smaller batches rather than all at once. Openshift Move requires briefly shutting
-   down the source VM to complete the final data synchronization before starting it
-   on Openshift.
-
-5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
+![ ](./Assets_VMware_to_OCP/traffic_stats_from_BIG-IP-in_OCP.jpg)
 
 
 **Current BIG-IP Status:**
