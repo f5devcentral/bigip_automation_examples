@@ -1,4 +1,4 @@
-Application workload migration from VMware to Openshift using BIG-IP
+BIG-IP Migration from VMware to Nutanix
 #########################################################
 
 This guide consists of detailed steps for migrating application workloads from Vmware to Openshift platform
