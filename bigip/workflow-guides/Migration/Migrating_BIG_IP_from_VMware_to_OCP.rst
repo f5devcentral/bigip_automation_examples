@@ -173,7 +173,7 @@ Stage 4 – Migrate Application Workloads from VMware to Openshift
    integration with the Active BIG-IP VE running on Openshift, including pool member
    configuration, health monitors, and traffic flow validation.
 
-4. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
+4. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP in OCP.
 
 .. image:: ./Assets_VMware_to_OCP/traffic_stats_from_BIG-IP-in_OCP.jpg
 

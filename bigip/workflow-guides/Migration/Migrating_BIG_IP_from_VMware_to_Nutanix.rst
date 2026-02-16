@@ -168,7 +168,7 @@ Stage 4 – Migrate Application Workloads from VMware to Nutanix
    down the source VM to complete the final data synchronization before starting it
    on Nutanix.
 
-5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
+5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP in Nutanix.
 
 .. image:: ./Assets/nutanix_big_ip_stats_after_traffic_test.jpg
 
