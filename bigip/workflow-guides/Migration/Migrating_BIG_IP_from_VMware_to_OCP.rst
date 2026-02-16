@@ -186,6 +186,10 @@ Stage 4 – Migrate Application Workloads from VMware to Openshift
 Stage 5 – Migrate the Remaining Standby BIG-IP VE to Openshift
 ------------------------------------------------------------
 
+Create a new BIG-IP Instance in OCP to migrate the remaining Standby BIG-IP from VMware to OCP,
+
+.. image:: ./Assets_VMware_to_OCP/active-big-ip-create-ocp.jpg
+
 1. Place VMware BIGIP-1 (Standby) into **Forced Offline** mode and back up its
    configuration.
 
@@ -235,15 +239,16 @@ License the BIG-IP with the same saved license from VMware BIGIP 1. This is simi
 
 12. VMware BIGIP-1 has now been fully migrated to Openshift.
 
-13. Application is accesible through Openshift Active BIG-IP and the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP. This also indicates that migration is succesfull 
+13. Application is accesible through Openshift Active BIG-IP. 
 
-
+.. image:: ./Assets_VMware_to_OCP/application-access-final.jpg
 
 **Migration Status:**
 
 - Openshift BIGIP-1: Standby
 - Openshift BIGIP-2: Active
 
+This confirms both the BIG-IPs are migrated successfully.
 
 Conclusion
 ----------
