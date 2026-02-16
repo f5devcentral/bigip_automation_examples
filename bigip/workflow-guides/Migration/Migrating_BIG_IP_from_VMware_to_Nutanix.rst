@@ -1,7 +1,7 @@
-Application workload migration from VMware to Nutanix using BIG-IP
+BIG-IP Migration from VMware to Nutanix
 #########################################################
 
-This guide consists of detailed steps for migrating application workloads from Vmware to Nutanix platform
+This guide consists of detailed steps for migrating BIG-IP from Vmware to Nutanix platform
 
 Pre-requesites
 -------------------------------
@@ -120,6 +120,8 @@ Stage 2: Migrating Standby BIG-IP VE to Nutanix
 Stage 3 – Fail Over the Active BIG-IP VE to Nutanix
 --------------------------------------------------
 
+   Note: In production environment, usually there will be a multiple origins per applications available on both the infrastructure before switchover.
+
 1. Initiate a failover, transitioning VMware BIGIP-1 from Active to Standby using::
 
         run sys failover standby
@@ -166,7 +168,7 @@ Stage 4 – Migrate Application Workloads from VMware to Nutanix
    down the source VM to complete the final data synchronization before starting it
    on Nutanix.
 
-5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
+5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP in Nutanix.
 
 .. image:: ./Assets/nutanix_big_ip_stats_after_traffic_test.jpg
 

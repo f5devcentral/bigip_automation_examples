@@ -64,7 +64,7 @@ Save the file and create the BIG-IP Pod:
 
     $ oc apply -f big-ip-pv.yaml
 
-    persistentvolume/big-ip-image-17.5-pv1 created
+    virtualmachine.kubevirt.io/bigip-stby created
 
 BIG-IP Pod is successfully created. This can be verified from Web Console as well.
 

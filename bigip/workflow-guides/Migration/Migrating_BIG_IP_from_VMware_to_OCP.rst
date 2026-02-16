@@ -1,7 +1,7 @@
-Application workload migration from VMware to Openshift using BIG-IP
+BIG-IP Migration from VMware to OCP
 #########################################################
 
-This guide consists of detailed steps for migrating application workloads from Vmware to Openshift platform
+This guide consists of detailed steps for migrating BIG-IP from Vmware to Openshift platform
 
 Pre-requesites
 -------------------------------
@@ -141,12 +141,15 @@ Stage 2: Migrating Standby BIG-IP VE to Openshift
 Stage 3 – Fail Over the Active BIG-IP VE to Openshift
 --------------------------------------------------
 
+Note: In production environment, usually there will be a multiple origins per applications available on both the infrastructure before switchover.
+
 1. Initiate a failover, transitioning VMware BIGIP-1 from Active to Standby using::
 
         run sys failover standby
 
 2. Openshift BIGIP-2 becomes the Active BIG-IP VE.
 
+.. image:: ./Assets_VMware_to_OCP/switchover_from_active_to_stby_marked.jpg
 
 3. As observed after executing the failover standby command, the BIG-IP instance on VMware transitions from Active to Standby, while the BIG-IP instance running on Openshift becomes Active. This behavior confirms that the traffic switchover was completed successfully
 
@@ -158,29 +161,21 @@ Stage 3 – Fail Over the Active BIG-IP VE to Openshift
 Stage 4 – Migrate Application Workloads from VMware to Openshift
 --------------------------------------------------------------
 
-1. The recommended and preferred method for migrating application workloads from
-   VMware to Openshift is to use **Openshift Move**, as it provides an automated and
-   consistent migration workflow.
-
-2. For the purpose of this testing and validation exercise, application workloads
+1. For the purpose of this testing and validation exercise, application workloads
    were **manually deployed** on Openshift instead of using Openshift Move.
 
-3. Manual deployment included provisioning new ubuntu virtual machines and restoring 
+2. Manual deployment included provisioning new ubuntu virtual machines and restoring 
    application data to match the existing VMware environment.
 
+.. image:: ./Assets_VMware_to_OCP/juice-shop-in-ocp.jpg
 
-4. Application configurations were updated and validated to ensure proper
+3. Application configurations were updated and validated to ensure proper
    integration with the Active BIG-IP VE running on Openshift, including pool member
    configuration, health monitors, and traffic flow validation.
 
+4. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP in OCP.
 
-.. note::
-   To minimize service interruption, it is recommended to migrate applications in
-   smaller batches rather than all at once. Openshift Move requires briefly shutting
-   down the source VM to complete the final data synchronization before starting it
-   on Openshift.
-
-5. From the screenshot below, the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP.
+.. image:: ./Assets_VMware_to_OCP/traffic_stats_from_BIG-IP-in_OCP.jpg
 
 
 **Current BIG-IP Status:**
@@ -191,9 +186,14 @@ Stage 4 – Migrate Application Workloads from VMware to Openshift
 Stage 5 – Migrate the Remaining Standby BIG-IP VE to Openshift
 ------------------------------------------------------------
 
+Create a new BIG-IP Instance in OCP to migrate the remaining Standby BIG-IP from VMware to OCP,
+
+.. image:: ./Assets_VMware_to_OCP/active-big-ip-create-ocp.jpg
+
 1. Place VMware BIGIP-1 (Standby) into **Forced Offline** mode and back up its
    configuration.
 
+.. image:: ./Assets_VMware_to_OCP/save_ucs_license_files_vmware_big-ip.jpg
 
 2. Save the license file from ``/config/bigip.license``.
 
@@ -201,52 +201,54 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Openshift
 
 4. Revoke the license from VMware BIGIP-1.
 
+.. image:: ./Assets_VMware_to_OCP/revoke_big-ip_vmware_license.jpg
 
-5. Disconnect all interfaces on VMware BIGIP-1.
+5. Disconnect all interfaces on VMware BIGIP-1 and click on Save button.
 
+.. image:: ./Assets_VMware_to_OCP/disconnect_int_vmware_big-ip_marked.jpg
 
-6. Power on Openshift BIGIP-1 and configure it with as shown in below screenshots
-   VMware BIGIP-1.
+6. Power on Openshift BIGIP-1 in OCP and configure it with the same Management IP address of BIG-IP in VMware,
 
+.. image:: ./Assets_VMware_to_OCP/change_ip_address.jpg
 
-7. Select the option as ipv4
+.. image:: ./Assets_VMware_to_OCP/change_ip_address_2.jpg
 
+License the BIG-IP with the same saved license from VMware BIGIP 1. This is similar to repetetion of step mentioned in stage 2.
 
-8. Select “No”  for auto configutration 
+7. Set Openshift BIGIP-1 to **Forced Offline**.
 
+.. image:: ./Assets_VMware_to_OCP/sys_failover_offline_bigip_new_ocp.jpg
 
-9. Assing same management ip , subnet mask and default route as of Vmware BIG-IP
+8. Upload and restore the saved UCS file using the **no-license** option.
 
+.. image:: ./Assets_VMware_to_OCP/successful_copy_load_ucs_to_ocp.jpg
 
+.. image:: ./Assets_VMware_to_OCP/successful_copy_load_ucs_to_ocp_2.jpg
 
-10. Apply the saved license to Openshift BIGIP-1.
-
-
-11. Set Openshift BIGIP-1 to **Forced Offline**.
-
-12. Upload and restore the saved UCS file using the **no-license** option.
-
-
-13. Monitor logs until the message
+9. Monitor logs until the message
     ``Configuration load completed, device ready for online`` is displayed.
 
-14. Bring Openshift BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
+10. Bring Openshift BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
     the original VMware configuration.
 
-15. Confirm that the device is **In Sync** and perform a configuration sync if needed.
+.. image:: ./Assets_VMware_to_OCP/logs_after_loading_ucs_file.jpg
 
+11. Confirm that the device is **In Sync** and perform a configuration sync if needed.
 
-16. VMware BIGIP-1 has now been fully migrated to Openshift.
+.. image:: ./Assets_VMware_to_OCP/big-ip_status_final.jpg
 
-17. Application is accesible through Openshift Active BIG-IP and the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP. This also indicates that migration is succesfull 
+12. VMware BIGIP-1 has now been fully migrated to Openshift.
 
+13. Application is accesible through Openshift Active BIG-IP. 
 
+.. image:: ./Assets_VMware_to_OCP/application-access-final.jpg
 
 **Migration Status:**
 
 - Openshift BIGIP-1: Standby
 - Openshift BIGIP-2: Active
 
+This confirms both the BIG-IPs are migrated successfully.
 
 Conclusion
 ----------

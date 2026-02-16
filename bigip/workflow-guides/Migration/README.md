@@ -1,4 +1,4 @@
-# Application Migration across Heterogeneous Environments using F5 BIG-IP VE
+# BIG-IP and Application Migration across Heterogeneous Environments
 
 ## Scope
 
@@ -63,7 +63,7 @@ A high-level overview of the process is outlined below.
 
 ## Migration Stages Overview
 
-### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
+### Stage 1 – BIG-IP VE HA pair deployment on VMware
 At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
 
 ![ ](./Assets/device_details_active.jpg)
@@ -74,6 +74,8 @@ At this stage BIG-IP Virtual Edition instances are already present on Vmware and
 
 ### Stage 2 – Migrate Standby BIG-IP VE from VMware to Nutanix
 The Standby BIG-IP VE is migrated first from the VMware source environment to the Nutanix target platform. Configuration and licensing are preserved, allowing the migrated instance to rejoin the high-availability configuration without affecting active application traffic.
+
+![ ](./Assets/nutanix_big_ips.jpg)
 
 ![ ](./Assets/nutanix_big_ip_in_standby.jpg)
 
@@ -98,7 +100,7 @@ This scenario demonstrates the migraiton of applicaiton traffic and workloads fr
 
 ## Migration Stages Overview
 
-### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
+### Stage 1 – BIG-IP VE HA pair deployment on VMware
 At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
 
 ![ ](./Assets_VMware_to_OCP/active-big-ip-mac-details.jpg)
@@ -117,19 +119,19 @@ The Standby BIG-IP VE is migratd from VMware to OCP. Configuration and licensing
 
 Application traffic is failed over from the Active BIG-IP VE running on VMware to the BIG-IP VE running on OCP. At this stage, OCP becomes the active traffic-handling platform while VMware remains in standby.
 
-![ ](./Assets/stage-3-switchover.jpg)
+![ ](./Assets_VMware_to_OCP/switchover_from_active_to_stby_marked.jpg)
 
 ### Stage 4 – Migrate Application Workloads from VMware to OCP
 
 Workload applications are migrated from VMware to OCP and made to run to same IP and Port as in previous VMware platform.
 
-![ ](./Assets_VMware_to_OCP/application-access-before-testing.jpg)
+![ ](./Assets_VMware_to_OCP/juice-shop-in-ocp.jpg)
 
 ### Stage 5 – Migrate Remaining BIG-IP VE from VMware to OCP
 
 The remaining BIG-IP VE is migrated from VMware to OCP and added back into the high-availability configuration. Upon completion, both BIG-IP instances operate entirely from the OCP platform. 
 
-![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
+![ ](./Assets_VMware_to_OCP/big-ip_status_final.jpg)
 
 ### Conclusion
 
