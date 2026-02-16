@@ -189,6 +189,7 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Openshift
 1. Place VMware BIGIP-1 (Standby) into **Forced Offline** mode and back up its
    configuration.
 
+.. image:: ./Assets_VMware_to_OCP/save_ucs_license_files_vmware_big-ip.jpg
 
 2. Save the license file from ``/config/bigip.license``.
 
@@ -196,44 +197,45 @@ Stage 5 – Migrate the Remaining Standby BIG-IP VE to Openshift
 
 4. Revoke the license from VMware BIGIP-1.
 
+.. image:: ./Assets_VMware_to_OCP/revoke_big-ip_vmware_license.jpg
 
-5. Disconnect all interfaces on VMware BIGIP-1.
+5. Disconnect all interfaces on VMware BIGIP-1 and click on Save button.
 
+.. image:: ./Assets_VMware_to_OCP/disconnect_int_vmware_big-ip_marked.jpg
 
-6. Power on Openshift BIGIP-1 and configure it with as shown in below screenshots
-   VMware BIGIP-1.
+6. Power on Openshift BIGIP-1 in OCP and configure it with the same Management IP address of BIG-IP in VMware,
 
+.. image:: ./Assets_VMware_to_OCP/change_ip_address.jpg
 
-7. Select the option as ipv4
+.. image:: ./Assets_VMware_to_OCP/change_ip_address_2.jpg
 
+License the BIG-IP with the same saved license from VMware BIGIP 1. This is similar to repetetion of step mentioned in stage 2.
 
-8. Select “No”  for auto configutration 
+7. Set Openshift BIGIP-1 to **Forced Offline**.
 
+.. image:: ./Assets_VMware_to_OCP/sys_failover_offline_bigip_new_ocp.jpg
 
-9. Assing same management ip , subnet mask and default route as of Vmware BIG-IP
+8. Upload and restore the saved UCS file using the **no-license** option.
 
+.. image:: ./Assets_VMware_to_OCP/successful_copy_load_ucs_to_ocp.jpg
 
+.. image:: ./Assets_VMware_to_OCP/successful_copy_load_ucs_to_ocp_2.jpg
 
-10. Apply the saved license to Openshift BIGIP-1.
-
-
-11. Set Openshift BIGIP-1 to **Forced Offline**.
-
-12. Upload and restore the saved UCS file using the **no-license** option.
-
-
-13. Monitor logs until the message
+9. Monitor logs until the message
     ``Configuration load completed, device ready for online`` is displayed.
 
-14. Bring Openshift BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
+10. Bring Openshift BIGIP-1 **Online**, ensuring NIC count and VLAN mappings match
     the original VMware configuration.
 
-15. Confirm that the device is **In Sync** and perform a configuration sync if needed.
+.. image:: ./Assets_VMware_to_OCP/logs_after_loading_ucs_file.jpg
 
+11. Confirm that the device is **In Sync** and perform a configuration sync if needed.
 
-16. VMware BIGIP-1 has now been fully migrated to Openshift.
+.. image:: ./Assets_VMware_to_OCP/big-ip_status_final.jpg
 
-17. Application is accesible through Openshift Active BIG-IP and the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP. This also indicates that migration is succesfull 
+12. VMware BIGIP-1 has now been fully migrated to Openshift.
+
+13. Application is accesible through Openshift Active BIG-IP and the increase in traffic statistics confirms that application traffic is successfully flowing through BIG-IP. This also indicates that migration is succesfull 
 
 
 
