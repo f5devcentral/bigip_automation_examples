@@ -117,7 +117,7 @@ The Standby BIG-IP VE is migratd from VMware to OCP. Configuration and licensing
 
 Application traffic is failed over from the Active BIG-IP VE running on VMware to the BIG-IP VE running on OCP. At this stage, OCP becomes the active traffic-handling platform while VMware remains in standby.
 
-![ ](./Assets/stage-3-switchover.jpg)
+![ ](./Assets_VMware_to_OCP/switchover_from_active_to_stby_marked.jpg)
 
 ### Stage 4 – Migrate Application Workloads from VMware to OCP
 
