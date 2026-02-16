@@ -35,10 +35,11 @@ This repository contains resources, examples, and scripts supporting the **F5 BI
 ---
 
 ## **BIG-IP Application Delivery and Security**
-  | **DevCentral Overview Articles**                                                                                           | **Use Case / Workflow Guides**                                                                                                                                                |
-  |----------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst) | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments (SaaS Console)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst)                        |
-  
+| **DevCentral Overview Articles** | **Use Case / Workflow Guides** |
+|----------------------------------|--------------------------------|
+| [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments](https://community.f5.com/kb/technicalarticles/big-ip-for-scalable-app-delivery--security-in-hybrid-environments/343581) | [BIG-IP Application Delivery and Security for Scalable Enterprise Workload Deployments across Heterogeneous Environments (SaaS Console)](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/README.rst) |
+| [BIG-IP Application Delivery and Security for Migrating Apps across Heterogeneous Environments](https://community.f5.com/kb/technicalarticles/big-ip-and-app-migration-across-heterogeneous-environments/345128) | [BIG-IP and App Migration across Heterogeneous Environments (SaaS Console)](https://github.com/f5devcentral/bigip_automation_examples/tree/main/bigip/workflow-guides/Migration) |
+
 ---
 
 Please open an issue if you have any challenges or improvements. 
