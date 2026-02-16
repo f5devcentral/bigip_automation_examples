@@ -123,13 +123,13 @@ Application traffic is failed over from the Active BIG-IP VE running on VMware t
 
 Workload applications are migrated from VMware to OCP and made to run to same IP and Port as in previous VMware platform.
 
-![ ](./Assets_VMware_to_OCP/application-access-before-testing.jpg)
+![ ](./Assets_VMware_to_OCP/juice-shop-in-ocp.jpg)
 
 ### Stage 5 – Migrate Remaining BIG-IP VE from VMware to OCP
 
 The remaining BIG-IP VE is migrated from VMware to OCP and added back into the high-availability configuration. Upon completion, both BIG-IP instances operate entirely from the OCP platform. 
 
-![ ](./Assets_VMware_to_OCP/stby-big-ip-in-ocp-GUI.jpg)
+![ ](./Assets_VMware_to_OCP/big-ip_status_final.jpg)
 
 ### Conclusion
 
