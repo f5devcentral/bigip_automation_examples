@@ -149,7 +149,7 @@ Note: In production environment, usually there will be a multiple origins per ap
 
 2. Openshift BIGIP-2 becomes the Active BIG-IP VE.
 
-![ ](./Assets_VMware_to_OCP/switchover_from_active_to_stby_marked.jpg)
+.. image:: ./Assets_VMware_to_OCP/switchover_from_active_to_stby_marked.jpg
 
 3. As observed after executing the failover standby command, the BIG-IP instance on VMware transitions from Active to Standby, while the BIG-IP instance running on Openshift becomes Active. This behavior confirms that the traffic switchover was completed successfully
 
@@ -167,7 +167,7 @@ Stage 4 – Migrate Application Workloads from VMware to Openshift
 2. Manual deployment included provisioning new ubuntu virtual machines and restoring 
    application data to match the existing VMware environment.
 
-![ ](./Assets_VMware_to_OCP/juice-shop-in-ocp.jpg)
+.. image:: ./Assets_VMware_to_OCP/juice-shop-in-ocp.jpg
 
 3. Application configurations were updated and validated to ensure proper
    integration with the Active BIG-IP VE running on Openshift, including pool member
