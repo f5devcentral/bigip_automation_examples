@@ -1,4 +1,4 @@
-Application workload migration from VMware to Nutanix using BIG-IP
+BIG-IP Migration from VMware to Nutanix
 #########################################################
 
 This guide consists of detailed steps for migrating BIG-IP from Vmware to Nutanix platform
