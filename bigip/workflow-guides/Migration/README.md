@@ -63,7 +63,7 @@ A high-level overview of the process is outlined below.
 
 ## Migration Stages Overview
 
-### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
+### Stage 1 – BIG-IP VE HA pair deployment on VMware
 At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
 
 ![ ](./Assets/device_details_active.jpg)
@@ -74,6 +74,8 @@ At this stage BIG-IP Virtual Edition instances are already present on Vmware and
 
 ### Stage 2 – Migrate Standby BIG-IP VE from VMware to Nutanix
 The Standby BIG-IP VE is migrated first from the VMware source environment to the Nutanix target platform. Configuration and licensing are preserved, allowing the migrated instance to rejoin the high-availability configuration without affecting active application traffic.
+
+![ ](./Assets/nutanix_big_ips.jpg)
 
 ![ ](./Assets/nutanix_big_ip_in_standby.jpg)
 
@@ -98,7 +100,7 @@ This scenario demonstrates the migraiton of applicaiton traffic and workloads fr
 
 ## Migration Stages Overview
 
-### Stage 1 – BIG-IP VE HA pair deployment on Nutanix
+### Stage 1 – BIG-IP VE HA pair deployment on VMware
 At this stage BIG-IP Virtual Edition instances are already present on Vmware and a we will deploy a couple of BIG-IPs on Nutanix platform as well.
 
 ![ ](./Assets_VMware_to_OCP/active-big-ip-mac-details.jpg)
