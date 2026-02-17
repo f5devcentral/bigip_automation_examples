@@ -14,7 +14,7 @@ Steps to attach an Interface
 -------------------------------
 Below are the series of steps to follow to attach an network of BIG-IP VE,
 
-At first, we can able to see from the Interface dropdown in BIG-IP instance running in OCP
+At first, Select the BIG-IP instance to which Interface has to be attached. we can able to see from the Interface dropdown in BIG-IP instance running in OCP
 
 .. image:: ./Assets/big-ip-before-int-atttach.jpg
 
