@@ -1,6 +1,6 @@
 Attach an Interface Network to BIG-IP Instance in RedHat OpenShift Platform
 #########################################################
-This documents contains step by step procedure to attach an Interface Network to BIG-IP instance to communicate to external network or internal within the Cluster of RedHat OpenShift Platform (OCP). 
+This documents contains step by step procedure to attach an Interface Network to BIG-IP instance to communicate to external or internal network to RedHat OpenShift Platform (OCP). 
 
 Introduction
 -------------------------------
