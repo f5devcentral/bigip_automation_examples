@@ -55,11 +55,11 @@ A 3-node OpenShift Container Platform (OCP) cluster is deployed on a VMware-base
 
 `OCP Infra setup & Cluster Creation | F5 BIG-IP Learn <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/OCP-Setup-VMware.rst>`__
 
-`Configure NNCP & NAD on OCP Cluster | F5 BIG-IP Solutions <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Configuring_NNCP_NAD_configs_in_Red_Hat_OpenShift/configuring_NNCP_NAD_configs_in_ocp.rst`__
+`Configure NNCP & NAD on OCP Cluster | F5 BIG-IP Solutions <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Configuring_NNCP_NAD_configs_in_Red_Hat_OpenShift/configuring_NNCP_NAD_configs_in_ocp.rst>`__
 
-`Deploy BIG-IP on OCP Cluster | F5 BIG-IP Solutions <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_F5_BIG_IP_VE_in_Red_Hat_OpenShift/deploy_big_ip.rst`__
+`Deploy BIG-IP on OCP Cluster | F5 BIG-IP Solutions <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_F5_BIG_IP_VE_in_Red_Hat_OpenShift/deploy_big_ip.rst>`__
 
-`Deploy Ubuntu Server Machine on OCP Cluster | F5 BIG-IP Learn <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_Ubuntu_Linux_server_machine_in_Red_Hat_OpenShift/ubuntu_deploy.rst`__
+`Deploy Ubuntu Server Machine on OCP Cluster | F5 BIG-IP Learn <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_Ubuntu_Linux_server_machine_in_Red_Hat_OpenShift/ubuntu_deploy.rst>`__
 
 **Cloud Env:**
 For this demonstration, Google Cloud Platform (GCP) is selected to deploy the BIG-IP Virtual Edition with Web Application Firewall (WAF) functionality. A virtual machine hosting application workload is provisioned and integrated with a virtual server configured on the BIG-IP instance. This setup ensures secure access by routing traffic through the virtual server, thereby preventing direct exposure of the applications to external networks. 
