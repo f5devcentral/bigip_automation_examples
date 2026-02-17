@@ -1,4 +1,4 @@
-# BIG-IP and Application Migration across Heterogeneous Environments
+# BIG-IP Migration from VMware to RedHat OpenShift Platform
 
 ## Scope
 
@@ -46,9 +46,9 @@ Please refer to the links below for detailed instructions on setting up the OCP 
 
 [OCP Infra setup & Cluster Creation | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/OCP-Setup-VMware.rst)
 
-[Configure NNCP & NAD on OCP Cluster | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Configuring_NNCP_NAD_configs_in_Red_Hat_OpenShift/configuring_NNCP_NAD_configs_in_ocp.rst)
+[Configure NNCP & NAD on OCP Cluster | F5 BIG-IP Solutions](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Configuring_NNCP_NAD_configs_in_Red_Hat_OpenShift/configuring_NNCP_NAD_configs_in_ocp.rst)
 
-[Deploy BIG-IP on OCP Cluster | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_F5_BIG_IP_VE_in_Red_Hat_OpenShift/deploy_big_ip.rst)
+[Deploy BIG-IP on OCP Cluster | F5 BIG-IP Solutions](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_F5_BIG_IP_VE_in_Red_Hat_OpenShift/deploy_big_ip.rst)
 
 [Deploy Ubuntu Server Machine on OCP Cluster | F5 BIG-IP Learn](https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/Migration/OCP/Deploy_Ubuntu_Linux_server_machine_in_Red_Hat_OpenShift/ubuntu_deploy.rst)
 
