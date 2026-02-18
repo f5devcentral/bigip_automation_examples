@@ -133,3 +133,7 @@ To enable specific modules, use:
 
     tmsh modify sys provision ltm level nominal
     tmsh save sys config
+
+Information on License as below,
+
+    Note: For testing purpose, BIG-IP LTM-VE-5G-V18 LIC is used for Nutanix and BIG-IP LTM-VE-3G-V23-LIC-DEV is used for OCP respectively.

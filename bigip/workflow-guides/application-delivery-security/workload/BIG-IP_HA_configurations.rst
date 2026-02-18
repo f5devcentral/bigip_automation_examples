@@ -6,7 +6,9 @@ Pre-requesites
 -------------------------------
 1. Couple of Standalone BIG-IPs should be available.
 
-2. Couple of IP Address to connect both the BIG-IP.
+2. Couple of IP Addresses to connect both the BIG-IP.
+
+3. Names of the VLAN configs for the both the BIG-IP should match.
 
 Steps to bring up BIG-IP in HA mode
 -------------------------------
@@ -22,7 +24,9 @@ Let's have a look at Internal, External and HA IP addresses.
 
 .. image:: ./assets/BIG-IP_HA/standalone_b_self_ips.jpg
 
-HA configuration follows series of steps which includes ConfigSync, Failover Network and Mirrorring. These need to be performed for both the BIG-IPs that are planned to form HA pair.
+HA configuration follows series of steps which includes ConfigSync, Failover Network and Mirrorring. These need to be performed for both the BIG-IPs that are planned to form HA pair. 
+
+    Note: Failover Network should not consists of HA Vlan configs.
 
 .. image:: ./assets/BIG-IP_HA/standalone_a_config_sync.jpg
 
@@ -42,7 +46,7 @@ Now, go to Device trust to add other BIG-IP as trusted device, this is achieved 
 
 .. image:: ./assets/BIG-IP_HA/device_trust_group.jpg
 
-From BIG-IP A, enter the details of BIG-IP B IP address and enter the credentials,
+From BIG-IP A, enter the details of BIG-IP B IP address and enter the credentials. Confirm the Hostname of the BIG-IP B and click on Add Device button.
 
 .. image:: ./assets/BIG-IP_HA/device_trust_group_add_device.jpg
 
@@ -79,8 +83,7 @@ Conclusion
 As mentioned in this document, the series of steps to bring up BIG-IPs to HA pair can be achieved.
 
 
-
-
-
-
+**References:**
+----------
+`BIG-IP HA config reference <https://clouddocs.f5.com/training/community/adc/html/class6/intro.html>`__
 
