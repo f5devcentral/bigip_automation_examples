@@ -15,3 +15,5 @@ Before proceeding, we can see both the BIG-IPs are in Standalone mode,
 .. image:: ./assets/BIG-IP_HA/standalone_a.jpg
 
 .. image:: ./assets/BIG-IP_HA/standalone_b.jpg
+
+
