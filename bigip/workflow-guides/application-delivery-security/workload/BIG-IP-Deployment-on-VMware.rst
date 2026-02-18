@@ -195,6 +195,8 @@ F5 BIG-IP High Availability (HA) Setup
 This guide explains how to configure **High Availability (HA)** on **F5 BIG-IP** using
 **tmsh CLI**, following a **manual, command-driven approach**.
 
+To configure HA Pair using GUI, follow the document mentioned `here <https://github.com/f5devcentral/bigip_automation_examples/blob/main/bigip/workflow-guides/application-delivery-security/workload/BIG-IP_HA_configurations.rst>`__.
+
 The configuration results in a **Sync-Failover (Active–Standby)** HA pair.
 
 -------------------------------------------------
